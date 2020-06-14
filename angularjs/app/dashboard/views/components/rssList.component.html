@@ -1,0 +1,53 @@
+<v-accordion class="dashboard-block dashboard-accordion">
+    <v-pane expanded="true">
+        <v-pane-header>
+            <div class="dashboard-block-title">Latest News:</div>
+        </v-pane-header>
+        <v-pane-content>
+            <div class="custom-no-records horizontal" ng-if="$ctrl.loaded && $ctrl.rssItems.length == 0">
+                <div class="custom-no-records-icon">
+                    <md-icon md-svg-src="assets/images/default/news.svg"></md-icon>
+                </div>
+                <div class="custom-no-records-content">
+                    <div class="custom-no-records-title">There are no any News yet.</div>
+                    <div class="custom-no-records-text">
+                        Once news will be posted by publishers they will appear on Dashboard
+                    </div>
+                </div>
+            </div>
+            <div ng-if="$ctrl.loaded" class="dashboard-block-body">
+                <table class="drowz-table">
+                    <tr ng-repeat="article in $ctrl.rssItems | orderBy:'publishedDateInt' : 'ASC' track by $index"
+                        class="drowz-table-row">
+                        <td class="sitename-cell">
+                            <div class="flex-cont">
+                                <img ng-if="article.websiteName == 'cms.gov'"
+                                    src="assets/images/rss_icons/cms-rss.jpg" alt="">
+                                <img ng-if="article.websiteName == 'cnn.com'"
+                                    src="assets/images/rss_icons/cnn-rss.png"  width="16" height="16" alt="">
+                                <img ng-if="article.websiteName == 'homecaremag.com'"
+                                     src="assets/images/rss_icons/homecaremag-rss.jpg"  width="16" height="16" alt="">
+                                {{article.websiteName}}
+                            </div>
+                        </td>
+                        <td class="label-cell">
+                            <div ng-repeat="category in article.categories"
+                                 class="status-label blue">{{category}}
+                            </div>
+                        </td>
+                        <td class="datetime-cell center-text">
+                            <nobr>{{article.publishedDate | amDateFormat:'DD MMMM YYYY'}}</nobr>
+                        </td>
+                        <td class="text-cell">{{article.title}}</td>
+                        <td class="buttons-cell">
+                            <a ng-href="{{article.link}}" target="_blank">
+                                <md-icon class="ext-link-icon" md-svg-src="assets/images/default/ext-link.svg"></md-icon>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+                <no-records text="Latest News" ng-if="false"></no-records>
+            </div>
+        </v-pane-content>
+    </v-pane>
+</v-accordion>

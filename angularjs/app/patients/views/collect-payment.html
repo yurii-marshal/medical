@@ -1,0 +1,285 @@
+<div class="drowz-wizard collect-payment-page"
+     ng-class="{'no-footer-wizard': collect.Receipt.Id}"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="collectOverlay"
+     ng-form="collect.collectForm">
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.patients">Patients</a>
+        <a href="javascript:void(0)" ui-sref="root.patient.demographics({ patientId: collect.patientId })">{{collect.shortInfo.Name.FullName}}</a>
+        <a href="javascript:void(0)" class="active">Collect Payment</a>
+    </div>
+
+    <div class="collect-payment-container">
+
+        <patient-short-info-sidebar
+                class="sidebar"
+                patient-id="collect.patientId"
+                patient="collect.shortInfo"
+                have-toggle-btn="false">
+        </patient-short-info-sidebar>
+
+        <div class="collect-payment-content grow-1" ng-if="!collect.Receipt.Id">
+
+            <div class="drowz-wizard-body-flex align-stretch">
+
+                <div class="drowz-wizard-block grow-1">
+                    <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">Payment Amount:</div>
+                    </div>
+                    <div class="drowz-wizard-block-body">
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block">
+                                <md-input-container class="currency-container mask-currency-container">
+                                    <div class="currency-icon">$</div>
+                                    <label>Amount:</label>
+                                    <input type="number"
+                                           step="0.01"
+                                           min="0.01"
+                                           ng-model="collect.Amount"
+                                           ng-required="true"
+                                           name="amount"
+                                           price-validator
+                                    >
+                                    <div ng-messages="collect.collectForm.amount.$error" class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                        <div ng-message="price">Max 2 digits after point</div>
+                                        <div ng-message="min">Minimum is 0.01</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="drowz-wizard-block grow-1">
+                    <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">Balance:</div>
+                    </div>
+                    <div class="drowz-wizard-block-body">
+                        <div class="collect-payment-balance">
+                            <md-icon md-svg-src="assets/images/main-menu/billing.svg"></md-icon>
+                            <span>{{collect.Balance.Currency}}&nbsp;{{collect.Balance.Amount | number:2 | absNumber}}</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="drowz-wizard-block no-float">
+                <div class="drowz-wizard-block-title">
+                    <div class="wizard-title-text">Payment Method:</div>
+                </div>
+                <div class="drowz-wizard-block-body">
+                    <md-radio-group ng-model="collect.Method"
+                                    ng-change="collect.changedPaymentMethod(collect.Method)"
+                                    class="collect-payment-method">
+
+                        <md-radio-button ng-value="{{item.Id}}"
+                                         class="md-primary"
+                                         ng-repeat="item in collect.paymentMethodsDictionary">
+                            {{item.Name}}
+                        </md-radio-button>
+
+                    </md-radio-group>
+                </div>
+            </div>
+
+            <div class="drowz-wizard-block no-float" ng-if="collect.Method === 4">
+                <div class="drowz-wizard-block-body">
+                    <div class="drowz-wizard-block-row">
+                        <div class="info-block block-width-370">
+                            <md-input-container>
+                                <label>Choose the card to use:</label>
+                                <md-select ng-model="collect.savedCard"
+                                           ng-disabled="!collect.patientSavedCards.length"
+                                           ng-required="true"
+                                           name="savedCard">
+                                    <md-option ng-value="item"
+                                               ng-repeat="item in collect.patientSavedCards">
+                                        {{item.Brand}} {{item.Last4}}
+                                    </md-option>
+                                </md-select>
+                                <div ng-messages="collect.collectForm.savedCard.$error" class="md-input-messages-nice">
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="drowz-wizard-block no-float" ng-if="collect.Method === 3">
+                <div class="drowz-wizard-block-body">
+                    <div class="info-block block-width-370">
+                        <md-input-container>
+                            <label>Name on Card:</label>
+                            <input type="text"
+                                   name="NameOnCard"
+                                   ng-model="collect.NameOnCard"
+                                   ng-required="true">
+                            <div ng-messages="collect.collectForm.NameOnCard.$error" class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div class="info-block block-width-370">
+                        <div class="info-block-label">Card Number:</div>
+                        <div class="info-block-body">
+                            <div class="my-stripe-input" id="card-number"></div>
+                            <div class="stripe-element-error" id="card-number-errors"></div>
+                        </div>
+                    </div>
+                    <div class="drowz-wizard-block-row">
+                        <div class="info-block block-width-150">
+                            <div class="info-block-label">Expiry Date:</div>
+                            <div class="info-block-body">
+                                <div class="my-stripe-input" id="card-expiry"></div>
+                                <div class="stripe-element-error" id="card-expiry-errors"></div>
+                            </div>
+                        </div>
+                        <div class="info-block block-width-150">
+                            <div class="info-block-label">CVC:</div>
+                            <div class="info-block-body">
+                                <div class="my-stripe-input" id="card-cvc"></div>
+                                <div class="stripe-element-error" id="card-cvc-errors"></div>
+                            </div>
+                        </div>
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">&nbsp;</div>
+                            <div class="info-block-body">
+                                <md-checkbox class="md-primary" ng-model="collect.SaveThisCardOnFile">
+                                    Save this card on file
+                                </md-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="drowz-wizard-block no-float" ng-if="collect.Method === 2">
+                <div class="drowz-wizard-block-body">
+                    <div class="drowz-wizard-block-row">
+                        <div class="info-block block-width-370">
+                            <md-input-container>
+                                <label>Reference #:</label>
+                                <input type="text"
+                                       name="Reference"
+                                       ng-required="true"
+                                       ng-model="collect.Reference">
+                                <div ng-messages="collect.collectForm.Reference.$error" class="md-input-messages-nice">
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="drowz-wizard-block no-float">
+                <div class="drowz-wizard-block-body">
+                    <div class="drowz-wizard-block-row">
+                        <div class="info-block grow-1">
+                            <md-input-container>
+                                <label>Note:</label>
+                                <textarea cols="1" rows="1" ng-model="collect.Note"></textarea>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="collect-payment-content grow-1" ng-if="collect.Receipt.Id">
+
+            <div class="drowz-wizard-block no-float">
+                <div class="drowz-wizard-block-title">
+                    <div class="wizard-title-text">Receipt:</div>
+                </div>
+                <div class="drowz-wizard-block-body">
+                    <div class="drowz-wizard-block-row">
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">Billing Provider:</div>
+                            <div class="info-block-body">
+                                {{collect.Receipt.BillingProviderName}}&nbsp;&nbsp;|&nbsp;&nbsp;{{collect.Receipt.BillingProviderAddress | addressToString}}
+                            </div>
+                        </div>
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">
+                                <div class="flex-cont align-end">Receipt for:</div>
+                            </div>
+                            <div class="info-block-body flex-cont align-end">{{collect.Receipt.PatientName | fullname}}</div>
+                        </div>
+                    </div>
+                    <div class="flex-cont">
+                        <hr class="drowz-line grow-1">
+                        <div class="collect-payment-title">
+                            Thank you for your Payment!
+                        </div>
+                        <hr class="drowz-line grow-1">
+                    </div>
+                    <table class="collect-payment-table">
+                        <tr>
+                            <td>Amount Paid:</td>
+                            <td>{{collect.Receipt.Amount.Currency + ' ' + collect.Receipt.Amount.Amount}}</td>
+                        </tr>
+                        <tr>
+                            <td>Payment Method:</td>
+                            <td>{{collect.Receipt.Method.Name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Payment Date:</td>
+                            <td>{{collect.Receipt.PaymentDate | amUtc | amDateFormat: 'MM/DD/YYYY'}}</td>
+                        </tr>
+                        <tr>
+                            <td>Confirmation #:</td>
+                            <td>{{collect.Receipt.Confirmation || '-'}}</td>
+                        </tr>
+                    </table>
+                    <hr class="drowz-line">
+                    <div class="flex-cont collect-payment-receipt-footer">
+                        <md-button aria-label="..."
+                                   class="md-raised middle-btn print-btn"
+                                   ng-click="collect.printPayment()">
+                            <md-icon md-svg-src="assets/images/default/print.svg"></md-icon>
+                            Print
+                        </md-button>
+                        <md-button aria-label="..."
+                                   class="md-raised middle-btn email-btn"
+                                   ng-click="collect.emailPayment()">
+                            <md-icon md-svg-src="assets/images/default/email_v2.svg"></md-icon>
+                            Email
+                        </md-button>
+                        <div class="grow-1"></div>
+                        <md-button aria-label="..."
+                                   class="md-raised md-primary middle-btn ok-btn"
+                                   ui-sref="root.patient.financial.payments({ patientId: collect.patientId })">
+                            Ok
+                        </md-button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="drowz-wizard-footer" ng-if="!collect.Receipt.Id">
+        <md-button class="md-raised main-button"
+                   aria-label="..."
+                   ng-click="collect.cancel()">
+            Cancel
+        </md-button>
+        <md-button class="md-raised md-primary main-button"
+                   aria-label="..."
+                   ng-disabled="!collect.Method || (collect.Method === 4 && !collect.patientSavedCards.length)"
+                   ng-click="collect.submit()"
+                   scroll-to
+                   disabled-scroll="collect.collectForm.$invalid">
+            Submit
+        </md-button>
+    </div>
+
+</div>

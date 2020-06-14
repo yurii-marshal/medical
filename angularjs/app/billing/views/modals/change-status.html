@@ -1,0 +1,32 @@
+<div class="modal-window change-inprogress-status-modal">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/setup-rect.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Change Denials Status:</h2>
+        </div>
+
+        <div class="grow-1">
+            <md-input-container >
+                <label>select</label>
+                <md-select ng-model="$ctrl.Status"
+                           clear-on-click>
+                    <md-option ng-value="status.Id" ng-repeat="status in $ctrl.allStatuses">
+                        {{::status.Name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button" ng-disable="!$ctrl.Status" ng-click="$ctrl.save($ctrl.Status)">Save</md-button>
+    </md-dialog-actions>
+
+</div>

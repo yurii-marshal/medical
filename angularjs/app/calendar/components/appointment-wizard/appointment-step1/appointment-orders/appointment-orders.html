@@ -1,0 +1,268 @@
+<div class="drowz-wizard-block-body appointment-orders-block"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="appointmentOrders"
+>
+    <div class="drowz-wizard-block-row">
+        <div class="info-block grow-1">
+            <div class="appointment-orders" ng-form="$ctrl.appointmentOrders">
+
+                <div class="flex-row">
+                    <div class="info-block block-width-250">
+                        <md-input-container>
+                            <label>Appointment Type</label>
+                            <md-select name="appointmentType"
+                                       ng-model="$ctrl.appointmentTypeId"
+                                       ng-change="$ctrl.changeAppType($ctrl.appointmentType, $ctrl.appointmentTypeId)"
+                                       ng-required="true">
+                                <md-option ng-value="item.Id"
+                                           ng-repeat="item in $ctrl.dictionaries.AppointmentTypes">
+                                    {{item.Text}}
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="$ctrl.appointmentOrders.appointmentType.$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required"><b>Appointment Type</b> cannot be empty.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+                    <div class="info-block block-width-250 max-width-33-percent flex-cont stretch">
+                        <appointment-duration></appointment-duration>
+                    </div>
+                </div>
+
+                <div class="flex-row">
+                    <div class="pickup-options"
+                         ng-if="$ctrl.appointmentType.Id === 3">
+                        <div class="drowz-wizard-block-row pickup-options-row">
+
+                            <div class="reason-cell info-block">
+                                <md-input-container>
+                                    <label>Reason:</label>
+                                    <md-select ng-model="$ctrl.appointmentType.PickupOptions.Reason"
+                                               ng-change="$ctrl.clearReason($ctrl.appointmentType)"
+                                               ng-required="true"
+                                               name="pickUpReason">
+                                        <md-option ng-value="item.Id"
+                                                   ng-repeat="item in $ctrl.dictionaries.PickUpTypes">
+                                            {{item.Text}}
+                                        </md-option>
+                                    </md-select>
+                                    <div ng-messages="$ctrl.appointmentOrders.pickUpReason.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required"><b>Reason</b> cannot be empty.</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+
+                            <div class="expired-date-cell info-block"
+                                 ng-if="$ctrl.appointmentType.PickupOptions.Reason == 3">
+                                <md-input-container>
+                                    <label>Expired Date:</label>
+                                    <input ng-model="$ctrl.appointmentType.PickupOptions.ReasonPatientExpired"
+                                           datetimepicker
+                                           ng-required="true"
+                                           name="ReasonPatientExpired"
+                                           format="MM/DD/YYYY"
+                                    >
+                                    <div ng-messages="$ctrl.appointmentOrders.ReasonPatientExpired.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required"><b>Expired Date</b> cannot be empty.</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+
+                            <div class="other-reason-cell info-block"
+                                 ng-if="$ctrl.appointmentType.PickupOptions.Reason == 4">
+                                <md-input-container>
+                                    <label>Other:</label>
+                                    <input type="text"
+                                           name="other"
+                                           ng-model="$ctrl.appointmentType.PickupOptions.ReasonOtherText"
+                                           ng-required="true">
+                                    <div ng-messages="$ctrl.appointmentOrders.other.$error" class="md-input-messages-nice">
+                                        <div ng-message="required"><b>Other</b> cannot be empty.</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+
+                            <md-button class="md-raised md-primary small-btn select-equipment-btn"
+                                       ng-click="$ctrl.openPickup()"
+                                       ng-disabled="!$ctrl.patientEquipment.length || ($ctrl.appointmentType.PickupOptions.Devices.length === $ctrl.patientEquipment.length)">
+                                Select Pickup Items
+                            </md-button>
+
+                        </div>
+                        <div class="active-title"
+                             ng-if="$ctrl.appointmentType.PickupOptions.Devices.length">
+                            Pickup Items:
+                        </div>
+                        <table class="drowz-table small-table"
+                               ng-if="$ctrl.appointmentType.PickupOptions.Devices.length">
+
+                            <tr class="drowz-table-row"
+                                ng-repeat="item in $ctrl.appointmentType.PickupOptions.Devices | orderBy:'Name' track by item.Id">
+
+                                <td class="regular-left-padding">{{item.Name}}</td>
+                                <td class="text-right-cell">
+                                    <a href="javascript:void(0);"
+                                       class="delete-icon-btn"
+                                       ng-click="$ctrl.deleteSelectedEquipment(item.Id)">
+                                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                        <md-input-container class="hidden-validation-input"
+                                            ng-if="$ctrl.appointmentType.Id === 3 && $ctrl.appointmentType.PickupOptions.Devices.length">
+                            <label></label>
+                            <input type="number"
+                                   ng-model="$ctrl.appointmentType.PickupOptions.Devices.length"
+                                   ng-required="true"
+                                   min="1"
+                                   name="pickupDevices">
+                            <div ng-messages="$ctrl.appointmentOrders.pickupDevices.$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">PickUp equipment required</div>
+                                <div ng-message="min">PickUp equipment required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+                    <div class="drowz-wizard-block-row flex-column revisit-options"
+                         ng-if="$ctrl.appointmentType.Id === 2">
+                        <div class="info-block w100-percent"
+                             ng-repeat="(key, revisitOption) in $ctrl.dictionaries.RevisitOptions"
+                             ng-init="$ctrl.initRevisitOptions($ctrl.appointmentType.RevisitOptions.RevisitList[key], revisitOption.Id);
+                                        RevisitItem = $ctrl.appointmentType.RevisitOptions.RevisitList[key]">
+                            <div class="flex-row align-center">
+                                <div class="col-xs-4">
+                                    <md-checkbox class="md-primary"
+                                                 ng-checked="RevisitItem.Enabled"
+                                                 ng-click="RevisitItem.Enabled = !RevisitItem.Enabled">
+                                        {{revisitOption.Name}}
+                                    </md-checkbox>
+                                </div>
+                                <div class="col-xs-5">
+                                    <md-input-container>
+                                        <label>{{revisitOption.Name}}:</label>
+                                        <md-select name="{{key}}"
+                                                   ng-model="RevisitItem.Value"
+                                                   ng-disabled="!RevisitItem.Enabled"
+                                                   ng-required="RevisitItem.Enabled">
+                                            <md-option ng-value="typeItem.Id"
+                                                       ng-repeat="typeItem in revisitOption.Items">
+                                                {{typeItem.Text}}
+                                            </md-option>
+                                        </md-select>
+                                        <div ng-messages="$ctrl.appointmentOrders[key].$error" class="md-input-messages-nice">
+                                            <div ng-message="required"><b>{{revisitOption.Name}}</b> cannot be empty.</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                            </div>
+                            <md-input-container
+                                ng-if="revisitOption.Id === 4 && RevisitItem.Value == 2  && RevisitItem.Enabled">
+                                <label>Reported Issue:</label>
+                                <input type="text"
+                                       name="reportedIssue-{{orderIndex}}"
+                                       ng-model="RevisitItem.Reason"
+                                       ng-required="true">
+                                <div ng-messages="$ctrl.appointmentOrders['reportedIssue-' + orderIndex].$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="required"><b>Reported Issue</b> cannot be empty.</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container
+                                ng-if="revisitOption.Id === 8 && RevisitItem.Value === 2  && RevisitItem.Enabled">
+                                <label>Re-education Reason:</label>
+                                <input type="text"
+                                       name="reEducationReason"
+                                       ng-model="RevisitItem.Reason"
+                                       ng-required="true">
+                                <div ng-messages="$ctrl.appointmentOrders.reEducationReason.$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="required"><b>Re-education Reason</b> cannot be empty.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-row"
+                     ng-if="$ctrl.model.isPatientHasOrders"
+                     ng-repeat="selectedOrder in $ctrl.selectedOrders track by $index"
+                     ng-init="orderIndex = $index"
+                >
+                    <div class="info-block grow-1 appointment-order-autocomplete-cont">
+                        <md-autocomplete
+                            md-no-cache="true"
+                            md-selected-item="selectedOrder.patientOrder"
+                            md-selected-item-change="$ctrl.changeOrder(selectedOrder, orderIndex)"
+                            md-search-text="searchOrderText"
+                            md-items="item in $ctrl.getPatientOrders(searchOrderText)"
+                            md-item-text="item.DisplayText"
+                            md-min-length="0"
+                            md-floating-label="Select Order:"
+                            clear-on-click>
+                            <md-item-template>
+                                <div md-highlight-flags="^i"
+                                     title="{{item.DisplayText}}">
+                                    {{item.DisplayText}}
+                                </div>
+                            </md-item-template>
+
+                            <md-not-found>No orders were found</md-not-found>
+
+                        </md-autocomplete>
+
+                        <md-button class="md-raised md-primary small-btn search-order-btn"
+                                   ng-click="$ctrl.selectPatientOrdersModal(selectedOrder, orderIndex)">
+                            Search Order
+                        </md-button>
+                    </div>
+                    <div class="info-block block-width-170 order-btn-block"
+                         ng-if="selectedOrder.patientOrder.Id">
+                        <md-button class="md-raised small-btn eye-details-btn"
+                                   ng-click="$ctrl.viewOrderDetails(selectedOrder)">
+                            <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon> Details
+                        </md-button>
+                        <a href="javascript:void(0);"
+                           class="delete-icon-btn"
+                           ng-click="$ctrl.deleteOrder(orderIndex)"
+                        >
+                            <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                        </a>
+                    </div>
+                    <a href="javascript:void(0);"
+                       class="delete-icon-btn delete-empty-order"
+                       ng-click="$ctrl.deleteOrder(orderIndex)"
+                       ng-if="$ctrl.selectedOrders.length > 1 && !selectedOrder.patientOrder.Id">
+                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                    </a>
+                </div>
+
+                <div class="flex-row pad-v-7">
+                    <md-button class="md-raised middle-btn add-new-contact"
+                               ng-show="$ctrl.totalOrdersCount > $ctrl.selectedOrders.length"
+                               ng-click="$ctrl.addOrder()"
+                               ng-disabled="$ctrl.isAddOrderDisabled()"
+                    >
+                        <span simple-tooltip="{{'Select Order'}}"
+                              ng-if="$ctrl.isAddOrderDisabled()"
+                        >
+                            <md-icon md-svg-src="assets/images/default/plus.svg"></md-icon>Add Order
+                        </span>
+
+                        <span ng-if="!$ctrl.isAddOrderDisabled()">
+                            <md-icon md-svg-src="assets/images/default/plus.svg"></md-icon>Add Order
+                        </span>
+
+                    </md-button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,191 @@
+<div class="drowz-wizard receive-equipment-page drowz-subwizard-page"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="receive-equipment">
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.inventory.list">Inventory</a>
+        <a href="javascript:void(0)" class="active">Receive Items</a>
+    </div>
+
+    <div class="drowz-wizard-body">
+        <div ui-view class="drowz-subwizard-container"></div>
+
+        <div class="drowz-wizard-block no-float">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Received Items:</div>
+                <md-button class="md-primary md-raised small-btn add-lookup-btn"
+                           ui-sref="root.receive_equipment.add.step1">
+                    Add
+                </md-button>
+            </div>
+            <div class="drowz-wizard-block-body received-equipment-list">
+                <no-records text="Received Items"
+                            is-fullpage="true"
+                            ng-if="!rec.pairList || rec.pairList.length===0"></no-records>
+                <div class="received-equipment-item"
+                     ng-repeat="item in rec.pairList track by $index">
+                    <div class="flex-row">
+                        <div class="info-block w600px">
+                            <div class="info-block-label">Product:</div>
+                            <div class="info-block-body">{{item.product.Name}}</div>
+                        </div>
+                        <div class="info-block w300px left-divider"
+                             ng-if="item.product.serialNumber">
+                            <div class="info-block-label">Serial Number:</div>
+                            <div class="info-block-body">{{item.product.serialNumber}}</div>
+                        </div>
+                        <div class="info-block w300px left-divider"
+                             ng-if="item.product.lotNumber"
+                        >
+                            <div class="info-block-label">Lot Number:</div>
+                            <div class="info-block-body">{{item.product.lotNumber}}</div>
+                        </div>
+                        <div class="info-block w300px left-divider"
+                             ng-class="{'left-divider' : item.product.serialNumber || item.product.lotNumber}"
+                             ng-if="item.product.deviceNumber">
+                            <div class="info-block-label">Device Number:</div>
+                            <div class="info-block-body">{{item.product.deviceNumber}}</div>
+                        </div>
+                        <div class="info-block grow-1"></div>
+                        <div class="info-block item-status-block">
+                            <div class="info-block-label">&nbsp;</div>
+                            <div class="info-block-body">
+                                <div class="status-label"
+                                     ng-class="{'dark-blue' : item.product.Type.Code==='NonSerialized','green' : item.product.Type.Code==='Serialized','blue' : item.product.Type.Code==='Bundle'}">
+                                    {{item.product.Type.Name}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-block block-width-60">
+                            <div class="info-block-label">&nbsp;</div>
+                            <div class="info-block-body flex-cont center">
+                                <md-button class="delete-icon-btn"
+                                           aria-label="..."
+                                           confirm-ng-click="rec.deleteProduct($index)"
+                                           confirm-msg="'Are you sure you want to delete Product?'"
+                                           confirm-title="Delete Product">
+                                    <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                </md-button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-row">
+                        <div class="info-block w600px">
+                            <div class="info-block-label">Location:</div>
+                            <div class="info-block-body flex-cont">
+                                <span>{{item.location.Name + ", " + item.location.Description}}</span>
+                                <md-button class="edit-info-icon" aria-label="..."
+                                           ng-click="rec.searchLocationModal($event, $index)">
+                                    <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                                </md-button>
+                            </div>
+                        </div>
+                        <div class="info-block w300px left-divider">
+                            <div class="info-block-label">Purchase Order:</div>
+                            <div class="info-block-body flex-cont">
+                                {{ item.purchaseOrder.DisplayId || '-'}}
+
+                                <md-button class="edit-info-icon" aria-label="..."
+                                           ng-click="rec.selectPurchaseOrderModal($event, $index)">
+                                    <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                                </md-button>
+                            </div>
+                        </div>
+                        <div class="info-block w300px left-divider">
+                            <div class="info-block-label">Purchase Price:</div>
+                            <div class="info-block-body flex-cont">
+                                $ &nbsp; {{ !item.product.PurchasePrice && item.product.PurchasePrice !== 0 ? '-' : (item.product.PurchasePrice | absNumber:2) }}
+                                <md-button class="edit-info-icon" aria-label="..."
+                                           ng-click="rec.editPurchasePriceModal($event, $index)">
+                                    <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                                </md-button>
+                            </div>
+                        </div>
+                        <div class="info-block w120px left-divider">
+                            <md-input-container class="qty-container" ng-show="item.product.Multiple">
+                                <label>Qty:</label>
+                                <input type="text"
+                                       only-digits-with-length
+                                       min="1"
+                                       step="1"
+                                       ng-model="item.product.Count">
+                            </md-input-container>
+                            <div class="info-block-label" ng-show="!item.product.Multiple">Qty:</div>
+                            <div class="info-block-body" ng-show="!item.product.Multiple">{{item.product.Count}}</div>
+                        </div>
+                    </div>
+                    <div class="flex-row" ng-if="item.product.Type.Code==='Bundle' && item.product.Components.length>0">
+                        <div class="info-block grow-1">
+                            <v-accordion class="vAccordion--default flow-accordion">
+                                <v-pane expanded="false">
+
+                                    <v-pane-header class="flow-accordion-title">
+                                        <md-icon md-svg-src="assets/images/default/chevron.svg"
+                                                 class="flow-accordion-title-icon"></md-icon>
+                                        <span>Items:</span>
+                                        <div class="accordion-line"></div>
+                                    </v-pane-header>
+
+                                    <v-pane-content>
+                                        <div class="flow-body">
+                                            <table class="drowz-table small-table regular-table">
+                                                <tr class="drowz-table-header">
+                                                    <th class="number-cell">#</th>
+                                                    <th ng-class="item.product.NeedDeviceNumber ? 'cell-30-percent' : 'cell-50-percent'">
+                                                        Name
+                                                    </th>
+                                                    <th class="cell-20-percent">Serial Number</th>
+                                                    <th class="cell-20-percent">Lot Number</th>
+                                                    <th class="cell-20-percent" ng-if="item.product.NeedDeviceNumber">
+                                                        Device Number
+                                                    </th>
+                                                    <th class="cell-10-percent">Qty</th>
+                                                </tr>
+                                                <tr class="drowz-table-row"
+                                                    ng-repeat="(subIndex, subItem) in item.product.Components">
+                                                    <td class="number-cell">{{subIndex + 1}}.</td>
+                                                    <td ng-class="item.product.NeedDeviceNumber ? 'cell-30-percent' : 'cell-50-percent'">
+                                                        {{subItem.Name}}
+                                                    </td>
+                                                    <td class="cell-20-percent">{{subItem.serialNumber || '-'}}</td>
+                                                    <td class="cell-20-percent">{{subItem.lotNumber || '-'}}</td>
+                                                    <td class="cell-20-percent"
+                                                        ng-if="item.product.NeedDeviceNumber">{{subItem.deviceNumber}}
+                                                    </td>
+                                                    <td class="cell-10-percent">{{subItem.Count}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </v-pane-content>
+                                </v-pane>
+                            </v-accordion>
+                        </div>
+                    </div>
+                    <div class="flex-row">
+                        <div class="info-block grow-1">
+                            <md-input-container>
+                                <label>Notes:</label>
+                                <textarea cols="1" rows="1" ng-model="item.product.notes"></textarea>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="drowz-wizard-footer">
+        <md-button class="md-raised main-button drowz-wizard-footer-btn" ui-sref="root.inventory.list">
+            Cancel
+        </md-button>
+        <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                   ng-click="rec.finish()"
+                   ng-disabled="rec.isLoading">
+            <icon-loading-white ng-if="rec.isLoading"></icon-loading-white>
+            Finish
+        </md-button>
+
+    </div>
+
+</div>

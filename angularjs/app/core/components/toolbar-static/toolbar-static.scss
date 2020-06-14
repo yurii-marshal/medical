@@ -1,0 +1,64 @@
+toolbar-static {
+    position: fixed;
+    top: calc(#{$main-menu-height} + #{$drowz-tabs-height} - #{$drowz-toolbar-height} / 2);
+    right: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 38px;
+    background: $main-active-color;
+    border-radius: 20px;
+    z-index: 3;
+    overflow: hidden;
+
+    .toolbar-link {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        height: 100%;
+        padding: 0 15px;
+        color: #ffffff;
+        margin: 0 -2px;
+        font-size: $font-size-sm;
+        white-space: nowrap;
+        border-radius: 20px;
+        transition: .2s;
+        outline: none;
+        text-decoration: none;
+
+        > * {
+            transition: .2s;
+        }
+
+        &:hover {
+            text-decoration: none;
+            color: #ffffff;
+            background-color: $main-active-hover-color;
+        }
+
+        &:focus {
+            text-decoration: none;
+            color: #ffffff;
+            background-color: $main-active-hover-color;
+        }
+
+        &:active {
+            color: #ffffff;
+
+            > * {
+                transform: scale(0.94);
+            }
+        }
+
+        md-icon {
+            max-width: 20px;
+            max-height: 20px;
+            margin: 0 6px 0 0;
+            color: $light-gray-color;
+
+            &.refresh-rotate-icon {
+                transform: scale(-1, 1);
+            }
+        }
+    }
+}

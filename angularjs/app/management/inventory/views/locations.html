@@ -1,0 +1,127 @@
+<div class="infinite-scroll-bg">
+
+    <toolbar items="locations.toolbarItems"></toolbar>
+
+    <div class="breadcrumbs transparent-bg">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+        <a href="javascript:void(0)" ui-sref="root.management.inventory">Inventory</a>
+        <a href="javascript:void(0)" class="active">Locations</a>
+    </div>
+
+    <infinity-table load-items-promise="locations.getLocations"
+                    page-size="24"
+                    item-alias="item"
+                    filters-obj="locations.filter"
+                    sort-obj="locations.sortExpr"
+                    cache-filters-key="locations.cacheFiltersKey"
+    >
+        <infinity-table-sort>
+            <div>
+                <md-icon md-svg-src="assets/images/default/organization.svg" class="main-sort-icon organization-icon"></md-icon>
+                <inftbl-sort-list param-name="Name">Name:</inftbl-sort-list>
+            </div>
+            <div>
+                <md-icon md-svg-src="assets/images/default/location2.svg" class="main-sort-icon location-icon"></md-icon>
+                Address:
+            </div>
+            <div class="phones-td">
+                <md-icon md-svg-src="assets/images/default/phone-default.svg" class="main-sort-icon phone-icon"></md-icon>
+                Contacts:
+            </div>
+            <div class="long-id-td">
+                <md-icon md-svg-src="assets/images/default/inventory.svg" class="main-sort-icon phone-icon"></md-icon>
+                Location ID:
+            </div>
+            <div class="status-td no-divider">
+                <md-icon md-svg-src="assets/images/default/star-half.svg" class="main-sort-icon status-icon"></md-icon>
+                Default:
+            </div>
+            <div class="cell-50px no-divider">&nbsp;</div>
+        </infinity-table-sort>
+
+        <infinity-table-filters class="drowz-infinite-row-filter">
+            <div>
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>search name</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.Name"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click />
+                </md-input-container>
+            </div>
+            <div>
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>search address</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.Address"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click />
+                </md-input-container>
+            </div>
+            <div class="phones-td">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>search phone</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.Contact"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click />
+                </md-input-container>
+            </div>
+            <div class="long-id-td">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>search id</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.Id"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click />
+                </md-input-container>
+            </div>
+            <div class="status-td no-divider">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>select</label>
+                    <md-select ng-model="$ctrl.filtersObj.Default"
+                               clear-on-click>
+                        <md-option ng-value="status.value" ng-repeat="status in $parent.locations.statuses">
+                            {{::status.text}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div class="cell-50px filter-reset-btn">
+                <inftbl-filter-reset-btn></inftbl-filter-reset-btn>
+            </div>
+        </infinity-table-filters>
+
+        <infinity-table-row class="drowz-infinite-row hide-btns-row"
+                            ng-click="$parent.locations.showModal($event, item.Id)">
+            <div ng-bind="item.Name"></div>
+            <div>
+                <div popover-directive="item.Address"></div>
+            </div>
+            <div class="phones-td">
+                <div popover-directive="item.Contacts" is-array-with-type="true"></div>
+            </div>
+            <div class="long-id-td" ng-bind="item.Id"></div>
+            <div class="status-td no-divider">
+                <div class="status-label {{item.statusClass}}" ng-bind="item.statusText"></div>
+            </div>
+            <div class="cell-50px no-divider">
+                <div class="flex-cont space-around">
+                    <md-button class="delete-icon-btn"
+                               aria-label="..."
+                               confirm-ng-click="$parent.locations.deleteLocation(item.Id)"
+                               confirm-msg="'Are you sure you want to delete location?'"
+                               confirm-title="Delete location">
+                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                    </md-button>
+                </div>
+            </div>
+        </infinity-table-row>
+
+        <infinity-table-no-items>
+            <no-records text="Locations" is-fullpage="true"></no-records>
+        </infinity-table-no-items>
+    </infinity-table>
+
+</div>

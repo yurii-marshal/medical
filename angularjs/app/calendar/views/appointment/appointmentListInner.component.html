@@ -1,0 +1,27 @@
+<md-virtual-repeat-container style="height: 400px;">
+    <div md-virtual-repeat="_appointment in $ctrl.appointments"
+         class="appointment-item"
+         ng-click="$ctrl.click(_appointment)"
+         ng-class="{active: $ctrl.isActive(_appointment)}">
+        <div class="time-cell">
+            <span ng-if="$ctrl.isViewAll">{{_appointment.Date.FromFormatedDate}}</span>
+            {{_appointment.Date.FromFormatedTime}}
+            <span class="status-label orange" ng-if="_appointment.PersonnelScheduleType.Id !== 1">On-Call Hours</span>
+        </div>
+        <div class="personnel-cell">{{_appointment.Personnel.Name.FullName}}</div>
+        <div class="type-cell">{{_appointment.ZipType.Text}}</div>
+        <div class="address-cell">
+            {{_appointment.EventAddress | addressToString}}&nbsp;<span class="active-text">({{_appointment.EventAddressType.Text}})</span>
+        </div>
+        <div class="driving-time-cell">{{_appointment.Driving}}</div>
+        <div class="duration-cell">{{_appointment.Duration}}</div>
+        <div class="appointments-cell">{{_appointment.TodayEventsCount}}</div>
+        <div class="windshield-cell">
+            <img ng-if="_appointment.LevelType.Id !== 1" src="assets/images/apply.png" alt="..."/>
+            <img ng-if="_appointment.LevelType.Id == 1" src="assets/images/warning.png" alt="..."/>
+        </div>
+        <div class="rating-cell">
+            <div rating-appointment score="_appointment.Rating"></div>
+        </div>
+    </div>
+</md-virtual-repeat-container>

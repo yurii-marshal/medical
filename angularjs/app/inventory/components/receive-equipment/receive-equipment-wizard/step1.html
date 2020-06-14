@@ -1,0 +1,24 @@
+<div class="flex-row"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="receiveStep1">
+    <div class="col-xs-6 subwizard-container-block">
+        <md-icon md-svg-src="assets/images/default/location.svg" class="subwizard-container-icon location-icon"></md-icon>
+        <md-input-container class="subwizard-container">
+            <label>Scan or Enter Location Barcode or Use Search for Location Lookup:</label>
+            <input type="text"
+                   auto-focus
+                   ng-model="recWiz.pairCurrent.location.Id"
+                   on-press-enter="recWiz.searchLocationById()"/>
+        </md-input-container>
+        <div class="subwizard-container-btns">
+            <md-button class="md-raised small-btn" ng-click="recWiz.searchLocationModal($event, true)">
+                Search
+            </md-button>
+            <md-button class="md-primary md-raised small-btn enter-barcode-btn"
+                       ng-click="recWiz.searchLocationById()"
+                       ng-disabled="!recWiz.pairCurrent.location.Id">
+                Enter
+            </md-button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,290 @@
+.patient-documents {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height});
+    padding: 15px 30px;
+
+    @include respond-to(appMinWidth) {
+        min-height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height} - 20px);
+    }
+
+    > * {
+        width: 100%;
+    }
+
+    .flow-body {
+        flex-direction: column;
+    }
+
+    .patient-documents-header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        height: 60px;
+        border-bottom: 1px solid $lighter-gray-color;
+
+        .document-check-all {
+            .md-label {
+                display: flex;
+                align-items: center;
+                height: 80px;
+                font-size: 12px;
+                text-transform: uppercase;
+                color: $main-active-color;
+                font-weight: 500;
+            }
+        }
+
+        .patient-documents-buttons {
+            margin-left: 25px;
+        }
+    }
+
+    .patient-documents-header, .main-document {
+        > md-checkbox {
+            display: block;
+            margin-bottom: 0;
+
+            .md-container {
+                top: 30px;
+                transform: none;
+            }
+
+            .md-label {
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                min-height: 80px;
+                margin-left: 40px;
+            }
+        }
+    }
+
+    .patient-documents-row {
+        border-bottom: 1px solid $lighter-gray-color;
+
+        .main-document {
+            padding-top: 15px;
+            padding-bottom: 15px;
+
+            > md-checkbox {
+                .md-container {
+                    top: 20px;
+                }
+
+                .md-label {
+                    min-height: 50px;
+                }
+            }
+        }
+
+        &.opened {
+            .md-button.md-raised.toggle-doc-btn {
+                background-color: $main-active-color;
+                
+                md-icon {
+                    color: #fff;
+                    transform: rotate(180deg);
+                }
+            }
+
+            .history-document {
+                height: auto;
+                padding-bottom: 20px;
+            }
+        }
+
+        .patient-documents-buttons {
+            width: 240px;
+            min-width: 240px;
+            padding-top: 15px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+
+            .toggle-doc-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 30px;
+                height: 30px;
+                margin: 0 0 0 13px;
+                padding: 0;
+
+                md-icon {
+                    display: block;
+                    width: 16px;
+                    height: 9px;
+                    margin: 0;
+                    color: $dark-blue-color;
+                    transform: rotate(0deg);
+                    transition: .2s;
+                }
+            }
+
+            .eye-details-btn {
+                margin: 0 5px 0 0;
+            }
+
+            .edit-doc {
+                margin: 0;
+
+                md-icon {
+                    margin-right: 10px;
+                    width: 16px;
+                    height: 15px;
+                    color: $gray-color;
+                }
+            }
+
+            .md-button {
+                &.md-ink-ripple {
+                    color: $font-color;
+                }
+            }
+        }
+
+        .history-document {
+            height: 0;
+            padding-left: 40px;
+            overflow: hidden;
+
+            .no-records {
+                padding-left: 0;
+                padding-top: 0;
+            }
+        }
+
+        format-string-by-paragraphs {
+            p {
+                margin-bottom: 0px;
+
+                & + p {
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+
+    .history-document-table {
+        .history-document-table-title {
+            margin-bottom: 15px;
+            color: $main-active-color;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .history-document-table-header, .history-document-table-row {
+            .checkbox-cell {
+                width: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .btns-cell {
+                width: 70px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding-left: 7px;
+                padding-right: 7px;
+
+                .md-button {
+                    color: $gray-color;
+                    
+                    &:hover, &:focus {
+                        color: $main-active-hover-color;
+                    }
+                }
+            }
+
+            .type-cell {
+                width: 200px;
+                padding: 0 7px;
+            }
+
+            .date-cell {
+                width: 130px;
+                padding: 0 7px;
+            }
+
+            .user-cell {
+                width: 200px;
+                padding: 0 7px;
+            }
+
+            .notes-cell {
+                flex: 1 1 auto;
+                padding: 0 7px;
+            }
+        }
+
+        .history-document-table-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 30px;
+            background-color: $lighter-gray-color;
+            font-size: 11px;
+            color: $dark-blue-color;
+            font-weight: 500;
+        }
+
+        .history-document-table-row:not(:last-child) {
+            .history-document-checkbox {
+                border-bottom: 1px solid $lighter-gray-color;
+            }
+        }
+
+        .history-document-checkbox {
+            display: block;
+            padding: 12px 0;
+            margin: 0;
+            transition: .2s;
+            
+            &:hover {
+                background-color: $light-gray-color;
+            }
+
+            .md-container {
+                transform: none;
+                top: 13px;
+                left: 10px;
+            }
+
+            .md-label {
+                margin-left: 40px;
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+            }
+
+            .edit-doc {
+                margin: 0;
+                padding: 0;
+                width: 16px;
+                height: 15px;
+
+                &:hover {
+                    background: none;
+
+                    md-icon {
+                        color: $dark-gray-color;
+                    }
+                }
+
+                md-icon {
+                    display: block;
+                    width: 16px;
+                    height: 15px;
+                    color: $gray-color;
+                    transition: .2s;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,136 @@
+<div class="info-block two-line-status status-container">
+    <div class="status-label dark-blue"
+         ng-if="$ctrl.item.PricingType">
+        {{$ctrl.item.PricingType.Name}}
+    </div>
+    <div class="status-label orange ellipsis"
+         ng-if="$ctrl.item.HoldReason"
+         title="{{$ctrl.item.OtherHoldReason}}">
+        {{ $ctrl.item.OtherHoldReason || $ctrl.item.HoldReason.Name}}
+    </div>
+    <div class="status-label blue"
+         ng-if="$ctrl.item.PricingConfiguration.Default">
+        Default
+    </div>
+    <div class="status-label bordered-label"
+         ng-if="$ctrl.item.SalesTax"
+    >
+        Sales Tax
+    </div>
+</div>
+
+<div class="flex-cont flex-column stretch grow-1">
+    <div class="flex-row">
+        <div class="info-block block-width-170"
+             ng-if="$ctrl.item.Name">
+            <div class="info-block-label">Name:</div>
+            <div class="info-block-body" ng-bind="$ctrl.item.Name"></div>
+        </div>
+        <div class="info-block block-width-150"
+             ng-class="{'left-divider' : $ctrl.item.Name}">
+            <div class="info-block-label">Charge:</div>
+            <div class="info-block-body">
+                {{$ctrl.item.Charge.Currency}}
+                {{$ctrl.item.Charge.Amount | number:2}}
+            </div>
+        </div>
+        <div class="info-block block-width-100 left-divider">
+            <div class="info-block-label">Allowed:</div>
+            <div class="info-block-body">
+                <div ng-if="!$ctrl.item.Allowed">-</div>
+                <div ng-if="$ctrl.item.Allowed">
+                    {{$ctrl.item.Allowed.Currency}}
+                    {{$ctrl.item.Allowed.Amount | number:2}}
+                </div>
+            </div>
+        </div>
+        <div class="info-block block-width-100 left-divider"
+             ng-if="$ctrl.item.PricingConfiguration.Modifiers">
+            <div class="info-block-label">Modifiers:</div>
+            <div class="info-block-body">
+                <div class="code-with-slash"
+                     ng-repeat="(key, modifier) in $ctrl.item.PricingConfiguration.Modifiers"
+                     ng-bind="modifier.Name || '-'">
+                </div>
+            </div>
+        </div>
+        <div class="info-block block-width-220 left-divider"
+             ng-if="$ctrl.item.PricingConfiguration.EffectivePeriod.From">
+            <div class="info-block-label">Effective:</div>
+            <div class="info-block-body">
+                {{$ctrl.item.PricingConfiguration.EffectivePeriod.From | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                &nbsp;-&nbsp;
+                <span ng-if="$ctrl.item.PricingConfiguration.EffectivePeriod.To">
+                    {{$ctrl.item.PricingConfiguration.EffectivePeriod.To | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                </span>
+                <span ng-if="!$ctrl.item.PricingConfiguration.EffectivePeriod.To">...</span>
+            </div>
+        </div>
+        <div class="info-block block-width-80 left-divider"
+             ng-if="$ctrl.item.RentalConfigurationModel && $ctrl.item.RentalConfigurationModel.Interval">
+            <div class="info-block-label">Interval:</div>
+            <div class="info-block-body">
+                {{$ctrl.item.RentalConfigurationModel.Interval.From}}
+                <span ng-if="$ctrl.item.RentalConfigurationModel.Interval.To">&nbsp;-&nbsp;{{$ctrl.item.RentalConfigurationModel.Interval.To}}</span>
+            </div>
+        </div>
+        <div class="info-block block-width-120 left-divider"
+             ng-if="$ctrl.item.RentalConfigurationModel && $ctrl.item.RentalConfigurationModel.CappedInterval">
+            <div class="info-block-label">Capped Rentals:</div>
+            <div class="info-block-body">
+                {{$ctrl.item.RentalConfigurationModel.CappedInterval || '-' }}
+            </div>
+        </div>
+        <div class="info-block block-width-90 left-divider"
+             ng-if="$ctrl.item.RentalConfigurationModel && $ctrl.item.RentalConfigurationModel.Cycle">
+            <div class="info-block-label">Cycle:</div>
+            <div class="info-block-body"
+                 ng-bind="$ctrl.item.RentalConfigurationModel.Cycle.Name"></div>
+        </div>
+        <div class="info-block block-width-60 left-divider"
+             ng-if="$ctrl.item.Units">
+            <div class="info-block-label">Units:</div>
+            <div class="info-block-body" ng-bind="$ctrl.item.Units"></div>
+        </div>
+    </div>
+    <div class="flex-row">
+        <div class="info-block"
+             ng-if="$ctrl.item.PricingConfiguration.Product">
+            <div class="info-block-label">Product:</div>
+            <div class="info-block-body" ng-bind="$ctrl.item.PricingConfiguration.Product"></div>
+        </div>
+    </div>
+    <div class="flex-row">
+        <div class="info-block block-width-170 purchase-after"
+             ng-if="$ctrl.item.RentalConfigurationModel && $ctrl.item.RentalConfigurationModel.PurchaseAfter">
+            <md-icon md-svg-src="assets/images/default/check.svg" class="checked-icon"></md-icon>
+            Purchase After
+        </div>
+        <div class="info-block block-width-150 left-divider"
+             ng-if="$ctrl.item.RentalConfigurationModel && $ctrl.item.RentalConfigurationModel.Modifiers">
+            <div class="info-block-label">Modifiers:</div>
+            <div class="info-block-body">
+                <div class="code-with-slash"
+                     ng-repeat="(key, modifier) in $ctrl.item.RentalConfigurationModel.Modifiers"
+                     ng-bind="modifier.Name || '-'">
+                </div>
+            </div>
+        </div>
+        <div class="info-block block-width-100 left-divider"
+             ng-if="$ctrl.item.RentalConfigurationModel && $ctrl.item.RentalConfigurationModel.Charge">
+            <div class="info-block-label">Charge:</div>
+            <div class="info-block-body">
+                {{$ctrl.item.RentalConfigurationModel.Charge.Currency}}
+                {{$ctrl.item.RentalConfigurationModel.Charge.Amount | number:2}}
+            </div>
+        </div>
+        <div class="info-block block-width-150 left-divider"
+             ng-if="$ctrl.item.RentalConfigurationModel && $ctrl.item.RentalConfigurationModel.Allowed">
+            <div class="info-block-label">Allowed:</div>
+            <div class="info-block-body">
+                {{$ctrl.item.RentalConfigurationModel.Allowed.Currency}}
+                {{$ctrl.item.RentalConfigurationModel.Allowed.Amount | number:2}}
+            </div>
+        </div>
+    </div>
+</div>

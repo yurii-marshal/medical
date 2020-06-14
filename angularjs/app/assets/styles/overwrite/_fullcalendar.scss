@@ -1,0 +1,7 @@
+.fc-event.fc-draggable, .fc-event[href], a.fc-event {
+    cursor: pointer;
+}
+
+.fc-basic-view td.fc-day-number, .fc-basic-view td.fc-week-number span {
+    padding-top: 0;
+}

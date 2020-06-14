@@ -1,0 +1,133 @@
+html.no-document-scroll {
+    overflow: hidden;
+}
+
+.custom-mask {
+    z-index: 9999999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.2);
+    transition: background-color .2s;
+
+    .custom-dropdown-menu {
+        display: flex;
+        flex-direction: column;
+        width: auto;
+        height: auto;
+        padding: 5px 0;
+        overflow: hidden;
+        opacity: 0;
+        z-index: 1000;
+        position: absolute;
+        left: 0;
+        top: 30px;
+        background-color: #fff;
+        box-shadow: $box-shadow;
+        border-radius: 3px;
+        transition: .2s;
+
+        &.opened {
+            top: -2px;
+            z-index: 1000;
+            opacity: 1;
+            width: auto;
+            height: auto;
+        }
+
+        &.left-menu {
+            left: auto;
+            right: 0;
+        }
+
+        .custom-dropdown-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px 0 40px;
+            height: 36px;
+            white-space: nowrap;
+            background: none;
+            border-radius: 0px;
+            width: auto;
+            color: #414141;
+            font-size: 14px;
+            font-weight: 400;
+            transition: 0s;
+            background-repeat: no-repeat;
+            background-position: 5px 50%;
+            background-size: 26px 20px;
+
+            &:hover {
+                text-decoration: none;
+                background-color: $main-active-color;
+                color: #ffffff;
+
+                md-icon {
+                    color: #ffffff;
+
+                    .blue-svg {
+                        fill: #ffffff;
+                    }
+
+                    .white-svg {
+                        fill: $main-active-color;
+                    }
+                }
+            }
+
+            &::before, &::after {
+                display: none;
+            }
+
+            &.no-left-icon {
+                padding-left: 10px;
+            }
+
+            &.add-hours {
+                background-image: url(../assets/images/colored/add-hours-blue.svg);
+
+                &:hover {
+                    background-image: url(../assets/images/colored/add-hours-white.svg);
+                }
+            }
+
+            &.add-oncall {
+                background-image: url(../assets/images/colored/add-oncall-blue.svg);
+                background-size: 27px 33px;
+
+                &:hover {
+                    background-image: url(../assets/images/colored/add-oncall-white.svg);
+                }
+            }
+
+            md-icon {
+                margin-right: 10px;
+                margin-left: 0;
+                text-align: left;
+                max-height: 20px;
+                color: $main-active-color;
+                transition: 0s;
+
+                .blue-svg {
+                    fill: $main-active-color;
+                    transition: 0s;
+                }
+
+                .white-svg {
+                    fill: #fff;
+                    transition: 0s;
+                }
+            }
+
+            .custom-dropdown-title {
+                width: calc(100% - 34px);
+            }
+        }
+    }
+}
+

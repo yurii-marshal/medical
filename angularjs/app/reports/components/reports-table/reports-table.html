@@ -1,0 +1,240 @@
+<div ng-if="reports.gridOptions">
+  <div class="flex-row">
+    <md-button class="md-raised md-primary new-appointment-btn export-csv-btn" ng-click="reports.exportCsv()">
+      <md-icon md-svg-src="assets/images/default/replace.svg"></md-icon>
+      Export
+    </md-button>
+  </div>
+  <div class="flex-row pad-h-10 marg-top-30 report-filters">
+    <div class="info-block grow-1">
+      <div class="white-block">
+        <div class="white-block-block space-between flex-row">
+          <div class="filters-form" ng-form="reports.filtersForm">
+            <div class="filter-item"
+                 ng-repeat="filter in reports.filters"
+                 ng-if="!filter.isHide"
+            >
+              <div class="flex-row">
+                <div class="mat-field-line-label">{{ filter.Model.Label }}:</div>
+
+                <div class="info-block block-width-130 filter-field"
+                     ng-if="filter.Model.Type.Id === reports.reportFilterFieldType.List">
+
+                  <md-input-container>
+                    <label></label>
+                    <md-select name="{{ filter.Model.ParamId }}"
+                               aria-label="..."
+                               ng-model="filter.currentValue"
+                               ng-change="reports.onFilterChanged()"
+                               clear-on-click
+                    >
+                      <md-option ng-value="option.Id"
+                                 ng-selected="filter.currentValue === option.Id"
+                                 ng-repeat="option in filter.Model.List.Items"
+                      >
+                        {{ option.Name }}
+                      </md-option>
+                    </md-select>
+                  </md-input-container>
+                </div>
+
+                <div class="info-block w200px filter-field"
+                       ng-if="filter.Model.Type.Id === reports.reportFilterFieldType.MultiSelectList">
+
+                    <autocomplete-multiselect-filter
+                        selected-items="filter.currentValue"
+                        search-text="filter.searchText"
+                        input-name="filter.Model.ParamId"
+                        filter-field="'Id'"
+                        filter-url="filter.Model.Remote.Url"
+                        static-items="filter.Model.List.Items"
+                        display-field="'Name'"
+                        id-field="'Id'"
+                        on-selected-items-change="reports.onFilterChanged()"
+                    ></autocomplete-multiselect-filter>
+
+                  </div>
+
+                <div class="info-block block-width-140 filter-field"
+                     ng-if="filter.Model.Type.Id === reports.reportFilterFieldType.Date">
+
+                  <md-input-container class="calendar_icon left-input-icon" ng-if="filter.Model.ParamId === reports.reportFilterParamId.FromDate && filter.endDate">
+                    <label></label>
+                    <input datetimepicker
+                           format="MM/DD/YYYY"
+                           use-current="false"
+                           max-date="today"
+                           name="FromDate"
+                           start-date-validator
+                           end-date="filter.endDate.currentValue"
+                           ng-model="filter.currentValue"
+                           ng-change="reports.onFilterChanged()"
+                           clear-on-click
+                    />
+                    <div ng-messages="reports.filtersForm.FromDate.$error"
+                         class="md-input-messages-nice">
+                      <div ng-message="startDate">Date from has to be equal or less than date to</div>
+                    </div>
+                  </md-input-container>
+                  <md-input-container class="calendar_icon left-input-icon" ng-if="filter.Model.ParamId === reports.reportFilterParamId.ToDate && filter.startDate">
+                    <label></label>
+                    <input datetimepicker
+                           format="MM/DD/YYYY"
+                           use-current="false"
+                           max-date="today"
+                           name="ToDate"
+                           end-date-validator
+                           start-date="filter.startDate.currentValue"
+                           ng-model="filter.currentValue"
+                           ng-change="reports.onFilterChanged()"
+                           clear-on-click
+                    />
+                    <div ng-messages="reports.filtersForm.ToDate.$error"
+                         class="md-input-messages-nice">
+                      <div ng-message="endDate">Date to has to be equal or bigger than date from</div>
+                    </div>
+                  </md-input-container>
+                  <md-input-container class="calendar_icon left-input-icon" ng-if="filter.Model.ParamId !== reports.reportFilterParamId.FromDate && filter.Model.ParamId !== reports.reportFilterParamId.ToDate">
+                    <label></label>
+                    <input datetimepicker
+                           format="MM/DD/YYYY"
+                           use-current="false"
+                           max-date="today"
+                           name="{{ filter.Model.ParamId }}"
+                           ng-model="filter.currentValue"
+                           ng-change="reports.onFilterChanged()"
+                           clear-on-click
+                    />
+                  </md-input-container>
+                </div>
+
+                <div class="info-block block-width-220 filter-field"
+                     ng-if="filter.Model.Type.Id === reports.reportFilterFieldType.RemoteList">
+
+                    <autocomplete-multiselect-filter
+                        selected-items="filter.currentValue"
+                        search-text="filter.searchText"
+                        input-name="filter.Model.ParamId"
+                        filter-field="filter.Model.Remote.FilterField"
+                        filter-url="filter.Model.Remote.Url"
+                        display-field="filter.Model.Remote.DispayField"
+                        id-field="filter.Model.Remote.IdField"
+                        on-selected-items-change="reports.onFilterChanged()"
+                    ></autocomplete-multiselect-filter>
+                </div>
+
+                <div class="info-block w130px filter-field"
+                     ng-if="filter.Model.Type.Id === reports.reportFilterFieldType.Text">
+
+                  <md-input-container>
+                    <label></label>
+                    <input type="text"
+                           name="{{ filter.Model.ParamId }}"
+                           ng-model="filter.currentValue"
+                           ng-change="reports.onFilterChanged()"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click
+                    >
+                  </md-input-container>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="flex-row">
+            <div class="pad-right-10 flex-row"
+                 ng-if="reports.canCustomizeFilters"
+            >
+
+                <div class="clear-filters-btn pad-h-20 pad-top-20">
+                    <md-button class="clear-filters"
+                               aria-label="..."
+                               simple-tooltip="Refresh selected filters"
+                               ng-click="reports.onRefreshSelectedFilters()"
+                    >
+                        <md-icon md-svg-src="assets/images/default/clear-filters.svg"></md-icon>
+                    </md-button>
+                </div>
+
+                <div class="w170px autocomplete-multiselect-field-wrapper">
+
+                    <div on-autocomplete-panel-visibility="reports.onSuggestionPanelVisibility(status)">
+                        <md-autocomplete class="no-float-hint"
+                                     md-selected-item="reports.selectedItem"
+                                     md-selected-item-change="reports.searchFilterText = ''"
+                                     md-search-text="reports.searchFilterText"
+                                     md-items="filter in reports.getFiltersItems(reports.searchFilterText)"
+                                     md-min-length="0"
+                                     md-delay="350"
+                                     md-floating-label="{{ reports.showHideFiltersLabel }}"
+                                     md-input-name="selectedFilters"
+                                     md-menu-class="autocomplete-checkbox-menu"
+                                     md-menu-container-class="md-autocomplete-suggestions-width-300"
+                        >
+                            <md-item-template>
+                                <md-checkbox class="md-primary"
+                                             ng-checked="!filter.isHide"
+                                             ng-click="$event.stopPropagation(); reports.onSelectFilter(filter);">
+                                    <span md-highlight-flags="^i" title="{{ filter.Model.Label }}"> {{ filter.Model.Label }}</span>
+                                </md-checkbox>
+                            </md-item-template>
+                            <md-not-found>No filters found</md-not-found>
+                        </md-autocomplete>
+                    </div>
+                </div>
+            </div>
+            <div class="pad-h-20">
+            <div class="info-block block-width-170">
+              <md-input-container md-no-float>
+                <label></label>
+                <md-select name="visibleColumns"
+                           md-selected-text="reports.showHideColumnsLabel"
+                           placeholder="reports.showHideColumnsLabel"
+                           multiple="true"
+                           ng-model="reports.visibleColumns"
+                           md-on-close="reports.onShowHideColumns()"
+                           md-container-class="reports-table-select-menu-container"
+                >
+                  <md-option ng-value="column"
+                             ng-selected="!column.hide"
+                             ng-disabled="reports.isShowHideColumnCheckboxDisabled(column)"
+                             ng-repeat="column in reports.gridOptions.columnDefs">
+                    {{ column.headerName }}
+                  </md-option>
+                </md-select>
+              </md-input-container>
+            </div>
+          </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex-row pad-h-10 marg-top-15 report-totals" ng-if="reports.totalSummary.length">
+    <div class="info-block grow-1">
+      <div class="white-block report-total-container">
+        <div class="info-block grow-1 report-total-item" ng-repeat="totalItem in reports.totalSummary">
+          <div class="total-text">{{ totalItem.label }}</div>
+          <div class="total-number">{{ totalItem.value }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex-row pad-h-10">
+    <div class="info-block grow-1">
+      <div class="reports-table-container"
+           bs-loading-overlay
+           bs-loading-overlay-reference-id="reportsTableLoading"
+      >
+        <div id="reports-grid"
+             class="ag-theme-material"
+             ag-grid="reports.gridOptions"
+        ></div>
+      </div>
+    </div>
+  </div>
+</div>

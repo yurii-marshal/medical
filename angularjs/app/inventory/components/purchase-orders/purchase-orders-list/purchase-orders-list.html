@@ -1,0 +1,146 @@
+<div class="infinite-scroll-bg">
+
+    <toolbar items="purchaseListCtrl.toolbarItems"></toolbar>
+
+    <div class="inventory-list"
+         bs-loading-overlay
+         bs-loading-overlay-reference-id="purchaseList">
+
+        <infinity-table load-items-promise="purchaseListCtrl.getPurchaseOrders"
+                        page-size="24"
+                        item-alias="item"
+                        filters-obj="purchaseListCtrl.filtersObj"
+                        sort-obj="purchaseListCtrl.sortExpr"
+                        default-sort-field="'CreatedOn'"
+                        default-sort-value="'false'"
+                        cache-filters-key="purchaseListCtrl.cacheFiltersKey"
+        >
+            <infinity-table-sort>
+                <div class="order-id-td">
+                    <md-icon md-svg-src="assets/images/default/ic-table-head-order.svg"
+                             class="main-sort-icon user-icon"></md-icon>
+                    <inftbl-sort-list param-name="DisplayId">Order Id:</inftbl-sort-list>
+                </div>
+                <div class="name-td">
+                    <md-icon md-svg-src="assets/images/default/ic-table-head-vendor.svg"
+                             class="main-sort-icon user-icon"></md-icon>
+                    <inftbl-sort-list param-name="VendorName">Vendor:</inftbl-sort-list>
+                </div>
+                <div class="name-td">
+                    <md-icon md-svg-src="assets/images/default/ic-table-head-person.svg"
+                             class="main-sort-icon user-icon"></md-icon>
+                    <inftbl-sort-list param-name="CreatedBy">Created by:</inftbl-sort-list>
+                </div>
+                <div class="datetime-td">
+                    <md-icon md-svg-src="assets/images/default/calendar-new.svg"
+                             class="main-sort-icon date-icon"></md-icon>
+                    <inftbl-sort-list param-name="CreatedOn">Created:</inftbl-sort-list>
+                </div>
+                <div class="w120px">
+                    <md-icon md-svg-src="assets/images/default/ic-table-head-price.svg"
+                             class="main-sort-icon document-icon"></md-icon>
+                    <inftbl-sort-list param-name="TotalPrice">Total:</inftbl-sort-list>
+                </div>
+                <div class="w120px">
+                    <md-icon md-svg-src="assets/images/default/star-half.svg" class="main-sort-icon status-icon"></md-icon>
+                    Status:
+                </div>
+                <div class="assign-td">&nbsp;</div>
+            </infinity-table-sort>
+
+            <infinity-table-filters class="drowz-infinite-row-filter">
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search id</label>
+                        <input type="text"
+                               ng-model="$ctrl.filtersObj.DisplayId"
+                               ng-model-options="{debounce: 450}"
+                               clear-on-click/>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search vendor</label>
+                        <input type="text"
+                               ng-model="$ctrl.filtersObj.VendorName"
+                               ng-model-options="{debounce: 450}"
+                               clear-on-click/>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search user</label>
+                        <input type="text"
+                               ng-model="$ctrl.filtersObj.CreatedBy"
+                               ng-model-options="{debounce: 450}"
+                               clear-on-click/>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search date</label>
+                        <input ng-model="$ctrl.filtersObj.CreatedOn"
+                               datetimepicker
+                               use-current="false"
+                               format="MM/DD/YYYY"
+                               show-today-button="false"
+                               aria-label="startDate"
+                               clear-on-click>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search</label>
+                        <input type="text"
+                               ng-model="$ctrl.filtersObj.TotalPrice"
+                               ng-model-options="{debounce: 450}"
+                               clear-on-click/>
+                    </md-input-container>
+                </div>
+                <div class="no-divider">
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>select</label>
+                        <md-select ng-model="$ctrl.filtersObj.Status"
+                                   clear-on-click>
+                            <md-option ng-value="status.Id" ng-repeat="status in $parent.purchaseListCtrl.statusesDic">
+                                {{::status.Name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div class="assign-td filter-reset-btn">
+                    <inftbl-filter-reset-btn></inftbl-filter-reset-btn>
+                </div>
+            </infinity-table-filters>
+
+            <infinity-table-row class="drowz-infinite-row hide-btns-row"
+                                ng-click="$parent.purchaseListCtrl.goToPurchaseOrderDetails(item.Id)">
+                <div ng-bind="item.DisplayId"></div>
+                <div ng-bind="item.Vendor.Name"></div>
+                <div ng-bind="item.CreatedBy.FullName"></div>
+                <div class="datetime-td">
+                    <span ng-bind="item.CreatedOn | localDateTime: 'MM/DD/YYYY'"></span>
+                    <span class="active-text" ng-bind="item.CreatedOn | localDateTime: 'hh:mm A'"></span>
+                </div>
+                <div class="w120px font-semibold" ng-bind="(item.TotalPrice.Currency.Symbol) + ' ' + (item.TotalPrice.Amount | absNumber:2)"></div>
+                <div class="no-divider">
+                    <div class="inventory-list-statuses">
+                        <div class="status-label"
+                             ng-class="item.Status.statusClass"
+                             ng-bind="item.Status.Name"
+                        ></div>
+                    </div>
+                </div>
+                <div class="assign-td center-cell no-divider">
+                    <md-icon md-svg-src="assets/images/default/ic-print-gray.svg"
+                             ng-click="$parent.purchaseListCtrl.printPurchaseOrder($event, item.Id)"
+                    ></md-icon>
+                </div>
+            </infinity-table-row>
+
+            <infinity-table-no-items>
+                <no-records text="Inventory Purchase Orders" is-fullpage="true"></no-records>
+            </infinity-table-no-items>
+        </infinity-table>
+    </div>
+</div>

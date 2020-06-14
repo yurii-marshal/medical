@@ -1,0 +1,114 @@
+.cmn-form-page .flow-body-footer {
+    padding-right: 60px;
+}
+
+cmn-form {
+    .cmn-form-container {
+        padding: 30px 60px 30px 30px;
+        //TODO check labels line-height in whole app
+        md-input-container, [disabled] md-input-container {
+            &.md-input-focused, &.md-input-has-value {
+                label:not(.md-no-float):not(.md-container-ignore), .md-placeholder {
+                    line-height: 15px;
+                }
+            }
+        }
+
+        & >.flex-row {
+            margin-left: -15px;
+            margin-right: -15px;
+        }
+
+        .doc-name-container {
+            border-bottom: 1px solid #cccccc;
+        }
+
+        .diagnose-codes-wr {
+            .diagnose-codes-title {
+                align-self: center;
+            }
+        }
+
+        .cmn-questionnaire-list {
+            margin-top: 20px;
+
+            .counter {
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                @include size(22px, 22px);
+                border: 1px solid $light-blue-label;
+                border-radius: 50%;
+                color: $light-blue-label;
+                font-size: 14px;
+                margin: 7px 20px 7px 0;
+            }
+
+            .list-item-question {
+                margin-bottom: 10px;
+            }
+
+            .list-item-input {
+                padding-left: 38px;
+
+                md-radio-button {
+                    margin-right: 30px;
+                }
+
+            }
+
+            .group-block {
+                align-items: baseline;
+            }
+        }
+
+        .narrative-desc-container {
+            align-items: flex-end;
+            margin-top: 15px;
+            padding-left: 45px;
+
+            .narrative-desc {
+                width: calc(100% - 150px);
+
+                md-input-container textarea[disabled] {
+                    border-color: #cccccc;
+                    border-style: dotted;
+                    color: #333;
+                }
+            }
+
+            .action-btn-container {
+                line-height: 50px;
+            }
+        }
+
+        .info-block-hcpcs {
+            position: relative;
+
+            & > span {
+                color: #606060;
+                display: block;
+                position: absolute;
+                top: -15px;
+            }
+
+            md-autocomplete {
+                width: 90px;
+                margin-right: 15px;
+                display: inline-block;
+
+                md-input-container {
+                    &.md-input-has-value, &.md-input-focused {
+                        label {
+                            display: none;
+                        }
+                    }
+
+                    .md-input-messages-nice {
+                        display: list-item;
+                    }
+                }
+            }
+        }
+    }
+}

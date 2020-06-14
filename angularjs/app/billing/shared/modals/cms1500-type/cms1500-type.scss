@@ -1,0 +1,11 @@
+.modal-window {
+    &.cms-type-modal {
+        min-width: 350px;
+        width: 350px;
+
+        .modal-icon {
+            width: 46px;
+            height: 42px;
+        }
+    }
+}

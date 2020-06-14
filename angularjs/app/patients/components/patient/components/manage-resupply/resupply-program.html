@@ -1,0 +1,19 @@
+<div class="drowz-wizard resupply-program"
+     ng-form="resProg.Form"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="resupplyProgram"
+>
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.patients.list">Patients</a>
+
+        <a href="javascript:void(0)" ng-click="resProg.goToPatient()">{{resProg.patientId}}</a>
+
+        <a href="javascript:void(0)" class="active">
+            <span ng-if="resProg.hasResupplyProgram === false">Add </span>
+            <span ng-if="resProg.hasResupplyProgram">Edit </span>
+            Resupply Program
+        </a>
+    </div>
+    <ui-view></ui-view>
+</div>

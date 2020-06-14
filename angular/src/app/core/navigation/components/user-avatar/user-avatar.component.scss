@@ -1,0 +1,61 @@
+@import "../../../../../assets/styles/base/variables";
+@import "../../../../../assets/styles/utils/mixins";
+
+:host {
+    display: flex;
+    align-items: center;
+
+    .user-picture {
+        @include size(50px, 50px);
+        min-width: 50px;
+        margin: 7px 10px 7px 7px;
+        border-radius: 50%;
+        border: 1px solid $lighter-gray-color;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .user-avatar-details {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 7px 2px;
+        margin-right: 10px;
+
+        .user-name {
+            display: block;
+            margin-bottom: 6px;
+            font-size: $font-size-md;
+            color: $main-active-color;
+            font-weight: $font-weight-normal;
+        }
+
+        .link-to-profile {
+            position: relative;
+            text-decoration: none;
+            color: $lighter-gray-color;
+            font-size: 10px;
+            line-height: $font-size-xxs;
+            font-weight: $font-weight-light;
+
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                @include size(0, 1px);
+                background-color: currentColor;
+                transition: .2s;
+            }
+
+            &:hover, &:focus {
+                &::after {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

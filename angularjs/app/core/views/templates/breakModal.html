@@ -1,0 +1,91 @@
+﻿<div ng-form="breakCtrl.editBreak" class="modal-window breaks-modal"
+     ng-class="{'no-address-break': !breakCtrl.isScheduleAble}"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="breakModal">
+    <a href="javascript:void(0);" ng-click="breakCtrl.cancel()" class="close-modal"></a>
+    <md-dialog-content class="md-dialog-content">
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/clock.svg"></md-icon>
+        <div class="modal-title">
+            <h2>{{breakCtrl.appointment.id === 0 ? "New" : "Edit"}} Time Block</h2>
+        </div>
+        <div class="flex-row">
+            <div class="info-block calendar_icon icon-right">
+                <md-input-container>
+                    <label>Start Date:</label>
+                    <input datetimepicker
+                           min-date="today"
+                           format="MM/DD/YYYY"
+                           aria-label="startDate"
+                           ng-model="breakCtrl.appointment.date"
+                           name="date"
+                           ng-disabled="true">
+                </md-input-container>
+            </div>
+            <div class="info-block time-block icon-right">
+                <md-input-container>
+                    <label>From:</label>
+                    <input type="text" datetimepicker format="LT" stepping="1" ng-model="breakCtrl.appointment.start" name="start"
+                           start-time-validator end-time="breakCtrl.appointment.end" ng-required="true"/>
+                    <div ng-messages="breakCtrl.editBreak.start.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="startTime">Time "From" must be less than time "To"</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div class="info-block time-block icon-right">
+                <md-input-container>
+                    <label>To:</label>
+                    <input type="text" datetimepicker format="LT" stepping="1" ng-model="breakCtrl.appointment.end" name="end"
+                           end-time-validator start-time="breakCtrl.appointment.start" ng-required="true"/>
+                    <div ng-messages="breakCtrl.editBreak.end.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="endTime">Time "To" must be greater than time "From"</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div class="info-block grow-1" ng-if="breakCtrl.breakReasons !== false">
+                <md-input-container>
+                    <label>Reason:</label>
+                    <md-select ng-model="breakCtrl.appointment.reason"
+                               name="reason"
+                               ng-required="true">
+                        <md-option ng-repeat="reasonItem in breakCtrl.breakReasons" ng-value="reasonItem">{{reasonItem.Text}}</md-option>
+                    </md-select>
+                    <div ng-messages="breakCtrl.editBreak.reason.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+        <div ng-if="breakCtrl.isScheduleAble"
+             ng-include="'profile/views/adresses.html'"></div>
+
+        <div class="info-block">
+            <div class="active-title flow-body-active-title">Description:</div>
+            <md-input-container>
+                <label></label>
+                <input type="text" placeholder="Type Description here:" ng-model="breakCtrl.appointment.description"/>
+            </md-input-container>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="breakCtrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised delete-btn main-button"
+                   confirm-ng-click="breakCtrl.delete()"
+                   confirm-title="Delete Time Block"
+                   confirm-msg="'Are you sure you want to delete selected Time Block?'"
+                   ng-if="(breakCtrl.appointment.id != 0 && breakCtrl.appointment.editable)"
+        >
+            Delete
+        </md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="breakCtrl.save()"
+                   ng-if="breakCtrl.appointment.id === 0 && breakCtrl.appointment.editable"
+        >Add</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="breakCtrl.save()"
+                   ng-if="breakCtrl.appointment.id !== 0 && breakCtrl.appointment.editable"
+        >Edit</md-button>
+
+    </md-dialog-actions>
+</div>

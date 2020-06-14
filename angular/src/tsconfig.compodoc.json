@@ -1,0 +1,45 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "../out-tsc/app",
+        "baseUrl": "./",
+        "module": "es2015",
+        "types": []
+    },
+    "include": [
+        //demo-components
+        "app/shared/modules/datepicker/date-picker/date-picker.component.ts",
+        "app/shared/modules/attrs-tags/attrs-tags.component.ts",
+        "app/shared/modules/email-input/email-input.component.ts",
+        "app/shared/modules/no-content/no-content.component.ts",
+        "app/shared/modules/patient-contacts/patient-contacts.component.ts",
+        "app/shared/modules/phone-input/phone-input.component.ts",
+        "app/shared/modules/state-autocomplete/state-autocomplete.component.ts",
+        "app/shared/modules/sub-tabs/sub-tabs.component.ts",
+        "app/shared/modules/toolbar/toolbar.component.ts",
+        "app/shared/modules/zip-autocomplete/zip-autocomplete.component.ts",
+        "app/shared/modules/list-to-popover/list-to-popover.component.ts",
+        "app/shared/modules/signature/signature.component.ts",
+        "app/demo/demo-components/grid/demo-grid.component.ts",
+        "app/shared/modules/loading/loading.component.ts",
+        "app/shared/modules/assign-pdf-field/assign-pdf-field.component.ts",
+        "app/shared/modules/pdf-form-review/pdf-form-review.component.ts",
+        "app/shared/modules/v-accordion/v-accordion.component.ts",
+        "app/shared/modules/patient-short-info-sidebar/patient-short-info-sidebar.component.ts",
+
+        //directives
+        "app/shared/directives/error-messages/error-messages.directive.ts",
+        "app/shared/directives/infinite-scroll.directive.ts",
+        "app/shared/directives/click-outside.directive.ts",
+        "app/shared/directives/clear-on-click.directive.ts",
+        "app/shared/directives/autocomplete-infinite-scroll.directive.ts",
+        "app/shared/directives/popover/popover.directive.ts",
+
+        //elements-markups
+        "app/demo/elements-markups/elements-markups.module.ts",
+        "app/demo/elements-markups/plus-button/plus-button.component.ts",
+        "app/demo/elements-markups/ui-kit/ui-kit.component.ts",
+        "app/demo/elements-markups/niko-accordion/niko-accordion.component.ts",
+        "app/demo/elements-markups/stepper/stepper.component.ts"
+    ]
+}

@@ -1,0 +1,36 @@
+.helpdesc-modal {
+    .modal-icon {
+        height: 48px;
+        width: 48px;
+    }
+
+    .send-btn-icon {
+        height: 24px;
+        width: 24px;
+    }
+
+    .attach-file-btn {
+        margin-left: 0;
+
+        md-icon {
+            height: 24px;
+            width: 24px;
+            fill: $gray-color;
+            margin-right: 10px;
+        }
+    }
+
+    .delete-chip-btn {
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        cursor: pointer;
+        margin-left: 10px;
+
+        md-icon {
+            color: #ff4848;
+            width: 18px;
+            height: 18px;
+        }
+    }
+}

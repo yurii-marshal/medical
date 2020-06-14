@@ -1,0 +1,195 @@
+<div class="modal-window rental-options-modal"
+     ng-class="{'stop-rental': $ctrl.actionType === 'stop'}"
+     ng-form="$ctrl.modalForm"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon"
+                 md-svg-src="assets/images/default/rental.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>{{ $ctrl.title }}</h2>
+        </div>
+
+        <div ng-if="$ctrl.actionType !== 'stop'">
+            <div ng-if="$ctrl.actionType === 'new'"
+                 class="start-new-rental-switch">
+                <md-switch class="md-primary"
+                           ng-change="$ctrl.toggleRentalAvailability($ctrl.isProgramAvailable)"
+                           ng-model="$ctrl.isProgramAvailable">
+                    Start Rental
+                </md-switch>
+            </div>
+
+            <div ng-if="$ctrl.actionType !== 'new'"
+                 class="active-title flow-body-active-title small-title-text">
+                HCPCS: {{$ctrl.item.HcpcsCode}}
+                <span ng-if="$ctrl.item.BillRecipient">&nbsp;
+                    |&nbsp;Payer: {{$ctrl.item.BillRecipient.Name || 'Patient'}}
+                </span>
+                <span ng-if="$ctrl.item.BillRecipient.PayerPlan.Name">&nbsp;
+                    |&nbsp;Payer Plan: {{$ctrl.item.BillRecipient.PayerPlan.Name}}
+                </span>
+            </div>
+
+            <div class="price-options-filters">
+                <div class="dos-filter">
+                    Date Of Service:&nbsp;
+                    <md-input-container class="calendar_icon left-input-icon">
+                        <label></label>
+                        <input type="text"
+                               name="fromDate"
+                               placeholder="From:*"
+                               datetimepicker
+                               format="MM/DD/YYYY"
+                               use-current="false"
+                               ng-model="$ctrl.filters['DateOfService'].From"
+                               ng-required="true"
+                               start-date-validator
+                               end-date="$ctrl.filters['DateOfService'].To"
+                               ng-disabled="!$ctrl.isProgramAvailable"
+                        >
+                        <div ng-messages="$ctrl.modalForm.fromDate.$error" class="md-input-messages-nice">
+                            <div ng-message="startDate">Date <b>"From"</b> must be less than date <b>"To"</b></div>
+                            <div ng-message="required">This field is required.</div>
+                        </div>
+                    </md-input-container>
+                    <div>&mdash;</div>
+                    <md-input-container class="calendar_icon left-input-icon calendar-to-date">
+                        <label></label>
+                        <input type="text"
+                               name="toDate"
+                               placeholder="To:*"
+                               datetimepicker
+                               format="MM/DD/YYYY"
+                               use-current="false"
+                               ng-model="$ctrl.filters['DateOfService'].To"
+                               end-date-validator
+                               start-date="$ctrl.filters['DateOfService'].From"
+                               ng-required="true"
+                               ng-disabled="!$ctrl.isProgramAvailable"
+                        >
+                        <div ng-messages="$ctrl.modalForm.toDate.$error"
+                             class="md-input-messages-nice">
+                            <div ng-message="endDate">Date <b>"To"</b> must be greater than date <b>"From"</b></div>
+                            <div ng-message="required">This field is required.</div>
+                        </div>
+                    </md-input-container>
+                    <div popover-directive="$ctrl.rentalHintConstants.DATE_OF_SERVICE" is-only-icon="true" min-width="350"></div>
+                </div>
+                <div class="period-filter">
+                    <md-input-container>
+                        <label>Billing Period</label>
+                        <input type="text"
+                               name="billingPeriod"
+                               only-digits-with-length
+                               min="1"
+                               ng-model="$ctrl.item.Period"
+                               ng-required="true"
+                               ng-disabled="!$ctrl.isProgramAvailable"
+                               ng-blur="$ctrl.onUpdateRentalOptions()"
+                               ng-change="$ctrl.onChangeBillingPeriod()"
+                        >
+                        <div ng-messages="$ctrl.modalForm.billingPeriod.$error"
+                             class="md-input-messages-nice">
+                            <div ng-message="startDate">Date <b>"From"</b> must be less than date <b>"To"</b></div>
+                            <div ng-message="required">This field is required.</div>
+                        </div>
+                    </md-input-container>
+                    <div popover-directive="$ctrl.rentalHintConstants.BILLING_PERIOD" is-only-icon="true" min-width="350"></div>
+                </div>
+                <div class="payer-filter">
+                    <md-input-container>
+                        <label>Bill To:</label>
+                        <md-select aria-label="..."
+                                   name="billRecipient"
+                                   ng-model="$ctrl.filters.BillRecipient"
+                                   ng-model-options="{ trackBy: '$value.Id' }"
+                                   ng-disabled="!$ctrl.isProgramAvailable"
+                                   ng-required="true"
+                        >
+                            <md-option ng-value="item"
+                                       ng-repeat="item in $ctrl.payers">
+                                {{item.Name}}
+                            </md-option>
+                        </md-select>
+                        <div ng-messages="$ctrl.modalForm.billRecipient.$error" class="md-input-messages-nice">
+                            <div ng-message="required">This field is required.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div class="rent-object-block">
+                    <md-input-container>
+                        <label>Qty:</label>
+                        <input type="number"
+                               name="Quantity"
+                               only-digits-with-length
+                               ng-model="$ctrl.item.Qty"
+                               min="1"
+                               ng-required="true"
+                               ng-disabled="!$ctrl.isProgramAvailable"
+                        >
+                        <div ng-messages="$ctrl.modalForm.Quantity.$error"
+                             class="md-input-messages-nice">
+                            <div ng-message="required">This field is required.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <no-records is-default-text="false"
+                        text="No price options available for selected rental period"
+                        is-fullpage="false"
+                        ng-if="!$ctrl.items.length && $ctrl.isProgramAvailable"
+                        class="grow-1"></no-records>
+
+            <md-radio-group ng-model="$ctrl.selectedPriceOption"
+                            >
+                <md-radio-button ng-value="item.Id"
+                                 class="md-primary price-option-item"
+                                 ng-repeat="item in $ctrl.items | orderBy:'Name'"
+                                 ng-disabled="!$ctrl.isProgramAvailable">
+                    <price-option item="item"></price-option>
+                </md-radio-button>
+            </md-radio-group>
+        </div>
+
+        <div ng-if="$ctrl.actionType === 'stop'">
+            <md-input-container>
+                <label>Reason:</label>
+                <input type="text"
+                       name="stopReason"
+                       ng-model="$ctrl.stopModel.Reason"
+                       ng-required="true"
+                >
+                <div ng-messages="$ctrl.modalForm.stopReason.$error" class="md-input-messages-nice">
+                    <div ng-message="required">This field is required.</div>
+                </div>
+            </md-input-container>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button"
+                   ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button ng-if="$ctrl.actionType !== 'stop'"
+                   class="md-raised md-primary main-button"
+                   ng-click="$ctrl.saveRent()"
+                   ng-disabled="!$ctrl.selectedPriceOption && $ctrl.isProgramAvailable">
+            Save
+        </md-button>
+
+        <md-button ng-if="$ctrl.actionType === 'stop'"
+                   class="md-raised md-warn main-button"
+                   ng-click="$ctrl.saveRent()">
+            Stop
+        </md-button>
+
+    </md-dialog-actions>
+
+</div>

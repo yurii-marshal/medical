@@ -1,0 +1,21 @@
+
+<div class="drowz-subwizard-overlay"></div>
+<div class="drowz-wizard-block no-float">
+    <div class="drowz-wizard-block-title">
+        <div class="wizard-title-text">Learn Barcodes:</div>
+    </div>
+    <div class="drowz-wizard-block-body"
+         bs-loading-overlay
+         bs-loading-overlay-reference-id="barcode-wizard">
+        <div ui-view></div>
+        <div class="drowz-subwizard-footer">
+            <md-button class="md-raised main-button" ui-sref="root.learn_barcodes">Cancel</md-button>
+            <md-button class="md-raised main-button" ui-sref="root.learn_barcodes.add.step1">Back</md-button>
+            <md-button class="md-raised md-primary main-button"
+                       ng-click="addBar.reviewBarcodes()"
+            >
+                Review
+            </md-button>
+        </div>
+    </div>
+</div>

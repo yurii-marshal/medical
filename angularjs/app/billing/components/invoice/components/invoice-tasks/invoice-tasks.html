@@ -1,0 +1,230 @@
+<div class="patient-financial-invoices-wrap invoice-tasks"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="invoiceTasksList"
+>
+
+    <div class="flex-row filters-wrap align-center">
+        <div class="clear-filters-btn">
+            <md-button class="clear-filters"
+                       aria-label="..."
+                       simple-tooltip="Refresh Items"
+                       ng-click="invoiceTasks.onClearFilter()"
+            >
+                <md-icon md-svg-src="assets/images/default/clear-filters.svg"></md-icon>
+            </md-button>
+        </div>
+
+        <div class="filter-field w160px">
+            <md-input-container>
+                <label>Title</label>
+                <input type="text"
+                       ng-model="invoiceTasks.filters['Title']"
+                       ng-model-options="{debounce: 450}"
+                       ng-change="invoiceTasks.changedFilters()"
+                       clear-on-click
+                >
+            </md-input-container>
+        </div>
+
+        <div class="filter-field w200px">
+            <md-input-container>
+                <label>Description</label>
+                <input type="text"
+                       disabled
+                >
+            </md-input-container>
+        </div>
+
+        <div class="filter-field w140px">
+            <md-input-container>
+                <label>Created By</label>
+                <input type="text"
+                       ng-model="invoiceTasks.filters['CreatedByName']"
+                       ng-model-options="{debounce: 450}"
+                       ng-change="invoiceTasks.changedFilters()"
+                       clear-on-click
+                >
+            </md-input-container>
+        </div>
+
+        <div class="filter-field w120px">
+            <md-input-container>
+                <label>From</label>
+                <input type="text"
+                       ng-model="invoiceTasks.filters['CreatedFrom']"
+                       datetimepicker
+                       use-current="false"
+                       format="MM/DD/YYYY"
+                       show-today-button="false"
+                       ng-change="invoiceTasks.changedFilters()"
+                       clear-on-click
+                >
+            </md-input-container>
+        </div>
+
+        <div class="filter-field w120px">
+            <md-input-container>
+                <label>To</label>
+                <input type="text"
+                       ng-model="invoiceTasks.filters['CreatedTo']"
+                       datetimepicker
+                       use-current="false"
+                       format="MM/DD/YYYY"
+                       show-today-button="false"
+                       ng-change="invoiceTasks.changedFilters()"
+                       clear-on-click
+                >
+            </md-input-container>
+        </div>
+
+        <div class="filter-field grow-1">
+            <md-autocomplete class="hcpcscode-autocomplete-block"
+                             md-selected-item="invoiceTasks.filters['Assignee']"
+                             md-selected-item-change="invoiceTasks.changedFilters()"
+                             md-search-text="searchUser"
+                             md-items="user in invoiceTasks.getUsersDictionary(searchUser)"
+                             md-item-text="user.Name.FirstName + ' ' + user.Name.LastName"
+                             md-min-length="0"
+                             md-delay="350"
+                             md-menu-container-class="hcpcs-decorator"
+                             md-floating-label="Assigned To"
+                             clear-on-click
+            >
+                <md-item-template>
+                    <div title="{{ user.Name.FirstName }} {{ user.Name.LastName }}">
+                        {{ user.Name.FirstName }} {{ user.Name.LastName }}
+                    </div>
+                </md-item-template>
+                <md-not-found>Not found</md-not-found>
+            </md-autocomplete>
+        </div>
+
+        <div class="filter-field w190px">
+            <md-input-container>
+                <label>Due</label>
+                <input type="text"
+                       disabled
+                       clear-on-click
+                >
+            </md-input-container>
+        </div>
+
+        <div class="filter-field w160px">
+            <md-input-container>
+                <label>Status</label>
+                <md-select ng-model="invoiceTasks.filters['Status']"
+                           ng-change="invoiceTasks.changedFilters()"
+                           clear-on-click
+                >
+                    <md-option ng-value="status" ng-repeat="status in invoiceTasks.invoiceTaskStatusConstants">
+                        {{ status }}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+
+        <div class="filter-field w160px">
+            <md-input-container>
+                <label>Priority</label>
+                <md-select ng-model="invoiceTasks.filters['Priority']"
+                           ng-change="invoiceTasks.changedFilters()"
+                           clear-on-click
+                >
+                    <md-option ng-value="priority" ng-repeat="priority in invoiceTasks.invoiceTaskPriorityConstants">
+                        {{ priority }}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+
+    </div>
+
+    <div class="flex-row invoice-task-item"
+         ng-repeat="task in invoiceTasks.tasksData"
+         ng-if="invoiceTasks.tasksData.length"
+    >
+
+        <div class="info-block w180px">
+            <div class="info-block-label">
+                Title:
+            </div>
+            <div class="info-block-body">
+                {{ task.Title }}
+            </div>
+        </div>
+
+        <div class="info-block w200px left-divider">
+            <div class="info-block-label">
+                Description:
+            </div>
+            <div class="info-block-body">
+                {{ task.Description }}
+            </div>
+        </div>
+
+        <div class="info-block w140px left-divider">
+            <div class="info-block-label">
+                Created By:
+            </div>
+            <div class="info-block-body">
+                {{ task.CreatedBy.FirstName }} {{ task.CreatedBy.LastName }}
+            </div>
+        </div>
+
+        <div class="info-block w240px left-divider">
+            <div class="info-block-label">
+                Created:
+            </div>
+            <div class="info-block-body">
+                <span ng-bind="task.CreatedOn | localDateTime: 'MM/DD/YYYY'"></span>
+                <span class="active-text" ng-bind="task.CreatedOn | localDateTime: 'hh:mm A'"></span>
+            </div>
+        </div>
+
+        <div class="info-block grow-1 left-divider correct-grow-item">
+            <div class="info-block-label">
+                Assigned To:
+            </div>
+            <div class="info-block-body">
+                <span ng-repeat="user in task.AssignTo">{{ user.FirstName }} {{ user.LastName }}<br></span>
+            </div>
+        </div>
+
+        <div class="info-block w190px left-divider">
+            <div class="info-block-label">
+                Due:
+            </div>
+            <div class="info-block-body">
+                <span ng-bind="task.DueDate | localDateTime: 'MM/DD/YYYY'"></span>
+                <span class="active-text" ng-bind="task.DueDate | localDateTime: 'hh:mm A'"></span>
+            </div>
+        </div>
+
+        <div class="info-block w160px left-divider">
+            <div class="info-block-label">
+                Status:
+            </div>
+            <div class="info-block-body">
+                {{ task.Status }}
+            </div>
+        </div>
+
+        <div class="info-block w160px left-divider">
+                <div class="info-block-label">
+                    Priority:
+                </div>
+                <div class="info-block-body">
+                    <div class="status-label {{ task.priorityClass }}">
+                        {{ task.Priority }}
+                    </div>
+                </div>
+            </div>
+    </div>
+    <no-records
+            text="Tasks"
+            is-fullpage="true"
+            ng-if="!invoiceTasks.tasksData.length"
+    >
+    </no-records>
+
+</div>

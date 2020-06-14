@@ -1,0 +1,19 @@
+<md-button ng-repeat="tab in $ctrl.items"
+           class="drowz-tabs-link {{tab.className}}"
+           aria-label="{{tab.title}}"
+           ui-sref="{{tab.linkView || tab.view}}"
+           ng-class="{'active': (tab.isActive || $ctrl.isActive(tab.view)),
+                      'responsive-tab': $ctrl.isLongTabs && tab.icon.url}"
+           ng-hide="tab.isHidden"
+           simple-tooltip="{{tab.title}}"
+           simple-tooltip-breakpoint="1400"
+           simple-tooltip-enable="$ctrl.isLongTabs"
+           tooltip-position="bottom">
+    <md-icon class="drowz-tabs-icon"
+             ng-if="$ctrl.isLongTabs && tab.icon.url || !tab.label"
+             md-svg-src="{{tab.icon.url}}"
+             ng-style="{'width' : tab.icon.w, 'height' : tab.icon.h, 'min-width' : tab.icon.w}">
+    </md-icon>
+    <span ng-class="{'drowz-tabs-text': $ctrl.isLongTabs && tab.icon.url}" ng-bind="tab.title"></span>
+    <div class="drowz-round-label" ng-if="tab.label" ng-bind="tab.label"></div>
+</md-button>

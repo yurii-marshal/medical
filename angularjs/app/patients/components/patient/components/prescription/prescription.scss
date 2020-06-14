@@ -1,0 +1,114 @@
+.patient-prescription-list {
+    padding: 20px 15px 20px 15px;
+    counter-reset: item;
+
+    .prescription-item {
+        position: relative;
+        display: flex;
+        align-items: stretch;
+        justify-content: flex-start;
+        flex-direction: column;
+        padding: 25px 10px 15px 55px;
+        cursor: pointer;
+        border-radius: 4px;
+        border-bottom: 1px solid $lighter-gray-color;
+        transition: background-color .2s;
+
+        &:hover {
+            background-color: rgba($lighter-gray-color, 0.2);
+
+            .prescription-buttons {
+                .delete-icon-btn {
+                    opacity: 1;
+                }
+            }
+        }
+
+        &::before {
+            content: counter(item) '.';
+            counter-increment: item;
+            position: absolute;
+            top: 45px;
+            left: 10px;
+            width: 30px;
+            text-align: center;
+            font-size: $font-size-md;
+        }
+
+        .prescription-buttons {
+            min-width: 200px;
+            width: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+
+            .status-label {
+                margin-right: 10px;
+            }
+
+            .md-button {
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .prescription-dwo-btn {
+                margin: 0 10px;
+                color: $gray-color;
+
+                &:hover {
+                    color: $main-active-color;
+                }
+
+                md-icon {
+                    width: 24px;
+                    height: 22px;
+                    margin: 0;
+                    color: currentColor;
+                    transition: .2s;
+                }
+            }
+
+            button:hover {
+                background: none;
+            }
+
+            .order-signed-icon {
+                display: block;
+                @include size(28px, 18px);
+                margin: 0 0 0 10px;
+                color: $main-active-color;
+                cursor: pointer;
+            }
+
+            .view-alert-icon {
+                margin: 0 10px;
+            }
+
+            .view-alert-icon {
+                display: block;
+                color: $orange-color;
+                @include size(20px, 20px);
+                min-width: 20px;
+                min-height: 20px;
+                line-height: 20px;
+                cursor: pointer;
+            }
+
+            .delete-icon-btn {
+                opacity: 0;
+                transition: opacity 0.7s;
+                margin-left: 10px;
+            }
+
+            .edit-info-icon {
+                @include size(28px, 23px);
+
+                md-icon {
+                    @include size(28px, 23px);
+                }
+            }
+        }
+    }
+}
+
+

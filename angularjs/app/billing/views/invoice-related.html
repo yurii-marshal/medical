@@ -1,0 +1,78 @@
+<div class="related-invoices"
+     id="related-invoices-container"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="relatedInvoices">
+
+    <div infinite-scroll="related.getRelatedInvoices()"
+         infinite-scroll-immediate-check="true"
+         infinite-scroll-disabled="related.invoicesListParams.stopLoading"
+    >
+        <div class="related-invoice-item"
+             ng-repeat="item in related.invoicesListParams.items track by $index">
+            <div class="status-col">
+                <div class="status-label green" ng-if="item.IsOriginal">Original</div>
+                <div class="status-label {{item.statusClass}}">{{item.Status.Name}}</div>
+            </div>
+            <div class="info-block block-width-120">
+                <div class="info-block-label">Invoice:</div>
+                <div class="info-block-body">
+                    <a href="javascript:void(0);"
+                       class="active-text"
+                       ng-if="invoice.userPermissions.isAllow(invoice.permissionsCategoriesConstants.BILLING, invoice.billingPermissionsConstants.INVOICE_MODIFY)"
+                       ui-sref="root.invoice.details({ invoiceId: item.Id })">
+                        {{item.DisplayId}}
+                    </a>
+                    <span ng-if="!invoice.userPermissions.isAllow(invoice.permissionsCategoriesConstants.BILLING, invoice.billingPermissionsConstants.INVOICE_MODIFY)">
+                        {{item.DisplayId}}
+                    </span>
+                </div>
+            </div>
+            <div class="info-block block-width-100 left-divider">
+                <div class="info-block-label">Charge:</div>
+                <div class="info-block-body font-semibold">
+                    {{item.Charge.Currency}} {{item.Charge.Amount}}
+                </div>
+            </div>
+            <div class="info-block block-width-100 left-divider">
+                <div class="info-block-label">Balance:</div>
+                <div class="info-block-body font-semibold">
+                    {{item.Balance.Currency}} {{item.Balance.Amount | absNumber}}
+                </div>
+            </div>
+            <div class="info-block grow-1 left-divider">
+                <div class="info-block-label">Bill to:</div>
+                <div class="info-block-body">{{item.BillTo}}</div>
+            </div>
+            <div class="info-block block-width-130 left-divider">
+                <div class="info-block-label">Created Date:</div>
+                <div class="info-block-body">{{item.CreatedOn | localDateTime:"MM/DD/YYYY"}}</div>
+            </div>
+            <div class="info-block block-width-15-percent left-divider">
+                <div class="info-block-label">Created By:</div>
+                <div class="info-block-body">{{item.CreatedBy | fullname}}</div>
+            </div>
+            <div class="info-block block-width-130 left-divider">
+                <div class="info-block-label">Modified Date:</div>
+                <div class="info-block-body">
+                    <span ng-if="!item.ModifiedOn">-</span>
+                    {{item.ModifiedOn | localDateTime:"MM/DD/YYYY"}}
+                    <span class="active-text">{{item.ModifiedOn | localDateTime: "hh:mm A"}}</span>
+                </div>
+            </div>
+            <div class="info-block block-width-15-percent left-divider">
+                <div class="info-block-label">Modified By:</div>
+                <div class="info-block-body">
+                    <span ng-if="!item.ModifiedBy">-</span>
+                    {{item.ModifiedBy | fullname}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <no-records text="Related Invoices"
+                is-fullpage="true"
+                ng-if="related.firstPageLoaded && related.invoicesListParams.items.length === 0"
+    ></no-records>
+
+</div>

@@ -1,0 +1,43 @@
+// Overwrite default
+.mCSB_scrollTools .mCSB_buttonUp,
+.mCSB_scrollTools .mCSB_buttonDown,
+.mCSB_scrollTools .mCSB_buttonLeft,
+.mCSB_scrollTools .mCSB_buttonRight{
+    background-image: url(../assets/images/mCSB_buttons.png);
+}
+
+.mCSB_scrollTools .mCSB_dragger {
+    overflow: hidden;
+}
+
+// New styles
+.mCustomScrollbar {
+    &.above-element {
+
+        .mCSB_scrollTools {
+            width: 2px;
+            z-index: 2;
+
+            .mCSB_dragger_bar {
+                background-color: $main-active-color;
+            }
+
+            .mCSB_draggerRail {
+                background-color: $gray-color-main;
+            }
+        }
+
+        .mCSB_inside > .mCSB_container {
+            margin-right: 0;
+        }
+    }
+
+    &.scrollbar-left {
+        .mCSB_scrollTools {
+            &.mCSB_scrollTools_vertical {
+                right: auto;
+                left: 0;
+            }
+        }
+    }
+}

@@ -1,0 +1,154 @@
+@import '../base/variables';
+
+.mat-form-field-underline {
+  background-color: $gray-color-main;
+  transform: perspective(1px);
+}
+
+.mat-form-field-label {
+  font-size: 14px;
+  //color: rgba(0, 0, 0, 0.38);
+}
+
+.mat-field-line-label {
+  align-self: center;
+  font-weight: 300;
+  padding: 0 20px;
+  color: $middle-gray-color;
+  font-size: 14px;
+}
+
+.clear-field {
+  display: block;
+  position: absolute;
+  top: 11px;
+  right: 5px;
+  min-width: 14px;
+  width: 14px;
+  height: 14px;
+  z-index: 1;
+  cursor: pointer;
+  outline: none;
+
+  &::after, &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -9px;
+    margin-left: -1px;
+    width: 2px;
+    height: 18px;
+    background-color: $gray-color-main;
+    transition: .2s;
+  }
+
+  &::after {
+    transform: rotate(-45deg);
+  }
+
+  &::before {
+    transform: rotate(45deg);
+  }
+
+  &:hover {
+    &::after, &::before {
+      background-color: rgba(0, 0, 0, 0.870588);
+    }
+  }
+}
+
+.mat-checkbox-inner-container {
+  width: 15px !important;
+  height: 15px !important;
+
+  .mat-checkbox-frame {
+    border-width: 1px;
+  }
+}
+
+.mat-checkbox-background,
+.mat-checkbox-frame {
+  border-radius: 4px !important;
+}
+
+.mat-radio-container {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+.mat-radio-outer-circle {
+  width: 15px !important;
+  height: 15px !important;
+  border-width: 1px !important;
+}
+
+.mat-radio-inner-circle {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+.mat-radio-button {
+
+  &.mat-primary.mat-radio-checked .mat-radio-outer-circle {
+    border-color: rgba(0, 0, 0, .54);
+  }
+
+  &.mat-radio-disabled {
+
+    .mat-radio-outer-circle {
+      border-color: rgba(0, 0, 0, .38);
+    }
+
+    .mat-radio-inner-circle {
+      background-color: rgba(0, 0, 0, .38);
+    }
+  }
+}
+
+.mat-slide-toggle-thumb {
+  background-color: $middle-gray-color;
+}
+
+.mat-slide-toggle-bar {
+  background-color: $gray-color-main;
+}
+
+.mat-error {
+  font-size: 12px;
+  line-height: 14px;
+  display: block;
+  padding-bottom: 4px;
+  padding-right: 5px;
+  padding-top: 4px;
+}
+
+.custom-checkbox {
+  font-size: 14px;
+
+  .mat-checkbox-inner-container {
+    display: none;
+  }
+
+  .mat-checkbox-layout {
+    height: 30px;
+    margin-right: 10px;
+    padding: 0 20px;
+    min-width: 80px;
+    border-radius: 30px;
+    border: 1px solid $main-active-color;
+    text-align: center;
+  }
+
+  .mat-checkbox-label {
+    line-height: 28px;
+  }
+
+  &.mat-checkbox-checked {
+
+    .mat-checkbox-layout {
+      color: #fff;
+      background-color: $main-active-color;
+    }
+  }
+}

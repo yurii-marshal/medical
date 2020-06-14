@@ -1,0 +1,45 @@
+<div class="main-content">
+    <div class="cmn-form-page">
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)"
+           ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)"
+           ui-sref="root.patients.list">Patients</a>
+        <a href="javascript:void(0)"
+           ui-sref="root.patient.demographics({ patientId: cmn.patientId })">
+            {{cmn.patientInfo.Name.FullName}}
+        </a>
+        <a href="javascript:void(0)"
+           class="active">{{cmn.cmnId ? 'CMN Document Details' : 'Log CMN'}}</a>
+    </div>
+
+    <div class="bs-loading-overlay-fullscreen"
+         id="scrollHere"
+         ng-form="cmn.mainForm"
+         bs-loading-overlay
+         bs-loading-overlay-reference-id="patientCmnForm"
+    >
+
+        <cmn-form model="cmn.cmnModel"
+                  is-new="cmn.isNewDocument"
+                  upload-file="cmn.uploadFile"
+                  on-type-change="cmn.onTypeChange(docType)"
+        ></cmn-form>
+
+        <div class="flow-body-footer">
+            <md-button class="md-raised main-button"
+                       ng-click="cmn.cancel()">Cancel</md-button>
+            <md-button class="md-raised md-primary main-button"
+                       scroll-to="#scrollHere"
+
+                       ng-click="cmn.save()"
+            >
+                Save
+            </md-button>
+        </div>
+    </div>
+
+
+</div>
+</div>

@@ -1,0 +1,88 @@
+<div>
+    <span href="javascript:void(0);"
+       ng-click="$ctrl.toggleChat()"
+       class="chat-toggle-btn btn">
+        <md-icon class="search-icon"
+                 md-svg-src="assets/images/default/pluto_operator_1.svg"></md-icon>
+    </span>
+
+
+    <div class="chat-helper-container"
+         ng-class="{ 'chat-helper-opened' : $ctrl.chatOpened }">
+
+        <div class="chat-helper-header">
+            <span class="font-semibold">Say Hi to NikoBot</span>
+            <div class="btn-bar">
+                <a href="javascript:void(0);" class="chat-toggle" ng-click="$ctrl.toggleChat()">
+                    <md-icon md-svg-src="assets/images/default/hide_icon.svg"></md-icon>
+                </a>
+                <a href="javascript:void(0);" class="chat-clear" ng-click="$ctrl.clearChat()">
+                    <md-icon md-svg-src="assets/images/default/clear_icon.svg"></md-icon>
+                </a>
+            </div>
+        </div>
+
+        <div class="chat-helper-body"
+             scroll-bar
+             scroll-bar-above-element="true"
+             on-total-scroll-back-offset="200">
+            <div class="chat-message"
+                 ng-repeat="item in $ctrl.chatMessages"
+                 ng-class="{'my-message': item.MsgTypeUser}">
+
+                <div class="chat-message-avatar">
+                    <md-icon ng-if="item.MsgTypeUser"
+                             md-svg-src="assets/images/default/user-circle.svg"></md-icon>
+                    <md-icon ng-if="!item.MsgTypeUser"
+                             md-svg-src="assets/images/default/pluto_operator_1.svg"></md-icon>
+                </div>
+                <div class="chat-message-content">
+                    <div class="chat-message-header">
+                        <span class="chat-message-user active-title"
+                              ng-bind="item.CreatedBy"></span>
+                        <span class="message-created-time"
+                              ng-bind="item.CreatedOn | localDateTime: 'hh:mm A'"></span>
+                    </div>
+                    <div class="chat-message-info">
+                        <!--<div class="chat-message-title font-semibold"-->
+                             <!--ng-click="item.goToRef()"-->
+                             <!--ng-bind="item.Title"></div>-->
+                        <div class="chat-message-text font-semibold"
+                             ng-bind-html="item.Text | markDownToHtml"></div>
+
+                        <div class="message-attachments">
+                            <div class="attachment-item"
+                                 ng-repeat="attachment in item.Attachments">
+                                <span ng-bind="$index + 1 + ') '"></span>
+                                <a href="javascript:void(0);"
+                                   class="font-semibold"
+                                   ng-click="attachment.goToRef()"
+                                   ng-bind="attachment.Title"></a> :
+                                <span ng-bind-html="attachment.Text | markDownToHtml"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="chat-helper-footer custom-searchbar top-position">
+            <md-input-container id="chat-helper-textarea"
+                                class="chat-helper-textarea">
+                <label></label>
+                <textarea placeholder="Type your message here..."
+                          autofocus
+                          cols="1"
+                          rows="1"
+                          custom-search-autocomplete="$ctrl.currentMessage"
+                          custom-autocomplete-options="$ctrl.autocompleteOptions"
+                          on-press-enter="$ctrl.submitAction($ctrl.currentMessage)"
+                          ng-model="$ctrl.currentMessage"></textarea>
+            </md-input-container>
+        </div>
+
+    </div>
+</div>
+

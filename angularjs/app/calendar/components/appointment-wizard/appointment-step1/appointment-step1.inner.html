@@ -1,0 +1,213 @@
+<div class="drowz-wizard-body-flex appointment-wizard" ng-form="formAppStepOne">
+
+    <div class="grow-1">
+
+        <div class="drowz-wizard-block patient-details-block no-float">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Patient Details:</div>
+            </div>
+            <div class="drowz-wizard-block-body flex-row space-between">
+
+                <div class="w450px address">
+                    <div class="info-block">
+                        <md-autocomplete-with-infinite-scroll
+                            class="inf-scroll-autocomplete patient-autocomplete"
+                            md-selected-item="$ctrl._selectedPatient"
+                            md-search-text="searchPatient"
+                            md-items="patient in $ctrl.getPatients(searchPatient, pageIndex)"
+                            md-item-text="$ctrl.getName(patient)"
+                            md-min-length="3"
+                            md-no-cache="true"
+                            md-delay="350"
+                            md-input-name="patient"
+                            ng-required="true"
+                            md-selected-item-change="$ctrl.patientSelected()"
+                            md-autocomplete-required
+                            md-floating-label="Patient:"
+                            ng-disabled="$ctrl.reschedule"
+                            clear-on-click>
+                            <md-item-template>
+                            <span md-highlight-text="searchPatient" md-highlight-flags="i" class="item-title" ng-show="patient.Name.Last">
+                                {{patient.Name.First}} {{patient.Name.Last}}, {{patient.DateOfBirthday | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                            </span>
+                            </md-item-template>
+                            <md-not-found>No patients found</md-not-found>
+                        </md-autocomplete-with-infinite-scroll>
+                        <md-input-container>
+                            <input type="text"
+                                   ng-model="$ctrl.selectedPatient"
+                                   ng-required="true"
+                                   name="patient"
+                                   aria-label="..."
+                                   style="display: none !important;">
+                            <div ng-messages="formAppStepOne.patient.$error" class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                                <div ng-message="selected">Please select a patient</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div class="info-block marg-v-15" ng-if="$ctrl._selectedPatient">
+                        <div class="info-block-label">Address:</div>
+                        <div class="info-block-body">
+                            {{$ctrl.selectedPatient.Address.FullAddress}}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="w500px insurances"
+                     ng-class="{ 'left-divider': $ctrl._selectedPatient }"
+                >
+                    <div class="info-block" ng-if="$ctrl._selectedPatient">
+                        <div class="info-block-label active-title">Insurances:</div>
+                        <div class="info-block-body">
+                            <no-records text="Insurance"
+                                        class="no-records-small"
+                                        ng-if="!$ctrl.selectedPatient.insurances.length"></no-records>
+                            <div class="info-block marg-v-20" ng-repeat="insurance in $ctrl.selectedPatient.insurances track by $index">
+                                <div class="info-block-label">
+                                    <span ng-if="insurance.IsPrimary">Primary:</span>
+                                    <span ng-if="$index === 1">Secondary:</span>
+                                    <span ng-if="$index > 1">Other:</span>
+                                </div>
+                                <div class="info-block-body flex-cont space-between align-top">
+                                    <span>{{insurance.Payer.Name}}</span>
+                                    <div class="status-label"
+                                         ng-class="{'active':insurance.Status.Id === 1, 'inactive':insurance.Status.Id === 2}">
+                                        {{insurance.Status.Text}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="flex-row align-top">
+            <div class="drowz-wizard-block no-float appointment-details-block"
+                 ng-if="$ctrl._selectedPatient">
+                <div class="drowz-wizard-block-title">
+                    <div class="wizard-title-text">Appointment Details:</div>
+                </div>
+                <div class="drowz-wizard-block-body">
+                    <div class="flex-row">
+                        <div class="info-block">
+                            <md-input-container>
+                                <label>Address (line 1):</label>
+                                <input type="text" ng-model="$ctrl.selectedPatient.Address.AddressLine" ng-required="true"
+                                       name="addressLine1" clear-on-click>
+                                <div ng-messages="formAppStepOne.addressLine1.$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block">
+                            <md-input-container>
+                                <label>Address (line 2):</label>
+                                <input type="text" ng-model="$ctrl.selectedPatient.Address.AddressLine2" clear-on-click>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block">
+                            <md-input-container>
+                                <label>City:</label>
+                                <input type="text" ng-model="$ctrl.selectedPatient.Address.City" ng-required="true" name="city"
+                                       clear-on-click>
+                                <div ng-messages="formAppStepOne.city.$error" class="md-input-messages-nice">
+                                    <div ng-message="required" class="md-input-message-animation">This field is required</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block w130px">
+                            <input-state-string
+                                form-name="formAppStepOne"
+                                input-name="state"
+                                selected-item="$ctrl.selectedPatient.Address.State"
+                                add-directives="clear-on-click"
+                                ng-required="true">
+                            </input-state-string>
+                        </div>
+                        <div class="info-block">
+                            <input-zip-string
+                                form-name="formAppStepOne"
+                                input-name="zip"
+                                selected-item="$ctrl.selectedPatient.Address.Zip"
+                                add-directives="clear-on-click"
+                                ng-required="true">
+                            </input-zip-string>
+                        </div>
+                    </div>
+                    <div class="flex-row">
+                        <div class="info-block grow-1">
+                            <md-checkbox class="md-primary"
+                                         ng-model="$ctrl.isUpdateAddress">
+                                Update Patient Primary Address
+                            </md-checkbox>
+                        </div>
+                    </div>
+                    <appointment-orders
+                        ng-if="$ctrl.selectedPatient.Id"
+                        patient-id="$ctrl.selectedPatient.Id"
+                        selected-patient="$ctrl.selectedPatient"
+                        selected-orders="$ctrl.selectedOrders"
+                        appointment-type="$ctrl.appointmentType">
+                    </appointment-orders>
+                </div>
+            </div>
+
+            <div class="drowz-wizard-block upload-documents-block w400px"
+                 ng-if="$ctrl._selectedPatient"
+            >
+                <div class="drowz-wizard-block-title">
+                    <div class="wizard-title-text">Documents:</div>
+                </div>
+                <div class="drowz-wizard-block-body">
+                    <appointment-documents></appointment-documents>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="flex-400" ng-if="$ctrl._selectedPatient">
+
+        <div class="drowz-wizard-block no-float">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Contacts:</div>
+            </div>
+            <div class="drowz-wizard-block-body">
+                <div class="patient-contacts">
+                    <patient-contacts
+                        contacts="$ctrl.selectedContacts"
+                        show-tooltip-for-work-phone="true"
+                    ></patient-contacts>
+                </div>
+            </div>
+        </div>
+
+        <div class="drowz-wizard-block no-float">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Additional info:</div>
+            </div>
+            <div class="drowz-wizard-block-body">
+                <div class="info-block">
+                    <md-input-container>
+                        <label>Notes:</label>
+                        <textarea ng-model="$ctrl.notes"
+                                  ng-maxlength="$ctrl.notesMaxLength"
+                                  name="notes"></textarea>
+                        <div ng-messages="formAppStepOne.notes.$error" class="md-input-messages-nice">
+                            <div ng-message="maxlength" class="md-input-message-animation">
+                                Additional info is too long, max length is {{$ctrl.notesMaxLength}} symbols
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

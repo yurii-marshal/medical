@@ -1,0 +1,76 @@
+.not-found-text-color {
+  color: rgba(0, 0, 0, 0.38);
+  pointer-events: none;
+  font-size: 14px;
+}
+
+.active-text {
+  color: $main-active-color;
+}
+
+.dark-blue-text {
+  color: $dark-blue-color;
+}
+
+.gray-text {
+  color: $gray-color;
+}
+
+.red-color {
+  color: $red-color;
+}
+
+.green-color {
+  color: green;
+}
+
+.orange-color {
+  color: $orange-color;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.font-italic {
+  font-style: italic;
+}
+
+.font-normal {
+  font-weight: $font-weight-normal;
+}
+
+.font-semibold {
+  font-weight: $font-weight-semibold;
+}
+
+.font-bold {
+  font-weight: $font-weight-bold;
+}
+
+.ellipsis-only {
+  text-overflow: ellipsis;
+}
+
+.ellipsis {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.break-word {
+  word-break: break-all;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.vertical-divider {
+  color: $gray-color;
+}

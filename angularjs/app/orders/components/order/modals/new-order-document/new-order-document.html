@@ -1,0 +1,57 @@
+<div class="modal-window new-order-document-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/documents.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>New Document:</h2>
+        </div>
+        <div class="add-autocomplete">
+            <md-autocomplete 
+                    class="autocomplete-with-addBtn input-no-padding"
+                    md-no-cache="true"
+                    md-selected-item="$ctrl.patientDocument"
+                    md-search-text="searchText"
+                    md-items="item in $ctrl.getPatientDocuments(searchText)"
+                    md-item-text="item.DocumentType.Text"
+                    md-min-length="0"
+                    md-floating-label="Document Type:">
+                <md-item-template>
+                    <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.DocumentType.Text}}</span>
+                </md-item-template>
+                <md-icon ng-click="$ctrl.selectPatientDocument()"
+                         md-svg-src="assets/images/default/plus-square.svg"
+                         class="add-item-btn"
+                         ng-class="{'disabled': !$ctrl.patientDocument}">
+                </md-icon>
+                <md-not-found>
+                    No document were found.
+                </md-not-found>
+            </md-autocomplete>
+        </div>
+
+        <div class="selected-document-type"
+             ng-repeat="document in $ctrl.patientDocuments track by $index">
+            <div class="grow-1">{{$index + 1}}. {{document.DocumentType.Text}}</div>
+            <md-button class="delete-icon-btn"
+                       aria-label="..."
+                       ng-click="$ctrl.deleteSelectedDocument(document.Id)">
+                <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+            </md-button>
+        </div>
+
+</md-dialog-content>
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button"
+                   ng-click="$ctrl.assignDocuments()"
+                   ng-disabled="$ctrl.patientDocuments.length === 0">
+            Save
+        </md-button>
+    </md-dialog-actions>
+</div>

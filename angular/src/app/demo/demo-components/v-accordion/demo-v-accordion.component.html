@@ -1,0 +1,170 @@
+<div class="main-app-container">
+
+    <app-sidebar>
+
+        <div class="breadcrumbs"></div>
+
+        <app-patient-short-info-sidebar
+            [patientId]="currentPatient.Id"
+        ></app-patient-short-info-sidebar>
+
+        <app-v-accordion header="phones">
+
+            <div class="icon-block" *ngIf="homePhone">
+
+                <mat-icon svgIcon="home_phone" class="icon-block-icon"></mat-icon>
+
+                <div class="info-block">
+                    <div class="info-block-label">Home Phone:</div>
+                    <div class="info-block-body">
+                        {{ homePhone }}
+                    </div>
+                </div>
+
+            </div>
+
+            <app-no-content text="Phones"
+                            type="small"
+                            *ngIf="!homePhone"
+                            defaultLastWord>
+            </app-no-content>
+
+        </app-v-accordion>
+
+        <app-v-accordion header="insurance">
+
+            <ng-container *ngIf="insurance">
+
+                <div class="icon-block" *ngFor="let item of insurance let index = index">
+
+                    <mat-icon svgIcon="insurance" class="icon-block-icon"></mat-icon>
+
+                    <div class="flex-row">
+
+                        <div class="info-block grow-1 insurance-block-title">
+                            <div class="info-block-label">
+                                Insurance:
+                            </div>
+                            <div class="info-block-body">
+                                {{ item.Name }}
+                            </div>
+                        </div>
+
+                        <div class="status-label insurance-status-label primary" *ngIf="item.PositionIndex === 1">
+                            Primary
+                        </div>
+
+                        <div class="status-label insurance-status-label primary" *ngIf="item.PositionIndex === 2">
+                            Secondary
+                        </div>
+
+                        <div class="status-label insurance-status-label primary" *ngIf="item.PositionIndex === 3">
+                            Tertiary
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </ng-container>
+
+            <app-no-content text="Insurance"
+                            type="small"
+                            *ngIf="insurance.length === 0"
+                            defaultLastWord>
+            </app-no-content>
+
+        </app-v-accordion>
+
+        <app-v-accordion header="active orders">
+
+            <ng-container *ngIf="orders">
+
+                <div class="icon-block" *ngFor="let order of orders">
+
+                    <mat-icon svgIcon="orders" class="icon-block-icon"></mat-icon>
+
+                    <div class="info-block">
+
+                        <div class="info-block-label">Order:</div>
+
+                        <div class="info-block-body">
+
+                            <a href="#/orders/order/{{ order.Id }}/details" class="underline-after-link">
+                                {{ order.DisplayId }}
+                            </a>
+
+                            <span class="vertical-divider">|</span>
+
+                            <span>{{ order.CreatedDate | date: 'dd/MM/yyyy' }}</span>
+
+                            <span class="vertical-divider">|</span> <br>
+
+                            <span *ngIf="order.Physician">{{ order.Physician.Name.FullName }}</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </ng-container>
+
+            <app-no-content text="Orders"
+                            type="small"
+                            *ngIf="orders.length === 0"
+                            defaultLastWord>
+            </app-no-content>
+
+        </app-v-accordion>
+
+        <app-v-accordion header="recent appointments">
+
+            <ng-container *ngIf="recentAppointments">
+
+                <div class="icon-block" *ngFor="let item of recentAppointments">
+
+                    <mat-icon svgIcon="calendar" class="icon-block-icon"></mat-icon>
+
+                    <div class="flex-row">
+
+                        <div class="info-block grow-1">
+
+                            <div class="info-block-label">Appointment:</div>
+
+                            <div class="info-block-body">
+                                <a href="#/calendar/appointment/{{ item.Id }}"
+                                   class="underline-after-link">
+                                    {{ item.DisplayId }}
+                                </a>
+                                <span class="vertical-divider">|</span><br>
+                                {{ item.DateRange.From | date: 'dd/MM/yyyy' }}
+                            </div>
+
+                        </div>
+
+                        <div class="status-label insurance-status-label {{ item.statusClass }}">
+                            {{ item.AppointmentStatus.Text }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </ng-container>
+
+            <app-no-content text="Recent Appointments"
+                            type="small"
+                            *ngIf="recentAppointments.length === 0"
+                            defaultLastWord>
+            </app-no-content>
+
+        </app-v-accordion>
+
+    </app-sidebar>
+
+    <main class="main-app-view">
+        <router-outlet></router-outlet>
+    </main>
+
+</div>

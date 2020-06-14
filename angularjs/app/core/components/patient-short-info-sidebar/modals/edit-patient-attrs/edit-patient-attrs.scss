@@ -1,0 +1,82 @@
+.modal-window {
+    &.edit-patient-attrs-modal {
+        min-width: 416px;
+        width: 416px;
+
+        .modal-icon {
+            width: 34px;
+            height: 42px;
+        }
+
+        .select-patient-status {
+            .flex-row {
+                padding-right: 25px;
+            }
+
+            .md-primary.small-btn {
+                margin: 0;
+            }
+
+            .status-select {
+                .md-select-value {
+                    font-weight: $font-weight-semibold;
+                    transition: color .2s;
+                }
+            }
+
+            &.blue {
+                .status-select .md-select-value {
+                    color: $main-active-color;
+                }
+            }
+
+            &.orange {
+                .status-select .md-select-value {
+                    color: $orange-label;
+                }
+            }
+
+            &.green {
+                .status-select .md-select-value {
+                    color: $bright-green-label;
+                }
+            }
+
+            &.gray {
+                .status-select .md-select-value {
+                    color: $middle-gray-color;
+                }
+            }
+
+            &.dark-gray {
+                .status-select .md-select-value {
+                    color: $dark-gray-color;
+                }
+            }
+
+            &.red {
+                .status-select .md-select-value {
+                    color: $red-color;
+                }
+            }
+
+            .inactivity-reason {
+                .pad-left-0 {
+                    padding-left: 0;
+                }
+
+                .date-block {
+                    width: 120px;
+                    min-width: 120px;
+                    padding-right: 25px;
+
+                    &:before {
+                        right: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+

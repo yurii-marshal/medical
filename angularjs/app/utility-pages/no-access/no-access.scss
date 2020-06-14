@@ -1,0 +1,17 @@
+.no-access-wrap {
+    background-color: $lighter-gray-color;
+
+    .no-access-text{
+        color: $middle-gray-color;
+        font-size: 16px;
+    }
+
+    .no-access-icon-block {
+        padding: 25px 0;
+
+        md-icon {
+            width: 100px;
+            height: 100px;
+        }
+    }
+}

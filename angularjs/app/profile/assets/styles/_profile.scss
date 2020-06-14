@@ -1,0 +1,46 @@
+.has_modal {
+	md-dialog {
+		opacity: 0;
+		transform: none !important;
+		box-shadow: none !important;
+	}
+}
+
+.addresses-block {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    .addresses-fields {
+        width: 50%;
+        min-width: 50%;
+
+        &:first-of-type {
+            padding-right: 30px;
+        }
+
+        &:last-of-type {
+            padding-left: 30px;
+            position: relative;
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 1px;
+                height: 100%;
+                background-color: $lighter-gray-color;
+            }
+
+            .active-title {
+                justify-content: flex-start;
+            }
+        }
+
+		> .flex-row {
+            margin-left: -15px;
+            margin-right: -15px;
+        }
+    }
+}

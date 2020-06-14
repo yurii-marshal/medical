@@ -1,0 +1,28 @@
+customer-specific-text {
+    > * {
+        font-family: "Roboto";
+    }
+
+    .wizard-title-text {
+        > * {
+            margin: 0;
+        }
+    }
+    table {
+        width: 100%;
+        margin-bottom: 10px;
+
+        > thead {
+            th {
+                width: 50%;
+            }
+        }
+
+
+    }
+    u {
+        text-decoration: underline;
+    }
+
+
+}

@@ -1,0 +1,21 @@
+<div class="infinite-scroll-bg billing-main">
+
+    <toolbar items="billing.toolbarItems"
+             ng-if="(billing.activeTabName !== 'Authorizations') &&
+                    (billing.activeTabName !== 'Prescriptions') &&
+                    (billing.activeTabName !== 'CMNs') &&
+                    (billing.activeTabName !== 'Denials') &&
+                    (billing.activeTabName !== 'Invoices')">
+    </toolbar>
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.billing.invoices">Billing</a>
+        <a href="javascript:void(0)" class="active">{{billing.activeTabName}}</a>
+
+        <drowz-tabs items="billing.tabs"></drowz-tabs>
+    </div>
+
+    <div ui-view></div>
+
+</div>

@@ -1,0 +1,98 @@
+<div class="flex-row">
+
+    <div class="w150px left-border">
+        <div class="info-block">
+            <div class="info-block-label">Invoice:</div>
+            <div class="info-block-body">
+                <a href="javascript:void(0);"
+                   class="underline-after-link"
+                   ui-sref="root.invoice.details({ invoiceId: $ctrl.invoice.InvoiceId })"
+                   ng-bind="$ctrl.invoice.DisplayId"></a>
+            </div>
+        </div>
+        <div class="info-block">
+            <div class="info-block-label">Balance:</div>
+            <div class="info-block-body">
+                <span ng-bind="$ctrl.invoice.Balance.Currency"></span>
+                <span class="font-semibold"
+                      ng-bind="$ctrl.invoice.Balance.Amount | absNumber:2"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="grow-1 pad-left-20">
+
+        <div class="flex-row">
+            <div class="info-block w250px">
+                <div class="info-block-label">Patient:</div>
+                <div class="info-block-body">
+                    <span ng-bind="$ctrl.invoice.Customer.Name | fullname"></span>
+                </div>
+            </div>
+            <div class="info-block w350px left-divider">
+                <div class="info-block-label">Bill To:</div>
+                <div class="info-block-body">
+                    <span ng-bind="$ctrl.invoice.BillTo.Name"></span>
+                </div>
+            </div>
+            <div class="info-block w200px left-divider">
+                <div class="info-block-label">Charge:</div>
+                <div class="info-block-body">
+                    <span ng-bind="$ctrl.invoice.Charge.Currency"></span>
+                    <span class="font-semibold"
+                          ng-bind="$ctrl.invoice.Charge.Amount"></span>
+                </div>
+            </div>
+            <div class="info-block grow-1 status-label-container">
+                <div class="info-block-label">&nbsp;</div>
+                <div class="info-block-body">
+                    <div class="status-label {{$ctrl.invoice.typeClass}}">
+                        <span ng-bind="$ctrl.invoice.Status.Name"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <table class="drowz-table small-table">
+            <tr class="drowz-table-header">
+                <th class="w250px">DOS:</th>
+                <th class="w350px">HCPCS:</th>
+                <th>Modifiers:</th>
+                <th>Qty:</th>
+                <th>Charge:</th>
+                <th>Balance:</th>
+            </tr>
+            <tr class="drowz-table-row"
+                ng-repeat="serviceLine in $ctrl.invoice.ServiceLines track by $index">
+                <td class="w250px">
+                    <span ng-bind="serviceLine.ServicePeriod.From | amDateFormat: 'MM/DD/YYYY'"></span>
+                    <span> - </span>
+                    <span ng-bind="serviceLine.ServicePeriod.To | amDateFormat: 'MM/DD/YYYY'"></span>
+                </td>
+                <td class="w350px"
+                    ng-bind="serviceLine.HcpcsCode.Name"></td>
+                <td>
+                    <div class="code-with-slash"
+                         ng-repeat="(key, value) in serviceLine.Modifiers"
+                         ng-bind="value.Name || '-'"></div>
+                </td>
+                <td ng-bind="serviceLine.Quantity"></td>
+                <td>
+                    <span class="font-semibold"
+                          ng-bind="serviceLine.Charge.Currency"></span>
+                    <span class="font-semibold"
+                          ng-bind="serviceLine.Charge.Amount"></span>
+                </td>
+                <td>
+                    <span class="font-semibold"
+                          ng-bind="serviceLine.Balance.Currency"></span>
+                    <span class="font-semibold"
+                          ng-bind="serviceLine.Balance.Amount"></span>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+</div>

@@ -1,0 +1,326 @@
+<div class="infinite-scroll-bg purchase-orders-manage full-height-with-footer"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="purchaseOrderManagePage"
+     ng-form="purchaseOrderManage.purchaseOrderForm"
+>
+
+    <div class="top-block">
+        <div class="breadcrumbs transparent-bg">
+            <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+            <a href="javascript:void(0)" ui-sref="root.inventory.list">Inventory</a>
+            <a href="javascript:void(0)" ui-sref="root.inventory.purchase-orders">Purchase Orders</a>
+            <a href="javascript:void(0)" class="active">{{ !!purchaseOrderManage.purchaseOrderId ? 'Edit' : 'New' }} Purchase Order</a>
+        </div>
+
+        <div class="drowz-wizard-body-flex">
+
+            <div class="grow-1">
+                <div class="flex-row">
+                    <div class="drowz-wizard-block no-float grow-1">
+                        <div class="drowz-wizard-block-title">
+                            <div class="wizard-title-text">Details:</div>
+                        </div>
+                        <div class="drowz-wizard-block-body">
+                            <div class="drowz-wizard-block-row">
+                                <!--<div class="info-block">-->
+                                    <!--<div class="padding-top-15">Vendor:</div>-->
+                                <!--</div>-->
+                                <div class="info-block block-width-400">
+                                    <!--<md-input-container>-->
+                                        <!--<label></label>-->
+                                        <!--<md-select aria-label="..."-->
+                                                   <!--ng-model="purchaseOrderManage.model.Vendor"-->
+                                                   <!--ng-model-options="{trackBy: '$value.Id'}"-->
+                                                   <!--name="vendor"-->
+                                                   <!--ng-required="true"-->
+                                                   <!--clear-on-click-->
+                                        <!--&gt;-->
+                                            <!--<md-option ng-repeat="item in purchaseOrderManage.vendors"-->
+                                                       <!--ng-value="item">-->
+                                                <!--{{ item.Name }}-->
+                                            <!--</md-option>-->
+                                        <!--</md-select>-->
+                                        <!--<div ng-messages="purchaseOrderManage.purchaseOrderForm.vendor.$error" class="md-input-messages-nice">-->
+                                            <!--<div ng-message="required">This field is required</div>-->
+                                        <!--</div>-->
+                                    <!--</md-input-container>-->
+
+                                    <md-autocomplete-with-infinite-scroll md-no-cache="true"
+                                                                          md-selected-item="purchaseOrderManage.model.Vendor"
+                                                                          md-selected-item-change="purchaseOrderManage.onVendorChange()"
+                                                                          md-search-text="searchVendor"
+                                                                          md-items="vendor in purchaseOrderManage.getVendors(searchVendor, pageIndex)"
+                                                                          md-item-text="vendor.Name"
+                                                                          md-input-name="vendor"
+                                                                          md-min-length="0"
+                                                                          ng-required="true"
+                                                                          md-floating-label="Vendor:"
+                                                                          md-require-match="true"
+                                                                          clear-on-click>
+                                        <md-item-template>
+                                            <span md-highlight-flags="i" title="{{ vendor.Name }}">{{ vendor.Name }}</span>
+                                        </md-item-template>
+                                        <md-not-found>No vendors found</md-not-found>
+                                        <div ng-messages="purchaseOrderManage.purchaseOrderForm.vendor.$error" class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                            <div ng-message="md-require-match">Vendor has to be selected</div>
+                                        </div>
+                                    </md-autocomplete-with-infinite-scroll>
+                                </div>
+                                <div class="info-block grow-1 left-divider">
+                                    <div class="info-block-label">Address:</div>
+                                    <div class="info-block-body">{{ purchaseOrderManage.model.vendorContactObj.FullAddress || '-' }}</div>
+                                </div>
+                                <div class="info-block w250px left-divider">
+                                    <div class="info-block-label">Email:</div>
+                                    <div class="info-block-body">{{ purchaseOrderManage.model.vendorContactObj.Email || '-' }}</div>
+                                </div>
+                                <div class="info-block w200px left-divider">
+                                    <div class="info-block-label">Phone:</div>
+                                    <div class="info-block-body">{{ purchaseOrderManage.model.vendorContactObj.Phone || '-' }}</div>
+                                </div>
+                                <div class="info-block w200px left-divider">
+                                    <div class="info-block-label">Website:</div>
+                                    <div class="info-block-body">{{ purchaseOrderManage.model.vendorContactObj.WebSite || '-' }}</div>
+                                </div>
+                                <div class="info-block w200px left-divider">
+                                    <div class="info-block-label">Fax:</div>
+                                    <div class="info-block-body">{{ purchaseOrderManage.model.vendorContactObj.Fax || '-' }}</div>
+                                </div>
+                            </div>
+                            <div class="drowz-wizard-block-row">
+                                <div class="info-block grow-1">
+                                    <md-input-container>
+                                        <label>type your notes here...</label>
+                                        <textarea ng-maxlength="purchaseOrderManage.notesMaxLength"
+                                                  ng-model="purchaseOrderManage.model.Notes"
+                                                  name="notes"
+                                        ></textarea>
+                                        <div ng-messages="purchaseOrderManage.purchaseOrderForm.notes.$error" class="md-input-messages-nice">
+                                            <div ng-message="maxlength" class="md-input-message-animation">
+                                                Additional info is to long, max length is {{ purchaseOrderManage.notesMaxLength }} symbols
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-row">
+                    <div class="drowz-wizard-block no-float grow-1">
+                        <div class="drowz-wizard-block-title">
+                            <div class="wizard-title-text">Items:</div>
+                            <md-button class="md-raised md-primary middle-btn"
+                                       ng-click="purchaseOrderManage.addItems()">Add</md-button>
+                        </div>
+                        <div class="drowz-wizard-block-body">
+                            <div class="purchase-order-item" ng-repeat="item in purchaseOrderManage.model.Products track by $index">
+                                <div class="drowz-wizard-block-row">
+                                    <div class="info-block item-img w150px">
+                                        <div class="item-img-container">
+                                            <img src=""
+                                                 ng-src="{{
+                                                     item.PictureUrl
+                                                     ? (purchaseOrderManage.WEB_API_INVENTORY_SERVICE_URI + item.PictureUrl)
+                                                     : purchaseOrderManage.noImage
+                                                 }}"
+                                                 alt="" class="item-img">
+                                        </div>
+                                    </div>
+                                    <div class="info-block grow-1">
+                                        <div class="info-block-label">Name:</div>
+                                        <div class="info-block-body">{{ item.Name }}</div>
+                                    </div>
+                                    <div class="info-block w200px left-divider">
+                                        <div class="info-block-label">Manufacturer:</div>
+                                        <div class="info-block-body">{{ item.Manufacturer || '-' }}</div>
+                                    </div>
+                                    <div class="info-block w150px left-divider">
+                                        <div class="info-block-label">Part #:</div>
+                                        <div class="info-block-body">{{ item.PartNumber || '-' }}</div>
+                                    </div>
+                                    <div class="info-block w120px left-divider">
+                                        <div class="info-block-label">HCPCS:</div>
+                                        <div class="info-block-body flex-cont">
+                                            <div popover-directive="item.allHcpcsCodes"
+                                                 hide-first-item="true"
+                                                 min-width="50"></div>
+                                        </div>
+                                    </div>
+                                    <div class="info-block w100px number-info-block left-divider">
+                                        <div class="info-block-label">Qty:</div>
+                                        <div class="info-block-body">
+                                            <md-input-container class="number-container">
+                                                <label></label>
+                                                <input type="text"
+                                                       ng-model="item.Count"
+                                                       only-digits-with-length
+                                                       min="1"
+                                                       ng-required="true"
+                                                       name="qty{{$index}}"
+                                                >
+                                                <div ng-messages="purchaseOrderManage.purchaseOrderForm['qty' + $index].$error"
+                                                     class="md-input-messages-nice">
+                                                    <div ng-message="required">Required</div>
+                                                </div>
+                                            </md-input-container>
+                                        </div>
+                                    </div>
+                                    <div class="info-block w150px left-divider">
+                                        <div class="info-block-label">Item Price:</div>
+                                        <div class="info-block-body">
+                                            <md-input-container class="currency-container">
+                                                <div class="currency-icon">$</div>
+                                                <label></label>
+                                                <input type="number"
+                                                       min="0"
+                                                       step="0.01"
+                                                       ng-model="item.Price"
+                                                       name="price{{$index}}"
+                                                       price-validator
+                                                       ng-required="true"
+                                                >
+                                                <div ng-messages="purchaseOrderManage.purchaseOrderForm['price' + $index].$error"
+                                                     class="md-input-messages-nice">
+                                                    <div ng-message="min">Min price amount is 0</div>
+                                                    <div ng-message="price">Max 2 digits after point</div>
+                                                    <div ng-message="required">Required</div>
+                                                </div>
+                                            </md-input-container>
+                                        </div>
+                                    </div>
+                                    <div class="info-block w150px left-divider">
+                                        <div class="info-block-label">Discount:</div>
+                                        <div class="info-block-body">
+                                            <md-input-container class="currency-container">
+                                                <div class="currency-icon">%</div>
+                                                <label></label>
+                                                <input type="number"
+                                                       min="0"
+                                                       max="100"
+                                                       step="1"
+                                                       ng-model="item.Discount"
+                                                       name="discount{{$index}}"
+                                                >
+                                                <div ng-messages="purchaseOrderManage.purchaseOrderForm['discount' + $index].$error"
+                                                     class="md-input-messages-nice">
+                                                    <div ng-message="min">Min discount is 0</div>
+                                                    <div ng-message="max">Max discount is 100</div>
+                                                </div>
+                                            </md-input-container>
+                                        </div>
+                                    </div>
+                                    <div class="info-block w150px left-divider">
+                                        <div class="info-block-label">Total Price:</div>
+                                        <div class="info-block-body">
+                                            <md-input-container class="currency-container">
+                                                <div class="currency-icon">$</div>
+                                                <label></label>
+                                                <input type="text"
+                                                       ng-value="purchaseOrderManage.calculateTotalPrice(item)"
+                                                       ng-readonly="true"
+                                                >
+                                            </md-input-container>
+                                        </div>
+                                    </div>
+                                    <div class="info-block button-cell">
+                                        <div class="info-block-label">&nbsp;</div>
+                                        <div class="info-block-body">
+                                            <a href="javascript:void(0);"
+                                               class="delete-icon-btn"
+                                               confirm-ng-click="purchaseOrderManage.deleteItem($index)"
+                                               confirm-msg="'Are you sure you want to remove item <span class=\'active-text\'>{0}</span> ?'.format(item.Name)"
+                                               confirm-btn-ok="Remove"
+                                               confirm-btn-cancel="Cancel"
+                                               confirm-title="Remove Item"
+                                               confirm-class-name="max-width-450">
+                                                <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="item-components pad-left-150" ng-if="item.Bundle">
+                                    <v-accordion class="flow-accordion grow-1">
+                                        <v-pane expanded="false">
+                                            <v-pane-header class="flow-accordion-title"
+                                                           ng-click="purchaseOrderManage.getProductComponents(item);"
+                                            >
+                                                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                                                         class="flow-accordion-title-icon"
+                                                ></md-icon>
+                                                <span>Included Items:</span>
+                                            </v-pane-header>
+                                            <v-pane-content bs-loading-overlay
+                                                            bs-loading-overlay-reference-id="bundleComponents{{ item.Id }}"
+                                            >
+                                                <table class="drowz-table regular-table">
+                                                    <tr class="drowz-table-header">
+                                                        <th class="number-cell" width="45">#</th>
+                                                        <th width="110">Photo:</th>
+                                                        <th>Name:</th>
+                                                        <th>Manufacturer:</th>
+                                                        <th>ID/Part #:</th>
+                                                        <th>HCPCS:</th>
+                                                        <th width="80">Qty</th>
+                                                    </tr>
+                                                    <tr class="drowz-table-row" ng-repeat="component in item.Components">
+                                                        <td class="number-cell">{{ $index + 1 }}.</td>
+                                                        <td class="item-img-cell">
+                                                            <div class="item-img-container">
+                                                                <img src=""
+                                                                     ng-src="{{
+                                                                        component.PictureUrl
+                                                                            ? (purchaseOrderManage.WEB_API_INVENTORY_SERVICE_URI + component.PictureUrl)
+                                                                            : purchaseOrderManage.noImage
+                                                                     }}" alt=""
+                                                                     class="item-img">
+                                                            </div>
+                                                        </td>
+                                                        <td ng-bind="component.Name"></td>
+                                                        <td ng-bind="component.Manufacturer"></td>
+                                                        <td ng-bind="component.PartNumber"></td>
+                                                        <td>
+                                                            <div class="flex-cont">
+                                                                <div popover-directive="component.allHcpcsCodes"
+                                                                     hide-first-item="true"
+                                                                     min-width="50"></div>
+                                                            </div>
+                                                        </td>
+                                                        <td ng-bind="component.Count"></td>
+                                                    </tr>
+                                                </table>
+
+                                                <no-records text="Components:"
+                                                            class="no-records-small"
+                                                            ng-if="item.componentsLoaded && !item.Components.length"
+                                                            no-default-text="true">
+                                                </no-records>
+                                            </v-pane-content>
+                                        </v-pane>
+                                    </v-accordion>
+                                </div>
+                            </div>
+                            <no-records is-default-text="false"
+                                        text="Please select items from inventory catalog"
+                                        ng-if="!purchaseOrderManage.model.Products.length"
+                                        class="grow-1"></no-records>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="flow-body-footer">
+        <md-button class="md-raised main-button"
+                   ng-click="purchaseOrderManage.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="purchaseOrderManage.save()"
+        >{{ !!purchaseOrderManage.purchaseOrderId ? 'Save' : 'Create' }}
+        </md-button>
+    </div>
+
+</div>

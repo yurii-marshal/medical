@@ -1,0 +1,187 @@
+<div ng-form="step2Form">
+    <div class="drowz-wizard-body-flex">
+        <div class="flex-50-percent">
+            <div class="drowz-wizard-block no-float">
+                <div class="drowz-wizard-block-title">
+                    <div class="wizard-title-text">Diagnosis:</div>
+                </div>
+                <div class="drowz-wizard-block-body">
+                    <div class="drowz-wizard-block-row">
+                        <div class="info-block grow-1 w100">
+                            <div class="add-autocomplete">
+                                <md-autocomplete class="autocomplete-with-addBtn input-no-padding"
+                                                 md-selected-item="step.diagnose"
+                                                 md-search-text="searchDiagnosis"
+                                                 md-items="diagnose in step.getDiagnosis(searchDiagnosis)"
+                                                 md-item-text="diagnose.Description"
+                                                 md-min-length="1"
+                                                 md-floating-label="Add Diagnosis"
+                                                 md-no-cache="true"
+                                >
+                                    <md-item-template>
+                                            <span md-highlight-text="searchDiagnosis"
+                                                  md-highlight-flags="i"
+                                                  title="{{diagnose.Description}}">
+                                                {{diagnose.Description}}
+                                            </span>
+                                    </md-item-template>
+                                    <md-icon ng-click="step.addDiagnose(step.diagnose);"
+                                             md-svg-src="assets/images/default/plus-square.svg"
+                                             class="add-item-btn"
+                                             ng-class="{'disabled': step.diagnose == undefined || step.diagnose == ''}"
+                                    ></md-icon>
+                                </md-autocomplete>
+                            </div>
+                            <table class="drowz-table"
+                                   ng-show="step.model.diagnosis.length"
+                            >
+                                <tr class="drowz-table-header">
+                                    <th class="regular-left-padding">Code</th>
+                                    <th>Diagnosis</th>
+                                    <th class="show-date-cell">Addition Date</th>
+                                    <th class="buttons-cell">&nbsp;</th>
+                                </tr>
+                                <tr class="drowz-table-row"
+                                    ng-repeat="diagnose in step.model.diagnosis"
+                                >
+
+                                    <td class="regular-left-padding">{{diagnose.Text}}</td>
+                                    <td>{{diagnose.Description}}</td>
+                                    <td class="show-date-cell">{{diagnose.AdditionDate | amUtc | amDateFormat: "MM/DD/YYYY"}}</td>
+                                    <td class="buttons-cell">
+                                        <a href="javascript:void(0);"
+                                           class="delete-icon-btn"
+                                           ng-click="step.model.diagnosis.splice($index, 1)"
+                                        >
+                                            <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <no-records ng-if="!step.model.diagnosis.length"
+                                        is-default-text="false"
+                                        text="Sorry, there are no added Diagnosis"
+                                        class="no-records-small"></no-records>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-50-percent">
+            <div class="drowz-wizard-block no-float">
+                <div class="drowz-wizard-block-title">
+                    <div class="wizard-title-text">Medications:</div>
+                </div>
+                <div class="drowz-wizard-block-body">
+                    <div class="drowz-wizard-block-row">
+                        <div class="info-block grow-1 w100">
+                            <div class="add-autocomplete">
+                                <md-autocomplete class="autocomplete-with-addBtn input-no-padding"
+                                                 md-selected-item="step.medication"
+                                                 md-no-cache="true"
+                                                 md-search-text="searchMedication"
+                                                 md-items="item in step.getMedications(searchMedication)"
+                                                 md-item-text="item.text"
+                                                 md-min-length="1"
+                                                 md-floating-label="Add Medications"
+                                >
+                                    <md-item-template>
+                                        <span md-highlight-text="searchMedication" md-highlight-flags="i" title="{{item.text}}">
+                                            {{item.text}}
+                                        </span>
+                                    </md-item-template>
+                                    <md-icon ng-click="step.addMedication(step.medication)"
+                                             md-svg-src="assets/images/default/plus-square.svg"
+                                             class="add-item-btn"
+                                             ng-class="{'disabled': step.medication == undefined || step.medication == ''}"
+                                    ></md-icon>
+                                </md-autocomplete>
+                            </div>
+                            <table class="drowz-table"
+                                   ng-show="step.model.medications.length"
+                            >
+                                <tr class="drowz-table-header">
+                                    <th class="regular-left-padding">Medications</th>
+                                    <th class="show-date-cell">Addition Date</th>
+                                    <th class="buttons-cell">&nbsp;</th>
+                                </tr>
+                                <tr class="drowz-table-row" ng-repeat="medication in step.model.medications">
+                                    <td class="regular-left-padding">{{medication.text}}</td>
+                                    <td class="show-date-cell">{{medication.AdditionDate | amUtc | amDateFormat: "MM/DD/YYYY"}}</td>
+                                    <td class="buttons-cell">
+                                        <a href="javascript:void(0);"
+                                           class="delete-icon-btn"
+                                           ng-click="step.model.medications.splice($index, 1)"
+                                        >
+                                            <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <no-records ng-if="!step.model.medications.length"
+                                        is-default-text="false"
+                                        text="Sorry, there are no added Medications"
+                                        class="no-records-small"></no-records>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="drowz-wizard-body-flex">
+        <div class="drowz-wizard-block grow-1 no-float">
+                <div class="drowz-wizard-block-title">
+                    <div class="wizard-title-text">Hospital admission:</div>
+                    <md-button class="md-primary md-raised small-btn" ng-click="step.addAdmission($event)">Add New</md-button>
+                </div>
+                <div class="drowz-wizard-block-body"
+                     ng-class="{'drowz-wizard-block-body-table': step.model.admissions.length}"
+                >
+                    <table class="drowz-table"
+                           ng-if="step.model.admissions.length"
+                    >
+                        <tr class="drowz-table-header">
+                            <th>Reason</th>
+                            <th>Hospital</th>
+                            <th>Hospital Address</th>
+                            <th class="show-date-cell">Admission Date</th>
+                            <th class="show-date-cell">Discharge Date</th>
+                            <th class="buttons-cell"></th>
+                        </tr>
+                        <tr class="drowz-table-row" ng-repeat="admission in step.model.admissions">
+                            <td>
+                                <div ng-repeat="reason in admission.Diagnoses">{{reason.CodeWithDescription}}</div>
+                            </td>
+                            <td>{{admission.Hospital}}</td>
+                            <td>{{admission.HospitalAddress}}</td>
+                            <td class="show-date-cell">{{admission.AdmissionDate}}</td>
+                            <td class="show-date-cell">{{admission.DischargeDate}}</td>
+                            <td class="buttons-cell">
+                                <a href="javascript:void(0);" class="edit-info-icon" ng-click="step.addAdmission($event, admission)">
+                                    <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                                </a>
+                                <a href="javascript:void(0);" class="delete-icon-btn"
+                                   confirm-ng-click="step.deleteAdmission($index)"
+                                   confirm-msg="'Are you sure you want to delete this hospital admission?'"
+                                   confirm-btn-ok="Yes"
+                                   confirm-btn-cancel="No"
+                                   confirm-title="Delete Hospital Admission">
+                                    <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <no-records ng-if="!step.model.admissions.length"
+                                is-default-text="false"
+                                text="Sorry, there are no added Hospital Admissions"
+                                class="no-records-small"></no-records>
+                </div>
+            </div>
+    </div>
+</div>

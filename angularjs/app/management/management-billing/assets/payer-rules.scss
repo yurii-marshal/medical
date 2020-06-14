@@ -1,0 +1,204 @@
+.payer-rules-tab {
+    counter-reset: numb;
+
+    .hint-for-hcpcs {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
+
+    md-input-container:not(.md-input-has-value):not(.md-input-focused).fix-label-for-chips {
+        label:not(.md-no-float):not(.md-container-ignore){
+            line-height: 14px;
+            padding-left: 2px;
+        }
+    }
+
+
+    .left-divider {
+        position: relative;
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: $lighter-gray-color;
+        }
+    }
+
+    .payer-rules-header {
+        padding-bottom: 20px;
+    }
+
+    .payer-rules-content {
+        :not(.add-autocomplete){
+            md-input-container {
+                margin: 0;
+                width: 100%;
+            }
+
+            md-progress-linear.md-inline {
+                top: 31px;
+            }
+        }
+
+        .selected-hcpcs-codes {
+            flex-grow: 2;
+        }
+
+        .payer-rules-row {
+            padding-top: 20px;
+            border-top: 1px solid $lighter-gray-color;
+
+            &.flex-row,
+            &.flex-row.space-between {
+                border:none;
+                align-items: flex-start;
+            }
+
+            &.flex-row.space-between {
+                padding-top: 5px;
+                margin-bottom: 22px;
+            }
+
+            .top-info-block {
+                margin-bottom: 30px;
+            }
+
+            > .add-autocomplete {
+                margin-top: 5px;
+                margin-right: 15px;
+            }
+
+            .info-block {
+                padding: 0;
+
+                &.selected-hcpcs-codes{
+                    margin: 0;
+                    padding: 0 5px 5px;
+
+                    &::after {
+                        display: none;
+                    }
+                }
+            }
+        }
+
+        .addition-info {
+            white-space: nowrap;
+        }
+
+        .payer-rules-search {
+            width: 475px;
+            margin: 8px 0 15px;
+        }
+
+        .payer-rules-confirmation-switch {
+            margin: 0 60px 0 25px;
+        }
+
+        .delete-icon-btn {
+            margin-top: 10px;
+
+            &.resupply-rules-delete-btn {
+                margin-top: 21px;
+            }
+        }
+
+        .payer-rules-flex-row {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 23px 0 10px 30px;
+            border-top: 1px solid $light-gray-color;
+
+            &::before {
+                position: absolute;
+                top: 45px;
+                left: 5px;
+                font-size:$font-size-md;
+                counter-increment: numb;
+                content: counter(numb) '.';
+            }
+
+            &:last-child {
+                border-bottom: 1px solid $light-gray-color;
+            }
+
+            .add-autocomplete {
+                margin-right: 0;
+                margin-top: 6px;
+            }
+
+            .tasks-accordion {
+                padding: 0 2px;
+
+                .flow-accordion-title {
+                    margin-top: 20px;
+                }
+
+                .accordion-line {
+                    margin-right: 30px;
+                }
+
+                .clear-field {
+                    margin-top: -3px;
+                }
+
+                .due-block {
+                    margin-bottom: 0;
+
+                    .info-block-label {
+                        margin-bottom: 0;
+                    }
+
+                    .info-block {
+                        padding: 0;
+                        margin-bottom: 0;
+
+                        &.autocomplete-chips-container {
+
+                            .invalid {
+                                .md-input-messages-nice {
+                                    margin-bottom: -24px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .info-block {
+            padding: 0 15px;
+            padding-top: 10px;
+
+            &.selected-hcpcs-codes {
+                position: relative;
+                min-height: 60px;
+                margin-top: 3px;
+            }
+
+            &.select-info {
+                &-no-label{
+                    padding-top: 0;
+                }
+
+                md-input-container {
+                    margin: 17px 0 0;
+                    width: 100%;
+
+                    > label {
+                        margin: 0;
+                        padding-bottom: 2px;
+                    }
+                }
+            }
+        }
+    }
+}

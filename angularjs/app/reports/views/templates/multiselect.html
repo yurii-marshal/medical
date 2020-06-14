@@ -1,0 +1,60 @@
+<div class="multiselect">
+    <div class="multiselect-col">
+        <div class="multiselect-col-header">Available columns:</div>
+        <select class="multiselect-select"
+                ng-model="available_columns_selected_arr"
+                multiple="multiple"
+                size="7"
+                ng-dblclick="moveOptionsRight();">
+            <option ng-repeat="item in available_columns_arr"
+                    value="{{$index}}"
+                    ng-bind="item.Name"></option>
+        </select>
+    </div>
+    <div class="multiselect-col multiselect-col-btns">
+        <md-button ng-click="moveOptionsRight();"
+                   class="multiselect-btn btn-right"
+                   aria-label="...">
+            <md-icon md-svg-src="assets/images/default/chevron.svg"></md-icon>
+        </md-button>
+        <md-button ng-click="moveOptionsLeft();"
+                   class="multiselect-btn btn-left"
+                   aria-label="...">
+            <md-icon md-svg-src="assets/images/default/chevron.svg"></md-icon>
+        </md-button>
+    </div>
+    <div class="multiselect-col">
+        <div class="multiselect-col-header">Selected columns:</div>
+        <select class="multiselect-select"
+                ng-model="selected_columns_selected_arr"
+                multiple="multiple"
+                size="7"
+                ng-dblclick="moveOptionsLeft();">
+            <option ng-repeat="item in selected_columns_arr"
+                    value="{{$index}}"
+                    ng-bind="item.Name"></option>
+        </select>
+    </div>
+    <div class="multiselect-col multiselect-col-btns">
+        <md-button ng-click="moveOptionTop();"
+                   class="multiselect-btn btn-dbl-top"
+                   aria-label="...">
+            <md-icon md-svg-src="assets/images/default/chevron-double.svg"></md-icon>
+        </md-button>
+        <md-button ng-click="moveOptionUp();"
+                   class="multiselect-btn btn-top"
+                   aria-label="...">
+            <md-icon md-svg-src="assets/images/default/chevron.svg"></md-icon>
+        </md-button>
+        <md-button ng-click="moveOptionDown();"
+                   class="multiselect-btn btn-bottom"
+                   aria-label="...">
+            <md-icon md-svg-src="assets/images/default/chevron.svg"></md-icon>
+        </md-button>
+        <md-button ng-click="moveOptionBottom();"
+                   class="multiselect-btn btn-dbl-bottom"
+                   aria-label="...">
+            <md-icon md-svg-src="assets/images/default/chevron-double.svg"></md-icon>
+        </md-button>
+    </div>
+</div>

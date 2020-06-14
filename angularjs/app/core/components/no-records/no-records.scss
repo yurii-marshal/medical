@@ -1,0 +1,122 @@
+.no-records {
+    padding : 19px 30px;
+    color : $gray-disabled;
+    line-height: initial;
+    font-size: $font-size-base;
+
+    &.no-side-padding-records {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    &.no-padding-records {
+        padding: 0;
+    }
+}
+
+no-records {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 140px;
+    max-height: 100%;
+    width: 100%;
+    flex-grow: 1;
+    overflow: hidden;
+
+    .fullpage-icon {
+        max-height: 100%;
+
+        > md-icon {
+            max-height: 90%;
+            width: auto;
+        }
+
+        .no-records-text {
+            position: relative;
+            top: -20px;
+        }
+    }
+
+    &.no-records-small {
+        height: 75px;
+    }
+
+    &.no-records-small {
+        min-height: 60px;
+
+        .no-records {
+            min-height: 60px;
+            padding: 10px;
+            font-size: 14px;
+            line-height: 20px;
+
+            > md-icon {
+                width: 50px;
+                height: 51px;
+                opacity: 1;
+            }
+
+            .no-records-text {
+                top: auto;
+            }
+        }
+    }
+
+    .with-icon {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 140px;
+        height: 100%;
+        color: $gray-color-main;
+        font-size: 18px;
+        line-height: 28px;
+        font-weight: 400;
+
+        > md-icon {
+            display: block;
+            width: 87px;
+            height: 89px;
+            margin: 0 10px 0 0;
+            color: $gray-color-main;
+            transform: scale(-1, 1);
+            opacity: 0.4;
+        }
+
+        &.fullpage-icon {
+            justify-content: center;
+            flex-grow: 1;
+            width: 100%;
+            font-size: 24px;
+
+            > md-icon {
+                width: 280px;
+                height: 286px;
+            }
+        }
+    }
+}
+
+.sidebar-padding-block {
+    no-records.no-records-small {
+        .no-records {
+            padding: 0;
+        }
+    }
+}
+
+.drowz-wizard-block-body {
+    > no-records.no-records-small {
+        .no-records {
+            padding: 0 0 10px 0;
+        }
+    }
+
+    > no-records {
+        .no-records:not(.no-records-small) {
+            padding: 0 0 10px 0;
+        }
+    }
+}

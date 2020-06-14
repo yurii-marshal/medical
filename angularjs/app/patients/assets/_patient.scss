@@ -1,0 +1,233 @@
+.patient-list-page {
+    width: 100%;
+
+    .custom-action-icon {
+        position: fixed;
+        top: calc(#{$main-menu-height} + #{$breadscrumbs-height} - 19px);
+        right: 62px;
+    }
+}
+
+.add-edit-patient,
+.patient-medical-records {
+    .add-item-btn.plus-circle {
+        position: relative;
+        top: auto;
+        left: auto;
+        margin: 0 0 0 10px;
+    }
+}
+
+.patient-information-block {
+    .flex-row {
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+}
+
+.add-edit-patient {
+    padding: 20px;
+
+    .row {
+        [class^="col-xs-"] {
+            &.no-left-padding {
+                padding-left: 0;
+            }
+
+            &.no-right-padding {
+                padding-right: 0;
+            }
+        }
+    }
+
+    .contacts-container {
+        padding-left: 30px;
+    }
+
+    .flow-body-block {
+        padding-top: 10px;
+        padding-bottom: 10px;
+
+        &.first-block {
+            padding-right: 30px;
+        }
+
+        + .flow-body-block {
+            padding-top: 0;
+        }
+    }
+
+    .flow-body {
+        > .col-xs-8, > .col-xs-4 {
+            padding-left: 0;
+        }
+    }
+
+    .sign-on-file-block {
+        .shared-label {
+            position: absolute;
+            top: 0;
+            left: 15px;
+            right: auto;
+            line-height: 11px;
+            font-weight: 400;
+            font-size: 11px;
+        }
+
+        md-input-container + md-input-container {
+            margin-left: 20px;
+        }
+    }
+}
+
+.patient-demographics {
+    padding: 20px;
+
+    .edit-text-btn {
+        margin-right: 0;
+    }
+}
+
+.add-edit-patient, .patient-demographics {
+    $contacts-block-width: 300px;
+
+    > .flex-row {
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+
+    .demographics-main-width {
+        width: calc(100% - #{$contacts-block-width});
+        transition: .2s;
+        transform: translateZ(0);
+
+        > .info-block {
+            padding-left: 15px;
+        }
+    }
+
+    .demographics-contacts-width {
+        width: $contacts-block-width;
+        min-width: $contacts-block-width;
+        transition: .2s;
+        transform: translateZ(0);
+
+        .no-records {
+            padding-left: 0;
+        }
+    }
+
+    v-pane-header {
+        .demographics-main-width {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-right: 20px;
+        }
+
+        .demographics-contacts-width {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 30px;
+        }
+    }
+
+    v-pane-content {
+        .demographics-main-width {
+            padding: 0 20px 10px 0;
+
+            > .flex-row {
+                margin-left: -15px;
+                margin-right: -15px;
+            }
+        }
+
+        .demographics-contacts-width {
+            position: relative;
+            padding: 0 20px 10px 30px;
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: -10px;
+                bottom: 0;
+                left: 0;
+                width: 1px;
+                background-color: $lighter-gray-color;
+            }
+
+            > .flex-row {
+                margin-left: -15px;
+                margin-right: -15px;
+
+                &.preferred-phone-row {
+                    padding-top: 15px;
+                }
+            }
+        }
+    }
+
+    v-pane {
+        &:not(.is-expanded) {
+            v-pane-header {
+                .demographics-main-width {
+                    width: 100%;
+                    padding-right: 0;
+                }
+
+                .demographics-contacts-width {
+                    display: none;
+                }
+            }
+
+            .edit-patient-title {
+                .col-xs-8 {
+                    width: 100%;
+                    padding-right: 0;
+                }
+
+                .col-xs-4 {
+                    position: absolute;
+                    width: 0;
+                    right: 0;
+                    opacity: 0;
+                    overflow: hidden;
+                }
+            }
+        }
+    }
+}
+
+.patient-medical-records {
+    padding: 20px;
+}
+
+.demographics-info-block {
+    width: calc((100% - 280px) / 3);
+    max-width: calc((100% - 280px) / 3);
+}
+
+.medical-info-release-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 15px 0 10px;
+
+    &:not(:last-of-type) {
+        border-bottom: 1px solid $lighter-gray-color;
+    }
+}
+
+.insurances-benefits {
+    .toggle-accordion {
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.insurance-block-title {
+    width: 168px;
+
+}

@@ -1,0 +1,218 @@
+<div ng-form="summary.Form">
+    <div class="drowz-wizard-block no-float" ng-if="summary.newItems.length">
+        <div class="drowz-wizard-block-title">
+            <div class="wizard-title-text">New Items:</div>
+            <md-button class="edit-step-btn" aria-label="..." ng-click="summary.goStep('step1.equipments')">
+                <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+            </md-button>
+        </div>
+        <div class="drowz-wizard-block-body"
+             ng-class="{
+                    'opened': summary.isAddedModelsExpanded,
+                    'max-height-with-btn': summary.newItems.length > 5
+                }"
+        >
+            <no-records text="New Items"
+                        ng-if="summary.newItems.length === 0"
+            ></no-records>
+            <div class="wizard-list">
+                <device-items devices="summary.newItems"
+                              editing="false"
+                              is-show-order-id="true"
+                              qty-editable="false"
+                ></device-items>
+            </div>
+            <a href="javascript:void(0);"
+               class="show-more-btn"
+               ng-click="summary.isAddedModelsExpanded = !summary.isAddedModelsExpanded"
+               ng-show="summary.newItems.length > 5"
+            >
+                <md-icon md-svg-src="assets/images/default/chevron-circle.svg"></md-icon>
+                <div class="show-more-text">Show All {{ summary.newItems.length }} Items</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="drowz-wizard-block no-float" ng-if="summary.updatedItems.length">
+        <div class="drowz-wizard-block-title">
+            <div class="wizard-title-text">Updated Items:</div>
+            <md-button class="edit-step-btn"
+                       aria-label="..."
+                       ng-click="summary.goStep('step1.equipments')"
+            >
+                <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+            </md-button>
+        </div>
+        <div class="drowz-wizard-block-body max-height-with-btn"
+             ng-class="{'opened': summary.isUpdatedModelsExpanded}"
+        >
+
+            <div class="wizard-list">
+                <device-items devices="summary.updatedItems"
+                              editing="false"
+                              qty-editable="false"
+                ></device-items>
+            </div>
+
+            <a href="javascript:void(0);" class="show-more-btn"
+               ng-click="summary.isUpdatedModelsExpanded = !summary.isUpdatedModelsExpanded"
+               ng-show="summary.updatedItems.length > 5">
+                <md-icon md-svg-src="assets/images/default/chevron-circle.svg"></md-icon>
+                <div class="show-more-text">Show All {{summary.updatedItems.length}} Items</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="drowz-wizard-block no-float" ng-if="summary.removedItems.length">
+        <div class="drowz-wizard-block-title">
+            <div class="wizard-title-text">Removed Items:</div>
+            <md-button class="edit-step-btn" aria-label="..."
+                       ng-click="summary.goStep('step1.equipments')"
+            >
+                <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+            </md-button>
+        </div>
+        <div class="drowz-wizard-block-body max-height-with-btn"
+             ng-class="{'opened': summary.isRemovedModelsExpanded}"
+        >
+
+            <div class="wizard-list">
+                <device-items devices="summary.removedItems"
+                              editing="false"
+                              qty-editable="false"
+                ></device-items>
+            </div>
+
+            <a href="javascript:void(0);" class="show-more-btn"
+               ng-click="summary.isRemovedModelsExpanded = !summary.isRemovedModelsExpanded"
+               ng-show="summary.removedItems.length > 5"
+            >
+                <md-icon md-svg-src="assets/images/default/chevron-circle.svg"></md-icon>
+                <div class="show-more-text">Show All {{summary.removedItems.length}} Items</div>
+            </a>
+
+        </div>
+    </div>
+
+    <div class="drowz-wizard-block no-float" ng-show="summary.model.notes">
+        <div class="drowz-wizard-block-title">
+            <div class="wizard-title-text">Notes:</div>
+            <md-button class="edit-step-btn" aria-label="..." ng-click="summary.goStep('step3')">
+                <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+            </md-button>
+        </div>
+        <div class="drowz-wizard-block-body">
+            <div class="info-block">
+                <format-string-by-paragraphs text="summary.model.notes"></format-string-by-paragraphs>
+            </div>
+        </div>
+    </div>
+
+    <customer-specific-text></customer-specific-text>
+
+    <div class="drowz-wizard-block no-float">
+        <div class="drowz-wizard-block-title">
+            <div class="wizard-title-text">Signature:</div>
+        </div>
+        <div class="drowz-wizard-block-body">
+            <div class="signature-pad"
+                 signature
+                 parent-this="summary"
+                 set-signature="summary.setSignatureBytes"
+                 signed-bytes="summary.model.signatureBytes">
+            </div>
+            <div class="signature-error">
+                <md-input-container>
+
+                    <input class="hide-this"
+                           aria-label="..."
+                           type="text"
+                           ng-model="summary.model.signature"
+                           name="signatureBytes"
+                           ng-required="true"
+                    >
+                    <div ng-messages="summary.Form.signatureBytes.$error" class="md-input-messages-nice">
+                        <div ng-message="required">Signature is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+    </div>
+
+    <div class="drowz-wizard-block no-float">
+        <div class="drowz-wizard-block-title">
+            <div class="wizard-title-text">Date:</div>
+        </div>
+        <div class="drowz-wizard-block-body">
+            <div class="signature-pad"
+                 signature
+                 parent-this="summary"
+                 set-signature="summary.setSignedDateBytes"
+                 signed-bytes="summary.model.signedDateBytes">
+            </div>
+            <div class="signature-error">
+                <md-input-container style="">
+                    <input class="hide-this" aria-label="..." type="text" ng-model="summary.model.signedDate" name="signedDateBytes" ng-required="true">
+                    <div ng-messages="summary.Form.signedDateBytes.$error" class="md-input-messages-nice">
+                        <div ng-message="required">Signed Date is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+    </div>
+
+    <div class="drowz-wizard-block no-float">
+        <div class="drowz-wizard-block-title">
+            <div class="wizard-title-text">Signed By:</div>
+        </div>
+        <div class="drowz-wizard-block-body">
+            <div class="drowz-wizard-block-row">
+                <div class="info-block col-xs-3">
+                    <md-input-container>
+                        <label>Signed By:</label>
+                        <md-select ng-model="summary.model.signPerson"
+                                   ng-change="summary.signedByChanged(summary.model.signPerson)"
+                                   name="SignPerson"
+                                   ng-required="true">
+                            <md-option ng-value="1" ng-selected="true">Patient</md-option>
+                            <md-option ng-value="2">Designated Caregiver</md-option>
+                        </md-select>
+                        <div ng-messages="summary.Form.SignPerson.$error" class="md-input-messages-nice">
+                            <div ng-message="required"><b>Sign Person</b> must be selected.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div class="info-block col-xs-3">
+                    <md-input-container>
+                        <label>Relationship:</label>
+                        <md-select ng-model="summary.model.relationship"
+                                   name="CaregiverRelationship"
+                                   ng-disabled="summary.model.signPerson != 2"
+                                   ng-required="summary.model.signPerson == 2"
+                                   ng-model-options="{trackBy: '$value.Id'}">
+                            <md-option ng-value="relationship" ng-repeat="relationship in summary.relationships">{{relationship.Text}}</md-option>
+                        </md-select>
+                        <div ng-messages="summary.Form.CaregiverRelationship.$error"
+                             class="md-input-messages-nice">
+                            <div ng-message="required"><b>Relationship</b> must be selected.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div class="info-block col-xs-6">
+                    <md-input-container>
+                        <label>Other:</label>
+                        <input type="text"
+                               name="CaregiverRelationshipOther"
+                               ng-model="summary.model.relationshipOther"
+                               ng-disabled="summary.model.relationship == undefined || summary.model.relationship.Text != 'Other' || summary.model.signPerson != 2"
+                               ng-required="summary.model.relationship != undefined && summary.model.relationship.Text == 'Other' && summary.model.signPerson == 2">
+                        <div ng-messages="summary.Form.CaregiverRelationshipOther.$error"
+                             class="md-input-messages-nice">
+                            <div ng-message="required"><b>Relationship Other</b> required.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

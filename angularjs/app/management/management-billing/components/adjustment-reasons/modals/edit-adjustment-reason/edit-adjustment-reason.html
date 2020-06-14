@@ -1,0 +1,57 @@
+<div class="modal-window category-modal"
+     ng-form="$ctrl.editAdjustmentReasonForm"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="editAdjustmentReasonModal">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/insurance.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>{{ !$ctrl.model.Id ? 'New' : 'Edit' }} Adjustment Reason</h2>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-12 info-block">
+                <md-input-container>
+                    <label>Name:</label>
+                    <input type="text"
+                           ng-model="$ctrl.model.Name"
+                           ng-required="true"
+                           name="name" />
+                    <div ng-messages="$ctrl.editAdjustmentReasonForm.name.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-12 info-block">
+                <md-input-container>
+                    <label>Description:</label>
+                    <textarea cols="1"
+                              rows="1"
+                              ng-maxlength="1200"
+                              name="description"
+                              ng-model="$ctrl.model.Description">
+                    </textarea>
+                    <div ng-messages="$ctrl.editAdjustmentReasonForm.description.$error" class="md-input-messages-nice">
+                        <div ng-message="maxlength">Description is to long, max length is 1200 symbols</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" aria-label="..." ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button"
+                   aria-label="..."
+                   ng-click="$ctrl.save()">
+            Save
+        </md-button>
+    </md-dialog-actions>
+</div>

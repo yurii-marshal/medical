@@ -1,0 +1,41 @@
+<div class="grid-header-container">
+    <div class="grid-header-item" 
+         [ngClass]="headerItem.class" 
+         *ngFor="let headerItem of gridHeaderItemsCopy">
+        <div class="sortable-item item-wrapper" 
+             *ngIf="headerItem.sortable; else notSortable" 
+             (click)="changeSortDirection(headerItem)"
+        >
+            <mat-icon [svgIcon]="headerItem.icon" 
+                      class="grid-header-icon" 
+                      [ngClass]="headerItem.icon"></mat-icon>
+            <p class="grid-header-title"> {{ headerItem.title }} </p>
+            <mat-icon svgIcon="chevron" 
+                      class="chevron-icon" 
+                      [ngClass]="headerItem.order" 
+                      *ngIf="headerItem.active"
+            ></mat-icon>
+        </div>
+
+        <ng-template #notSortable>
+            <div class="not-sortable-item item-wrapper">
+                <mat-icon [svgIcon]="headerItem.icon" 
+                          class="grid-header-icon" 
+                          [ngClass]="headerItem.icon"></mat-icon>
+                <p class="grid-header-title"> {{ headerItem.title }} </p>
+            </div>
+        </ng-template>
+    </div>
+</div>
+
+<div class="grid-filter-container"> 
+    
+    <ng-content></ng-content>
+
+    <div class="grid-filter-reset-bttn">
+        <mat-icon svgIcon="clear-filters" 
+                  class="filter-reset-icon" 
+                  (click)="onResetFilters()"
+        ></mat-icon>
+    </div>
+</div>

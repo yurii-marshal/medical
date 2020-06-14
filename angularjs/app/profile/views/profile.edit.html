@@ -1,0 +1,164 @@
+<div class="drowz-wizard">
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" class="active">Edit Profile</a>
+    </div>
+
+    <div class="drowz-wizard-body clearfix">
+        <form name="editProfileForm"
+              novalidate
+              autocomplete="off"
+              class="drowz-wizard-body-flex">
+
+            <div class="drowz-wizard-block grow-1">
+                <div class="drowz-wizard-block-title">
+                    <div class="wizard-title-text">Personal Info:</div>
+                </div>
+                <div class="drowz-wizard-block-body">
+                    <div class="drowz-wizard-block-row">
+                        <div class="col-xs-4 info-block">
+                            <md-input-container>
+                                <label>First Name:</label>
+                                <input type="text"
+                                       name="firstName"
+                                       required
+                                       ng-model="edit_profile.profileModel.Name.FirstName">
+                                <div ng-messages="editProfileForm.firstName.$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="required"><b>First Name</b> cannot be empty.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="col-xs-4 info-block">
+                            <md-input-container>
+                                <label>Last Name:</label>
+                                <input type="text"
+                                       name="lastName"
+                                       required
+                                       ng-model="edit_profile.profileModel.Name.LastName">
+                                <div ng-messages="editProfileForm.lastName.$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="required"><b>Last Name</b> cannot be empty.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="col-xs-4 info-block">
+                            <md-input-container>
+                                <label>Email:</label>
+                                <input ng-model="edit_profile.profileModel.Email"
+                                       required
+                                       ng-pattern="/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i"
+                                       name="email">
+                                <div ng-messages="editProfileForm.email.$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="required"><b>Email</b> cannot be empty.</div>
+                                    <div ng-message="pattern"><b>Email</b> not valid.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="drowz-wizard-block password-block">
+                <div class="drowz-wizard-block-title">
+                    <div class="wizard-title-text">Change Password:</div>
+                </div>
+                <div class="drowz-wizard-block-body">
+                    <div class="info-block">
+                        <md-input-container class="long-ng-messages">
+                            <label>New password:</label>
+                            <input type="password"
+                                   ng-model="edit_profile.newPassword"
+                                   ng-required="edit_profile.newPassword.length > 0"
+                                   ng-pattern="/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/"
+                                   name="newPassword"
+                                   autocomplete="new-password">
+                            <div ng-messages="editProfileForm.newPassword.$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required"><b>New password</b> cannot be empty.</div>
+                                <div ng-message="pattern">
+                                    <b>New password</b> is not valid.
+                                    <br/>Must be at least 8 characters.
+                                    <br/>Must have at least one digit ('0'-'9').
+                                    <br/>Must have at least one lowercase ('a'-'z').
+                                    <br/>Must have at least one uppercase ('A'-'Z').
+                                    <br/>Must have at least one non alphanumeric character.
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div class="info-block">
+                        <md-input-container class="long-ng-messages">
+                            <label>Repeat new password:</label>
+                            <input type="password"
+                                   ng-model="edit_profile.repeatNewPassword"
+                                   ng-required="edit_profile.newPassword.length > 0 && editProfileForm.newPassword.$valid"
+                                   compare-to="editProfileForm.newPassword"
+                                   name="repeatPassword"
+                                   autocomplete="new-password">
+                            <div ng-messages="editProfileForm.repeatPassword.$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required"><b>Repeat new password</b> cannot be empty.</div>
+                                <div ng-message="compareTo"><b>Repeat new password</b> must be equal to <b>New password</b>.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </div>
+            </div>
+
+            <div class="drowz-wizard-block profile-picture-block">
+                <div class="drowz-wizard-block-title">
+                    <div class="wizard-title-text">Profile Picture:</div>
+                    <a href="javascript:void(0);"
+                       class="delete-icon-btn"
+                       ng-if="edit_profile.avatarSrc || edit_profile.uploadAvatarSrc"
+                       ng-click="edit_profile.removeSelectedFile()">
+                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                    </a>
+                </div>
+                <div class="drowz-wizard-block-body profile-picture-container"
+                     bs-loading-overlay
+                     bs-loading-overlay-reference-id="avatarPhotoContainer"
+                >
+                    <div class="profile-picture"
+                         ng-if="edit_profile.avatarSrc && !edit_profile.uploadAvatarSrc"
+                         ng-style="{'background-image':'url(' + edit_profile.avatarSrc + ')' }"
+                    >
+                    </div>
+
+                    <div class="profile-picture"
+                         ng-if="edit_profile.uploadAvatarSrc"
+                         ng-style="{'background-image':'url(data:image/JPEG;base64,' + edit_profile.uploadAvatarSrc + ')' }"
+                    >
+                    </div>
+
+                    <div class="profile-picture no-profile-picture"
+                         ng-if="(edit_profile.loadComplete) && !edit_profile.avatarSrc && !edit_profile.uploadAvatarSrc"
+                    ></div>
+
+                    <md-button class="md-raised edit-profile-btn"
+                               ng-click="edit_profile.runFileUpload();">Upload Picture</md-button>
+                    <input type="file"
+                           id="fileUploader"
+                           class="file-uploader-input"
+                           nv-file-select
+                           uploader="edit_profile.uploader"
+                           options="edit_profile.uploadOptions"
+                           filters="imageFilter"/>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="drowz-wizard-footer">
+        <md-button class="md-raised main-button drowz-wizard-footer-btn"
+                   ui-sref="root.dashboard">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                   ng-click="edit_profile.save()">Save</md-button>
+    </div>
+
+</div>

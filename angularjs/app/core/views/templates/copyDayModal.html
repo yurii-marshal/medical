@@ -1,0 +1,87 @@
+<div class="modal-window copy-modal-window" ng-form="$ctrl.copyForm">
+
+    <md-dialog-content class="md-dialog-content">
+        <md-radio-group ng-model="$ctrl.typeOfAction" 
+                        class="radio-with-containers content-radio-btns">
+            <md-radio-button ng-value="1" class="md-primary">Following Day</md-radio-button>
+            <md-radio-button ng-value="2" class="md-primary">2nd Following Day</md-radio-button>
+            <md-radio-button ng-value="4" class="md-primary">
+                <div class="row pf_modal_containers">
+                    <div class="col-xs-4">
+                        <div>Skip</div>
+                        <input-number
+                                form-name="$ctrl.copyForm"
+                                input-name="skip"
+                                ng-model="$ctrl.skip"
+                                ng-required="$ctrl.typeOfAction === 4"
+                                min="0"
+                                max="99"
+                                required-message="Required."
+                        ></input-number>
+                    </div>
+                    <div class="col-xs-4">
+                        <div>Take</div>
+                        <input-number
+                                form-name="$ctrl.copyForm"
+                                input-name="take"
+                                ng-model="$ctrl.take"
+                                ng-required="$ctrl.typeOfAction === 4"
+                                min="0"
+                                max="99"
+                                required-message="Required."
+                        ></input-number>
+                    </div>
+                    <div class="col-xs-4">
+                        <div>Repeat</div>
+                        <input-number
+                                form-name="$ctrl.copyForm"
+                                input-name="repeat"
+                                ng-model="$ctrl.repeat"
+                                ng-required="$ctrl.typeOfAction === 4"
+                                min="0"
+                                max="99"
+                                required-message="Required."
+                        ></input-number>
+                    </div>
+                </div>
+            </md-radio-button>
+            <md-radio-button ng-value="3" class="md-primary">
+                <div class="row pf_modal_containers">
+                    <div class="col-xs-12">
+                        <div>Day</div>
+                        <md-input-container class="pf_modal_datetime" ng-repeat="dayItem in $ctrl.copyDaysList track by $index">
+                            <input datetimepicker
+                                   format="MM/DD/YYYY"
+                                   ng-model="$ctrl.copyDaysList[$index]"
+                                   aria-label="appoitmentDate"
+                                   ng-required="$ctrl.typeOfAction === 3"
+                                   name="{{'specialDate_'+$index}}">
+                            <button class="remove_input" ng-click="$ctrl.removeDayItem($index)"></button>
+                            <button class="add_input" ng-click="$ctrl.addDayItem()"></button>
+                            <div ng-messages="$ctrl.copyForm['specialDate_'+$index].$error" class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                                <div ng-message="notUnique"><b>Date</b> must be unique.</div>
+                            </div>
+
+                        </md-input-container>
+                    </div>
+                </div>
+            </md-radio-button>
+        </md-radio-group>
+    </md-dialog-content>
+
+    <div class="modalFooter space-between">
+        <div>
+            <md-checkbox class="md-primary no-bottom-margin" ng-show="!$ctrl.splitInnerEvents" ng-model="$ctrl.includeInnerEvents">Include Time Blocks</md-checkbox>
+            <md-checkbox class="md-primary" ng-show="$ctrl.splitInnerEvents" ng-model="$ctrl.includeInnerBreaks">Include Time Blocks</md-checkbox>
+            <md-checkbox class="md-primary no-bottom-margin" ng-show="$ctrl.splitInnerEvents" ng-model="$ctrl.includeExtraTimes">Include On-Call Hours</md-checkbox>
+        </div>
+        <md-button class="md-raised md-primary"
+                   ng-click="$ctrl.copySchedule('day')"
+                   ng-disabled="$ctrl.typeOfAction === 0 || $ctrl.actionDisabled">
+            Copy
+        </md-button>
+
+    </div>
+
+</div>

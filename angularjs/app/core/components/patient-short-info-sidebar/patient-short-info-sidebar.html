@@ -1,0 +1,228 @@
+<div class="sidebar-content"
+     scroll-bar
+     scroll-bar-above-element="true"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="patientSidebar">
+
+    <div class="sidebar-padding-block flex-cont stretch main-patient-block">
+        <a href="javascript:void(0);"
+           class="view-info-icon"
+           ng-if="$ctrl.haveViewPatientBtn"
+           ui-sref="root.patient.demographics({ patientId: $ctrl.patient.Id })">
+            <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon>
+        </a>
+        <div class="photo-block" style="background-image: url(assets/images/avatar.jpg);" ng-if="$ctrl.patient.Gender.Id == 1"></div>
+        <div class="photo-block" style="background-image: url(assets/images/female-avatar.png);" ng-if="$ctrl.patient.Gender.Id == 2"></div>
+        <div class="name-status-block" ng-class="{'with-link': $ctrl.haveViewPatientBtn}">
+            <div class="sidebar-title">
+                {{$ctrl.patient.Name.First}}
+                {{$ctrl.patient.Name.Middle}}
+                {{$ctrl.patient.Name.Last}}
+            </div>
+            <div class="status-and-gender flex-cont">
+                <div class="status-label {{$ctrl.patient.Status.statusClass}}">
+                    {{$ctrl.patient.Status.Text}}
+                </div>
+                <div class="gender-icon">
+                    <md-icon md-svg-src="assets/images/colored/male.svg"
+                             ng-if="$ctrl.patient.Gender.Id == 1"></md-icon>
+                    <md-icon md-svg-src="assets/images/colored/female.svg"
+                             ng-if="$ctrl.patient.Gender.Id == 2"></md-icon>
+                </div>
+
+                <md-button class="md-raised small-btn edit-doc"
+                           aria-label="..."
+                           ng-click="$ctrl.editPatientStatus()"
+                >
+                    <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                </md-button>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar-padding-block patient-tags hiding-block">
+        <span class="attr-label {{tag.attrClass}}"
+              ng-repeat="tag in $ctrl.patient.Tags"
+        >
+            <md-icon md-svg-src="assets/images/default/tag.svg"></md-icon>
+            <span ng-bind="tag.Name"></span>
+        </span>
+    </div>
+
+    <div class="sidebar-padding-block hiding-block">
+        <div class="icon-block"
+             ng-if="$ctrl.patient.MedSageEnrolled">
+            <md-icon md-svg-src="assets/images/default/ic-pg-medsage.svg"
+                     class="icon-block-icon"></md-icon>
+            <div class="info-block">
+                <div class="info-block-label">MedSage:</div>
+                <div class="info-block-body">Patient enrolled to MedSage resupply program</div>
+            </div>
+        </div>
+        <div class="icon-block"
+             ng-if="$ctrl.patient.DateOfBirthday">
+            <md-icon md-svg-src="assets/images/default/calendar-circle-v2.svg"
+                     class="icon-block-icon"></md-icon>
+            <div class="info-block">
+                <div class="info-block-label">DOB:</div>
+                <div class="info-block-body">{{$ctrl.patient.DateOfBirthday | amUtc | amDateFormat: "MM/DD/YYYY"}}</div>
+            </div>
+        </div>
+        <div class="icon-block"
+             ng-if="$ctrl.patient.Address.AddressLine">
+            <md-icon md-svg-src="assets/images/default/address.svg"
+                     class="icon-block-icon"></md-icon>
+            <div class="info-block">
+                <div class="info-block-label">Address:</div>
+                <div class="info-block-body">{{$ctrl.patient.Address | addressToString}}</div>
+            </div>
+        </div>
+        <div class="icon-block"
+             ng-if="$ctrl.patient.Email">
+            <md-icon md-svg-src="assets/images/default/mail.svg"
+                     class="icon-block-icon"></md-icon>
+            <div class="info-block">
+                <div class="info-block-label">Email:</div>
+                <div class="info-block-body">{{$ctrl.patient.Email}}</div>
+            </div>
+        </div>
+    </div>
+
+    <v-accordion class="vAccordion--default sidebar-accordeon sidebar-padding-block hiding-block" multiple>
+        <v-pane expanded="true">
+            <v-pane-header class="sidebar-block-title flow-accordion-title">
+                <span>Phones:</span>
+                <div class="accordion-line"></div>
+                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                         class="sidebar-accordeon-icon"></md-icon>
+            </v-pane-header>
+            <v-pane-content>
+                <div class="icon-block" ng-if="$ctrl.patient.Mobile">
+                    <md-icon md-svg-src="assets/images/default/phone-cell.svg" class="icon-block-icon"></md-icon>
+                    <div class="info-block">
+                        <div class="info-block-label">Cell Phone:</div>
+                        <div class="info-block-body">{{$ctrl.patient.Mobile | tel}}</div>
+                    </div>
+                </div>
+                <div class="icon-block" ng-if="$ctrl.patient.HomePhone">
+                    <md-icon md-svg-src="assets/images/default/phone-home.svg" class="icon-block-icon"></md-icon>
+                    <div class="info-block">
+                        <div class="info-block-label">Home Phone:</div>
+                        <div class="info-block-body">{{$ctrl.patient.HomePhone | tel}}</div>
+                    </div>
+                </div>
+                <div class="icon-block" ng-if="$ctrl.patient.WorkPhone">
+                    <md-icon md-svg-src="assets/images/default/phone-work.svg" class="icon-block-icon"></md-icon>
+                    <div class="info-block">
+                        <div class="info-block-label">Work Phone:</div>
+                        <div class="info-block-body">{{$ctrl.patient.WorkPhone | tel}}</div>
+                    </div>
+                    <div class="info-block left-divider" ng-if="$ctrl.patient.PhoneExtension">
+                        <div class="info-block-label">Ext.:</div>
+                        <div class="info-block-body">{{$ctrl.patient.PhoneExtension}}</div>
+                    </div>
+                </div>
+                <no-records class="no-records-small"
+                            text="Phones"
+                            ng-if="!$ctrl.patient.Mobile && !$ctrl.patient.HomePhone && !$ctrl.patient.WorkPhone">
+                </no-records>
+            </v-pane-content>
+        </v-pane>
+        <v-pane expanded="true">
+            <v-pane-header class="sidebar-block-title flow-accordion-title">
+                <span>Insurance:</span>
+                <div class="accordion-line"></div>
+                <md-icon md-svg-src="assets/images/default/chevron.svg" class="sidebar-accordeon-icon"></md-icon>
+            </v-pane-header>
+            <v-pane-content>
+                <div class="icon-block" ng-repeat="item in $ctrl.patient.Insurances">
+                    <md-icon md-svg-src="assets/images/default/insurance-circle.svg" class="icon-block-icon"></md-icon>
+                    <div class="flex-row">
+                        <div class="info-block grow-1 insurance-block-title">
+                            <div class="info-block-label">
+                                Insurance:
+                            </div>
+                            <div class="info-block-body">{{item.Name}}</div>
+                        </div>
+                        <div class="status-label insurance-status-label primary" ng-if="item.PositionIndex == 1">Primary</div>
+                        <div class="status-label insurance-status-label primary" ng-if="item.PositionIndex == 2">Secondary</div>
+                        <div class="status-label insurance-status-label primary" ng-if="item.PositionIndex == 3">Tertiary</div>
+                    </div>
+                </div>
+                <no-records class="no-records-small"
+                            text="Insurances"
+                            ng-if="!$ctrl.patient.Insurances || !$ctrl.patient.Insurances.length">
+                </no-records>
+            </v-pane-content>
+        </v-pane>
+        <v-pane expanded="true">
+            <v-pane-header class="sidebar-block-title flow-accordion-title">
+                <span>Active Orders:</span>
+                <div class="accordion-line"></div>
+                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                         class="sidebar-accordeon-icon"></md-icon>
+            </v-pane-header>
+            <v-pane-content>
+                <div class="icon-block" ng-repeat="item in $ctrl.patient.ActiveOrders">
+                    <md-icon md-svg-src="assets/images/default/phone-cell.svg"
+                             class="icon-block-icon"></md-icon>
+                    <div class="info-block">
+                        <div class="info-block-label">Order:</div>
+                        <div class="info-block-body">
+                            <a href="javascript:void(0);"
+                               class="underline-after-link"
+                               ui-sref="root.orders.order.details({ orderId: item.Id })">
+                                {{item.DisplayId}}
+                            </a>
+                            <span class="vertical-divider">|</span>
+                            <span>{{item.CreatedDate | localDateTime: "MM/DD/YYYY"}}</span>
+                            <span class="vertical-divider">|</span>
+                            <span>{{item.Physician.Name.FullName}}</span>
+                        </div>
+                    </div>
+                </div>
+                <no-records class="no-records-small"
+                            text="Orders"
+                            ng-if="!$ctrl.patient.ActiveOrders || !$ctrl.patient.ActiveOrders.length">
+                </no-records>
+            </v-pane-content>
+        </v-pane>
+        <v-pane expanded="true">
+            <v-pane-header class="sidebar-block-title flow-accordion-title">
+                <span>Recent Appointments:</span>
+                <div class="accordion-line"></div>
+                <md-icon md-svg-src="assets/images/default/chevron.svg" class="sidebar-accordeon-icon"></md-icon>
+            </v-pane-header>
+            <v-pane-content>
+                <div class="icon-block appointment-block" ng-repeat="item in $ctrl.patient.RecentAppointments">
+                    <md-icon md-svg-src="assets/images/main-menu/calendar.svg" class="icon-block-icon"></md-icon>
+                    <div class="flex-row">
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">Appointment:</div>
+                            <div class="info-block-body">
+                                <a href="javascript:void(0);"
+                                   class="underline-after-link"
+                                   ui-sref="root.calendar-appointment({ appointmentId: item.Id })">
+                                    {{item.DisplayId}}
+                                </a>
+                                <span class="vertical-divider">|</span>
+                                {{$ctrl.formatAppointment(item.DateRange)}}
+                            </div>
+                        </div>
+                        <div class="status-label insurance-status-label {{item.statusClass}}">
+                            {{item.AppointmentStatus.Text}}
+                        </div>
+                    </div>
+                </div>
+                <no-records class="no-records-small"
+                            text="Recent Appointments"
+                            ng-if="!$ctrl.patient.RecentAppointments.length">
+                </no-records>
+            </v-pane-content>
+        </v-pane>
+    </v-accordion>
+</div>
+
+<md-button class="toggle-menu-slide" aria-label="..." ng-if="$ctrl.haveToggleBtn">
+    <md-icon md-svg-src="assets/images/default/chevron.svg" class="toggle_menu_arrow"></md-icon>
+</md-button>

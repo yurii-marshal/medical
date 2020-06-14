@@ -1,0 +1,9 @@
+<mat-form-field [ngClass]="class">
+  <input matInput placeholder="Email" [formControl]="emailFormControl" required>
+  <mat-error *ngIf="emailFormControl.hasError('pattern') && !emailFormControl.hasError('required')">
+    <strong>Email</strong> is not valid.
+  </mat-error>
+  <mat-error *ngIf="emailFormControl.hasError('required')">
+    <strong>Email</strong> cannot be empty
+  </mat-error>
+</mat-form-field>

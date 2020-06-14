@@ -1,0 +1,40 @@
+<div class="modal-window email-payment-modal" ng-form="$ctrl.modalForm">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/email_v2.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Send email:</h2>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <md-input-container>
+                    <label>Email:</label>
+                    <input name="email"
+                           type="email"
+                           ng-pattern="/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i"
+                           ng-model="$ctrl.patientEmail"
+                           ng-required="true">
+                    <div ng-messages="$ctrl.modalForm.email.$error" class="md-input-messages-nice">
+                        <div ng-message="required"><b>Email</b> cannot be empty.</div>
+                        <div ng-message="pattern"><b>Email</b> not valid.</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.hide()" ng-disabled="$ctrl.modalForm.$invalid">
+            Send
+        </md-button>
+    </md-dialog-actions>
+
+</div>

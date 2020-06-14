@@ -1,0 +1,201 @@
+<div class="wizard-list-item"
+     ng-repeat="device in $ctrl.devices"
+     ng-form="complete.DeviceForm"
+>
+    <div class="wizard-list-item-info">
+        <div class="equipment-type-cell">
+            <div class="flex-row">
+                <div class="info-block grow-1">
+                    <div class="info-block-label">Name:</div>
+                    <div class="info-block-body">{{device.Name}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="info-block block-width-200 left-divider">
+            <div class="info-block-label">Manufacturer:</div>
+            <div class="info-block-body">{{device.Manufacturer || '-'}}</div>
+        </div>
+        <div class="info-block block-width-200 left-divider">
+            <div class="info-block-label">ID/Part #:</div>
+            <div class="info-block-body">{{device.PartNumber || '-'}}</div>
+        </div>
+        <div class="info-block block-width-100 left-divider">
+            <div class="info-block-label" ng-hide="device.Bundle">HCPCS:</div>
+            <div class="info-block-body" ng-hide="device.Bundle">
+                <div popover-directive="device.Hcpcs"
+                     hide-first-item="true"
+                     min-width="50"></div>
+            </div>
+        </div>
+        <div class="info-block block-width-200 left-divider">
+            <div class="info-block-label" ng-hide="device.Bundle || $ctrl.ordered">Serial Nubmer:</div>
+            <div class="info-block-body" ng-hide="device.Bundle || $ctrl.ordered">{{device.SerialNumber || '-'}}</div>
+        </div>
+        <div class="info-block block-width-200 left-divider">
+            <div class="info-block-label" ng-hide="device.Bundle || $ctrl.ordered">Lot Number:</div>
+            <div class="info-block-body" ng-hide="device.Bundle || $ctrl.ordered">{{device.LotNumber || '-'}}</div>
+        </div>
+        <div class="info-block block-width-200 left-divider"
+             ng-if="device.OrderDisplayId && $ctrl.isShowOrderId"
+        >
+            <div class="info-block-label">Order:</div>
+            <div class="info-block-body">{{ device.OrderDisplayId || '-' }}</div>
+        </div>
+        <div class="info-block block-width-70 left-divider">
+            <div class="info-block-label">Qty:</div>
+            <div class="info-block-body">
+                <md-input-container class="number-container">
+                    <label></label>
+                    <input type="number"
+                           ng-if="$ctrl.dynamicMaxCount"
+                           ng-model="device.Count"
+                           name="itemQuantity-{{$index}}"
+                           min="1"
+                           max="{{device.dynamicMaxCount || device.maxCount}}"
+                           ng-required="true"
+                           ng-disabled="!device.isNew || !device.Multiple || !$ctrl.qtyEditable"
+                    >
+                    <input type="number"
+                           ng-if="!$ctrl.dynamicMaxCount"
+                           ng-model="device.Count"
+                           name="itemQuantity-{{$index}}"
+                           min="1"
+                           max="{{device.maxCount}}"
+                           ng-required="true"
+                           ng-disabled="!device.isNew || !device.Multiple || !$ctrl.qtyEditable"
+                    >
+
+                    <div ng-messages="complete.DeviceForm['itemQuantity-' + $index].$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="max">The number of device couldn't be greater than
+                            <span ng-if="!device.dynamicMaxCount">{{device.maxCount}}</span>
+                            <span ng-if="device.dynamicMaxCount">{{device.dynamicMaxCount}}</span>
+                        </div>
+                        <div ng-message="min">The number of device should be greater or equal 1</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="info-block block-width-110">
+            <div class="info-block-label"></div>
+            <div class="info-block-body">
+                <div class="pad-15">
+                    <div ng-if="device.isRemoved">
+                        <div class="status-label red active">Removed</div>
+                    </div>
+                    <div ng-if="device.isChanged && !device.isRemoved">
+                        <div class="status-label blue active">Updated</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-block button-cell">
+            <div class="info-block-label">&nbsp;</div>
+
+            <div class="info-block-body"
+                 ng-if="$ctrl.editing"
+            >
+                <a href="javascript:void(0);"
+                   class="delete-icon-btn"
+                   ng-if="!device.isRemoved && $ctrl.movePopup && !device.isNew"
+                   ng-click="$ctrl.deleteDeviceWithoutPersonnel($event, device)"
+                >
+                    <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                </a>
+
+                <a href="javascript:void(0);"
+                   class="delete-icon-btn"
+                   ng-if="device.isNew"
+                   confirm-ng-click="$ctrl.deleteDevice(device, device.Count)"
+                   confirm-msg="'Are you sure you want to remove device {0}?'.format(device.Name)"
+                   confirm-title="Remove Device?"
+                   confirm-btn-ok="Remove"
+                >
+                    <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                </a>
+
+                <a href="javascript:void(0);"
+                   class="delete-icon-btn"
+                   ng-if="!device.isRemoved && !$ctrl.movePopup && !device.isNew"
+                   ng-click="$ctrl.deletePatientDevice($event, device)">
+                    <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                </a>
+
+                <a href="javascript:void(0);"
+                   class="delete-icon-btn"
+                   ng-if="device.isRemoved"
+                   ng-click="$ctrl.cancelDeletedDevice(device)">
+                    <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="wizard-list-item-info" ng-if="device.Bundle">
+        <v-accordion class="flow-accordion grow-1">
+            <v-pane expanded="false">
+                <v-pane-header class="flow-accordion-title"
+                               ng-click="$ctrl.getComponents(device)"
+                >
+                    <md-icon md-svg-src="assets/images/default/chevron.svg"
+                             class="flow-accordion-title-icon"
+                    ></md-icon>
+                    <span>Components:</span>
+                </v-pane-header>
+
+                <v-pane-content
+                    bs-loading-overlay
+                    bs-loading-overlay-reference-id="bundleComponents{{ device.Id }}"
+                >
+                    <table class="drowz-table regular-table">
+                        <tr class="drowz-table-header">
+                            <th class="number-cell" width="45">#</th>
+                            <th>Name:</th>
+                            <th>ID/Part #:</th>
+                            <th>HCPCS:</th>
+                            <th>Manufacturer:</th>
+                            <th ng-hide="$ctrl.ordered">Serial Number:</th>
+                            <th ng-hide="$ctrl.ordered">Lot Number:</th>
+                            <th class="cell-50px">Qty:</th>
+                        </tr>
+
+                        <tr class="drowz-table-row" ng-repeat="component in device.Components">
+                            <td class="number-cell">{{ $index + 1 }}.</td>
+                            <td>{{ component.Name }}</td>
+                            <td>{{ component.PartNumber || '-' }}</td>
+                            <td>
+                                <div class="flex-cont">
+                                    <div popover-directive="component.Hcpcs || component.allHcpcsCodes"
+                                         hide-first-item="true"
+                                         min-width="50"
+                                    ></div>
+                                </div>
+                            </td>
+                            <td>{{ component.Manufacturer || component.ManufacturerName }}</td>
+                            <td ng-hide="$ctrl.ordered">{{ component.SerialNumber || '-'}}</td>
+                            <td ng-hide="$ctrl.ordered">{{component.LotNumber || '-' }}</td>
+                            <td class="cell-50px">{{ component.Count }}</td>
+                        </tr>
+                    </table>
+
+                </v-pane-content>
+            </v-pane>
+        </v-accordion>
+    </div>
+    <div class="wizard-list-item-notes">
+        <p ng-if="!$ctrl.editing">
+            {{ device.Description }}
+        </p>
+
+        <md-input-container ng-if="$ctrl.editing">
+            <label></label>
+            <textarea type="text"
+                      ng-model="device.Description"
+                      ng-blur="$ctrl.setChangeStatus(device)"
+                      placeholder="type your notes here..."
+            ></textarea>
+        </md-input-container>
+    </div>
+</div>

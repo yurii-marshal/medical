@@ -1,0 +1,70 @@
+﻿<div class="calendar-events-container"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="calendar-events">
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" class="active">Calendar</a>
+    </div>
+
+    <div class="calendar-events-header">
+        <advanced-filters
+                ng-if="calendarEv.initFilters"
+                init-filters="calendarEv.initFilters"
+                update-filters="calendarEv.updateFilters"
+                select-created-filter="calendarEv.selectCreatedFilter"
+                is-filter-set="calendarEv.selectedFilter.Id"
+                is-save-filter="true">
+        </advanced-filters>
+        <div class="calendar-events-buttons">
+            <md-button class="saved-filters-btn" drowz-dropdown>
+                Saved Filters
+                <div class="drowz-dropdown-block">
+                    <div class="calendar-saved-filters">
+                        <md-autocomplete-with-infinite-scroll
+                                md-no-cache="true"
+                                md-selected-item="calendarEv.selectedAutocompleteFilter"
+                                md-selected-item-change="calendarEv.filterSelected(calendarEv.selectedAutocompleteFilter)"
+                                md-search-text="searchText"
+                                md-items="item in calendarEv.getSavedFilters(searchText, pageIndex)"
+                                md-item-text="item.Name"
+                                md-min-length="0"
+                                md-floating-label="Search Filter:"
+                                clear-on-click>
+                            <md-item-template>
+                                <span md-highlight-flags="^i" title="{{item.Name}}">{{item.Name}}</span>
+                            </md-item-template>
+                            <md-not-found>
+                                No filters were found
+                            </md-not-found>
+                        </md-autocomplete-with-infinite-scroll>
+                        <div class="save-filters-list">
+                            <div class="saved-filter-item" ng-repeat="item in calendarEv.savedFilters" ng-click="calendarEv.selectFilter(item)">
+                                <div class="saved-filter-item-text">{{item.Name}}</div>
+                                <a href="javascript:void(0);"
+                                   class="delete-filter"
+                                   title="Delete filter"
+                                   confirm-ng-click="calendarEv.deleteFilter(item)"
+                                   confirm-msg="'Are you sure want to delete the filter?'">
+                                    <md-icon md-svg-src="assets/images/default/trash.svg" class="delete-filter-icon"></md-icon>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </md-button>
+            <md-button class="md-raised md-primary new-appointment-btn" ng-click="calendarEv.newAppointment()">
+                <md-icon md-svg-src="assets/images/default/plus.svg"></md-icon>
+                New Appointment
+            </md-button>
+        </div>
+    </div>
+
+    <drwz-calendar-simple
+            drwz-ng-model="calendarEv.eventSource"
+            drwz-ui-calendar="calendarEv.uiConfig.calendar"
+            drwz-calendar-id="{{calendarEv.uiConfig.calendar.calendarId}}"
+            drwz-options="btns-today, btns-agendaDay, btns-agendaWeek, btns-month, showTitle"
+            is-left-view-btns="true">
+    </drwz-calendar-simple>
+</div>

@@ -1,0 +1,83 @@
+.b-referring-contact {
+    margin-top: 15px;
+    margin-bottom: 29px;
+}
+.order-wizard-step-1 {
+
+    .drowz-wizard-block-row {
+        &.referring-provider-note-block-row {
+            padding: 0 15px;
+            margin-bottom: 10px;
+
+            &.last-item {
+                margin-bottom: 20px;
+            }
+
+            .drowz-message {
+                margin: 0;
+
+                .status-label {
+                    min-width: 75px;
+                    padding: 0;
+                    margin-right: 5px;
+                    text-transform: none;
+                    margin-top: 1px;
+                    vertical-align: top;
+                }
+            }
+        }
+    }
+
+    .info-block {
+        &.referral-location-error-block {
+            padding-right: 0;
+
+            .hidden-validation-input {
+                margin-top: 5px;
+                padding: 0;
+
+                input {
+                    display: none;
+                }
+
+                .md-input-messages-nice {
+                    span {
+                        display: inline-block;
+                        width: 170px;
+                        text-align: right;
+                        margin-right: 10px;
+                        color: #ff4848;
+                    }
+
+                    .alert-icon {
+                        color: #ff4848;
+                        vertical-align: top;
+                        margin-top: 2px;
+                    }
+                }
+            }
+        }
+    }
+
+    .edit-referral-location-block {
+        text-align: right;
+
+        button {
+            &.md-raised {
+                &.small-btn {
+                    padding: 0;
+                    margin: 0;
+                    @include size(32px, 32px);
+
+                    md-icon {
+                        @include size(14px, 14px);
+                        color: $gray-color;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+

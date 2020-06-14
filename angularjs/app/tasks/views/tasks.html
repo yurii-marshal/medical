@@ -1,0 +1,16 @@
+<div class="infinite-scroll-bg tasks-list">
+
+    <toolbar items="tasks.toolbarItems"></toolbar>
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" class="active">
+            {{tasks.activeTabName === 'All Tasks' ? tasks.activeTabName : 'Tasks ' + tasks.activeTabName}}
+        </a>
+
+        <drowz-tabs items="tasks.tabs"></drowz-tabs>
+    </div>
+
+    <div ui-view></div>
+
+</div>

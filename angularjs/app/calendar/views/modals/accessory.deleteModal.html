@@ -1,0 +1,19 @@
+<div class="modal-window delete-modal">
+    <md-toolbar class="modal-title">
+        <div class="md-toolbar-tools">
+            <h2>Remove Accessory(ies)</h2>
+            <a href="javascript:void(0);" ng-click="deleteModal.cancel()" class="close-modal"></a>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="modal-padding">
+            Are you sure you want to remove accessory(ies) <b>{{deleteModal.accessory.Name}}</b>?
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter" layout="row" layout-align="space-between center">
+        <md-button class="md-raised" ng-click="deleteModal.cancel()">Cancel</md-button>
+        <div>
+            <md-button class="md-primary md-raised" ng-click="deleteModal.removeAccessory()">Ok</md-button>
+        </div>
+    </md-dialog-actions>
+</div>

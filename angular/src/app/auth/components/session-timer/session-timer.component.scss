@@ -1,0 +1,62 @@
+@import "~assets/styles/base/variables";
+@import "~assets/styles/utils/mixins";
+
+::ng-deep {
+
+    .session-timer-modal {
+        width: 400px;
+
+        app-session-timer {
+            width: 100%;
+
+            .mat-dialog-content {
+                line-height: 1.3;
+                overflow: hidden;
+            }
+
+            .modal-body-custom {
+                padding: 0 24px 24px;
+                margin: 0;
+
+                .modal-title-custom {
+                    text-transform: uppercase;
+                    font-weight: 600;
+                    font-size: 18px;
+                    line-height: 24px;
+                    text-align: center;
+                    margin-top: 0; 
+                }
+
+                .session-timer-content {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    .session-timer {
+                        position: relative;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding: 20px;
+                        margin-left: -30px;
+                        @include size(100%, 100px);
+                        color: #ff4a49;
+                        font-weight: 600;
+                        font-size: 46px;
+
+                        .timer-icon {
+                            display: inline-flex;
+                            margin-right: 12px;
+                            color: $middle-gray-color;
+                            @include size(18px, 21px);
+                        }
+                    }
+                }
+            }
+
+            .mat-dialog-actions {
+                justify-content: flex-end;
+            }
+        }
+    }
+}

@@ -1,0 +1,39 @@
+<div ng-form="shipItems.quickShipItemsForm">
+
+    <div class="drowz-wizard-body-flex">
+        <div class="drowz-wizard-block quick-ship-items">
+            <shipment-summary
+                class="shipment-summary grow-1 marg-bottom-20"
+                ship-items="shipItems.shipItems"
+                order-short-info="shipItems.orderShortInfo"
+                patient-info="shipItems.patientInfo"
+            ></shipment-summary>
+        </div>
+    </div>
+
+    <div class="drowz-wizard-body-flex">
+        <div class="drowz-wizard-block quick-ship-items">
+            <shipment-items
+                class="shipment-items grow-1 marg-bottom-20"
+                products="shipItems.shipItems"
+                linked-items="shipItems.linkedItems.items"
+                linked-item-components="shipItems.linkedItems.components"
+                inventory="shipItems.inventory"
+                delivery-methods="shipItems.deliveryMethodDictionaries"
+                delivery-companies="shipItems.deliveryCompaniesDictionary"
+            >
+            </shipment-items>
+        </div>
+    </div>
+
+    <div class="drowz-wizard-footer">
+        <md-button class="md-raised main-button drowz-wizard-footer-btn"
+                   ng-click="shipItems.cancel()">Cancel</md-button>
+
+        <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                   scroll-to
+                   disabled-scroll="shipItems.quickShipItemsForm.$invalid"
+                   ng-click="shipItems.save()">Save</md-button>
+    </div>
+
+</div>

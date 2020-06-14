@@ -1,0 +1,107 @@
+<div class="niko-bot">
+    <div class="chat-toggle-btn"
+         (click)="toggleChat()">
+        <mat-icon class="search-icon"
+                  svgIcon="niko-bot-operator"
+        ></mat-icon>
+    </div>
+
+    <div class="chat-helper-container"
+         [formGroup]="nikoBotForm"
+         [ngClass]="{ 'chat-helper-opened' : chatOpened }">
+
+        <div class="chat-helper-header">
+            <span class="font-semibold">Say Hi to NikoBot</span>
+            <div class="btn-bar">
+                <a href="javascript:void(0);"
+                   class="chat-toggle"
+                   (click)="toggleChat()"
+                >
+                    <mat-icon svgIcon="hide-chat"></mat-icon>
+                </a>
+                <a href="javascript:void(0);"
+                   class="chat-clear"
+                   (click)="clearChat()">
+                    <mat-icon svgIcon="clear-chat"></mat-icon>
+                </a>
+            </div>
+        </div>
+
+        <perfect-scrollbar class="blue-scroll-theme">
+            <div class="chat-helper-body">
+                <div class="chat-message"
+                     *ngFor="let itemId of chatMessages.msgs.allIds; let idx = index"
+                     [ngClass]="{ 'my-message': chatMessages.msgs.byId[itemId].msgTypeUser }">
+
+                    <div class="chat-message-avatar">
+                        <mat-icon *ngIf="chatMessages.msgs.byId[itemId].msgTypeUser"
+                                  svgIcon="niko-bot-user"
+                        ></mat-icon>
+                        <mat-icon *ngIf="!chatMessages.msgs.byId[itemId].msgTypeUser"
+                                  svgIcon="niko-bot-operator"
+                        ></mat-icon>
+                    </div>
+
+                    <div class="chat-message-content">
+                        <div class="chat-message-header">
+                            <span class="chat-message-user active-title">
+                                {{ chatMessages.msgs.byId[itemId].createdBy }}
+                            </span>
+                            <span class="message-created-time">
+                                {{ chatMessages.msgs.byId[itemId].createdOn | amLocal | amDateFormat: 'hh:mm A' }}
+                            </span>
+                        </div>
+
+                        <div class="chat-message-info">
+                            <div class="chat-message-text font-semibold"
+                                 [innerHtml]="chatMessages.msgs.byId[itemId].msgContent | markdownToHtml">
+                            </div>
+
+                            <div class="message-attachments"
+                                 *ngIf="chatMessages.msgs.byId[itemId].attachments?.length">
+                                <div class="attachment-item"
+                                     *ngFor="let aId of chatMessages.msgs.byId[itemId].attachments; let idx = index">
+                                    <span>{{ idx + 1 + ') ' }}</span>
+                                    <!-- TODO fix goToRef() when will be ready -->
+                                    <a href="javascript:void(0);"
+                                       class="font-semibold"
+                                       (click)="chatMessages.attachments.byId[aId].goToRef">
+                                        {{ chatMessages.attachments.byId[aId].title }}
+                                    </a> :
+                                    <span
+                                        [innerHtml]="chatMessages.attachments.byId[aId].attachmentContent | markdownToHtml"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </perfect-scrollbar>
+
+        <div class="chat-helper-footer top-position">
+            <mat-form-field class="col-w-100">
+
+                <app-nikobot-autocomplete
+                    class="top-position"
+                    [ngClass]="{ 'visible': isAutocompleteVisible }"
+                    (toggleAutocomplete)="toggleAutocomplete($event)"
+                    [autocompleteOptions]="autocompleteOptions"
+                ></app-nikobot-autocomplete>
+
+                <textarea
+                    id="chatSearchBox"
+                    matInput
+                    autofocus
+                    placeholder="Type your message here..."
+                    cols="1"
+                    rows="1"
+                    formControlName="message"
+                    (keydown.enter)="submitAction(currentMessage)"
+                    [(ngModel)]="currentMessage">
+                </textarea>
+            </mat-form-field>
+        </div>
+
+    </div>
+</div>

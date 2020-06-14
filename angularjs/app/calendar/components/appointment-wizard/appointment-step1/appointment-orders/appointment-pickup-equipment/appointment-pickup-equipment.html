@@ -1,0 +1,29 @@
+<div class="modal-window patient-equipments">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/documents.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Patient's items:</h2>
+        </div>
+
+        <div class="checkboxes-block">
+            <md-checkbox ng-checked="item.Selected"
+                         class="md-primary"
+                         ng-click="item.Selected = !item.Selected"
+                         ng-repeat="item in $ctrl.availableEquipmentList | orderBy:'Name' track by item.Id">
+                {{item.Name}}
+            </md-checkbox>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Close</md-button>
+        <md-button class="md-raised md-primary main-button" ng-click="$ctrl.save()">Save</md-button>
+    </md-dialog-actions>
+
+</div>

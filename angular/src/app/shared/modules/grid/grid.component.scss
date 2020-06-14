@@ -1,0 +1,47 @@
+@import "~assets/styles/base/variables";
+@import "~assets/styles/utils/mixins";
+
+:host ::ng-deep {
+
+    .grid-container {
+        padding: 20px;
+        background-color: $lighter-gray-color;
+
+        .no-divider {
+            &:after {
+                display: none;
+            }
+        }
+
+        // empty space separator
+        .number-data {
+            width: 50px;
+            min-width: 50px;
+            text-align: center;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        // additional styling for appClearOnClick
+        .clear-field {
+            top: 8px;
+        }
+
+        .select-with-clear {
+
+            .mat-form-field-infix {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .clear-field {
+                    order: 2;
+                    position: relative;
+                    top: auto;
+                    right: auto;
+                    margin-top: 1px;
+                }
+            }
+        }
+    }
+}

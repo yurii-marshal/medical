@@ -1,0 +1,80 @@
+<div class="modal-window write-pay-off-modal"
+     ng-form="$ctrl.modalForm"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/list.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Write Off:
+                <span ng-if="$ctrl.invoiceBalance">&nbsp;
+                    &nbsp;{{$ctrl.invoiceBalance.Currency}}&nbsp;
+                    {{$ctrl.invoiceBalance.Amount | number:2 | absNumber}}</span>
+            </h2>
+        </div>
+
+        <div class="flex-row">
+            <div class="w200px info-block">
+                <md-input-container>
+                    <label>Date:</label>
+                    <input datetimepicker
+                           format="MM/DD/YYYY hh:mm A"
+                           name="date"
+                           ng-required="true"
+                           ng-model="$ctrl.model.Date">
+                    <div ng-messages="$ctrl.modalForm.date.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+
+            <div class="info-block grow-1">
+                <md-autocomplete class="notes-autocomplete-block"
+                                 md-selected-item="$ctrl.model.AdjustmentReason"
+                                 md-search-text="$ctrl.searchReason"
+                                 md-items="reason in $ctrl.getReasons($ctrl.searchReason)"
+                                 md-item-text="reason.Name"
+                                 md-input-name="reason"
+                                 md-min-length="0"
+                                 md-menu-class="high-height-tooltip"
+                                 ng-required="true"
+                                 md-floating-label="Reason:"
+                                 md-require-match="true"
+                                 clear-on-click>
+                    <md-item-template>
+                        <span md-highlight-text="$ctrl.searchReason"
+                              md-highlight-flags="i"
+                              title="{{ reason.Description }}">
+                            {{ reason.Name }}
+                        </span>
+                    </md-item-template>
+                    <md-not-found>No reasons found</md-not-found>
+                    <div ng-messages="$ctrl.transactionForm.reason.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="md-require-match">Reason has to be selected</div>
+                    </div>
+                </md-autocomplete>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <md-input-container>
+                    <label>Note:</label>
+                    <textarea ng-model="$ctrl.model.Note" rows="1"></textarea>
+                </md-input-container>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button" ng-click="$ctrl.save()">Save</md-button>
+    </md-dialog-actions>
+
+</div>

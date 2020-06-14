@@ -1,0 +1,312 @@
+<div class="product-container"
+     ng-form="$ctrl['productForm-' + $ctrl.hash]">
+    <div class="flex-row grow-1">
+        <div class="info-block block-width-60">
+            <div class="info-block-label">&nbsp;</div>
+            <div class="info-block-body"
+                 ng-bind="$ctrl.index+'.'"></div>
+        </div>
+        <div class="info-block item-img block-width-100">
+            <div class="item-img-container">
+                <img src=""
+                     ng-src="{{$ctrl.copiedProduct.pictureUrl
+                                ? ($ctrl.WEB_API_INVENTORY_SERVICE_URI + $ctrl.copiedProduct.pictureUrl)
+                                : $ctrl.noImage}}"
+                     alt="..."
+                     class="item-img">
+            </div>
+        </div>
+        <div class="info-block grow-1">
+            <div class="info-block-label">Name:</div>
+            <div class="info-block-body">{{$ctrl.copiedProduct.name}}</div>
+        </div>
+        <div class="info-block block-width-200 left-divider">
+            <div class="info-block-label">Manufacturer:</div>
+            <div class="info-block-body">{{$ctrl.copiedProduct.manufacturer || '-'}}</div>
+        </div>
+        <div class="info-block block-width-200 left-divider">
+            <div class="info-block-label">ID/Part #:</div>
+            <div class="info-block-body">{{$ctrl.copiedProduct.partNumber || '-'}}</div>
+        </div>
+        <div class="info-block block-width-120 left-divider">
+            <div class="info-block-label">HCPCS:</div>
+            <div class="info-block-body flex-cont">
+                <div popover-directive="$ctrl.copiedProduct.hcpcsCodes"
+                     hide-first-item="true"
+                     min-width="50"></div>
+            </div>
+        </div>
+        <div class="info-block block-width-120 number-info-block left-divider">
+            <div class="info-block-label">
+                Qty:
+            </div>
+            <div class="info-block-body">
+                <md-input-container
+                    ng-if="$ctrl.copiedProduct.isMultiple">
+                    <label></label>
+                    <input type="number"
+                           ng-model="$ctrl.copiedProduct.count"
+                           name="count-{{$ctrl.hash}}"
+                           min="1"
+                           ng-pattern="/^[0-9]*$/"
+                           ng-required="true"
+                           ng-disabled="!$ctrl.copiedProduct.deliveryMethod ||
+                            ($ctrl.copiedProduct.deliveryMethod === $ctrl.deliveryMethodsIds.INVENTORY_ID)"
+                           ng-blur="$ctrl.onChangeProduct({ count: $ctrl.copiedProduct.count })"
+                    >
+                    <div ng-messages="$ctrl['productForm-' + $ctrl.hash]['count-'+ $ctrl.hash].$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="number">Only numbers</div>
+                        <div ng-message="min">Min qty is 1</div>
+                        <div ng-message="pattern">Qty is not valid</div>
+                    </div>
+                </md-input-container>
+                <div ng-if="!$ctrl.copiedProduct.isMultiple">
+                    {{$ctrl.copiedProduct.count}}
+                </div>
+            </div>
+        </div>
+        <div class="info-block block-width-150 left-divider">
+            <div class="info-block-label">Method:</div>
+            <div class="info-block-body">
+                <md-input-container class="method-select">
+                    <md-select ng-model="$ctrl.copiedProduct.deliveryMethod"
+                               ng-change="$ctrl.onChangeMethod($ctrl.copiedProduct.deliveryMethod)"
+                               name="method-{{$ctrl.hash}}"
+                               ng-required="true"
+                               clear-on-click>
+                        <md-option ng-value="method.id"
+                                   ng-repeat="method in $ctrl.deliveryMethods">
+                            {{::method.name}}
+                        </md-option>
+                    </md-select>
+                    <div ng-messages="$ctrl['productForm-' + $ctrl.hash]['method-' + $ctrl.hash].$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+        <div class="info-block button-cell">
+            <div class="info-block-label">&nbsp;</div>
+            <div class="info-block-body">
+                <md-button
+                    class="delete-icon-btn"
+                    aria-label="..."
+                    confirm-ng-click="$ctrl.deleteProduct()"
+                    confirm-msg="'Are you sure you want to remove item <span class=\'active-text\'>{0}</span> ?'.format($ctrl.copiedProduct.name)"
+                    confirm-btn-ok="Remove"
+                    confirm-btn-cancel="Cancel"
+                    confirm-title="Remove Item"
+                    confirm-class-name="max-width-450">
+                    <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                </md-button>
+            </div>
+        </div>
+    </div>
+
+    <div class="product-details flex-row grow-1"
+         ng-if="$ctrl.copiedProduct.deliveryMethod === $ctrl.deliveryMethodsIds.MANUALLY_ID"
+    >
+        <div class="info-block col-w-17"
+             ng-if="$ctrl.copiedProduct.isSerialized">
+            <div class="info-block-label"></div>
+            <div class="info-block-body">
+                <md-input-container>
+                    <label>Serial Number:</label>
+                    <input type="text"
+                           name="serial-number-{{$ctrl.hash}}"
+                           ng-model="$ctrl.copiedProduct.serialNumber"
+                           ng-disabled="$ctrl.copiedProduct.deliveryMethod === $ctrl.deliveryMethodsIds.INVENTORY_ID"
+                           ng-required="true"
+                           clear-on-click
+                           ng-blur="$ctrl.onChangeProduct({ serialNumber: $ctrl.copiedProduct.serialNumber })"
+                    >
+                    <div ng-messages="$ctrl['productForm-' + $ctrl.hash]['serial-number-' + $ctrl.hash].$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+        <div class="info-block col-w-17 left-divider"
+             ng-if="$ctrl.copiedProduct.isLotted">
+            <div class="info-block-label"></div>
+            <div class="info-block-body">
+                <md-input-container>
+                    <label>Lot Number:</label>
+                    <input type="text"
+                           name="lot-number-{{$ctrl.hash}}"
+                           ng-model="$ctrl.copiedProduct.lotNumber"
+                           ng-required="true"
+                           ng-disabled="$ctrl.copiedProduct.deliveryMethod === $ctrl.deliveryMethodsIds.INVENTORY_ID"
+                           ng-blur="$ctrl.onChangeProduct({ lotNumber: $ctrl.copiedProduct.lotNumber })"
+                    >
+                    <div ng-messages="$ctrl['productForm-' + $ctrl.hash]['lot-number-' + $ctrl.hash].$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+        <div class="info-block col-w-17"
+             ng-class="{'left-divider': $ctrl.copiedProduct.isSerialized || $ctrl.copiedProduct.isLotted}"
+        >
+            <div class="info-block-label"></div>
+            <div class="info-block-body">
+                <md-input-container>
+                    <label>Tracking Number:</label>
+                    <input type="text"
+                           name="tracking-number-{{$ctrl.hash}}"
+                           ng-model="$ctrl.copiedProduct.trackingNumber"
+                           clear-on-click
+                           alphanumerics-validator
+                           ng-minlength="5"
+                           ng-maxlength="40"
+                           exclude-validators="$ctrl.excludeValidations"
+                           ng-required="$ctrl.copiedProduct.deliveryCompany"
+                           ng-blur="$ctrl.onChangeTrackingNumber($ctrl.copiedProduct.trackingNumber)"
+                    >
+                    <div ng-messages="$ctrl['productForm-' + $ctrl.hash]['tracking-number-' + $ctrl.hash].$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="alphanumerics">Only alphanumeric characters</div>
+                        <div ng-message="minlength">Must contain min 5 symbols</div>
+                        <div ng-message="maxlength">Must contain max 40 symbols</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+        <div class="info-block col-w-17">
+            <div class="info-block-label"></div>
+            <div class="info-block-body">
+                <md-input-container class="method-select">
+                    <label>Select Carrier:</label>
+                    <md-select ng-model="$ctrl.copiedProduct.deliveryCompany"
+                               ng-change="$ctrl.onChangeDeliveryCompany($ctrl.copiedProduct.deliveryCompany)"
+                               name="company-{{$ctrl.hash}}"
+                               ng-required="$ctrl.isRequiredDeliveryCompany"
+                               clear-on-click
+                               class="md-select-value-transparent"
+                    >
+                        <md-option ng-value="company.id"
+                                   ng-repeat="company in $ctrl.deliveryCompanies"
+                        >
+                            {{:: company.name }}
+                        </md-option>
+                    </md-select>
+                    <div ng-messages="$ctrl['productForm-' + $ctrl.hash]['company-' + $ctrl.hash].$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+        <div class="info-block col-w-17 left-divider">
+            <div class="info-block-label"></div>
+            <div class="info-block-body">
+                <md-input-container class="calendar_icon left-input-icon">
+                    <label>Ship Date:</label>
+                    <input ng-model="$ctrl.copiedProduct.shipDate"
+                           name="ship-date-{{$ctrl.hash}}"
+                           datetimepicker
+                           use-current="false"
+                           required="true"
+                           format="MM/DD/YYYY"
+                           clear-on-click
+                           ng-change="$ctrl.onChangeProduct({ shipDate: $ctrl.copiedProduct.shipDate })"
+                    >
+                    <div ng-messages="$ctrl['productForm-' + $ctrl.hash]['ship-date-' + $ctrl.hash].$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+    </div>
+
+    <div class="inventory-details flex-row grow-1"
+         ng-if="$ctrl.copiedProduct.deliveryMethod === $ctrl.deliveryMethodsIds.INVENTORY_ID">
+        <div class="amount-in-inventory">
+            <span ng-class="{
+                        'text-disabled' : !$ctrl.getInventoryAvailable(),
+                        'active-text': $ctrl.getInventoryAvailable()
+                    }">
+                {{ $ctrl.getInventoryAvailable() }} items available in inventory
+            </span>
+            <md-button class="pick-btn md-raised small-btn"
+                       ng-class="{'green-btn': $ctrl.getInventoryAvailable() > 0}"
+                       ng-disabled="!$ctrl.getInventoryAvailable()"
+                       ng-click="$ctrl.pickItemFromInventory()">
+                Pick
+            </md-button>
+        </div>
+
+        <div class="amount-in-inventory-error">
+            <span ng-if="$ctrl['productForm-'+$ctrl.hash]['linked-count-'+$ctrl.hash].$error.required &&
+                         $ctrl['productForm-'+$ctrl.hash]['linked-count-'+$ctrl.hash].$touched">
+                <span ng-if="$ctrl.getInventoryAvailable()">Please, pick an item</span>
+                <span ng-if="!$ctrl.getInventoryAvailable()">Please, use another method</span>
+            </span>
+
+            <input class="hide-this"
+                   name="linked-count-{{$ctrl.hash}}"
+                   ng-required="!$ctrl.copiedProduct.linkedItemsHashes.length"
+                   ng-model="$ctrl.copiedProduct.isLinkedToInventory"
+                   ng-blur="$ctrl.onChangeProduct({ isLinkedToInventory: $ctrl.copiedProduct.isLinkedToInventory })"
+            />
+        </div>
+
+    </div>
+
+    <div class="dropship-details flex-row grow-1"
+         ng-if="$ctrl.copiedProduct.deliveryMethod === $ctrl.deliveryMethodsIds.DROP_SHIP_ID">
+        <md-icon class="alert-icon-blue"
+                 md-svg-src="assets/images/default/alert.svg"></md-icon>
+        <span>
+            Drop-ship items will be processed according to your account settings with the sender.
+        </span>
+    </div>
+
+    <div class="bundle-components"
+         ng-if="$ctrl.copiedProduct.isBundle && (!$ctrl.copiedProduct.linkedItemsHashes || $ctrl.copiedProduct.linkedItemsHashes.length === 0)">
+        <product-components
+            hash="$ctrl.hash"
+            product="$ctrl.copiedProduct"
+            components="$ctrl.components"
+        ></product-components>
+    </div>
+
+    <div ng-if="$ctrl.copiedProduct.deliveryMethod === $ctrl.deliveryMethodsIds.INVENTORY_ID && $ctrl.copiedProduct.linkedItemsHashes">
+        <linked-item ng-repeat="linkedItemHash in $ctrl.copiedProduct.linkedItemsHashes"
+                     linked-item-components="$ctrl.linkedItemComponents"
+                     linked-item="$ctrl.linkedItems.byHash[linkedItemHash]"
+                     product-hash="$ctrl.copiedProduct.hash"
+                     delivery-companies="$ctrl.deliveryCompanies"
+                     index="$index + 1"
+        ></linked-item>
+    </div>
+
+    <div class="product-notes flex-row grow-1">
+        <md-input-container>
+            <label></label>
+            <textarea rows="1"
+                      ng-maxlength="$ctrl.notesMaxLength"
+                      ng-model="$ctrl.copiedProduct.notes"
+                      placeholder="type your notes here ..."
+                      name="notes-{{$ctrl.hash}}"
+                      ng-blur="$ctrl.onChangeProduct({ notes: $ctrl.copiedProduct.notes })"
+            ></textarea>
+            <div ng-messages="$ctrl['productForm-' + $ctrl.hash]['notes-' + $ctrl.hash].$error"
+                 class="md-input-messages-nice">
+                <div ng-message="maxlength"
+                     class="md-input-message-animation">
+                    Note is too long, max length is {{ $ctrl.notesMaxLength }} symbols
+                </div>
+            </div>
+        </md-input-container>
+    </div>
+</div>
+
+

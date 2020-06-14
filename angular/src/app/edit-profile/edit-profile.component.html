@@ -1,0 +1,179 @@
+<div class="drowz-wizard edit-profile">
+    <app-loading [show]="saveProfileLoaderStatus"></app-loading>
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)"
+           routerLink="/dashboard">Home</a>
+        <a href="javascript:void(0)"
+           class="active">Edit Profile</a>
+    </div>
+
+    <div class="drowz-wizard-body clearfix">
+        <div class="drowz-wizard-body-flex"
+              name="editProfileForm"
+              autocomplete="off"
+              [formGroup]="editProfileForm">
+
+            <div class="drowz-wizard-block grow-1">
+                <div class="drowz-wizard-block-title">
+                    <div class="wizard-title-text">Personal Info:</div>
+                </div>
+                <div class="drowz-wizard-block-body">
+                    <div class="drowz-wizard-block-row">
+                        <div class="info-block col-w-33">
+                            <mat-form-field class="col-w-100">
+                                <input matInput
+                                       autocomplete="off"
+                                       placeholder="First Name:"
+                                       type="text"
+                                       formControlName="firstName"
+                                       required
+                                />
+                                <mat-error *ngIf="editProfileForm.controls.firstName.invalid">
+                                    <b>First Name</b> cannot be empty.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="info-block col-w-33">
+                            <mat-form-field class="col-w-100">
+                                <input matInput
+                                       autocomplete="off"
+                                       placeholder="Last Name:"
+                                       type="text"
+                                       formControlName="lastName"
+                                       required
+                                />
+                                <mat-error *ngIf="editProfileForm.controls.lastName.invalid">
+                                    <b>Last Name</b> cannot be empty.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="info-block col-w-33">
+                            <app-email-input formControlName="email" [required]="true" [class]="'col-w-100'"></app-email-input>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="drowz-wizard-block w350px change-password">
+                <div class="drowz-wizard-block-title">
+                    <div class="wizard-title-text">Change Password:</div>
+                </div>
+                <div class="drowz-wizard-block-body">
+                    <div class="info-block">
+                        <mat-form-field
+                            class="col-w-100"
+                            [ngClass]="{ 'new-password-error': setNewPassErrorClass() }">
+
+                            <input style="display:none"
+                                   type="password"
+                                   name="fakepasswordremembered"/>
+
+                            <input matInput
+                                   autocomplete="new-password"
+                                   placeholder="New password:"
+                                   type="password"
+                                   tabindex="1"
+                                   formControlName="newPassword"
+                            />
+
+                            <mat-error *ngIf="editProfileForm.controls.newPassword.invalid">
+                                <span *ngIf="editProfileForm.controls.newPassword.errors?.required">
+                                    <b>New password</b> cannot be empty.
+                                </span>
+                                    <span *ngIf="editProfileForm.controls.newPassword.errors?.pattern">
+                                    <b>New password</b> is not valid.
+                                    <br/>Must be at least 8 characters.
+                                    <br/>Must have at least one digit ('0'-'9').
+                                    <br/>Must have at least one lowercase ('a'-'z').
+                                    <br/>Must have at least one uppercase ('A'-'Z').
+                                    <br/>Must have at least one non alphanumeric character.
+                                </span>
+                            </mat-error>
+
+                        </mat-form-field>
+                    </div>
+
+                    <div class="info-block">
+                        <mat-form-field class="col-w-100">
+
+                            <input style="display:none"
+                                   type="password"
+                                   name="fakepasswordremembered"/>
+
+                            <input matInput
+                                   autocomplete="new-password"
+                                   placeholder="Repeat new password:"
+                                   type="password"
+                                   tabindex="2"
+                                   formControlName="confirmPassword"
+                            />
+                            <mat-error *ngIf="editProfileForm.controls.confirmPassword.invalid">
+                                <span *ngIf="editProfileForm.controls.confirmPassword.errors?.required">
+                                    <b>Repeat new password</b> cannot be empty.
+                                </span>
+                                <span *ngIf="editProfileForm.controls.confirmPassword.errors?.MatchFields">
+                                    <b>Repeat new password</b> must be equal to <b>New password</b>.
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="drowz-wizard-block w300px profile-picture-container">
+                <div class="drowz-wizard-block-title">
+                    <div class="wizard-title-text">Profile Picture:</div>
+                    <a href="javascript:void(0);"
+                       class="delete-icon-btn"
+                       *ngIf="profileInfo?.Picture"
+                       (click)="removeSelectedFile()">
+                        <mat-icon svgIcon="trash"></mat-icon>
+                    </a>
+                </div>
+
+                <div class="drowz-wizard-block-body">
+                    <app-loading [show]="pictureLoaderStatus"></app-loading>
+
+                    <div class="profile-picture"
+                         *ngIf="profileInfo"
+                         [ngStyle]="{
+                             'background-image':'url(' + (profileInfo.Picture || profileInfo.PicturePlaceholder) + ')'
+                         }"
+                    >
+                    </div>
+
+                    <button class="niko-mat-button md-raised edit-profile-btn"
+                            tabindex="3"
+                            mat-raised-button
+                            (click)="runFileUpload()"
+                    >Upload Picture</button>
+
+                    <input ng2FileSelect
+                           type="file"
+                           #fileUploaderInput
+                           class="file-uploader-input"
+                           [uploader]="uploader"/>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="drowz-wizard-footer">
+        <button class="niko-mat-button drowz-wizard-footer-btn"
+                mat-raised-button
+                (click) = "goToDashboard()"
+        >Cancel</button>
+
+        <button class="niko-mat-button drowz-wizard-footer-btn"
+                mat-raised-button
+                [disabled]="!editProfileForm.valid"
+
+                color="primary"
+                (click)="save()">Save</button>
+    </div>
+
+</div>

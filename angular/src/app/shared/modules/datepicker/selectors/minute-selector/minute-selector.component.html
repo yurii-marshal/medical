@@ -1,0 +1,12 @@
+<div class="date-set">
+    <ul class="date-set__dates">
+        <li *ngFor="let minute of minutes()"
+            [ngClass]="
+                {
+                     'date-set__date': true
+                }"
+            (mousedown)="dateChange.emit(minute); $event.preventDefault(); $event.stopPropagation();">
+            {{ minute.format("mm") }}
+        </li>
+    </ul>
+</div>

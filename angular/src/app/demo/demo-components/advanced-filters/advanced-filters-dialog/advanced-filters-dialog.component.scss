@@ -1,0 +1,40 @@
+@import "~assets/styles/base/variables";
+
+:host {
+  width: 960px;
+
+  .modal-advanced {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .modal-header {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 30px;
+
+      mat-icon {
+        display: block;
+        color: $main-active-color;
+        font-size: 56px;
+        width: 56px;
+        height: 56px;
+      }
+
+      h1 {
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 24px;
+        color: $dark-blue-color;
+      }
+    }
+  }
+
+  .form-container {
+    width: 960px;
+    margin: 30px;
+  }
+}

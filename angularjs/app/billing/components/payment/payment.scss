@@ -1,0 +1,93 @@
+.payment-page-wrap {
+    background-color: $lighter-gray-color;
+    position: relative;
+
+    .pagination-page {
+        &.page-error a {
+            color: red;
+            font-weight: bold;
+        }
+    }
+
+    .payment-invoices-pagination {
+        background-color: $lighter-gray-color;
+        margin: 20px 0px;
+        display: inline-flex;
+    }
+
+    .legacy-payment-hint {
+        height: 25px;
+        margin-top: 9px;
+        margin-left: 0;
+    }
+
+    .table-wrap {
+        width: 100%;
+    }
+
+    .legacy-payment-checkbox {
+        margin-left: 50px;
+    }
+
+    .adjust-table-title {
+        text-transform: uppercase;
+        font-size: 14px;
+        font-weight: bold;
+        padding-left: 10px;
+    }
+
+    .drowz-wizard-block {
+        float: none;
+        margin: 0;
+    }
+
+    .height-info-block {
+        height: 50px;
+    }
+
+    .md-button {
+        margin: 0 0 0 15px;
+    }
+
+    .footer-btns {
+        display: flex;
+        justify-content: flex-end;
+        margin: 50px 0 10px 0;
+    }
+
+    .fub-btn-container {
+        position: fixed;
+        top: 20px;
+        right: 0;
+        z-index: 10;
+
+        .toolbar-single-action {
+            top: 0px;
+
+            md-icon {
+                margin: -1px -1px 0 0;
+            }
+        }
+    }
+
+    .plb-info-wrap {
+        display: inline-block;
+        height: 5px;
+    }
+}
+
+.gray-line {
+    border-top: 1px solid $lighter-gray-color;
+    margin: 0 10px 15px 15px;
+}
+
+.readonly-info-block {
+
+    &.info-block {
+        margin-bottom: 0;
+    }
+
+    md-input-container {
+        margin: 0;
+    }
+}

@@ -1,0 +1,50 @@
+.reports-dashboard {
+    background-color: $lighter-gray-color;
+
+    .block-border-right {
+        border-right: 1px solid $calendar-gray-color;
+    }
+
+    .block-border-top {
+        border-top: 1px solid $calendar-gray-color;
+    }
+
+    .remove-padding {
+        padding-top: 0;
+    }
+
+    .report-section-title{
+        color: $dark-blue-color;
+        text-transform: uppercase;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 15px 20px;
+    }
+
+    .report-section-item {
+        padding: 15px 20px;
+        font-size: 14px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $light-gray-color;
+        }
+
+        .report-section-item-body {
+            padding-top: 10px;
+            font-size: 12px;
+            line-height: 16px;
+        }
+
+        .report-section-item-title {
+            justify-content: space-between;
+            display: flex;
+            font-weight: 500;
+
+            .edit-icon {
+                color: $middle-gray-color;
+                height: 16px;
+            }
+        }
+    }
+}

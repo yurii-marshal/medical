@@ -1,0 +1,180 @@
+main-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 1600px;
+    height: $main-menu-height;
+    background-color: $dark-blue-color;
+    transform: translateZ(0);
+
+    @include respond-to(appMinWidth) {
+        position: absolute;
+        right: auto;
+    }
+
+    .main-links {
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+
+    .main-menu-logo {
+        margin: 0 50px 5px 15px;
+
+        .main-menu-logo-icon {
+            width: 174px;
+            min-width: 174px;
+            height: 100%;
+            max-height: 39px;
+        }
+    }
+}
+
+.main-link {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    //padding: 17px 15px 0;
+    padding: 4px 12px 0;
+    margin: 0 1px 0 0;
+    color: $dark-gray-color;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 700;
+    white-space: nowrap;
+    border-bottom: 4px solid transparent;
+    transition: 0s;
+
+    &:hover, &:focus, &.active {
+        color: $main-active-color;
+        text-decoration: none;
+        border-bottom-color: $main-active-color;
+
+        .main-link-icon {
+            color: $main-active-color;
+        }
+    }
+
+    .main-link-icon {
+        display: block;
+        margin: 0 10px 0 0;
+        max-width: 22px;
+        max-height: 22px;
+        width: 22px;
+        height: 22px;
+        color: $dark-gray-color;
+        transition: .2s;
+    }
+
+    .main-link-text {
+        transition: .2s;
+    }
+
+    // uncomment this code if more main links in menu will be added
+    /*@include respond-to(normScreens) {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 7px 0;
+        font-size: 13px;
+
+        .main-link-text {
+            margin-bottom: 5px;
+        }
+
+        .main-link-icon {
+            margin: 0 auto 5px;
+        }
+    }*/
+
+}
+
+.main-menu-info {
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    .main-menu-avatar {
+        width: 50px;
+        min-width: 50px;
+        height: 50px;
+        margin: 7px 10px 7px 7px;
+        border-radius: 50%;
+        border: 1px solid $lighter-gray-color;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .main-menu-greeting {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 7px 2px;
+        margin-right: 10px;
+
+        .user-name {
+            display: block;
+            margin-bottom: 6px;
+            font-size: $font-size-md;
+            color: $main-active-color;
+            font-weight: $font-weight-normal;
+        }
+
+        .main-menu-go-profile {
+            position: relative;
+            text-decoration: none;
+            color: $lighter-gray-color;
+            font-size: 10px;
+            line-height: $font-size-xxs;
+            font-weight: $font-weight-light;
+
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 0;
+                height: 1px;
+                background-color: currentColor;
+                transition: .2s;
+            }
+
+            &:hover, &:focus {
+                &::after {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    .logout-link {
+        display: flex;
+        width: 60px;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+
+        &:hover, &:focus {
+            .logout-link-img {
+                color: $lighter-gray-color;
+            }
+        }
+
+        .logout-link-img {
+            display: block;
+            margin: 0;
+            width: 25px;
+            height: 20px;
+            color: $dark-gray-color;
+            transition: .2s;
+        }
+    }
+}

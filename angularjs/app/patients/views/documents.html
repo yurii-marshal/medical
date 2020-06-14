@@ -1,0 +1,174 @@
+<div class="patient-documents"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="loading-documents">
+
+    <no-records text="Documents" is-fullpage="true"
+                ng-if="!documents.documentsToPreview.length"></no-records>
+
+    <div class="flow-body" ng-if="documents.documentsToPreview.length">
+
+        <div class="patient-documents-header"
+             ng-if="documents.documentsToPreview.length > 0">
+            <md-checkbox ng-model="documents.check" class="md-primary document-check-all"
+                         ng-change="documents.checkAll()">Select All</md-checkbox>
+            <div class="patient-documents-buttons">
+                <md-button class="md-raised small-btn delete-document"
+                           aria-label="..."
+                           confirm-ng-click="documents.remove()"
+                           confirm-msg="'Are you sure you want to delete this document(s)?'"
+                           confirm-btn-ok="Yes"
+                           confirm-btn-cancel="No"
+                           confirm-title="Delete Document(s)"
+                           ng-hide="documents.disabled">
+                    <span class="red-color">Delete Selected</span>
+                </md-button>
+            </div>
+        </div>
+
+        <div class="patient-documents-row"
+             ng-repeat="document in documents.documentsToPreview"
+             ng-class="{'opened': document.opened}">
+            <div class="main-document">
+
+                <md-checkbox ng-model="document.checked"
+                             class="md-primary document-checkbox">
+                    <div class="info-block block-width-15-percent">
+                        <div class="info-block-label">Document Type:</div>
+                        <div class="info-block-body flex-cont align-top">
+                            {{document.DocumentType.Text}}
+                            <md-icon
+                                class="csm-document-icon"
+                                ng-if="document.DocumentType.Text.toLowerCase()==='cms'"
+                                md-svg-src="assets/images/default/tasks.svg"></md-icon>
+                        </div>
+                    </div>
+                    <div class="info-block block-width-180 left-divider">
+                        <div class="info-block-label">Uploaded:</div>
+                        <div class="info-block-body">
+                            {{document.CreatedDate | localDateTime: "MM/DD/YYYY"}}
+                            <span class="active-text">{{document.CreatedDate | localDateTime: "hh:mm A"}}</span>
+                        </div>
+                    </div>
+                    <div class="info-block block-width-180 left-divider">
+                        <div class="info-block-label">Certification Type:</div>
+                        <div class="info-block-body">{{ document.CertificationType.Text || '-' }}</div>
+                    </div>
+                    <div class="info-block block-width-15-percent left-divider">
+                        <div class="info-block-label">User:</div>
+                        <div class="info-block-body">{{document.CreatedUser.FullName}}</div>
+                    </div>
+                    <div class="info-block block-width-30-percent left-divider">
+                        <div class="info-block-label">Notes:</div>
+                        <div class="info-block-body">
+                            <span ng-if="!document.Description">-</span>
+                            <format-string-by-paragraphs
+                                    text="document.Description"
+                                    ng-if="document.Description">
+                            </format-string-by-paragraphs>
+                        </div>
+                    </div>
+                    <div class="info-block block-width-180 left-divider"
+                         ng-class="{'left-divider': document.IsCmn && document.ExpiredDate}">
+                        <div class="info-block-label" ng-if="document.IsCmn && document.ExpiredDate">Expiration Date:</div>
+                        <div class="info-block-body" ng-if="document.IsCmn && document.ExpiredDate">
+                            {{document.ExpiredDate | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                        </div>
+                    </div>
+                    <div class="info-block two-line-status block-width-150">
+                        <div class="status-label {{document.StatusClass}}"
+                             ng-if="document.Status.Id === documents.documentStatusExpiredId"
+                        >
+                            {{ document.Status.Text }}
+                        </div>
+
+                    </div>
+                    <div class="patient-documents-buttons">
+                        <md-button class="md-raised small-btn eye-details-btn"
+                                   ng-click="documents.view($event, document)"
+                        >
+                            <icon-loading-white ng-if="document.isLoading"
+                                                class="blue-loading"
+                            ></icon-loading-white>
+
+                            <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon>
+                            <span>Details</span>
+                        </md-button>
+                        <md-button class="md-raised small-btn edit-doc"
+                                   aria-label="..."
+                                   ng-click="documents.edit($event, document)">
+                            <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                            Edit
+                        </md-button>
+                        <md-button class="md-raised toggle-doc-btn"
+                                   ng-click="documents.getDocumentHistory($event, document)"
+                                   aria-label="...">
+                            <md-icon md-svg-src="assets/images/default/chevron.svg"></md-icon>
+                        </md-button>
+                    </div>
+                </md-checkbox>
+
+            </div>
+            <div class="history-document">
+
+                <div class="no-records" ng-if="document.previous.length === 0">
+                    No Previous Documents
+                </div>
+
+                <div class="history-document-table" ng-if="document.previous.length">
+
+                    <div class="history-document-table-title">Previous Documents:</div>
+
+                    <div class="history-document-table-header">
+                        <div class="checkbox-cell">&nbsp;</div>
+                        <div class="type-cell">Type</div>
+                        <div class="user-cell">Date</div>
+                        <div class="user-cell">Certification Type:</div>
+                        <div class="user-cell">User</div>
+                        <div class="notes-cell">Notes</div>
+                        <div class="edit-cell">&nbsp;</div>
+                    </div>
+
+                    <div class="history-document-table-row">
+
+                        <md-checkbox ng-model="prevDoc.checked"
+                                     class="md-primary history-document-checkbox"
+                                     ng-repeat="prevDoc in document.previous">
+
+                            <div class="type-cell">{{prevDoc.DocumentType.Text}}</div>
+                            <div class="user-cell">
+                                <span class="dark-blue-text">{{prevDoc.CreatedDate | localDateTime: "MM/DD/YYYY"}} </span>
+                                <span class="active-text">{{prevDoc.CreatedDate | localDateTime: "hh:mm A"}}</span>
+                            </div>
+                            <div class="user-cell">{{prevDoc.CertificationType.Text || '-'}}</div>
+                            <div class="user-cell">{{prevDoc.CreatedUser.FullName}}</div>
+                            <div class="notes-cell">
+                                <span ng-if="!prevDoc.Description">-</span>
+                                <format-string-by-paragraphs
+                                        text="prevDoc.Description"
+                                        ng-if="prevDoc.Description">
+                                </format-string-by-paragraphs>
+                            </div>
+                            <div class="btns-cell">
+                                <md-button aria-label="..."
+                                           class="view-info-icon"
+                                           ng-click="documents.view($event, prevDoc)">
+                                    <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon>
+                                </md-button>
+                                <md-button class="edit-info-icon"
+                                           ng-click="documents.edit($event, prevDoc)"
+                                           aria-label="...">
+                                    <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                                </md-button>
+                            </div>
+
+                        </md-checkbox>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

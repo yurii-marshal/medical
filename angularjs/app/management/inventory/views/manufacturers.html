@@ -1,0 +1,114 @@
+<div class="infinite-scroll-bg">
+
+    <a href="javascript:void(0);"
+       class="toolbar-single-action"
+       simple-tooltip="Add new manufacturer"
+       tooltip-position="left"
+       ng-click="manufacturers.showModal($event)"
+    ></a>
+
+    <div class="breadcrumbs transparent-bg">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+        <a href="javascript:void(0)" ui-sref="root.management.inventory">Inventory</a>
+        <a href="javascript:void(0)" class="active">Manufacturers</a>
+    </div>
+
+    <infinity-table load-items-promise="manufacturers.getManufacturers"
+                    page-size="24"
+                    item-alias="item"
+                    filters-obj="manufacturers.filter"
+                    sort-obj="manufacturers.sortExpr"
+                    cache-filters-key="manufacturers.cacheFiltersKey"
+    >
+        <infinity-table-sort>
+            <div>
+                <md-icon md-svg-src="assets/images/default/museum.svg" class="main-sort-icon museum-icon"></md-icon>
+                <inftbl-sort-list param-name="Name">Name:</inftbl-sort-list>
+            </div>
+            <div>
+                <md-icon md-svg-src="assets/images/default/location2.svg" class="main-sort-icon location-icon"></md-icon>
+                Address:
+            </div>
+            <div>
+                <md-icon md-svg-src="assets/images/default/website-v2.svg" class="main-sort-icon website-icon"></md-icon>
+                Website:
+            </div>
+            <div class="phones-td no-divider">
+                <md-icon md-svg-src="assets/images/default/phone-default.svg" class="main-sort-icon phone-icon"></md-icon>
+                Contacts:
+            </div>
+            <div class="cell-50px no-divider">&nbsp;</div>
+        </infinity-table-sort>
+
+        <infinity-table-filters class="drowz-infinite-row-filter">
+            <div>
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>search name</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.Name"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click />
+                </md-input-container>
+            </div>
+            <div>
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>search address</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.Address"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click />
+                </md-input-container>
+            </div>
+            <div>
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>search website</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.Website"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click />
+                </md-input-container>
+            </div>
+            <div class="phones-td no-divider">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>search phone</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.Contact"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click />
+                </md-input-container>
+            </div>
+            <div class="cell-50px filter-reset-btn">
+                <inftbl-filter-reset-btn></inftbl-filter-reset-btn>
+            </div>
+        </infinity-table-filters>
+
+        <infinity-table-row class="drowz-infinite-row hide-btns-row"
+                            ng-click="$parent.manufacturers.showModal($event, item.Id)">
+            <div ng-bind="item.Name"></div>
+            <div>
+                <div popover-directive="item.Address"></div>
+            </div>
+            <div ng-bind="item.Website"></div>
+            <div class="phones-td no-divider">
+                <div popover-directive="item.Contacts" is-array-with-type="true"></div>
+            </div>
+            <div class="cell-50px no-divider">
+                <div class="flex-cont space-around">
+                    <md-button class="delete-icon-btn"
+                               aria-label="..."
+                               confirm-ng-click="$parent.manufacturers.deleteManufacturer(item.Id)"
+                               confirm-msg="'Are you sure you want to delete {0} manufacturer?'.format(item.Name)"
+                               confirm-title="Delete manufacturer">
+                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                    </md-button>
+                </div>
+            </div>
+        </infinity-table-row>
+
+        <infinity-table-no-items>
+            <no-records text="Manufacturers" is-fullpage="true"></no-records>
+        </infinity-table-no-items>
+    </infinity-table>
+
+</div>

@@ -1,0 +1,30 @@
+<div class="drowz-subwizard-overlay"></div>
+<div class="drowz-wizard-block no-float">
+    <div class="drowz-wizard-block-title">
+        <div class="wizard-title-text">Transfer Items:</div>
+    </div>
+    <div class="drowz-wizard-block-body"
+         bs-loading-overlay
+         bs-loading-overlay-reference-id="transfer-equipment-wizard">
+        <div ui-view></div>
+        <div class="drowz-subwizard-footer">
+            <md-button class="md-raised main-button" ng-click="wiz.cancel()">Cancel</md-button>
+            <md-button class="md-raised main-button"
+                       ng-if="wiz.currentStep !== 1"
+                       ng-click="wiz.back()">
+                Back
+            </md-button>
+            <md-button class="md-raised main-button"
+                       ng-if="wiz.currentStep === 1"
+                       ng-click="wiz.skipStep()">
+                Skip
+            </md-button>
+            <md-button class="md-raised md-primary main-button"
+                       ng-click="wiz.goToReview()"
+                       ng-if="wiz.currentStep !== 1"
+                       ng-disabled="wiz.pairList.length === 0">
+                Review
+            </md-button>
+        </div>
+    </div>
+</div>

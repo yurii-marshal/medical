@@ -1,0 +1,37 @@
+.customHeaderMenuButton {
+    float: left;
+}
+
+.customHeaderLabel {
+    float: left;
+    text-transform: uppercase;
+}
+
+.customSortDownLabel {
+    float: left;
+}
+
+.customSortUpLabel {
+    float: left;
+}
+
+.customSortRemoveLabel {
+    float: left;
+    font-size: 11px;
+}
+
+.active {
+    color: cornflowerblue;
+}
+
+.hidden {
+    display: none;
+}
+
+.header-arrow-table {
+    height: 10px;
+
+    &.arrow-up {
+        transform: translate(0, 42px) rotate(180deg);
+    }
+}

@@ -1,0 +1,261 @@
+<div ng-form="$ctrl.form"
+     class="modifiers-container"
+     ng-if="$ctrl.isServiceLineModifiers">
+
+    <div class="modifier-block">
+        <md-autocomplete-with-infinite-scroll
+                class="modifier-autocomplete-block"
+                md-selected-item="$ctrl.data.Level1"
+                md-search-text="$ctrl.searchModifier1"
+                md-items="mod in $ctrl.getModifiers($ctrl.searchModifier1, pageIndex)"
+                md-item-text="mod.Id"
+                md-input-name="mod1"
+                md-min-length="0"
+                md-delay="350"
+                md-menu-class="modifiers-dropdown"
+                md-menu-container-class="modifier-decorator"
+                md-floating-label="modifier 1"
+                ng-required="$ctrl.isModifierRequired('Level1')"
+                ng-disabled="$ctrl.isAllDisabled"
+                md-autocomplete-required
+                clear-on-click>
+            <md-item-template>
+                <span title="{{mod.Description}}">{{mod.Id + ' - ' + mod.Description}}</span>
+            </md-item-template>
+            <md-not-found>Not found</md-not-found>
+        </md-autocomplete-with-infinite-scroll>
+        <md-input-container class="hidden-error-msgs">
+            <input type="text"
+                   ng-model="$ctrl.data.Level1"
+                   ng-required="$ctrl.isModifierRequired('Level1')"
+                   name="mod1"
+                   aria-label="...">
+            <div ng-messages="$ctrl.form.mod1.$error" class="md-input-messages-nice">
+                <div ng-message="required">Required</div>
+                <div ng-message="selected">Not valid</div>
+            </div>
+        </md-input-container>
+    </div>
+
+    <div class="modifier-block">
+        <md-autocomplete-with-infinite-scroll
+                class="modifier-autocomplete-block"
+                md-selected-item="$ctrl.data.Level2"
+                md-search-text="$ctrl.searchModifier2"
+                md-items="mod in $ctrl.getModifiers($ctrl.searchModifier2, pageIndex)"
+                md-item-text="mod.Id"
+                md-input-name="mod2"
+                md-min-length="0"
+                md-delay="350"
+                md-menu-class="modifiers-dropdown"
+                md-menu-container-class="modifier-decorator"
+                ng-disabled="$ctrl.isModifierDisabled('Level2', $ctrl.data.Level2)"
+                md-floating-label="modifier 2"
+                ng-required="$ctrl.isModifierRequired('Level2')"
+                md-autocomplete-required
+                clear-on-click>
+            <md-item-template>
+                <span title="{{mod.Description}}">{{mod.Id + ' - ' + mod.Description}}</span>
+            </md-item-template>
+            <md-not-found>Not found</md-not-found>
+        </md-autocomplete-with-infinite-scroll>
+        <md-input-container class="hidden-error-msgs">
+            <input type="text"
+                   ng-model="$ctrl.data.Level2"
+                   ng-required="$ctrl.isModifierRequired('Level2')"
+                   name="mod2"
+                   aria-label="...">
+            <div ng-messages="$ctrl.form.mod2.$error" class="md-input-messages-nice">
+                <div ng-message="required">Required</div>
+                <div ng-message="selected">Not valid</div>
+            </div>
+        </md-input-container>
+    </div>
+
+    <div class="modifier-block">
+        <md-autocomplete-with-infinite-scroll
+                class="modifier-autocomplete-block"
+                md-selected-item="$ctrl.data.Level3"
+                md-search-text="$ctrl.searchModifier3"
+                md-items="mod in $ctrl.getModifiers($ctrl.searchModifier3, pageIndex)"
+                md-item-text="mod.Id"
+                md-input-name="mod3"
+                md-min-length="0"
+                md-delay="350"
+                md-menu-class="modifiers-dropdown"
+                md-menu-container-class="modifier-decorator"
+                ng-disabled="$ctrl.isModifierDisabled('Level3', $ctrl.data.Level3)"
+                md-floating-label="modifier 3"
+                ng-required="$ctrl.isModifierRequired('Level3')"
+                md-autocomplete-required
+                clear-on-click>
+            <md-item-template>
+                <span title="{{mod.Description}}">{{mod.Id + ' - ' + mod.Description}}</span>
+            </md-item-template>
+            <md-not-found>Not found</md-not-found>
+        </md-autocomplete-with-infinite-scroll>
+        <md-input-container class="hidden-error-msgs">
+            <input type="text"
+                   ng-model="$ctrl.data.Level3"
+                   ng-required="$ctrl.isModifierRequired('Level3')"
+                   name="mod3"
+                   aria-label="...">
+            <div ng-messages="$ctrl.form.mod3.$error" class="md-input-messages-nice">
+                <div ng-message="required">Required</div>
+                <div ng-message="selected">Not valid</div>
+            </div>
+        </md-input-container>
+    </div>
+
+    <div class="modifier-block">
+        <md-autocomplete-with-infinite-scroll
+                class="modifier-autocomplete-block"
+                md-selected-item="$ctrl.data.Level4"
+                md-search-text="$ctrl.searchModifier4"
+                md-items="mod in $ctrl.getModifiers($ctrl.searchModifier4, pageIndex)"
+                md-item-text="mod.Id"
+                md-input-name="mod4"
+                md-min-length="0"
+                md-delay="350"
+                md-menu-class="modifiers-dropdown"
+                md-menu-container-class="modifier-decorator"
+                ng-disabled="$ctrl.isModifierDisabled('Level4', $ctrl.data.Level4)"
+                md-floating-label="modifier 4"
+                ng-required="$ctrl.isModifierRequired('Level4')"
+                md-autocomplete-required
+                clear-on-click>
+            <md-item-template>
+                <span title="{{mod.Description}}">{{mod.Id + ' - ' + mod.Description}}</span>
+            </md-item-template>
+            <md-not-found>Not found</md-not-found>
+        </md-autocomplete-with-infinite-scroll>
+        <md-input-container class="hidden-error-msgs">
+            <input type="text"
+                   ng-model="$ctrl.data.Level4"
+                   ng-required="$ctrl.isModifierRequired('Level4')"
+                   name="mod4"
+                   aria-label="...">
+            <div ng-messages="$ctrl.form.mod4.$error" class="md-input-messages-nice">
+                <div ng-message="required">Required</div>
+                <div ng-message="selected">Not valid</div>
+            </div>
+        </md-input-container>
+    </div>
+</div>
+
+<div ng-form="$ctrl.form"
+     class="modifiers-container"
+     ng-if="!$ctrl.isServiceLineModifiers">
+
+    <div class="modifier-block">
+        <md-autocomplete
+                class="modifier-autocomplete-block"
+                md-selected-item="$ctrl.data.Level1"
+                md-search-text="$ctrl.searchModifier1"
+                md-items="mod in $ctrl.getModifiers($ctrl.searchModifier1)"
+                md-item-text="mod.Id"
+                md-input-name="mod1"
+                md-min-length="0"
+                md-delay="350"
+                md-menu-class="modifiers-dropdown"
+                md-menu-container-class="modifier-decorator"
+                md-floating-label="modifier 1"
+                ng-required="$ctrl.isModifierRequired('Level1')"
+                ng-disabled="$ctrl.isAllDisabled"
+                md-autocomplete-required
+                clear-on-click>
+            <md-item-template>
+                <span title="{{mod.Description}}">{{mod.Id + ' - ' + mod.Description}}</span>
+            </md-item-template>
+            <md-not-found>Not found</md-not-found>
+            <div ng-messages="$ctrl.form.mod1.$error" class="md-input-messages-nice">
+                <div ng-message="required">Required</div>
+                <div ng-message="selected">Not valid</div>
+            </div>
+        </md-autocomplete>
+    </div>
+
+    <div class="modifier-block">
+        <md-autocomplete
+                class="modifier-autocomplete-block"
+                md-selected-item="$ctrl.data.Level2"
+                md-search-text="$ctrl.searchModifier2"
+                md-items="mod in $ctrl.getModifiers($ctrl.searchModifier2)"
+                md-item-text="mod.Id"
+                md-input-name="mod2"
+                md-min-length="0"
+                md-delay="350"
+                md-menu-class="modifiers-dropdown"
+                md-menu-container-class="modifier-decorator"
+                ng-disabled="$ctrl.isModifierDisabled('Level2', $ctrl.data.Level2)"
+                md-floating-label="modifier 2"
+                ng-required="$ctrl.isModifierRequired('Level2')"
+                md-autocomplete-required
+                clear-on-click>
+            <md-item-template>
+                <span title="{{mod.Description}}">{{mod.Id + ' - ' + mod.Description}}</span>
+            </md-item-template>
+            <md-not-found>Not found</md-not-found>
+            <div ng-messages="$ctrl.form.mod2.$error" class="md-input-messages-nice">
+                <div ng-message="required">Required</div>
+                <div ng-message="selected">Not valid</div>
+            </div>
+        </md-autocomplete>
+    </div>
+
+    <div class="modifier-block">
+        <md-autocomplete
+                class="modifier-autocomplete-block"
+                md-selected-item="$ctrl.data.Level3"
+                md-search-text="$ctrl.searchModifier3"
+                md-items="mod in $ctrl.getModifiers($ctrl.searchModifier3)"
+                md-item-text="mod.Id"
+                md-input-name="mod3"
+                md-min-length="0"
+                md-delay="350"
+                md-menu-class="modifiers-dropdown"
+                md-menu-container-class="modifier-decorator"
+                ng-disabled="$ctrl.isModifierDisabled('Level3', $ctrl.data.Level3)"
+                md-floating-label="modifier 3"
+                ng-required="$ctrl.isModifierRequired('Level3')"
+                md-autocomplete-required
+                clear-on-click>
+            <md-item-template>
+                <span title="{{mod.Description}}">{{mod.Id + ' - ' + mod.Description}}</span>
+            </md-item-template>
+            <md-not-found>Not found</md-not-found>
+            <div ng-messages="$ctrl.form.mod3.$error" class="md-input-messages-nice">
+                <div ng-message="required">Required</div>
+                <div ng-message="selected">Not valid</div>
+            </div>
+        </md-autocomplete>
+    </div>
+
+    <div class="modifier-block">
+        <md-autocomplete
+                class="modifier-autocomplete-block"
+                md-selected-item="$ctrl.data.Level4"
+                md-search-text="$ctrl.searchModifier4"
+                md-items="mod in $ctrl.getModifiers($ctrl.searchModifier4)"
+                md-item-text="mod.Id"
+                md-input-name="mod4"
+                md-min-length="0"
+                md-delay="350"
+                md-menu-class="modifiers-dropdown"
+                md-menu-container-class="modifier-decorator"
+                ng-disabled="$ctrl.isModifierDisabled('Level4', $ctrl.data.Level4)"
+                md-floating-label="modifier 4"
+                ng-required="$ctrl.isModifierRequired('Level4')"
+                md-autocomplete-required
+                clear-on-click>
+            <md-item-template>
+                <span title="{{mod.Description}}">{{mod.Id + ' - ' + mod.Description}}</span>
+            </md-item-template>
+            <md-not-found>Not found</md-not-found>
+            <div ng-messages="$ctrl.form.mod4.$error" class="md-input-messages-nice">
+                <div ng-message="required">Required</div>
+                <div ng-message="selected">Not valid</div>
+            </div>
+        </md-autocomplete>
+    </div>
+</div>

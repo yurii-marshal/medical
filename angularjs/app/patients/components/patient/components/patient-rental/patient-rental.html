@@ -1,0 +1,273 @@
+<div class="patient-rental-tab">
+
+    <div class="patient-rental-filters" ng-form="patientRental.filtersForm">
+        <div class="item-number">#</div>
+        <md-button class="clear-filters"
+                   aria-label="..."
+                   ng-click="patientRental.clearFilters()"
+                   simple-tooltip="Refresh Items">
+            <md-icon md-svg-src="assets/images/default/clear-filters.svg"></md-icon>
+        </md-button>
+        <md-input-container class="search-field">
+            <label></label>
+            <input type="text"
+                   ng-model="patientRental.filters.nameOrHcpcsCode"
+                   ng-keydown="patientRental.searchByText($event)"
+                   ng-change="patientRental.clearSearchByText()"
+                   placeholder="Search by Service or Hcpcs code"
+                   clear-on-click>
+            <md-button class="search-btn"
+                       ng-click="patientRental.searchByText($event)"
+                       aria-label="...">
+                <md-icon md-svg-src="assets/images/default/search.svg"></md-icon>
+            </md-button>
+        </md-input-container>
+        <md-input-container class="content-header-timepicker calendar_icon left-input-icon">
+            <label></label>
+            <input type="text"
+                   name="dateFrom"
+                   placeholder="From:"
+                   datetimepicker
+                   format="MM/DD/YYYY"
+                   use-current="false"
+                   ng-change="patientRental.searchByFilter()"
+                   ng-model="patientRental.filters.dateFrom"
+                   ng-required="false"
+                   start-date-validator
+                   end-date="patientRental.filters.dateTo"
+                   clear-on-click>
+            <div ng-messages="patientRental.filtersForm.dateFrom.$error"
+                 class="md-input-messages-nice">
+                <div ng-message="startDate">Date <b>"From"</b> must be less than date <b>"To"</b></div>
+            </div>
+        </md-input-container>
+        <md-input-container class="content-header-timepicker calendar_icon left-input-icon">
+            <label></label>
+            <input type="text"
+                   name="dateTo"
+                   placeholder="To:"
+                   datetimepicker
+                   format="MM/DD/YYYY"
+                   use-current="false"
+                   end-date-validator
+                   start-date="patientRental.filters.dateFrom"
+                   ng-required="false"
+                   ng-model="patientRental.filters.dateTo"
+                   ng-change="patientRental.searchByFilter()"
+                   clear-on-click>
+            <div ng-messages="patientRental.filtersForm.dateTo.$error" class="md-input-messages-nice">
+                <div ng-message="endDate">Date <b>"To"</b> must be greater than date <b>"From"</b></div>
+            </div>
+        </md-input-container>
+
+        <div class="flex-row flex-end w300px">
+            <md-button class="md-raised show-history"
+                       aria-label="..."
+                       ng-class="{'arrow-back-button': patientRental.isShowingHistory}"
+                       ng-click="patientRental.changeItemsType()">
+
+                <md-icon md-svg-src="assets/images/default/history.svg"
+                         ng-if="!patientRental.isShowingHistory">
+                </md-icon>
+
+                <md-icon md-svg-src="assets/images/default/arrow.svg"
+                         ng-if="patientRental.isShowingHistory"
+                         class="rotate-arrow">
+                </md-icon>
+
+                <span ng-if="!patientRental.isShowingHistory">History</span>
+                <span ng-if="patientRental.isShowingHistory">Active</span>
+            </md-button>
+        </div>
+    </div>
+
+    <div class="rental-items-list">
+        <div class="rental-item"
+             ng-repeat="item in patientRental.items track by $index"
+             ng-class="{'opened': item.opened}">
+            <div class="rental-item-content grow-1"
+                 scroll-if-anchor="item.Id === patientRental.anchorRentalId"
+            >
+                <div class="flex-row">
+                    <div class="grow-1">
+                        <div class="flex-row">
+                            <div class="info-block grow-1">
+                                <div class="info-block-label">Service:</div>
+                                <div class="info-block-body"
+                                     ng-bind="item.RentObject.Name"></div>
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <div class="info-block grow-1">
+                                <div class="info-block-label">DOS:</div>
+                                <div class="info-block-body">
+                                    {{item.DateOfService.From | amUtc | amDateFormat: 'MM/DD/YYYY'}} -
+                                    {{item.DateOfService.To | amUtc | amDateFormat: 'MM/DD/YYYY'}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex-row">
+                            <div class="info-block block-width-180 left-divider">
+                                <div class="info-block-label">Initial from:</div>
+                                <div class="info-block-body">
+                                    {{item.InitialPeriod.From | amUtc | amDateFormat: 'MM/DD/YYYY'}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <div class="info-block block-width-180 left-divider">
+                                <div class="info-block-label">Initial to:</div>
+                                <div class="info-block-body">
+                                    {{item.InitialPeriod.To | amUtc | amDateFormat: 'MM/DD/YYYY'}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex-row">
+                            <div class="info-block block-width-180 left-divider">
+                                <div class="info-block-label">HCPCS:</div>
+                                <div class="info-block-body" ng-bind="item.RentObject.HcpcsCode"></div>
+                            </div>
+                            <div class="info-block block-width-100 left-divider">
+                                <div class="info-block-label">Qty:</div>
+                                <div class="info-block-body" ng-bind="item.RentObject.Quantity"></div>
+                            </div>
+                            <div class="info-block block-width-180 left-divider">
+                                <div class="info-block-label">Order:</div>
+                                <div class="info-block-body">
+                                    <a href="javascript:void(0);"
+                                       ng-class="{'underline-after-link' : !!item.OrderId}"
+                                       ng-bind="item.OrderId ? (item.OrderId | idToDisplayName) : '-'"
+                                       class="uppercase"
+                                       ng-click="patientRental.goToOrder(item.OrderId)">
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="flex-row">
+                            <div class="info-block grow-1 left-divider">
+                                <div class="info-block-label">Rental Period:</div>
+                                <div class="info-block-body">
+                                <span>
+                                    Period&nbsp;{{item.Period}}&nbsp;
+                                    |&nbsp;{{item.PeriodCycle.Text }}
+                                </span>
+                                </div>
+                            </div>
+                            <div class="info-block block-width-100">
+
+                            </div>
+                            <div class="info-block block-width-180 left-divider">
+                                <div class="info-block-label">Last Invoice:</div>
+                                <div class="info-block-body">
+                                    <a href="javascript:void(0);"
+                                       ng-class="{'underline-after-link' : !!item.ClaimId}"
+                                       ng-bind="item.ClaimId ? (item.ClaimId | idToDisplayName) : '-'"
+                                       class="uppercase"
+                                       ui-sref="root.invoice.related({ invoiceId: item.ClaimId })">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div ng-if="!patientRental.isShowingHistory">
+                        <div class="flex-row marg-v-10">
+                            <div class="info-block block-width-130 flex-cont center">
+                                <div class="status-label {{item.statusClass}}"
+                                     ng-class="{'status-inactive-reason': item.StopReason}"
+                                     simple-tooltip="{{item.StopReason}}"
+                                     ng-bind="item.IsActive ? 'Active' : 'Inactive'">
+                                </div>
+                            </div>
+                            <div class="info-block block-width-130 flex-cont">
+                                <md-button class="md-raised small-btn patient-rental-btn small-btn"
+                                           ng-class="{ 'stopped': !item.IsActive }"
+                                           ng-click="patientRental.rentalAction(item)"
+                                           aria-label="...">
+                                    <span ng-if="!item.IsActive">Start</span>
+                                    <span ng-if="item.IsActive">Stop</span>
+                                    &nbsp;Rental
+                                </md-button>
+                            </div>
+                        </div>
+                        <div class="flex-row marg-v-10">
+                            <div class="info-block block-width-130 flex-cont align-bottom">
+                                <md-button class="md-raised rent-audit-btn small-btn"
+                                           ng-click="patientRental.openRentAudit(item.Id)">
+                                    <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon>
+                                    <span>Audit</span>
+                                </md-button>
+                            </div>
+                            <div class="info-block block-width-130 flex-cont align-bottom">
+                                <md-button class="md-raised edit-rent-btn small-btn"
+                                           ng-click="patientRental.editRent(item)">
+                                    <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                                    <span>Edit</span>
+                                </md-button>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="patientRental.isShowingHistory">
+                        <div class="flex-row">
+                            <div class="info-block block-width-130 left-divider">
+                                <div class="info-block-label">Completed:</div>
+                                <div class="info-block-body">
+                                    {{ item.ModifiedDate | amUtc | amDateFormat: 'MM/DD/YYYY' }}
+                                </div>
+                            </div>
+
+                            <div class="info-block block-width-130">
+                                <md-button class="md-raised rent-audit-btn small-btn"
+                                           ng-click="patientRental.openRentAudit(item.Id)">
+                                    <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon>
+                                    <span>Audit</span>
+                                </md-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-row"
+                     ng-if="item.HoldReason"
+                >
+                    <div class="info-block grow-1">
+                        <div class="info-block-body">
+                            <div class="any-device-block"
+                                 ng-if="item.HoldReason.Id === patientRental.rentalHoldReasonConstants.MULTIPLE_PRICE_OPTIONS_ID"
+                            >
+                                <span>Multiple price option</span>
+                            </div>
+                            <div class="any-device-block"
+                                 ng-if="item.HoldReason.Id === patientRental.rentalHoldReasonConstants.NO_PRICE_OPTIONS_AVAILABLE_ID"
+                            >
+                                <span>No available price option</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <no-records text="Rental Items"
+                is-fullpage="true"
+                ng-if="patientRental.totalCount === 0"></no-records>
+
+    <ul ng-if="patientRental.totalCount && patientRental.totalCount > patientRental.paginationParams.pageSize"
+        uib-pagination
+        total-items="patientRental.totalCount"
+        ng-model="patientRental.paginationParams.pageIndex"
+        items-per-page="patientRental.paginationParams.pageSize"
+        ng-change="patientRental.getRentalItems(patientRental.paginationParams.pageIndex - 1)"
+        max-size="patientRental.paginationParams.pageSize"
+        class="pagination-sm tab-pagination"
+        boundary-link-numbers="false"
+        previous-text="&lsaquo;"
+        next-text="&rsaquo;">
+    </ul>
+
+</div>

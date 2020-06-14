@@ -1,0 +1,44 @@
+<div class="modal-window confirm-dwo-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay"
+>
+
+    <a href="javascript:void(0);" ng-click="modal.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/document-update.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Confirm</h2>
+        </div>
+
+        <div ng-form="modal.actionsForm" class="fax-number-container">
+
+            <md-input-container>
+                <label>Fax number:</label>
+                <input type="text"
+                       name="fax-number"
+                       ng-model="modal.params.fax"
+                       ng-required="true"
+                       ng-minlength="10"
+                       input-phone-mask>
+                <div ng-messages="modal.actionsForm['fax-number'].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required" class="md-input-message-animation"><b>Fax number</b> cannot be empty.</div>
+                    <div ng-message="phone-pattern" class="md-input-message-animation"><b>Fax number</b> must contain min 10 digits.</div>
+                </div>
+            </md-input-container>
+
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="modal.cancel()">Cancel</md-button>
+        <md-button class="md-raised main-button" ng-click="modal.back()">Back</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="modal.send()">Ok</md-button>
+    </md-dialog-actions>
+
+</div>

@@ -1,0 +1,55 @@
+<div id="scrollHere"
+     class="drowz-wizard"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="new-appointment-wizard">
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.calendar">Calendar</a>
+
+        <a href="javascript:void(0)" class="active">
+            <span ng-if="!wizard.appointmentId">Add New</span>
+            <span ng-if="wizard.appointmentId">Reschedule</span>
+            Appointment
+        </a>
+    </div>
+
+    <div class="drowz-wizard-tabnames">
+        <a href="javascript:void(0);"
+           class="drowz-wizard-tab"
+           ng-repeat="step in wizard.ourSteps"
+           ng-class="{'active': step.active, 'finished': step.finished}">
+            {{step.title}}
+        </a>
+    </div>
+
+    <div class="drowz-wizard-body clearfix" ng-form="wizard.main">
+        <ui-view></ui-view>
+    </div>
+
+    <div class="drowz-wizard-footer">
+        <md-button class="md-raised main-button drowz-wizard-footer-btn" ng-click="wizard.cancel()">Cancel</md-button>
+        <md-button class="md-raised main-button drowz-wizard-footer-btn"
+                   ng-click="wizard.previous()"
+                   ng-disabled="wizard.ourSteps[0].active"
+                   scroll-to="#scrollHere">
+            Previous
+        </md-button>
+        <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                   ng-click="wizard.next()"
+                   ng-disabled="wizard.canGoNext()"
+                   ng-hide="wizard.ourSteps[wizard.ourSteps.length - 1].active"
+                   scroll-to="#scrollHere"
+                   disabled-scroll="wizard.main.$invalid">
+            Next
+        </md-button>
+
+        <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                   ng-click="wizard.save()"
+                   ng-show="wizard.ourSteps[wizard.ourSteps.length - 1].active"
+                   ng-disabled="wizard.isLoading">
+            <icon-loading-white ng-if="wizard.isLoading"></icon-loading-white>
+            Complete
+        </md-button>
+    </div>
+
+</div>

@@ -1,0 +1,30 @@
+<div class="h100 regular-sidebar dark-sidebar responsive-calendar sidebar-with-menu"
+     ng-if="management.isMainView">
+
+    <div class="sidebar-container"
+         drowz-sidebar
+         drowz-sidebar-name="management"
+         drowz-sidebar-hidden="management.isMenuHidden">
+
+        <div class="sidebar">
+            <div class="sidebar-content"
+                 scroll-bar
+                 scroll-bar-above-element="true">
+
+                <sidebar-menu items="management.menuItems"
+                              show-tooltip="management.isMenuHidden"
+                              class="sidebar-menu">
+                </sidebar-menu>
+            </div>
+
+            <md-button class="toggle-menu-slide" aria-label="...">
+                <md-icon md-svg-src="assets/images/default/chevron.svg" class="toggle_menu_arrow"></md-icon>
+            </md-button>
+
+        </div>
+        <div class="main-content has-infinite-table management-page" ui-view></div>
+
+    </div>
+</div>
+
+<div ui-view="payerPage" ng-if="!management.isMainView"></div>

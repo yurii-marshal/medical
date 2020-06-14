@@ -1,0 +1,249 @@
+@keyframes open-menu {
+    0% {
+        transform: translateX(100%);
+    }
+    15% {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes hide-menu {
+    0% {
+        visibility: visible;
+        transform: translateX(0%);
+    }
+    15% {
+        transform: translateX(100%);
+    }
+    25% {
+        visibility: hidden;
+    }
+}
+
+.notifications {
+    position: relative;
+    width: 50px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    $notifications-container-padding: 20px;
+    $notification-header-height: 22px;
+    $notification-header-margin-bottom: 20px;
+    $notification-footer-height: 60px;
+
+    .notifications-bell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 100%;
+        cursor: pointer;
+
+        &.opened {
+            &::after {
+                bottom: -15px;
+            }
+        }
+
+        &:hover, &.opened {
+            > md-icon {
+                color: lighten($dark-gray-color, 20%);
+            }
+        }
+
+        > md-icon {
+            position: relative;
+            display: block;
+            color: $dark-gray-color;
+            width: 20px;
+            margin: 0;
+            height: 22px;
+            transition: .2s;
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: -1px;
+                right: -1px;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                border: 2px solid $dark-blue-color;
+                background-color: $orange-color;
+                opacity: 0;
+            }
+
+            &.have-notifications {
+                &::after {
+                    opacity: 1;
+                }
+            }
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            z-index: 50;
+            transform: translateX(-50%);
+            border: 8px solid transparent;
+            border-top: 8px solid $dark-blue-color;
+            transition: .2s;
+        }
+    }
+
+    .notifications-overflow-wrap {
+        position: fixed;
+        top: $main-menu-height;
+        right: 0;
+        width: 350px;
+        overflow: hidden;
+        visibility: hidden;
+    }
+
+    .notifications-container {
+        padding: $notifications-container-padding 10px $notifications-container-padding $notifications-container-padding;
+        background-color: $dark-gray-color;
+        color: #fff;
+        z-index: 102;
+        user-select: none;
+        visibility: hidden;
+
+        &.hidden-menu {
+            animation: hide-menu linear;
+            animation-duration: 1s;
+            visibility: hidden;
+            transform: translateX(100%);
+        }
+
+        &.opened {
+            animation: open-menu linear;
+            animation-duration: 1s;
+            visibility: visible;
+            transform: translateX(0%);
+        }
+
+        .notifications-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: $notification-header-height;
+            margin-bottom: $notification-header-margin-bottom;
+
+            .notifications-header-text {
+                font-size: $font-size-md;
+                font-weight: $font-weight-semibold;
+                text-transform: uppercase;
+            }
+        }
+
+        .notifications-list {
+            max-height: calc(100vh - #{$notifications-container-padding} * 2 - #{$notification-header-height} - #{$notification-header-margin-bottom} - #{$main-menu-height} - #{$notification-footer-height});
+
+            .notification-item {
+                position: relative;
+                margin-left: 30px;
+                margin-right: 10px;
+                padding: 10px 0;
+                transition: transform .2s;
+
+                &:last-of-type {
+                    padding-bottom: 0;
+                }
+
+                .notification-item-icon {
+                    position: absolute;
+                    top: 10px;
+                    left: -30px;
+                    display: block;
+                    color: $main-active-color;
+
+                    &.documents-icon {
+                        width: 16px;
+                        height: 20px;
+                    }
+
+                    &.messages-icon {
+                        width: 18px;
+                        height: 18px;
+                    }
+                }
+
+                .notification-item-title {
+                    margin-bottom: 10px;
+                    padding-right: 30px;
+                    line-height: 18px;
+                }
+
+                .notification-item-date {
+                    padding-bottom: 10px;
+                    font-size: 10px;
+                    border-bottom: 1px solid $wizard-title-color;
+                }
+
+                .close-notification {
+                    position: absolute;
+                    top: 16px;
+                    right: 0;
+                    display: block;
+                    width: 20px;
+                    height: 20px;
+                    cursor: pointer;
+
+                    &::after, &::before {
+                        content: "";
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        background-color: #fff;
+                        transform: rotate(45deg);
+                        transition: .2s;
+                    }
+
+                    &::after {
+                        height: 2px;
+                        width: 18px;
+                        margin-top: -1px;
+                        margin-left: -9px;
+                    }
+
+                    &::before {
+                        width: 2px;
+                        height: 18px;
+                        margin-top: -9px;
+                        margin-left: -1px;
+                    }
+
+                    &:hover {
+                        &::after, &::before {
+                            background-color: lighten($dark-gray-color, 30%);
+                        }
+                    }
+                }
+            }
+        }
+
+        .clear-all-notifications {
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            height: $notification-footer-height;
+
+            > .md-button {
+                margin: 0;
+                padding: 0 12px;
+                height: 30px;
+                line-height: 28px;
+                border: 1px solid $lighter-gray-color;
+                border-radius: 3px;
+                box-shadow: $box-shadow;
+                font-size: 13px;
+                font-weight: 400;
+                text-transform: none;
+            }
+        }
+    }
+}

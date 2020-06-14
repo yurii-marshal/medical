@@ -1,0 +1,127 @@
+<div class="infinite-scroll-bg provider-view full-height-with-footer"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="vendorPage"
+     ng-form="$ctrl.vendorForm">
+
+    <div class="top-block">
+        <div class="breadcrumbs transparent-bg">
+            <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+            <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+            <a href="javascript:void(0)" ui-sref="root.management.inventory">Inventory</a>
+            <a href="javascript:void(0)" class="active">{{ !$ctrl.vendorId ? 'Add' : 'Edit' }} Vendor</a>
+        </div>
+
+        <div class="drowz-wizard-body-flex">
+
+            <div class="grow-1">
+
+                <div class="drowz-wizard-block no-float">
+                    <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">Details:</div>
+                    </div>
+                    <div class="drowz-wizard-block-body">
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1">
+                                <md-input-container>
+                                    <label>Name:</label>
+                                    <input type="text"
+                                           ng-model="$ctrl.model.Name"
+                                           name="name"
+                                           ng-required="true">
+                                    <div ng-messages="$ctrl.vendorForm.name.$error" class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div class="drowz-wizard-block-row">
+                            <div class="col-xs-6">
+                                <md-input-container>
+                                    <label>Address (line 1):</label>
+                                    <input type="text"
+                                           ng-model="$ctrl.model.Address.AddressLine"
+                                           name="addressLine1"
+                                           ng-required="true">
+                                    <div ng-messages="$ctrl.vendorForm.addressLine1.$error" class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="col-xs-6">
+                                <md-input-container>
+                                    <label>Address (line 2):</label>
+                                    <input type="text"
+                                           ng-model="$ctrl.model.Address.AddressLine2">
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div class="drowz-wizard-block-row">
+                            <div class="col-xs-6">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <md-input-container>
+                                            <label>City:</label>
+                                            <input type="text"
+                                                   name="city"
+                                                   ng-model="$ctrl.model.Address.City"
+                                                   ng-required="true">
+                                            <div ng-messages="$ctrl.vendorForm.city.$error" class="md-input-messages-nice">
+                                                <div ng-message="required">This field is required</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <input-state-string form-name="$ctrl.vendorForm"
+                                                            input-name="state"
+                                                            selected-item="$ctrl.model.Address.State"
+                                                            add-directives="clear-on-click"
+                                                            ng-required="true">
+                                        </input-state-string>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <input-zip-string form-name="$ctrl.vendorForm"
+                                                  input-name="zip"
+                                                  selected-item="$ctrl.model.Address.Zip"
+                                                  add-directives="clear-on-click"
+                                                  ng-required="true">
+                                </input-zip-string>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="flex-360">
+
+                <div class="drowz-wizard-block no-float">
+                    <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">Contacts:</div>
+                    </div>
+                    <div class="drowz-wizard-block-body">
+                        <div class="referral-contacts">
+                            <organization-contacts
+                                selected-contacts="$ctrl.model.Contacts"
+                                allow-not-unique-types="false"
+                                min-required="1"
+                                org-location-required="true"
+                                all-contact-types="$ctrl.allContactTypes">
+                            </organization-contacts>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flow-body-footer">
+            <md-button class="md-raised main-button"
+                       ng-click="$ctrl.cancel()">Cancel</md-button>
+            <md-button class="md-raised md-primary main-button"
+                       ng-click="$ctrl.save()">
+                Save
+            </md-button>
+        </div>
+    </div>
+</div>

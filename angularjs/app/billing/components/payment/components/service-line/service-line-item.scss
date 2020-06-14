@@ -1,0 +1,15 @@
+.service-line-right-block {
+  &.left-divider {
+    padding-left: 30px;
+
+    &::after {
+      width: 2px;
+    }
+  }
+
+  > .flex-row:first-child {
+    > .info-block:first-child {
+      padding-left: 20px;
+    }
+  }
+}

@@ -1,0 +1,53 @@
+<div class="modal-window audit-rental-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon"
+                 md-svg-src="assets/images/default/rental.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Audit:</h2>
+        </div>
+
+        <div class="audit-rental-modal-body"
+             scroll-bar
+             on-total-scroll="$ctrl.onTotalScroll"
+             scroll-bar-above-element="true">
+
+                <table class="drowz-table">
+                    <tr class="drowz-table-header">
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Changes</th>
+                    </tr>
+                    <tr class="drowz-table-row"
+                        ng-repeat="item in $ctrl.auditHistoryParams.items track by $index">
+                        <td>{{item.CreatedOn}}</td>
+                        <td>
+                            <span>{{item.Name.FirstName}}</span>
+                            <span>{{item.Name.LastName}}</span>
+                        </td>
+                        <td>
+                            {{item.Message}}
+                        </td>
+                    </tr>
+                </table>
+
+            <no-records text="Audit"
+                        ng-if="$ctrl.firstPageLoaded && $ctrl.auditHistoryParams.items.length === 0"
+                        is-fullpage="true"></no-records>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button"
+                   ng-click="$ctrl.cancel()">Close</md-button>
+    </md-dialog-actions>
+
+
+</div>

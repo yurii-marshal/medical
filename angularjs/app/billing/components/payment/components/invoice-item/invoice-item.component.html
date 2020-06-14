@@ -1,0 +1,290 @@
+<div class="info-block block-width-100-percent payment-invoices-item">
+    <div class="drowz-wizard-block"
+         scroll-if-anchor="$ctrl.invoiceModel.Id && $ctrl.scrollToInvoiceId === $ctrl.invoiceModel.Id"
+    >
+        <div class="drowz-wizard-block-title">
+            <div class="wizard-title-text">
+                INVOICE:
+                <a  ng-if="$ctrl.readOnly"
+                    href="javascript:void(0);"
+                    class="underline-after-link"
+                    ui-sref="root.invoice.details({
+                       invoiceId: $ctrl.invoiceModel.InvoiceId
+                    })"
+                >
+                    {{ $ctrl.invoiceModel.DisplayId || $ctrl.invoiceModel.InvoiceDisplayId }}
+                </a>
+
+                <span ng-if="!$ctrl.readOnly">
+                    {{ $ctrl.invoiceModel.DisplayId || $ctrl.invoiceModel.InvoiceDisplayId }}
+                </span>
+            </div>
+            <div>
+                <md-button class="delete-icon-btn"
+                           aria-label="..."
+                           ng-if="!$ctrl.readOnly"
+                           confirm-ng-click="$ctrl.onRemoveInvoice($ctrl.itemIndex)"
+                           confirm-msg="'This invoice will be deleted from payment. Are you sure you want to delete this invoice?'"
+                           confirm-title="Delete invoice"
+                >
+                    <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                </md-button>
+            </div>
+        </div>
+        <div class="drowz-wizard-block-body">
+
+            <div class="flex-row"
+                 ng-if="$ctrl.invoiceModel.invalid"
+                 ng-repeat="message in $ctrl.invoiceModel.errorMessagas"
+            >
+                <div class="info-block grow-1">
+                    <div class="block-warning-msg warn-icon">
+                        <span> {{ message }} </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-row">
+
+                <div class="info-block grow-1 readonly-info-block height-info-block">
+                    <md-input-container>
+                        <div class="info-block-label">Patient:</div>
+                        <div class="info-block-body">
+                            {{:: $ctrl.invoiceModel.Customer.Name | fullname }}
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div class="info-block w150px readonly-info-block left-divider height-info-block">
+                    <md-input-container>
+                        <div class="info-block-label">DOB:</div>
+                        <div class="info-block-body">
+                            {{:: ($ctrl.invoiceModel.Customer.DateOfBirth | amUtc | amDateFormat: "MM/DD/YYYY") || '-' }}
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div class="info-block w150px readonly-info-block left-divider height-info-block">
+                    <md-input-container>
+                        <div class="info-block-label">Charge:</div>
+                        <div class="info-block-body">
+                            {{ $ctrl.invoiceModel.Charge.Currency }} {{ $ctrl.invoiceModel.Charge.Amount | absNumber:2 }}
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div class="info-block w150px readonly-info-block left-divider height-info-block"
+                     ng-if="$ctrl.readOnly"
+                >
+                    <md-input-container>
+                        <div class="info-block-label">Payment:</div>
+                        <div class="info-block-body">
+                            {{:: $ctrl.invoiceModel.Paid.Currency }} {{:: $ctrl.invoiceModel.Paid.Amount | absNumber:2 }}
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div class="info-block w200px left-divider height-info-block"
+                     ng-if="!$ctrl.readOnly"
+                >
+                    <md-input-container class="currency-container w140px">
+                        <div class="currency-icon">{{:: $ctrl.invoiceModel.Paid.Currency }}</div>
+                        <label>Payment:</label>
+                        <input type="number"
+                               step="0.01"
+                               name="{{ 'paid' + $ctrl.invoiceModel.Id + $ctrl.invoiceModel.InvoiceId }}"
+                               ng-required="true"
+                               ng-model="$ctrl.invoiceModel.Paid.Amount"
+                               price-validator
+                        >
+                        <div ng-messages="$ctrl.parentForm['paid' + $ctrl.invoiceModel.Id + $ctrl.invoiceModel.InvoiceId].$error"
+                             class="md-input-messages-nice">
+                            <div ng-message="price">Max 2 digits after point</div>
+                            <div ng-message="required">This field is required</div>
+                            <div ng-message="greatUnapplied">Payment amount has to be equal or bigger than Applied amount.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div class="info-block w150px readonly-info-block left-divider height-info-block">
+                    <md-input-container>
+                        <div class="info-block-label">Balance:</div>
+                        <div class="info-block-body">
+                            {{ $ctrl.invoiceModel.Balance.Currency }} {{ ($ctrl.invoiceModel.Balance.Amount | absNumber:2) || '-'}}
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div class="info-block w150px readonly-info-block left-divider height-info-block"
+                     ng-if="$ctrl.readOnly && $ctrl.source.SourceType.Id === $ctrl.paymentTypeConstants.PAYER_TYPE_ID"
+                >
+                    <md-input-container>
+                        <div class="info-block-label">Payer Level:</div>
+                        <div class="info-block-body">
+                            {{:: $ctrl.invoiceModel.Coverage.Name || '-' }}
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div class="grow-1 height-info-block flex-row flex-end"
+                     ng-if="!$ctrl.readOnly && $ctrl.isNeedConnect();"
+                >
+
+                    <md-button class="md-raised green-btn"
+                               ng-click="$ctrl.onConnectInvoice()"
+                    >
+                        Connect
+                    </md-button>
+
+                </div>
+
+                <div class="info-block grow-1 height-info-block flex-row space-between"
+                     ng-if="!$ctrl.readOnly && !$ctrl.isNeedConnect()"
+                >
+                    <md-input-container class="w150px"
+                                        ng-if="$ctrl.source.SourceType.Id === $ctrl.paymentTypeConstants.PAYER_TYPE_ID"
+                    >
+                        <label>Payer Level:</label>
+                        <md-select name="{{ 'Status' + $ctrl.invoiceModel.Id + $ctrl.invoiceModel.InvoiceId }}"
+                                   ng-model="$ctrl.invoiceModel.Coverage"
+                                   ng-required="true"
+                        >
+                            <md-option ng-value="coverage"
+                                       ng-selected="coverage.Id === $ctrl.invoiceModel.Coverage.Id"
+                                       ng-repeat="coverage in $ctrl.coveragesDictionary">
+                                {{:: coverage.Name }}
+                            </md-option>
+                        </md-select>
+
+                        <div ng-messages="$ctrl.parentForm['Status' + $ctrl.invoiceModel.Id + $ctrl.invoiceModel.InvoiceId].$error"
+                             class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                        </div>
+                    </md-input-container>
+
+                    <div class="flex-row marg-right-15 grow-1 flex-end flex-wrap">
+                        <md-button class="md-raised md-primary"
+                                   ng-click="$ctrl.onAddServiceLine()"
+                        >
+                            Add Service Line
+                        </md-button>
+
+                        <md-button class="md-raised green-btn"
+                                   ng-click="$ctrl.onPayOff()"
+                        >
+                            Pay Off
+                        </md-button>
+
+                        <md-button class="md-raised md-primary"
+                                   ng-click="$ctrl.showAdjustModal()"
+                                   ng-if="$ctrl.source.SourceType.Id === $ctrl.paymentTypeConstants.PAYER_TYPE_ID"
+                        >
+                            Adjust
+                        </md-button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="flex-row marg-bottom-20 marg-top-10"
+                 ng-if="$ctrl.source.SourceType.Id === $ctrl.paymentTypeConstants.PAYER_TYPE_ID"
+            >
+                <div class="info-block block-width-100-percent">
+                    <md-input-container>
+                        <label class="remarks-codes-label">Remark Codes:</label>
+                        <md-chips  ng-model="$ctrl.invoiceModel.RemarkCodes"
+                               ng-if="$ctrl.invoiceModel.RemarkCodes.length || !$ctrl.readOnly"
+                               placeholder="Remark codes"
+                               readonly="$ctrl.readOnly"
+                    >
+                        <md-autocomplete
+                            md-items="item in $ctrl.getRemarkCodes(searchText)"
+                            md-search-text="searchText"
+                            md-selected-item="item.Name"
+                            md-item-text="item.Name"
+                            md-selected-item="item.Name"
+                            placeholder="Remark Codes"
+                        >
+                            <md-item-template>
+                                <span title="{{ item.Description }}">
+                                    {{ item.Name }} - {{ item.Description }}
+                                </span>
+                            </md-item-template>
+                            <md-not-found>Not found</md-not-found>
+                        </md-autocomplete>
+
+                        <md-chip-template>
+                                <span title="{{ $chip.Description }}">
+                                    {{ $chip.Name }}
+                                </span>
+                        </md-chip-template>
+
+                    </md-chips>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div class="flex-row pad-5 marg-bottom-20"
+                 ng-if="$ctrl.invoiceModel.Adjustments.length && $ctrl.source.SourceType.Id === $ctrl.paymentTypeConstants.PAYER_TYPE_ID"
+            >
+                <div class="table-wrap">
+                    <div class="adjust-table-title">Adjustments:</div>
+                    <table class="drowz-table">
+                        <tr class="drowz-table-header">
+                            <th>Amount</th>
+                            <th>Group</th>
+                            <th>Reason</th>
+                            <th class="btns-transactions-cell"
+                                ng-if="!$ctrl.readOnly"
+                            >&nbsp;</th>
+                        </tr>
+                        <tr class="drowz-table-row"
+                            ng-repeat="adjustment in $ctrl.invoiceModel.Adjustments track by $index"
+                        >
+                            <td class="w150px">
+                                {{ adjustment.Amount.Currency }} {{ adjustment.Amount.Amount | absNumber:2 }}
+                            </td>
+                            <td class="w300px">
+                                {{ adjustment.Group.Code + ' - ' + adjustment.Group.Name }}
+                            </td>
+                            <td>
+                                {{ adjustment.Reason.Name + ' - ' + adjustment.Reason.Description }}
+                            </td>
+                            <td class="btns-transactions-cell"
+                                ng-if="!$ctrl.readOnly"
+                            >
+                                <md-button class="edit-info-icon"
+                                           aria-label="..."
+                                           ng-click="$ctrl.showAdjustModal($index)">
+                                    <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                                </md-button>
+                                <md-button class="delete-icon-btn"
+                                           aria-label="..."
+                                           confirm-ng-click="$ctrl.deleteAdjustment($index)"
+                                           confirm-msg="'This adjustment will be deleted from invoice. Are you sure you want to delete this adjustment?'"
+                                           confirm-title="Delete adjustment"
+                                >
+                                    <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                </md-button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <service-line-item ng-repeat="service in $ctrl.invoiceModel.Services"
+                               service-model="service"
+                               read-only="$ctrl.readOnly"
+                               item-index="$index"
+                               parent-item-index="$ctrl.itemIndex"
+                               parent-form="$ctrl.parentForm"
+                               invoice-id="$ctrl.invoiceModel.InvoiceId"
+                               payment-model="$ctrl.paymentModel"
+                               source-type="$ctrl.source.SourceType.Id"
+                               on-remove="$ctrl.onRemoveServiceLine(itemIndex)"
+                               on-connected="$ctrl.onConnectedServiceLine()"
+                               on-recalculate-invoice-payment="$ctrl.onRecalculateInvoicePayment()"
+            ></service-line-item>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,103 @@
+<div class="inventory-page small-sidebar"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="inventoryPage">
+
+    <div id="row" class="sidebar-container no-fold-sidebar"
+         drowz-sidebar
+         drowz-sidebar-name="inventory">
+
+        <div class="sidebar"
+             bs-loading-overlay
+             bs-loading-overlay-reference-id="sidebarOverlay"
+             scroll-bar
+             scroll-bar-above-element="true">
+
+            <div class="sidebar-padding-block flex-cont stretch">
+                <div class="name-status-block">
+                    <div class="sidebar-title">{{invPage.equipment.Name}}</div>
+
+                    <div class="status-and-gender flex-cont">
+                        <div class="status-label" ng-class="invPage.equipment.statusClass">
+                            {{invPage.equipment.Status.Name}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-padding-block" ng-if="invPage.equipment.ServiceDate">
+                <div class="blue-border-block">
+                    <div class="info-block">
+                        <div class="info-block-label">Next Service Date:</div>
+                        <div class="info-block-body">{{invPage.equipment.ServiceDate | amUtc | amDateFormat: "MM/DD/YYYY"}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-padding-block">
+
+                <div class="sidebar-block-title">Short Details:</div>
+
+                <div class="icon-block">
+                    <md-icon md-svg-src="assets/images/default/museum-circle.svg" class="icon-block-icon"></md-icon>
+                    <div class="info-block">
+                        <div class="info-block-label">Manufacturer:</div>
+                        <div class="info-block-body">{{invPage.equipment.Manufacturer}}</div>
+                    </div>
+                </div>
+
+                <div class="icon-block">
+                    <md-icon md-svg-src="assets/images/default/barcode-circle.svg" class="icon-block-icon"></md-icon>
+                    <div class="info-block">
+                        <div class="info-block-label">ID/Part #:</div>
+                        <div class="info-block-body">{{invPage.equipment.PartNumber}}</div>
+                    </div>
+                </div>
+
+                <div class="icon-block"
+                     ng-show="invPage.equipment.allHcpcsCodes.length">
+                    <md-icon md-svg-src="assets/images/default/hcpcs-circle.svg" class="icon-block-icon"></md-icon>
+                    <div class="info-block">
+                        <div class="info-block-label">HCPCS:</div>
+                        <div class="info-block-body flex-cont">
+                            <div popover-directive="invPage.equipment.allHcpcsCodes"
+                                 hide-first-item="true"
+                                 min-width="50"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="icon-block">
+                    <md-icon md-svg-src="assets/images/default/category-circle.svg" class="icon-block-icon"></md-icon>
+                    <div class="info-block">
+                        <div class="info-block-label">Category:</div>
+                        <div class="info-block-body">{{invPage.equipment.Category}}</div>
+                    </div>
+                </div>
+
+                <div class="icon-block">
+                    <md-icon md-svg-src="assets/images/default/group-circle.svg" class="icon-block-icon"></md-icon>
+                    <div class="info-block">
+                        <div class="info-block-label">Group:</div>
+                        <div class="info-block-body">{{invPage.equipment.Group}}</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="main-content">
+
+            <drowz-tabs items="invPage.tabs"></drowz-tabs>
+
+            <div class="breadcrumbs">
+                <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+                <a href="javascript:void(0)" ui-sref="root.inventory.list">Inventory</a>
+                <a href="javascript:void(0)" class="active">{{invPage.equipment.Name}}</a>
+            </div>
+
+            <div ui-view></div>
+
+        </div>
+    </div>
+</div>

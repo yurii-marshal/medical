@@ -1,0 +1,14 @@
+<div class="user-picture"
+     [ngStyle]="userPictureStyle"
+></div>
+
+<div class="user-avatar-details">
+    <b class="user-name">
+        {{ profileInfo?.FullName }}
+    </b>
+    <a class="link-to-profile"
+       [routerLink]="['/edit-profile']"
+    >
+        Edit profile
+    </a>
+</div>

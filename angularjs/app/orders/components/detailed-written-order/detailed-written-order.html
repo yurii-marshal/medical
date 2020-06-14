@@ -1,0 +1,137 @@
+<table class="drowz-table order-details-table" ng-form="$ctrl.dwoForm">
+    <tr class="drowz-table-header">
+        <th class="regular-left-padding">Name</th>
+        <th class="radio-cell">
+            <div class="radio-cell-group-header">
+                <span>Yes</span><span>No</span>
+            </div>
+        </th>
+        <th class="datepicker-cell">&nbsp;</th>
+    </tr>
+    <tr class="drowz-table-row">
+        <td class="regular-left-padding">Legible Detailed Written Order</td>
+        <td class="radio-cell">
+            <md-radio-group ng-model="$ctrl.details.LegibleOrder" class="radio-cell-group">
+                <md-radio-button aria-label="..." ng-value="true" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+                <md-radio-button aria-label="..." ng-value="false" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+            </md-radio-group>
+        </td>
+        <td class="datepicker-cell">&nbsp;</td>
+    </tr>
+    <tr class="drowz-table-row">
+        <td class="regular-left-padding">Patient Name</td>
+        <td class="radio-cell">
+            <md-radio-group ng-model="$ctrl.details.PatientName" class="radio-cell-group">
+                <md-radio-button aria-label="..." ng-value="true" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+                <md-radio-button aria-label="..." ng-value="false" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+            </md-radio-group>
+        </td>
+        <td class="datepicker-cell">&nbsp;</td>
+    </tr>
+    <tr class="drowz-table-row">
+        <td class="regular-left-padding">Date of Signed Prescription</td>
+        <td class="radio-cell">
+            <md-radio-group ng-model="$ctrl.details.SignedDate" class="radio-cell-group">
+                <md-radio-button aria-label="..." ng-value="true" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+                <md-radio-button aria-label="..." ng-value="false" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+            </md-radio-group>
+        </td>
+        <td class="datepicker-cell">
+            <md-input-container ng-if="!$ctrl.readonly">
+                <label></label>
+                <input datetimepicker format="MM/DD/YYYY" name="signedDateTime"
+                       ng-model="$ctrl.details.SignedDateTime"
+                       ng-if="$ctrl.details.SignedDate"
+                       ng-disabled="$ctrl.disabled"
+                       ng-required="$ctrl.details.SignedDate" />
+                <div ng-messages="$ctrl.dwoForm.signedDateTime.$error" class="md-input-messages-nice">
+                    <div ng-message="required">This field is required</div>
+                </div>
+            </md-input-container>
+            <span ng-if="$ctrl.readonly && $ctrl.details.SignedDate">{{$ctrl.details.SignedDateTime}}</span>
+        </td>
+    </tr>
+    <tr class="drowz-table-row">
+        <td class="regular-left-padding">Start Date of Order</td>
+        <td class="radio-cell">
+            <md-radio-group ng-model="$ctrl.details.StartOrderDate" class="radio-cell-group">
+                <md-radio-button aria-label="..." ng-value="true" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+                <md-radio-button aria-label="..." ng-value="false" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+            </md-radio-group>
+        </td>
+        <td class="datepicker-cell">
+            <md-input-container ng-if="!$ctrl.readonly">
+                <label></label>
+                <input datetimepicker format="MM/DD/YYYY" name="startOrderDateTime"
+                       ng-model="$ctrl.details.StartOrderDateTime"
+                       ng-if="$ctrl.details.StartOrderDate"
+                       ng-disabled="$ctrl.disabled"
+                       ng-required="$ctrl.details.StartOrderDate" />
+                <div ng-messages="$ctrl.dwoForm.startOrderDateTime.$error" class="md-input-messages-nice">
+                    <div ng-message="required">This field is required</div>
+                </div>
+            </md-input-container>
+            <span ng-if="$ctrl.readonly && $ctrl.details.StartOrderDate">{{$ctrl.details.StartOrderDateTime}}</span>
+        </td>
+    </tr>
+    <tr class="drowz-table-row">
+        <td class="regular-left-padding">Frequency of use or duration</td>
+        <td class="radio-cell">
+            <md-radio-group ng-model="$ctrl.details.FrequencyOfUse" class="radio-cell-group">
+                <md-radio-button aria-label="..." ng-value="true" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+                <md-radio-button aria-label="..." ng-value="false" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+            </md-radio-group>
+        </td>
+        <td class="datepicker-cell">&nbsp;</td>
+    </tr>
+    <tr class="drowz-table-row">
+        <td class="regular-left-padding">Physician Name</td>
+        <td class="radio-cell">
+            <md-radio-group ng-model="$ctrl.details.PhysicianName" class="radio-cell-group">
+                <md-radio-button aria-label="..." ng-value="true" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+                <md-radio-button aria-label="..." ng-value="false" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+            </md-radio-group>
+        </td>
+        <td class="datepicker-cell">&nbsp;</td>
+    </tr>
+    <tr class="drowz-table-row">
+        <td class="regular-left-padding">Physician NPI</td>
+        <td class="radio-cell">
+            <md-radio-group ng-model="$ctrl.details.PhysicianNpi" class="radio-cell-group">
+                <md-radio-button aria-label="..." ng-value="true" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+                <md-radio-button aria-label="..." ng-value="false" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+            </md-radio-group>
+        </td>
+        <td class="datepicker-cell">&nbsp;</td>
+    </tr>
+    <tr class="drowz-table-row">
+        <td class="regular-left-padding">Physician Signature</td>
+        <td class="radio-cell">
+            <md-radio-group ng-model="$ctrl.details.PhysicianSignature" class="radio-cell-group">
+                <md-radio-button aria-label="..." ng-value="true" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+                <md-radio-button aria-label="..." ng-value="false" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+            </md-radio-group>
+        </td>
+        <td class="datepicker-cell">&nbsp;</td>
+    </tr>
+    <tr class="drowz-table-row">
+        <td class="regular-left-padding">Qualifying Diagnosis Code</td>
+        <td class="radio-cell">
+            <md-radio-group ng-model="$ctrl.details.QualifiedDiagnosisCode" class="radio-cell-group">
+                <md-radio-button aria-label="..." ng-value="true" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+                <md-radio-button aria-label="..." ng-value="false" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+            </md-radio-group>
+        </td>
+        <td class="datepicker-cell">&nbsp;</td>
+    </tr>
+    <tr class="drowz-table-row">
+        <td class="regular-left-padding">Descriptions of all item(s), including supplies, with settings</td>
+        <td class="radio-cell">
+            <md-radio-group ng-model="$ctrl.details.ItemDescription" class="radio-cell-group">
+                <md-radio-button aria-label="..." ng-value="true" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+                <md-radio-button aria-label="..." ng-value="false" class="md-primary" ng-disabled="$ctrl.disabled || $ctrl.readonly"></md-radio-button>
+            </md-radio-group>
+        </td>
+        <td class="datepicker-cell">&nbsp;</td>
+    </tr>
+</table>

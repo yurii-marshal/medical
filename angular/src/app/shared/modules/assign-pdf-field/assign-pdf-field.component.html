@@ -1,0 +1,76 @@
+<div class="assign-field-container">
+
+    <mat-form-field class="value-input-field">
+
+        <input matInput
+               name="mapping"
+               autocomplete="off"
+               placeholder="Mapping Field:"
+               (focus)="onValueFormControlFocus()"
+               [formControl]="valueFormControl"
+        >
+
+        <mat-error *ngIf="valueFormControl?.hasError('required')">
+            <strong>Mapping field</strong> cannot be empty
+        </mat-error>
+
+    </mat-form-field>
+
+    <div class="mapping-container">
+
+        <button mat-raised-button
+                type="button"
+                class="niko-mat-button"
+                [matMenuTriggerFor]="menuTrigger"
+        >
+            {{ '#{}' }}
+        </button>
+
+        <mat-menu #menuTrigger="matMenu"
+                  yPosition="below"
+                  xPosition="after"
+                  [overlapTrigger]="true"
+        >
+
+            <div class="mapping-container" (click)="$event.stopPropagation();">
+
+                <mat-form-field class="find-input-field">
+
+                    <input matInput
+                           type="text"
+                           name="search"
+                           placeholder="Find..."
+                           [formControl]="mappingFormControl"
+                           autocomplete="off"
+                    >
+
+                    <mat-icon matSuffix svgIcon="searchIcon" class="search-icon">
+                        search
+                    </mat-icon>
+
+                </mat-form-field>
+
+                <div class="list">
+
+                    <div class="item" [title]="formInput.description"
+                         (click)="onFormInputChosen(formInput)"
+                         *ngFor="let formInput of formInputList"
+                    >
+                        {{ formInput.name }}
+                    </div>
+
+                    <div class="not-found"
+                         *ngIf="formInputList.length === 0"
+                    >
+                        No variable were found
+                    </div>
+
+                </div>
+
+            </div>
+
+        </mat-menu>
+
+    </div>
+
+</div>

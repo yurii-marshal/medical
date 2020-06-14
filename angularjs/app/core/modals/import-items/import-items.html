@@ -1,0 +1,58 @@
+<div class="modal-window import-products-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="importModal">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content" ng-form="$ctrl.modalForm">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/link.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Import {{:: $ctrl.itemsType }}:</h2>
+        </div>
+
+        <div class="flex-cont">
+            <md-input-container class="grow-1">
+                <label>File Name:</label>
+                <input type="text"
+                       ng-model="$ctrl.uploadFile.name"
+                       name="fileName"
+                       ng-disabled="true"
+                       ng-required="true">
+            </md-input-container>
+            <button class="md-primary md-raised md-button md-ink-ripple small-btn"
+                    type="button"
+                    ng-class="{'small-btn' : $ctrl.smallButton}"
+                    ngf-select
+                    ng-model="$ctrl.uploadFile"
+                    name="uploadFileInput"
+                    ngf-pattern="$ctrl.uploadExtensionsStr"
+                    ngf-max-size="20MB"
+                    ng-required="true"
+            ><span>Browse</span>
+            </button>
+        </div>
+        <div ng-messages="$ctrl.modalForm.uploadFileInput.$error"
+             class="md-input-messages-nice red-color">
+            <div ng-message="pattern">This file is not match extensions: {{ $ctrl.uploadExtensionsStr }}</div>
+        </div>
+        <div ng-messages="$ctrl.modalForm.uploadFileInput.$error"
+             ng-if="$ctrl.modalForm.uploadFileInput.$error.pattern !== true
+                && $ctrl.modalForm.fileName.$touched"
+             class="md-input-messages-nice red-color">
+            <div ng-message="required">This field is required</div>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button"
+                   aria-label="..."
+                   ng-click="$ctrl.cancel()"
+        >Cancel</md-button>
+        <md-button class="md-primary md-raised main-button"
+                   aria-label="..."
+                   ng-click="$ctrl.save()"
+        >Import</md-button>
+    </md-dialog-actions>
+</div>

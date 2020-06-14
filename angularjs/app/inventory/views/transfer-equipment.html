@@ -1,0 +1,169 @@
+<div class="drowz-wizard receive-equipment-page drowz-subwizard-page"
+     ng-form="trans.reviewItemsForm"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="transfer-equipment">
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.inventory.list">Inventory</a>
+        <a href="javascript:void(0)" class="active">Transfer Items</a>
+    </div>
+
+    <div class="drowz-wizard-body">
+        <div ui-view class="drowz-subwizard-container"></div>
+
+        <div class="drowz-wizard-block no-float">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Reviewed Items:</div>
+                <md-button class="md-primary md-raised small-btn add-lookup-btn"
+                           ui-sref="root.transfer_equipment.add.step1">
+                    Add
+                </md-button>
+            </div>
+            <div class="drowz-wizard-block-body">
+                <no-records text="Transfered Items" is-fullpage="true" ng-if="!trans.pairList || !trans.pairList.length"></no-records>
+                <div class="received-equipment-list" ng-if="trans.pairList.length">
+                    <div class="received-equipment-item" ng-repeat="item in trans.pairList track by $index">
+                        <div class="flex-row">
+                            <div class="info-block grow-1">
+                                <div class="info-block-label">Product:</div>
+                                <div class="info-block-body">{{item.product.Name}}</div>
+                            </div>
+                            <div class="info-block block-width-270 left-divider" ng-if="!item.product.isBundle">
+                                <div class="info-block-label">Serial Number:</div>
+                                <div class="info-block-body">{{item.product.SerialNumber || '-'}}</div>
+                            </div>
+                            <div class="info-block block-width-200 left-divider" ng-if="!item.product.isBundle">
+                                <div class="info-block-label">Lot Number:</div>
+                                <div class="info-block-body">{{item.product.LotNumber || '-'}}</div>
+                            </div>
+                            <div class="info-block block-width-140 left-divider">
+                                <md-input-container class="qty-container"
+                                                    ng-show="!item.product.isBundle && item.product.canChangeQty">
+                                    <label>Qty:</label>
+                                    <input type="number"
+                                           name="product_qty_{{$index}}"
+                                           min="1"
+                                           step="1"
+                                           max="item.product.maxCount"
+                                           ng-change="trans.qtyChanged(item.product, $index)"
+                                           ng-model="item.product.Count">
+                                    <div ng-messages="trans.reviewItemsForm['product_qty_'+$index].$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="min">The number of device couldn't be less than 1</div>
+                                        <div ng-message="max">The number of device couldn't be greater than {{item.product.maxCount}}</div>
+                                    </div>
+                                </md-input-container>
+                                <div class="info-block-label"
+                                     ng-show="item.product.isBundle || !item.product.canChangeQty">Qty:</div>
+                                <div class="info-block-body"
+                                     ng-show="item.product.isBundle || !item.product.canChangeQty">{{item.product.Count}}</div>
+                            </div>
+                            <div class="info-block block-width-140 two-line-status">
+                                <div class="status-label {{item.product.statusClass}}">
+                                    {{item.product.Status.Name}}
+                                </div>
+                                <div class="status-label gray" ng-show="item.product.Refurbished">
+                                    Refurbished
+                                </div>
+                                <div class="status-label blue" ng-show="item.product.isBundle">
+                                    Bundle
+                                </div>
+                            </div>
+                            <div class="info-block block-width-60">
+                                <div class="info-block-body flex-cont center">
+                                    <md-button class="delete-icon-btn"
+                                               aria-label="..."
+                                               confirm-ng-click="trans.deleteProduct($index)"
+                                               confirm-msg="'Are you sure you want to delete Product?'"
+                                               confirm-title="Delete Product">
+                                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                    </md-button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <div class="info-block grow-1">
+                                <div class="info-block-label">Location From:</div>
+                                <div class="info-block-body flex-cont">
+                                    <div ng-if="!item.locationFrom.Name">Any Location</div>
+                                    <span ng-if="item.locationFrom.Name">{{item.locationFrom.Name + (item.locationFrom.Description ? (", " + item.locationFrom.Type.Description) : "")}}</span>
+                                </div>
+                            </div>
+                            <div class="info-block block-width-810 left-divider">
+                                <div class="info-block-label">Location To:</div>
+                                <div class="info-block-body flex-cont">
+                                    <span>{{item.locationTo.DisplayName}}</span>
+                                    <span ng-if="item.locationTo.Description">
+                                        {{", " + item.locationTo.Description}}
+                                    </span>
+                                    <md-button class="edit-info-icon" aria-label="..."
+                                               ng-click="trans.searchLocationToModal($event, $index)">
+                                        <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                                    </md-button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex-row" ng-if="item.product.isBundle && item.product.Components.length>0">
+                            <div class="info-block grow-1">
+                                <v-accordion class="vAccordion--default flow-accordion">
+                                    <v-pane expanded="false">
+
+                                        <v-pane-header class="flow-accordion-title">
+                                            <md-icon md-svg-src="assets/images/default/chevron.svg" class="flow-accordion-title-icon"></md-icon>
+                                            <span>Items:</span>
+                                            <div class="accordion-line"></div>
+                                        </v-pane-header>
+
+                                        <v-pane-content>
+                                            <div class="flow-body">
+                                                <table class="drowz-table small-table regular-table">
+                                                    <tr class="drowz-table-header">
+                                                        <th class="number-cell">#</th>
+                                                        <th class="equipment-percentage-cells">Name</th>
+                                                        <th class="cell-250px">Serial Number</th>
+                                                        <th class="cell-175px">Lot Number</th>
+                                                        <th class="cell-100px">Qty</th>
+                                                    </tr>
+                                                    <tr class="drowz-table-row" ng-repeat="(subIndex, subItem) in item.product.Components">
+                                                        <td class="number-cell">{{subIndex + 1}}.</td>
+                                                        <td class="equipment-percentage-cells">{{subItem.Name}}</td>
+                                                        <td class="cell-250px">{{subItem.SerialNumber || '-'}}</td>
+                                                        <td class="cell-175px">{{subItem.LotNumber || '-'}}</td>
+                                                        <td class="cell-100px">{{subItem.Count}}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </v-pane-content>
+                                    </v-pane>
+                                </v-accordion>
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <div class="info-block grow-1">
+                                <md-input-container>
+                                    <label>Notes:</label>
+                                    <textarea cols="1" rows="1" ng-model="item.product.notes"></textarea>
+                                </md-input-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="drowz-wizard-footer">
+        <md-button class="md-raised main-button drowz-wizard-footer-btn" ui-sref="root.inventory.list">
+            Cancel
+        </md-button>
+        <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                   ng-click="trans.finish()"
+                   ng-disabled="trans.isLoading">
+            <icon-loading-white ng-if="trans.isLoading"></icon-loading-white>
+            Finish
+        </md-button>
+    </div>
+
+</div>

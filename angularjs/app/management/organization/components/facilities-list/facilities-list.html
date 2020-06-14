@@ -1,0 +1,157 @@
+<div class="infinite-scroll-bg"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="facilitiesList">
+
+    <a href="javascript:void(0);"
+       class="toolbar-single-action"
+       simple-tooltip="Add Facility"
+       tooltip-position="left"
+       ui-sref="root.management.organization.facilities.new"
+    ></a>
+
+    <div class="breadcrumbs transparent-bg">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+        <a href="javascript:void(0)" ui-sref="root.management.organization">Organization</a>
+        <a href="javascript:void(0)" class="active">Facilities</a>
+    </div>
+
+    <infinity-table
+        class="custom-table facilities-table"
+        load-items-promise="facilities.getFacilities"
+        page-size="24"
+        item-alias="item"
+        filters-obj="facilities.filters"
+        sort-obj="facilities.sortExpr"
+        default-sort-field="'Name'">
+
+        <infinity-table-sort>
+            <div class="w350px">
+                <md-icon md-svg-src="assets/images/default/insurance-v2-square.svg"
+                         class="main-sort-icon insurance-v2-square"></md-icon>
+                <inftbl-sort-list param-name="Name">Name:</inftbl-sort-list>
+            </div>
+            <div class="grow-1">
+                <md-icon md-svg-src="assets/images/default/location2.svg"
+                         class="main-sort-icon location-icon"></md-icon>
+                Address:
+            </div>
+            <div class="w300px">
+                <md-icon md-svg-src="assets/images/default/phone-default.svg"
+                         class="main-sort-icon phone-icon"></md-icon>
+                Contacts:
+            </div>
+            <div class="w60px">&nbsp;</div>
+        </infinity-table-sort>
+
+        <infinity-table-filters class="drowz-infinite-row-filter">
+            <div class="w350px">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>type name</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.name"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click/>
+                </md-input-container>
+            </div>
+            <div class="grow-1">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>type address</label>
+                    <input ng-model="$ctrl.filtersObj.address"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click/>
+                </md-input-container>
+            </div>
+            <div class="w300px no-divider">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>type contact</label>
+                    <input ng-model="$ctrl.filtersObj.Contact"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click/>
+                </md-input-container>
+            </div>
+            <div class="w60px filter-reset-btn no-divider">
+                <inftbl-filter-reset-btn></inftbl-filter-reset-btn>
+            </div>
+        </infinity-table-filters>
+
+        <infinity-table-row class="drowz-infinite-row hide-btns-row"
+                            ng-click="$parent.facilities.editFacility($event, item.Id)"
+        >
+
+            <div class="custom-table-body">
+                <div class="w350px">
+                    <div title="{{item.Name}}"
+                         class="ellipsis"
+                         ng-bind="item.Name"></div>
+                </div>
+                <div class="grow-1">
+                    <div class="ellipsis facility-address" popover-directive="item.Address"></div>
+                </div>
+                <div class="w300px no-divider">
+                    <div popover-directive="item.Contacts"
+                         is-array-with-type="true"></div>
+                </div>
+                <div class="w60px btn-block no-divider">
+
+                    <md-button class="delete-icon-btn" aria-label="..."
+                               confirm-ng-click="$parent.facilities.deleteFacility(item.Id)"
+                               confirm-msg="'Are you sure you want to delete the {0} facility?'.format(item.Name)"
+                               confirm-title="Delete facility">
+                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                    </md-button>
+
+                    <a href="javascript:void(0);"
+                       class="show-personnel-details toggle-item-btn"
+                       ng-click="$parent.facilities.toggleItem($event, item)"
+                       ng-class="{'opened': item.visible}">
+                        <md-icon md-svg-src="assets/images/default/chevron.svg"></md-icon>
+                    </a>
+                </div>
+            </div>
+
+            <div class="custom-table-body auto-height locations-list"
+                 ng-if="item.visible"
+            >
+                <div class="grow-1 no-divider"
+                     bs-loading-overlay
+                     bs-loading-overlay-reference-id="facilityLocations{{ item.Id }}"
+                >
+                    <table ng-if="item.locationsLoaded"
+                           class="drowz-table"
+                    >
+                        <tr class="drowz-table-header">
+                            <th width="45">#</th>
+                            <th>Locations:</th>
+                            <th width="300">Phone:</th>
+                            <th width="300">Fax:</th>
+                        </tr>
+                        <tr class="drowz-table-row"
+                            ng-repeat="loc in item.Locations track by $index">
+                            <td width="45">
+                                <div class="w45px">{{$index + 1}}.</div>
+                            </td>
+                            <td>
+                                <div class="ellipsis">{{loc.FullAddress}}</div>
+                            </td>
+                            <td width="300">{{loc.Phone | tel}}</td>
+                            <td width="300">{{loc.Fax | tel}}</td>
+                        </tr>
+                        <tr ng-if="!item.Locations.length && item.locationsLoaded">
+                            <td colspan="4">
+                                <div class="no-records"
+                                     style="text-align:center;">No Locations</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </infinity-table-row>
+
+        <infinity-table-no-items>
+            <no-records text="Facilities" is-fullpage="true"></no-records>
+        </infinity-table-no-items>
+    </infinity-table>
+
+</div>

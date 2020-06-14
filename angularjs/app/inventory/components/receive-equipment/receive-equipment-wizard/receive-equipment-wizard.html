@@ -1,0 +1,23 @@
+<div class="drowz-subwizard-overlay"></div>
+<div class="drowz-wizard-block no-float">
+    <div class="drowz-wizard-block-title">
+        <div class="wizard-title-text">Receive Items:</div>
+    </div>
+    <div class="drowz-wizard-block-body"
+         bs-loading-overlay
+         bs-loading-overlay-reference-id="receive-equipment-wizard">
+        <div ui-view></div>
+        <div class="drowz-subwizard-footer">
+            <md-button class="md-raised main-button"
+                       ng-click="recWiz.cancel()">Cancel</md-button>
+            <md-button class="md-raised main-button"
+                       ng-if="recWiz.currentStep !== 1"
+                       ng-click="recWiz.back()">Back</md-button>
+            <md-button class="md-raised md-primary main-button"
+                       ng-click="recWiz.goToReview()"
+                       ng-disabled="recWiz.pairList.length===0">
+                Review
+            </md-button>
+        </div>
+    </div>
+</div>

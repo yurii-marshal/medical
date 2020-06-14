@@ -1,0 +1,139 @@
+<div class="order-items-tab"
+     ng-class="{'no-records': ordItems.totalCount === 0}"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="orderItems"
+>
+    <div ng-if="ordItems.orderItemsMessages.length" class="marg-top-10">
+        <div class="drowz-message with-icon warning-icon"
+             ng-repeat="messageItem in ordItems.orderItemsMessages"
+        >
+            <div class="close-message-icon" ng-click="ordItems.onCloseOrderItemsMessage($index)"></div>
+            <md-icon class="info-icon" md-svg-src="assets/images/default/alert.svg"></md-icon>
+            <div class="drowz-message-content">
+                {{:: messageItem.Text }}
+            </div>
+        </div>
+    </div>
+
+    <div class="drowz-message with-icon warning-icon"
+         ng-if="ordItems.isAnyDevice">
+        <md-icon class="info-icon"
+                 md-svg-src="assets/images/default/alert.svg"></md-icon>
+        <div class="drowz-message-content">This prescription contains a generic item. Please select required item from catalog.</div>
+    </div>
+    <div class="order-items-filters" ng-form="ordItems.filtersForm">
+        <div class="item-number">#</div>
+        <md-button class="clear-filters"
+                   aria-label="..."
+                   ng-click="ordItems.clearFilters()"
+                   simple-tooltip="Refresh Items">
+            <md-icon md-svg-src="assets/images/default/clear-filters.svg"></md-icon>
+        </md-button>
+        <md-input-container class="search-field">
+            <label></label>
+            <input type="text"
+                   ng-model="ordItems.filterText.name"
+                   ng-keydown="ordItems.searchByText($event)"
+                   ng-change="ordItems.clearSearchByText()"
+                   placeholder="Search Item"
+                   clear-on-click>
+            <md-button class="search-btn"
+                       ng-click="ordItems.searchByText($event)"
+                       aria-label="...">
+                <md-icon md-svg-src="assets/images/default/search.svg"></md-icon>
+            </md-button>
+        </md-input-container>
+        <md-input-container class="content-header-select">
+            <label></label>
+            <md-select ng-model="ordItems.filters.status"
+                       placeholder="Select Status"
+                       clear-on-click>
+                <md-option ng-value="item.Id" ng-repeat="item in ordItems.itemStatuses">
+                    {{item.Text}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container class="content-header-timepicker calendar_icon left-input-icon">
+            <label></label>
+            <input type="text"
+                   name="fromDate"
+                   placeholder="From:"
+                   datetimepicker
+                   format="MM/DD/YYYY"
+                   use-current="false"
+                   ng-change="ordItems.searchByFilter()"
+                   ng-model="ordItems.filters.from"
+                   ng-required="false"
+                   start-date-validator
+                   end-date="ordItems.filters.to"
+                   clear-on-click>
+            <div ng-messages="ordItems.filtersForm.fromDate.$error" class="md-input-messages-nice">
+                <div ng-message="startDate">Date <b>"From"</b> must be less than date <b>"To"</b></div>
+            </div>
+        </md-input-container>
+        <md-input-container class="content-header-timepicker calendar_icon left-input-icon">
+            <label></label>
+            <input type="text"
+                   name="toDate"
+                   placeholder="To:"
+                   datetimepicker
+                   format="MM/DD/YYYY"
+                   use-current="false"
+                   end-date-validator
+                   start-date="ordItems.filters.from"
+                   ng-required="false"
+                   ng-model="ordItems.filters.to"
+                   ng-change="ordItems.searchByFilter()"
+                   clear-on-click>
+            <div ng-messages="ordItems.filtersForm.toDate.$error" class="md-input-messages-nice">
+                <div ng-message="endDate">Date <b>"To"</b> must be greater than date <b>"From"</b></div>
+            </div>
+        </md-input-container>
+        <md-button ng-if="order.userPermissions.isAllow(order.permissionsCategoriesConstants.ORDERS, order.ordersPermissionsConstants.ORDER_MODIFY)"
+                   ng-hide="+ordItems.model.shortInfo.State.Status.Id === ordItems.orderStatusConstants.CANCELLED_ORDER_ID"
+                   class="md-primary md-raised small-btn append-tracking-item"
+                   ui-sref="root.orders.appendTrackingItems({ orderId: ordItems.orderId, patientId: ordItems.model.shortInfo.Patient
+.Id })">
+            <md-icon md-svg-src="assets/images/default/inventory.svg"></md-icon>
+            Add
+        </md-button>
+    </div>
+
+    <v-accordion class="vAccordion--default flow-accordion" multiple ng-if="ordItems.totalCount > 0">
+        <v-pane expanded="true" ng-if="ordItems.progressItems.length">
+
+            <v-pane-header class="flow-accordion-title">
+                <md-icon md-svg-src="assets/images/default/chevron.svg" class="flow-accordion-title-icon"></md-icon>
+                <span>In Progress:</span>
+                <div class="accordion-line"></div>
+            </v-pane-header>
+
+            <v-pane-content>
+                <product-items items="ordItems.progressItems"
+                               patient-id="ordItems.PatientId"
+                               has-action-btns="ordItems.isActionButtonVisible(ordItems.model.shortInfo.State.Status.Id) && ordItems.userPermissions.isAllow(ordItems.permissionsCategoriesConstants.ORDERS, ordItems.ordersPermissionsConstants.ORDER_MODIFY)"
+                               has-delete-btns="ordItems.userPermissions.isAllow(ordItems.permissionsCategoriesConstants.ORDERS, ordItems.ordersPermissionsConstants.ORDER_MODIFY)"
+                ></product-items>
+            </v-pane-content>
+        </v-pane>
+        <div>{{ordItems.orderStatusOnUpload}}</div>
+        <v-pane expanded="true" ng-if="ordItems.deliveredItems.length">
+
+            <v-pane-header class="flow-accordion-title">
+                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                         class="flow-accordion-title-icon"></md-icon>
+                <span>Delivered:</span>
+                <div class="accordion-line"></div>
+            </v-pane-header>
+
+            <v-pane-content>
+                <product-items items="ordItems.deliveredItems"
+                               patient-id="ordItems.PatientId"
+                               has-action-btns="ordItems.isActionButtonVisible(ordItems.model.shortInfo.State.Status.Id) && order.userPermissions.isAllow(order.permissionsCategoriesConstants.ORDERS, order.ordersPermissionsConstants.ORDER_MODIFY)"
+                ></product-items>
+            </v-pane-content>
+        </v-pane>
+    </v-accordion>
+
+    <no-records text="Items" is-fullpage="true" ng-if="ordItems.totalCount === 0"></no-records>
+</div>

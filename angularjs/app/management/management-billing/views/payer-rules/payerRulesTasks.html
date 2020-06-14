@@ -1,0 +1,264 @@
+<div ng-if="payerRules.showRuleView"
+     ng-form="payerRules.tasksForm"
+>
+    <div class="flex-row space-between payer-rules-row">
+        <div class="payer-rules-search">
+            <md-input-container class="search-field">
+                <label>Search HCPCS:</label>
+                <input type="text"
+                       ng-change="payerRules.searchChanged()"
+                       ng-model="payerRules.searchRulesHcpcs.HcpcsCodes"
+                       clear-on-click>
+                <md-icon class="search-icon" md-svg-src="assets/images/default/search.svg"></md-icon>
+            </md-input-container>
+        </div>
+        <md-button class="md-raised add-new-contact middle-btn"
+                   ng-click="payerRules.addTasksRule()"
+        >
+            <md-icon md-svg-src="assets/images/default/plus.svg"></md-icon>
+            <span>Add Rule</span>
+        </md-button>
+    </div>
+
+    <div class="payer-rules-flex-row"
+         ng-repeat="rule in payerRules.model.Restrictions.TasksRules | filter: payerRules.searchRulesHcpcs:strict track by $index"
+         ng-init="ruleIndex = $index"
+    >
+        <div class="w600px">
+            <div class="hint-for-hcpcs">
+                Please select HCPCS which cannot be combined with other items on invoice:
+            </div>
+            <div class="flex-row">
+                <div class="info-block add-autocomplete block-width-155">
+                    <md-autocomplete
+                        class="autocomplete-with-addBtn"
+                        md-no-cache="true"
+                        md-selected-item="rule.selectedCode"
+                        md-search-text="rule.searchHcpcs"
+                        md-items="item in payerRules.getHcpcsCodes(rule.searchHcpcs)"
+                        md-item-text="item.Text"
+                        md-min-length="0"
+                        md-floating-label="HCPCS:"
+                        md-menu-container-class="hcpcs-decorator"
+                        ng-required="!rule.HcpcsCodes.length"
+                    >
+                        <md-item-template>
+                            <span md-highlight-flags="^i" title="{{ item.Description }}">{{ item.Text + ' ' + item.Description }}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            No hcpcs codes were found.
+                        </md-not-found>
+                        <md-icon md-svg-src="assets/images/default/plus-square.svg"
+                                 ng-class="{'disabled': !rule.selectedCode }"
+                                 ng-click="payerRules.addHcpcsCode(rule)"
+                                 class="add-item-btn">
+                        </md-icon>
+                    </md-autocomplete>
+                </div>
+                <div class="info-block selected-hcpcs-codes">
+                    <div class="round-chip-block"
+                         ng-repeat="item in rule.HcpcsCodes track by $index">
+                        <span ng-bind="item"></span>
+                        <div class="delete-chip" ng-click="payerRules.removeCode(rule.HcpcsCodes, item)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grow-1 left-divider">
+            <div class="flex-row">
+                <div class="info-block grow-1">
+                    <md-input-container class="fix-label-for-chips">
+                        <md-chips  class="customize-chips-style"
+                                   ng-model="rule.Plans"
+                                   placeholder="Select Plan"
+                        >
+                            <md-autocomplete
+                                class="w300px"
+                                md-no-cache="true"
+                                md-items="item in payerRules.getPlans(searchText, rule.Plans)"
+                                md-search-text="searchText"
+                                md-selected-item="item.Name"
+                                md-item-text="item.Name"
+                                md-min-length="0"
+                                placeholder="{{ payerRules.getPlaceholderForPlanChips(rule.Plans) }}"
+                            >
+                                <md-item-template>
+                                    <span title="{{ item.Name }}">
+                                        {{ item.Name }}
+                                    </span>
+                                </md-item-template>
+
+                                <md-not-found>Not found</md-not-found>
+
+                            </md-autocomplete>
+
+                            <md-chip-template>
+                                <span title="{{ $chip.Name }}">
+                                {{ $chip.Name }}
+                                </span>
+                            </md-chip-template>
+                        </md-chips>
+                    </md-input-container>
+
+                    <v-accordion class="vAccordion--default flow-accordion tasks-accordion marg-top-20"
+                                 multiple
+                                 ng-if="rule.Tasks && rule.Tasks.length"
+                    >
+                        <v-pane expanded="true"
+                                ng-repeat="task in rule.Tasks track by $index"
+                                ng-init="taskIndex = $index; ruleTaskIndex = ruleIndex + '_' + taskIndex"
+                        >
+                            <v-pane-header class="flow-accordion-title">
+                                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                                         class="flow-accordion-title-icon"></md-icon>
+                                <span>Task {{ taskIndex + 1 }}:</span>
+                                <div class="accordion-line"></div>
+                                <a href="javascript:void(0);"
+                                   ng-click="payerRules.removeRuleTask(rule, taskIndex)"
+                                   class="clear-field">
+                                </a>
+                            </v-pane-header>
+
+                            <v-pane-content>
+                                <div class="flex-row">
+                                    <div class="info-block grow-1">
+                                        <md-input-container>
+                                            <label>Title:</label>
+                                            <input type="text"
+                                                   ng-model="task.Title"
+                                                   name="{{ 'taskTitle' + ruleTaskIndex }}"
+                                                   ng-required="true"
+                                            >
+                                            <div ng-messages="payerRules.tasksForm['taskTitle' + ruleTaskIndex].$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">This field is required</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+
+                                <div class="flex-row">
+                                    <div class="info-block grow-1">
+                                        <md-input-container>
+                                            <label>Description:</label>
+                                            <textarea ng-model="task.Description"></textarea>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+
+                                <div class="flex-row">
+                                    <div class="info-block grow-1 due-block">
+                                        <div class="info-block-label">Due:</div>
+                                        <div class="info-block-body">
+                                            <div class="flex-row align-end">
+                                                <div class="info-block flex-cont w300px marg-right-45">
+
+                                                    <span>In</span>
+                                                    <md-input-container class="pad-h-15 w100px">
+                                                        <input type="text"
+                                                               aria-label="..."
+                                                               ng-model="task.DuePeriod.PeriodCount"
+                                                               only-digits-with-length
+                                                               name="{{ 'taskDuePeriodCount' + ruleTaskIndex }}"
+                                                               ng-required="!!task.DuePeriod.Cycle"
+                                                        >
+                                                        <div ng-messages="payerRules.tasksForm['taskDuePeriodCount' + ruleTaskIndex].$error"
+                                                             class="md-input-messages-nice">
+                                                            <div ng-message="required">Required</div>
+                                                        </div>
+                                                    </md-input-container>
+
+                                                    <md-input-container>
+                                                        <label></label>
+                                                        <md-select ng-model="task.DuePeriod.Cycle"
+                                                                   ng-model-options="{trackBy: '$value.Id'}"
+                                                                   name="{{ 'taskDuePeriodCycle' + ruleTaskIndex }}"
+                                                                   aria-label="..."
+                                                                   ng-required="!!task.DuePeriod.PeriodCount"
+                                                                   clear-on-click
+                                                        >
+                                                            <md-option ng-value="item" ng-repeat="item in payerRules.dictionaries.DueDateCycles">
+                                                                {{ item.Text }}
+                                                            </md-option>
+                                                        </md-select>
+                                                        <div ng-messages="payerRules.tasksForm['taskDuePeriodCycle' + ruleTaskIndex].$error"
+                                                             class="md-input-messages-nice">
+                                                            <div ng-message="required">This field is required</div>
+                                                        </div>
+                                                    </md-input-container>
+
+                                                </div>
+
+                                                <div class="info-block grow-1 autocomplete-chips-container">
+                                                    <md-input-container class="fix-label-for-chips">
+                                                        <md-chips class="autocomplete-chips-block"
+                                                                  ng-model="task.Assignee"
+                                                                  md-require-match="true"
+                                                                  chips-autocomplete-required
+                                                                  placeholder="{{ task.Assignee.length ? 'Assign' : ''}}"
+                                                        >
+                                                            <md-autocomplete
+                                                                    md-no-cache="true"
+                                                                    md-selected-item="user"
+                                                                    md-search-text="searchUser"
+                                                                    md-items="user in payerRules.getUsersDictionary(searchUser, task.Assignee)"
+                                                                    md-item-text="user.Name.FirstName + ' ' + user.Name.LastName"
+                                                                    md-min-length="0"
+                                                                    placeholder="{{ task.Assignee.length ? '' : 'Assign'}}"
+                                                                    ng-required="true"
+                                                                    md-input-name="{{ 'taskAssignee' + ruleTaskIndex }}"
+                                                            >
+                                                                <md-item-template>
+                                                                    <span title="{{ user.Name.FirstName }} {{ user.Name.LastName }}">
+                                                                        {{ user.Name.FirstName }} {{ user.Name.LastName }}
+                                                                    </span>
+                                                                </md-item-template>
+
+                                                                <md-not-found>Not found</md-not-found>
+
+                                                            </md-autocomplete>
+
+                                                            <md-chip-template>
+                                                                <span title="{{ $chip.Name.FirstName }} {{ $chip.Name.LastName }}">
+                                                                    {{ $chip.Name.FirstName }} {{ $chip.Name.LastName }}
+                                                                </span>
+                                                            </md-chip-template>
+                                                        </md-chips>
+
+                                                        <div ng-messages="payerRules.tasksForm['taskAssignee' + ruleTaskIndex].$error" class="md-input-messages-nice">
+                                                            <div ng-message="chipsAutocompleteRequired">This field is required</div>
+                                                        </div>
+                                                    </md-input-container>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </v-pane-content>
+                        </v-pane>
+                    </v-accordion>
+
+                    <div class="flex-row">
+                        <div class="info-block grow-1 marg-top-15">
+                            <md-button class="md-raised add-new-contact middle-btn"
+                                       ng-click="payerRules.addRuleTask(rule)"
+                            >
+                                <md-icon md-svg-src="assets/images/default/plus.svg"></md-icon>
+                                <span>Add Task</span>
+                            </md-button>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-block block-width-20">
+                    <a href="javascript:void(0);"
+                       class="delete-icon-btn"
+                       ng-click="payerRules.removeRule('TasksRules', ruleIndex)"
+                    >
+                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

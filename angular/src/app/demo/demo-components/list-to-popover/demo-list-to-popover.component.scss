@@ -1,0 +1,14 @@
+.title-wrapper {
+    display: flex;
+    padding-left: 20px; 
+
+    .title {
+        padding-left: 9px;
+        font-weight: bold;
+        
+        &:first-child {
+            padding-left: 0;
+        }
+        
+    }
+}

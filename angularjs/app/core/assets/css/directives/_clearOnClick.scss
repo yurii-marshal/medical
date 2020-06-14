@@ -1,0 +1,98 @@
+.clear-field {
+    display: block;
+    position: absolute;
+    top: 11px;
+    right: 5px;
+    min-width: 14px;
+    width: 14px;
+    height: 14px;
+    z-index: 1;
+    cursor: pointer;
+    outline: none;
+
+    &::after, &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -9px;
+        margin-left: -1px;
+        width: 2px;
+        height: 18px;
+        background-color: $gray-color-main;
+        transition: .2s;
+    }
+
+    &::after {
+        transform: rotate(-45deg);
+    }
+
+    &::before {
+        transform: rotate(45deg);
+    }
+
+    &:hover {
+        &::after, &::before {
+            background-color: rgba(0, 0, 0, 0.870588);
+        }
+    }
+}
+
+md-select.with-clear {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .clear-field {
+        order: 2;
+        position: relative;
+        top: auto;
+        right: auto;
+        margin-top: 1px;
+        margin-left: 5px;
+    }
+}
+
+.inf-scroll-autocomplete {
+    &[disabled], &[readonly] {
+        .clear-field {
+            display: none !important;
+        }
+    }
+}
+
+.readonly, .disabled, [disabled], [readonly] {
+    .clear-field {
+        display: none !important;
+    }
+
+    & + .clear-field {
+        display: none !important;
+    }
+}
+
+md-autocomplete {
+    .clear-field {
+        top: 23px;
+    }
+
+    &.search-field {
+        md-input-container {
+            &.md-input-has-value {
+                .search-icon {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+md-autocomplete-with-infinite-scroll {
+    .clear-field {
+        top: 22px;
+    }
+
+    md-progress-linear {
+        top: 40px;
+    }
+}

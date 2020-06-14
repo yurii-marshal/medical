@@ -1,0 +1,12 @@
+<svg id="content" xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 24 24">
+    <defs></defs>
+    <polygon class="cls-1"
+             points="18 11 16 11 16 13 16.56 13 18 12.23 18 11"/>
+    <path class="cls-1" d="M14,21V19H12V17h1V15H12V13h2V11H12V9h8v2.7l.44.24,1.56.83V7H12V3H2V21H14ZM6,19H4V17H6Zm0-4H4V13H6Zm0-4H4V9H6ZM6,7H4V5H6Zm4,12H8V17h2Zm0-4H8V13h2Zm0-4H8V9h2Zm0-4H8V5h2Z"/>
+    <rect class="cls-1" x="15" y="22" width="9" height="1"/>
+    <rect class="cls-1" x="16" y="18" width="1" height="3"/>
+    <rect class="cls-1" x="22" y="18" width="1" height="3"/>
+    <rect class="cls-1" x="19" y="18" width="1" height="3"/>
+    <polygon class="cls-1" points="19.5 13.7 15 16.1 15 17 24 17 24 16.1 19.5 13.7"/>
+</svg>

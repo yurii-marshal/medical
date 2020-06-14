@@ -1,0 +1,347 @@
+<div class="invoice-details">
+
+    <div class="drowz-message with-icon"
+         ng-repeat="msg in invoiceDetails.messages track by $index">
+        <div class="close-message-icon"
+             ng-click="invoiceDetails.deleteMessage(msg)"></div>
+        <md-icon class="info-icon" md-svg-src="assets/images/default/alert.svg"></md-icon>
+        <div class="drowz-message-header">
+            {{msg.Date | localDateTime: "DD MMM YYYY, h:mm A"}}
+        </div>
+        <div class="drowz-message-content">{{msg.Message}}</div>
+    </div>
+
+    <div class="invoice-details-info">
+
+        <!--INVOICE DETAILS PRICES BLOCK-->
+        <v-accordion class="vAccordion--default transactions-accordeon grow-1"
+                     onexpand="invoiceDetails.getTransactionList()"
+                     bs-loading-overlay
+                     bs-loading-overlay-reference-id="invoice-transactions"
+                     multiple>
+            <v-pane expanded="invoiceDetails.isTransactionListExpanded">
+                <v-pane-header class="transactions-accordeon-title">
+                    <div class="invoice-details-prices grow-1">
+                        <div class="price-container accordeon-chevron">
+                            <div class="top-price-block">
+                                <md-icon md-svg-src="assets/images/default/chevron-circle.svg"
+                                         class="transactions-accordeon-icon"></md-icon>
+                            </div>
+                            <div class="bottom-price-block"></div>
+                        </div>
+
+                        <div class="price-container">
+                            <div class="top-price-block">
+                                <div class="price-text">Charge:</div>
+                                <div class="price-number">
+                                    <md-icon md-svg-src="assets/images/default/dollar-circle.svg" class="price-icon"></md-icon>
+                                    <span ng-if="!invoiceDetails.model.TotalAmounts.Charged">-</span>
+                                    <span ng-if="invoiceDetails.model.TotalAmounts.Charged">
+                                        {{invoiceDetails.model.TotalAmounts.Charged.Amount | absNumber:2}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bottom-price-block">
+                                Deductible:
+                                <div class="bottom-price-number">
+                                    {{invoiceDetails.model.TotalAmounts.Deductible.Currency}}&nbsp;
+                                    <span ng-if="!invoiceDetails.model.TotalAmounts.Deductible">-</span>
+                                    <span ng-if="invoiceDetails.model.TotalAmounts.Deductible">
+                                        {{invoiceDetails.model.TotalAmounts.Deductible.Amount | absNumber:2}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="price-container">
+                            <div class="top-price-block with-divider">
+                                <div class="price-text">Sales Tax:</div>
+                                <div class="price-number">
+                                    <md-icon md-svg-src="assets/images/default/dollar-circle.svg" class="price-icon"></md-icon>
+                                    <span ng-if="!invoiceDetails.model.TotalAmounts.Tax">-</span>
+                                    <span ng-if="invoiceDetails.model.TotalAmounts.Tax">
+                                        {{ invoiceDetails.model.TotalAmounts.Tax.Amount | absNumber:2 }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="bottom-price-block with-divider">
+                                Coinsurance:
+                                <div class="bottom-price-number">
+                                    {{ invoiceDetails.model.TotalAmounts.Coinsurance.Currency }}&nbsp;
+
+                                    <span ng-if="!invoiceDetails.model.TotalAmounts.Coinsurance">-</span>
+                                    <span ng-if="invoiceDetails.model.TotalAmounts.Coinsurance">
+                                        {{invoiceDetails.model.TotalAmounts.Coinsurance.Amount | absNumber:2}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="price-container">
+                            <div class="top-price-block with-divider">
+                                <div class="price-text">Allowed:</div>
+                                <div class="price-number">
+                                    <md-icon md-svg-src="assets/images/default/dollar-circle.svg" class="price-icon"></md-icon>
+                                    <span ng-if="!invoiceDetails.model.TotalAmounts.Allowance">-</span>
+                                    <span ng-if="invoiceDetails.model.TotalAmounts.Allowance">
+                                        {{invoiceDetails.model.TotalAmounts.Allowance.Amount | absNumber:2}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bottom-price-block with-divider">
+                                Copay:
+                                <div class="bottom-price-number">
+                                    <span ng-if="!invoiceDetails.model.TotalAmounts.Copay">-</span>
+                                    <span ng-if="invoiceDetails.model.TotalAmounts.Copay">
+                                        {{invoiceDetails.model.TotalAmounts.Copay.Currency}}&nbsp;
+                                        {{invoiceDetails.model.TotalAmounts.Copay.Amount | absNumber:2}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="price-container">
+                            <div class="top-price-block with-divider">
+                                <div class="price-text">Adjustments:</div>
+                                <div class="price-number">
+                                    <md-icon md-svg-src="assets/images/default/dollar-circle.svg" class="price-icon"></md-icon>
+                                    <span ng-if="!invoiceDetails.model.TotalAmounts.Adjustments">-</span>
+                                    <span ng-if="invoiceDetails.model.TotalAmounts.Adjustments">
+                                        {{invoiceDetails.model.TotalAmounts.Adjustments.Amount | absNumber:2}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bottom-price-block"></div>
+                        </div>
+                        <div class="price-container">
+                            <div class="top-price-block with-divider">
+                                <div class="price-text">Payments:</div>
+                                <div class="price-number">
+                                    <md-icon md-svg-src="assets/images/default/dollar-circle.svg" class="price-icon"></md-icon>
+                                    <span ng-if="!invoiceDetails.model.TotalAmounts.Payments">-</span>
+                                    <span ng-if="invoiceDetails.model.TotalAmounts.Payments">
+                                        {{invoiceDetails.model.TotalAmounts.Payments.Amount | absNumber:2}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bottom-price-block"></div>
+                        </div>
+
+                        <div class="price-container">
+                            <div class="top-price-block with-divider">
+                                <div class="price-text">Balance:</div>
+                                <div class="price-number active-text">
+                                    <md-icon md-svg-src="assets/images/default/dollar-circle.svg" class="price-icon"></md-icon>
+                                    <span ng-if="!invoiceDetails.model.TotalAmounts.Balance">-</span>
+                                    <span ng-if="invoiceDetails.model.TotalAmounts.Balance">
+                                        {{invoiceDetails.model.TotalAmounts.Balance.Amount | absNumber:2}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bottom-price-block"></div>
+                        </div>
+
+                        <div class="price-container adjust-btn">
+                            <div class="top-price-block">
+                                <md-button class="md-raised md-primary main-button"
+                                           ng-if="invoiceDetails.invoiceDetailsLoaded
+                                           && !invoiceDetails.model.isVoidInvoice
+                                           && invoiceDetails.userPermissions.isAllow(
+                                                invoiceDetails.permissionsCategoriesConstants.BILLING,
+                                                invoiceDetails.billingPermissionsConstants.INVOICE_MODIFY
+                                            )"
+                                           aria-label="..."
+                                           ng-click="invoiceDetails.showTransactionModal($event)">
+                                    Adjust
+                                </md-button>
+                            </div>
+                            <div class="bottom-price-block"></div>
+                        </div>
+
+                    </div>
+                </v-pane-header>
+
+                <v-pane-content>
+
+                    <transactions-list
+                        ng-show="invoiceDetails.transactions.length"
+                        invoice-id="invoiceDetails.invoiceId"
+                        is-void-invoice="invoiceDetails.model.isVoidInvoice"
+                        transactions="invoiceDetails.transactions">
+                    </transactions-list>
+
+                    <no-records text="Transactions"
+                                ng-show="!invoiceDetails.transactions.length"></no-records>
+
+                </v-pane-content>
+            </v-pane>
+        </v-accordion>
+
+
+        <!--CLAIMS OPTIONS BLOCK-->
+        <div class="claim-options-block">
+
+            <div class="col-w-40 left-border">
+                <div class="flex-row">
+                    <div class="info-block col-w-50">
+                        <div class="info-block-label">Provider Signature on File:</div>
+                        <div class="info-block-body">
+                            {{invoiceDetails.model.Options.ProviderSignatureOnFile.Name}}
+                            <div ng-if="invoiceDetails.model.Options.ProviderSignatureOnFile.Id === invoiceDetails.providerSignatureOnFileConstants.YES_ID">
+                                {{invoiceDetails.model.Options.ProviderSignatureOnFileDate | amUtc | amDateFormat: 'MM/DD/YYYY'}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-block col-w-50 left-divider">
+                        <div class="info-block-label">Provider Accept Assignment of Benefits:</div>
+                        <div class="info-block-body">{{invoiceDetails.model.Options.ProviderAcceptAssignment.Name}}</div>
+                    </div>
+                </div>
+
+                <div class="flex-row">
+                    <div class="info-block col-w-50">
+                        <div class="info-block-label">Insured Signature on File:</div>
+                        <div class="info-block-body">
+                            {{invoiceDetails.model.Options.InsuredSignatureOnFile.Name}}
+                            <div ng-if="invoiceDetails.model.Options.InsuredSignatureOnFile.Id === invoiceDetails.insuredSignatureOnFileConstants.YES_ID">
+                                {{invoiceDetails.model.Options.InsuredSignatureOnFileDate | amUtc | amDateFormat: 'MM/DD/YYYY'}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-block col-w-50 left-divider">
+                        <div class="info-block-label">Patient Signature on File:</div>
+                        <div class="info-block-body">
+                            {{invoiceDetails.model.Options.PatientSignatureOnFile.Name}}
+                            <div ng-if="invoiceDetails.model.Options.PatientSignatureOnFile.Id === invoiceDetails.patientSignatureOnFileConstants.YES_ID">
+                                {{invoiceDetails.model.Options.PatientSignatureOnFileDate | amUtc | amDateFormat: 'MM/DD/YYYY'}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-w-25 left-border">
+
+                <div class="flex-row">
+                    <div class="info-block grow-1">
+                        <div class="info-block-label">Resubmission Code:</div>
+                        <div class="info-block-body">
+                            <span ng-if="!invoiceDetails.model.Statuses.ResubmissionCode
+                            || !invoiceDetails.model.Statuses.ResubmissionCode.Name">-</span>
+                            {{invoiceDetails.model.Statuses.ResubmissionCode.Name}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-row">
+                    <div class="info-block grow-1">
+                        <div class="info-block-label">Original Ref. #:</div>
+                        <div class="info-block-body">
+                            <span ng-if="!invoiceDetails.model.Statuses.PayerOriginalClaimNumber">-</span>
+                            {{invoiceDetails.model.Statuses.PayerOriginalClaimNumber}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-row">
+                    <div class="info-block grow-1">
+                        <div class="info-block-label">Prior Authorization Number:</div>
+                        <div class="info-block-body">
+                            {{invoiceDetails.model.Options.PriorAuthNumber || '-'}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-w-35">
+
+                <div class="flex-row">
+                    <div class="info-block grow-1">
+                        <div class="info-block-label">Billing Provider:</div>
+                        <div class="info-block-body"
+                             ng-if="invoiceDetails.model.Options.BillingProvider">
+                            <span>{{invoiceDetails.model.Options.BillingProvider.Name}}</span>
+                            <span>(NPI: {{invoiceDetails.model.Options.BillingProvider.Npi}})</span>
+                        </div>
+                        <div class="info-block-body"
+                             ng-if="!invoiceDetails.model.Options.BillingProvider">
+                             <span>-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-row">
+                    <div class="info-block grow-1">
+                        <div class="info-block-label">Referring Provider:</div>
+                        <div class="info-block-body"
+                             ng-if="invoiceDetails.model.Options.ReferringProvider">
+                            <span>{{invoiceDetails.model.Options.ReferringProvider.Name.FirstName}}</span>
+                            <span>{{invoiceDetails.model.Options.ReferringProvider.Name.LastName}}</span>
+                            <span>(NPI: {{invoiceDetails.model.Options.ReferringProvider.Npi}})</span>
+                        </div>
+                        <div class="info-block-body"
+                             ng-if="!invoiceDetails.model.Options.ReferringProvider">
+                            <span>-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-row">
+                    <div class="info-block grow-1">
+                        <div class="info-block-label">Rendering Provider:</div>
+                        <div class="info-block-body"
+                             ng-if="invoiceDetails.model.Options.RenderingProvider">
+                            {{invoiceDetails.model.Options.RenderingProvider.OrganizationName
+                            || (invoiceDetails.model.Options.RenderingProvider.PersonName | fullname)}}
+                            (NPI: {{invoiceDetails.model.Options.RenderingProvider.Npi}})
+                        </div>
+                        <div class="info-block-body"
+                             ng-if="!invoiceDetails.model.Options.RenderingProvider">
+                            <span>-</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!--DIAGNOSIS-->
+        <div class="info-block">
+            <div class="info-block-label">Diagnosis:</div >
+            <div class="info-block-body">
+                <div class="round-chip-block"
+                     ng-repeat="item in invoiceDetails.model.Diagnosis track by $index">
+                    {{item.Name}} - {{item.Description}}
+                </div>
+                <div class="diagnoses-error-message"
+                     ng-class="{ 'show-it': invoiceDetails.invoiceDetailsLoaded && !invoiceDetails.model.Diagnosis.length}">
+                    Please, add diagnosis before submitting
+                </div>
+            </div>
+        </div>
+
+        <!--ADDITIONAL INFO-->
+        <div class="info-block"
+             ng-if="invoiceDetails.model.Options.AdditionalInfo">
+            <div class="info-block-label">Additional Info:</div>
+            <div class="info-block-body">
+                <format-string-by-paragraphs
+                    text="invoiceDetails.model.Options.AdditionalInfo"></format-string-by-paragraphs>
+            </div>
+        </div>
+
+    </div>
+
+    <no-records text="Service Lines"
+                ng-if="!invoiceDetails.model.ServiceLines.length"></no-records>
+
+    <service-lines lines="invoiceDetails.model.ServiceLines"
+                   patient-id="invoiceDetails.model.Patient.Id"
+                   invoice-id="invoiceDetails.invoiceId"
+                   pre-defined-payer="invoiceDetails.model.BillRecipient"
+                   anchor-service-line="invoiceDetails.anchorServiceLine"
+                   is-void-invoice="invoiceDetails.model.isVoidInvoice">
+    </service-lines>
+
+</div>

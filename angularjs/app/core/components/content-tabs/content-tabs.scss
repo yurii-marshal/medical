@@ -1,0 +1,63 @@
+content-tabs {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-grow: 1;
+    height: 40px;
+    border-bottom: 1px solid $gray-color;
+
+    .content-tabs-btn.md-button {
+        position: relative;
+        height: 39px;
+        padding: 0 30px;
+        margin: 0 2px 0 0;
+        line-height: 39px;
+        color: $font-color;
+        font-size: $font-size-base;
+        font-weight: $font-weight-semibold;
+        text-transform: uppercase;
+        border-radius: 0;
+        transition: color .2s;
+
+        &.active, &:hover {
+            color: $main-active-color;
+            background: none;
+
+            &::after {
+                opacity: 1;
+            }
+        }
+
+        &.readonly {
+            color: $main-active-color;
+            cursor: default;
+            padding: 0;
+
+            &::after {
+                display: none !important;
+            }
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            opacity: 0;
+            transition: opacity .2s;
+            background-color: $main-active-color;
+        }
+    }
+
+    .custom-msg {
+        margin-left: 10px;
+
+        md-icon {
+            @include size(16px, 10px);
+            margin: 0 13px 0 0;
+            color: $green-color;
+        }
+    }
+}

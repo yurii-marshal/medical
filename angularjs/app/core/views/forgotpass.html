@@ -1,0 +1,46 @@
+<div class="login">
+    <div ng-form="forgotpass.forgotPassForm" class="forgotpass-block">
+        <div class="login-title">Please enter your login and email address <br>if you want to <span class="blue">reset your password.</span></div>
+        <div class="login-row row-with-icon">
+            <md-icon md-svg-src="assets/images/colored/user-circle.svg" class="login-row-icon"></md-icon>
+            <md-input-container>
+                <label>Login:</label>
+                <input type="text"
+                       name="userName"
+                       ng-model="forgotpass.userName"
+                       ng-required="true"
+                       tabindex="1"
+                       ng-disabled="forgotpass.isLoading"
+                       ng-keyup="forgotpass.submitForm($event)">
+                <div ng-messages="forgotpass.forgotPassForm.userName.$error" class="md-input-messages-nice">
+                    <div ng-message="required"><b>Login</b> cannot be empty.</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="login-row row-with-icon">
+            <md-icon md-svg-src="assets/images/colored/email-circle.svg" class="login-row-icon"></md-icon>
+            <input-email form-name="forgotpass.forgotPassForm"
+                         input-name="useremail"
+                         update-on="change"
+                         style="width:100%"
+                         label="Email:"
+                         ng-required="true"
+                         tabindex="2"
+                         ng-model="forgotpass.userEmail"
+                         ng-disabled="forgotpass.isLoading"
+                         ng-keyup="forgotpass.submitForm($event)">
+            </input-email>
+        </div>
+        <div class="login-row">
+            <md-button class="md-raised md-primary login-btn"
+                       tabindex="3"
+                       ng-click="forgotpass.reset()"
+                       ng-disabled="forgotpass.isLoading">
+                <icon-loading-white ng-if="forgotpass.loading"></icon-loading-white>
+                Reset password</md-button>
+        </div>
+        <div class="login-row">
+            <a href="javascript:void(0);" ui-sref="login" class="reset-login">Cancel</a>
+        </div>
+    </div>
+</div>

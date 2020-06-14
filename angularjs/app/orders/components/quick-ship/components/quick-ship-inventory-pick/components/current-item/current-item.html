@@ -1,0 +1,85 @@
+<div class="flex-row" ng-form="$ctrl.currentProductForm">
+    <div class="col-xs-12 subwizard-container-block current-prev-item">
+        <md-icon md-svg-src="assets/images/default/check-circle.svg"
+                 class="subwizard-container-icon success-icon"></md-icon>
+
+        <div class="info-block block-width-40-percent">
+            <div class="info-block-label">Current Item:</div>
+            <div class="info-block-body">{{$ctrl.item.name}}</div>
+        </div>
+
+        <div class="info-block block-width-25-percent left-divider"
+             ng-class="{
+                'red-block': $ctrl.item.activeProperty === $ctrl.lookupProperties.SERIAL_NUMBER.id
+             }"
+             ng-if="$ctrl.item.isSerialized">
+            <div class="info-block-label">Serial Number:</div>
+            <div class="info-block-body">{{$ctrl.item.serialNumber}}</div>
+        </div>
+
+        <div class="info-block block-width-25-percent left-divider"
+             ng-class="{
+               'red-block': $ctrl.item.activeProperty === $ctrl.lookupProperties.LOT_NUMBER.id
+             }"
+             ng-if="$ctrl.item.isLotted">
+            <div class="info-block-label">Lot Number:</div>
+            <div class="info-block-body">{{$ctrl.item.lotNumber}}</div>
+        </div>
+
+        <div class="info-block block-width-70 left-divider">
+            <div class="info-block-label">Qty:</div>
+            <div class="info-block-body">{{$ctrl.item.count}}</div>
+        </div>
+
+    </div>
+</div>
+
+<div class="bundle-items-row"
+     ng-form="$ctrl.currentComponentsForm"
+     ng-if="$ctrl.components.allIds.length"
+>
+    <div class="wizard-components-title">Items:</div>
+    <table class="drowz-table small-table regular-table">
+        <tr class="drowz-table-header">
+            <th class="number-cell">#</th>
+            <th class="cell-30-percent">Name</th>
+            <th class="cell-20-percent">Serial Number</th>
+            <th class="cell-20-percent">Lot Number</th>
+            <th class="cell-80px">Qty</th>
+        </tr>
+        <tr class="drowz-table-row"
+            ng-repeat="cId in $ctrl.components.allIds track by $index">
+            <td class="number-cell">{{$index +1}}.</td>
+            <td class="cell-40-percent">{{$ctrl.components.byId[cId].name}}</td>
+            <!--SERIAL NUMBER-->
+            <td class="cell-20-percent"
+                ng-show="$ctrl.components.byId[cId].activeProperty === $ctrl.lookupProperties.SERIAL_NUMBER.id">
+                <div class="scan-current-block">
+                    <md-icon md-svg-src="assets/images/default/new-invoice-rect.svg"></md-icon>
+                </div>
+            </td>
+            <td class="cell-20-percent"
+                ng-hide="$ctrl.components.byId[cId].activeProperty === $ctrl.lookupProperties.SERIAL_NUMBER.id"
+            >
+                {{$ctrl.components.byId[cId].serialNumber || '-'}}
+            </td>
+            <!--LOT NUMBER-->
+            <td class="cell-20-percent"
+                ng-show="$ctrl.components.byId[cId].activeProperty === $ctrl.lookupProperties.LOT_NUMBER.id"
+            >
+                <div class="scan-current-block">
+                    <md-icon md-svg-src="assets/images/default/new-invoice-rect.svg"></md-icon>
+                </div>
+            </td>
+            <td class="cell-20-percent"
+                ng-hide="$ctrl.components.byId[cId].activeProperty === $ctrl.lookupProperties.LOT_NUMBER.id"
+            >
+                {{$ctrl.components.byId[cId].lotNumber || '-'}}
+
+            <td class="cell-80px">
+                {{$ctrl.components.byId[cId].count}}
+            </td>
+        </tr>
+    </table>
+
+</div>

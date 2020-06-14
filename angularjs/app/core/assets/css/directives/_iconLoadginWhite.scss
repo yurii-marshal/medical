@@ -1,0 +1,27 @@
+.login-btn icon-loading-white md-progress-circular {
+    margin-top: 5px;
+}
+
+icon-loading-white {
+    width: 22px;
+    display: inline-block;
+    padding-top: 0;
+    height: 20px;
+    margin-right: 5px;
+
+    md-progress-circular {
+        margin-top: 2px;
+
+        &.md-default-theme.md-white path, &.md-white path {
+            stroke: #fff;
+        }
+    }
+
+    &.blue-loading {
+        md-progress-circular {
+            &.md-default-theme.md-white path, &.md-white path {
+                stroke: $main-active-color;
+            }
+        }
+    }
+}

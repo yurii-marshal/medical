@@ -1,0 +1,137 @@
+<div class="purchase-order-details">
+
+    <v-accordion class="vAccordion--default flow-accordion" multiple>
+
+        <v-pane expanded="true">
+            <v-pane-header class="flow-accordion-title">
+                <div class="vendor-info-block">
+                    <md-icon md-svg-src="assets/images/default/chevron.svg"
+                             class="flow-accordion-title-icon"></md-icon>
+                    <span>Vendor Information:</span>
+                    <div class="accordion-line"></div>
+                </div>
+                <div class="contacts-block">
+                    <span>Contacts:</span>
+                    <div class="accordion-line"></div>
+                </div>
+            </v-pane-header>
+
+            <v-pane-content>
+                <div class="flex-cont stretch">
+                    <div class="vendor-info-block">
+                        <div class="flex-row">
+                            <div class="info-block grow-1">
+                                <div class="info-block-label">Name:</div>
+                                <div class="info-block-body font-bold">{{ purchaseOrderDetails.model.Vendor.Name || '-' }}</div>
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <div class="info-block grow-1">
+                                <div class="info-block-label">Address:</div>
+                                <div class="info-block-body">{{ purchaseOrderDetails.model.vendorContactObj.FullAddress || '-' }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contacts-block">
+                        <div class="flex-row">
+                            <div class="info-block block-width-33-percent">
+                                <div class="info-block-label">Phone:</div>
+                                <div class="info-block-body">{{ purchaseOrderDetails.model.vendorContactObj.Phone || '-' }}</div>
+                            </div>
+
+                            <div class="info-block block-width-33-percent left-divider">
+                                <div class="info-block-label">Website:</div>
+                                <div class="info-block-body">{{ purchaseOrderDetails.model.vendorContactObj.WebSite || '-' }}</div>
+                            </div>
+
+                            <div class="info-block block-width-33-percent left-divider">
+                                <div class="info-block-label">Fax:</div>
+                                <div class="info-block-body">{{ purchaseOrderDetails.model.vendorContactObj.Fax || '-' }}</div>
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <div class="info-block block-width-33-percent">
+                                <div class="info-block-label">Email:</div>
+                                <div class="info-block-body">
+                                    <a ng-if="purchaseOrderDetails.model.vendorContactObj.Email" href="mailto:{{ purchaseOrderDetails.model.vendorContactObj.Email }}">{{ purchaseOrderDetails.model.vendorContactObj.Email }}</a>
+                                    <span ng-if="!purchaseOrderDetails.model.vendorContactObj.Email">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+
+        <v-pane expanded="true">
+            <v-pane-header class="flow-accordion-title">
+                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                         class="flow-accordion-title-icon"></md-icon>
+                <span>Ordered Items:</span>
+                <div class="accordion-line"></div>
+            </v-pane-header>
+            <v-pane-content>
+                <div class="order-item"
+                     ng-repeat="item in purchaseOrderDetails.model.Products track by $index"
+                >
+                    <div class="flex-row">
+                        <div class="info-block item-img w100px">
+                            <div class="item-img-container">
+                                <img src=""
+                                     ng-src="{{
+                                         item.PictureUrl
+                                         ? (purchaseOrderDetails.WEB_API_INVENTORY_SERVICE_URI + item.PictureUrl)
+                                         : purchaseOrderDetails.noImage
+                                     }}"
+                                     alt="" class="item-img">
+                            </div>
+                        </div>
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">Name:</div>
+                            <div class="info-block-body">
+                                {{ item.Name }}
+                                <md-icon class="bundle-icon"
+                                         ng-click="purchaseOrderDetails.showItemDetails($event, item)"
+                                         md-svg-src="assets/images/default/bundle-icon.svg"
+                                         ng-if="item.IsBundle">
+                                </md-icon>
+                            </div>
+                        </div>
+                        <div class="info-block w200px left-divider">
+                            <div class="info-block-label">Mfg:</div>
+                            <div class="info-block-body">{{ item.Manufacturer || '-' }}</div>
+                        </div>
+                        <div class="info-block w200px left-divider">
+                            <div class="info-block-label">ID/Part #:</div>
+                            <div class="info-block-body">{{ item.PartNumber || '-' }}</div>
+                        </div>
+                        <div class="info-block w120px left-divider">
+                            <div class="info-block-label">HCPCS:</div>
+                            <div class="info-block-body flex-cont">
+                                <div popover-directive="item.allHcpcsCodes"
+                                     hide-first-item="true"
+                                     min-width="50"></div>
+                            </div>
+                        </div>
+                        <div class="info-block w100px left-divider">
+                            <div class="info-block-label">Qty:</div>
+                            <div class="info-block-body">{{ item.Qty }}</div>
+                        </div>
+                        <div class="info-block w120px left-divider">
+                            <div class="info-block-label">Received Items:</div>
+                            <div class="info-block-body">{{ item.DeliveredQty }}</div>
+                        </div>
+                        <div class="info-block w200px left-divider">
+                            <div class="info-block-label">Price:</div>
+                            <div class="info-block-body font-bold">$ {{ item.Price | absNumber:2 }}</div>
+                        </div>
+                    </div>
+
+                </div>
+            </v-pane-content>
+        </v-pane>
+
+    </v-accordion>
+
+</div>

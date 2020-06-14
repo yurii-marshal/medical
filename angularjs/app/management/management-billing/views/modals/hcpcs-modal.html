@@ -1,0 +1,89 @@
+<div class="modal-window category-modal"
+     ng-form="$ctrl.modifyHcpcsForm"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modifyHcpcs">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/documents.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>
+                <span ng-if="$ctrl.isNew">New code</span>
+                <span ng-if="!$ctrl.isNew">Edit  <span class="active-text">{{$ctrl.hcpcsObj.Code}}</span> Description</span>
+            </h2>
+        </div>
+
+        <div class="flex-row" ng-if="$ctrl.isNew">
+            <div class="col-xs-12 info-block">
+                <md-input-container>
+                    <label>Code:</label>
+                    <input type="text"
+                           max-length-value
+                           ng-model="$ctrl.hcpcsObj.Code"
+                           ng-required="true"
+                           ng-maxlength="5"
+                           ng-minlength="5"
+                           name="name" />
+                    <div ng-messages="$ctrl.modifyHcpcsForm.name.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="maxlength">Length should be 5 symbols</div>
+                        <div ng-message="minlength">Length should be 5 symbols</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-12 info-block">
+                <md-input-container>
+                    <label>Short Description:</label>
+                    <textarea cols="1"
+                              rows="1"
+                              max-length-value
+                              ng-maxlength="100"
+                              name="shortDescription"
+                              ng-required="true"
+                              ng-model="$ctrl.hcpcsObj.ShortDescription">
+                    </textarea>
+                    <div ng-messages="$ctrl.modifyHcpcsForm.shortDescription.$error" class="md-input-messages-nice">
+                        <div ng-message="maxlength">Description is to long, max length is 100 symbols</div>
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-12 info-block">
+                <md-input-container>
+                    <label>Long Description:</label>
+                    <textarea cols="1"
+                              rows="1"
+                              max-length-value
+                              ng-maxlength="1000"
+                              name="longDescription"
+                              ng-required="true"
+                              ng-model="$ctrl.hcpcsObj.LongDescription">
+                    </textarea>
+                    <div ng-messages="$ctrl.modifyHcpcsForm.longDescription.$error" class="md-input-messages-nice">
+                        <div ng-message="maxlength">Description is to long, max length is 1000 symbols</div>
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" aria-label="..." ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button"
+                   aria-label="..."
+                   ng-click="$ctrl.save()">
+            <span ng-if="$ctrl.isNew">Create</span>
+            <span ng-if="!$ctrl.isNew">Save</span>
+        </md-button>
+    </md-dialog-actions>
+</div>

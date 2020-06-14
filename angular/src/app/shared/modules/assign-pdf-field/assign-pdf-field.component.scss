@@ -1,0 +1,81 @@
+@import "~assets/styles/base/variables";
+@import "~assets/styles/utils/mixins";
+
+:host {
+    width: 100%;
+}
+
+.assign-field-container {
+    width: 100%;
+    display: flex;
+
+    .value-input-field {
+        width: 100%;
+    }
+
+    .mapping-container {
+
+        .niko-mat-button {
+            width: 36px;
+            height: 35px;
+            border-radius: 3px;
+            box-shadow: 0 1px 3px 0 rgba(10, 10, 10, 0.15);
+            background-color: $light-gray-color;
+            min-width: 36px;
+            padding: 0;
+            margin: 8px 5px 0 10px;
+
+            font-family: Roboto;
+            font-size: 14px;
+            line-height: 1.36;
+            letter-spacing: 0.56px;
+        }
+    }
+}
+
+::ng-deep .cdk-overlay-pane {
+
+    .mat-menu-panel {
+        min-height: auto;
+        max-height: 350px;
+        max-width: inherit;
+        min-width: auto;
+
+        .mapping-container {
+
+            .find-input-field {
+                display: flex;
+                margin: 0 20px;
+
+                .mat-form-field-wrapper {
+                    width: 100%;
+                }
+
+                mat-icon {
+                    padding-top: 8px;
+                    width: 16px;
+                    color: $gray-color-main;
+                }
+            }
+
+            .list {
+                max-height: 260px;
+                overflow-y: scroll;
+                .item {
+                    padding: 15px 20px;
+                    cursor: pointer;
+                    transition: .2s;
+                    &:hover {
+                        background: rgba(6, 174, 213, .2);
+                    }
+                }
+            }
+
+            .not-found {
+                color: $gray-color-main;
+                padding-bottom: 10px;
+                text-align: center;
+            }
+        }
+    }
+}

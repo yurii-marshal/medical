@@ -1,0 +1,6 @@
+@import "~assets/styles/base/variables";
+
+.reports-container {
+    background-color: $lighter-gray-color;
+    min-height: calc(100vh - 70px);
+}

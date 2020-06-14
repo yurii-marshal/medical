@@ -1,0 +1,24 @@
+<div class="flex-row"
+     ng-class="{'subfilter' : $ctrl.options.subfilter}">
+
+    <div class="filters-block-label active-text font-semibold">
+        <span ng-if="!$ctrl.options.subfilter"
+              ng-bind="$ctrl.options.label + ':'"></span>
+    </div>
+    <div class="filters-block-body">
+        <div ng-if="$ctrl.options.subfilter"
+             class="filters-block-label">
+            <span ng-bind="$ctrl.options.label + ':'"></span>
+        </div>
+        <md-radio-group ng-model="$ctrl.selectedFilter"
+                        ng-change="$ctrl.setSelection()"
+                        ng-disabled="$ctrl.options.isDisabled">
+            <md-radio-button class="md-primary"
+                             ng-repeat="item in $ctrl.options.items track by $index"
+                             ng-value="item"
+                             aria-label="{{item.displayName}}">
+                <span ng-bind="item.displayName"></span>
+            </md-radio-button>
+        </md-radio-group>
+    </div>
+</div>

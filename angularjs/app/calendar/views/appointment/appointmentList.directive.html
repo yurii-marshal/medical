@@ -1,0 +1,47 @@
+<div class="appointment-btns"
+     easy-scroll
+     easy-scroll-watch-elements="wizard.appointmentsDates"
+     easy-scroll-to-element="true">
+    <div class="long-appointment-days clearfix">
+        <md-button class="appointment-btn"
+                   aria-label="..."
+                   ng-repeat="_appointmentBtn in $ctrl.appointmentsDates track by $index "
+                   ng-class="{'active': $ctrl.appointmentDateActive === _appointmentBtn}"
+                   ng-click="$ctrl.applyFilterByDate(_appointmentBtn)">
+            <span ng-if="_appointmentBtn.Date">{{_appointmentBtn.DayOfWeek + ', ' + _appointmentBtn.Date}}</span>
+            <span ng-if="_appointmentBtn.viewAll">View All</span>
+        </md-button>
+    </div>
+</div>
+
+<div class="overlay-container" bs-loading-overlay bs-loading-overlay-reference-id="loadingAppointments">
+    <div class="appointment-filters">
+        <md-button class="appointment-filter-btn"
+                   aria-label="..."
+                   ng-repeat="_appointmentFilter in $ctrl.appointmentsHours track by _appointmentFilter.Id"
+                   ng-class="{'active':$ctrl.appointmentTimeActive.Id === _appointmentFilter.Id}"
+                   ng-click="$ctrl.applyFilterByTime(_appointmentFilter)"
+                   ng-disabled="_appointmentFilter.Count === 0">
+            {{_appointmentFilter.Text + ' (' + _appointmentFilter.Count + ')'}}
+        </md-button>
+    </div>
+    <div class="appointments-table-header">
+        <div class="time-cell">Time</div>
+        <div class="personnel-cell">Team Member</div>
+        <div class="type-cell">Type</div>
+        <div class="address-cell">Address</div>
+        <div class="driving-time-cell">Driving time</div>
+        <div class="duration-cell">Duration</div>
+        <div class="appointments-cell">Appointments</div>
+        <div class="windshield-cell">Windshield Time</div>
+        <div class="rating-cell">Rating</div>
+    </div>
+
+    <div class="appointments-table-body" style="height: 400px;"><appointment-list-inner
+            ng-if="$ctrl.showAppointments"
+            appointments="$ctrl.filteredAppointments"
+            choosen-appointment="$ctrl.choosenAppointment"
+            choose-appointment-func="$ctrl.chooseAppointmentFunc"
+            is-view-all="$ctrl.appointmentDateActive.viewAll"
+    ></appointment-list-inner></div>
+</div>

@@ -1,0 +1,131 @@
+<div class="modal-window hospital-admission" ng-form="modal.hospitalForm">
+
+    <a href="javascript:void(0);" ng-click="modal.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/organization.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Add Hospital Admission:</h2>
+        </div>
+
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-6">
+                    <md-input-container>
+                        <label>Admission Date:</label>
+                        <input datetimepicker
+                               format="MM/DD/YYYY"
+                               ng-model="modal.hospitalAdmission.AdmissionDate"
+                               ng-required="true"
+                               start-date-validator
+                               end-date="modal.hospitalAdmission.DischargeDate"
+                               name="admissionDate"/>
+                        <div ng-messages="modal.hospitalForm.admissionDate.$error"
+                             class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                            <div ng-message="startDate">Discharge Date has to be equal or bigger than Admission Date</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div class="col-xs-6">
+                    <md-input-container>
+                        <label>Discharge Date:</label>
+                        <input datetimepicker
+                               format="MM/DD/YYYY"
+                               ng-model="modal.hospitalAdmission.DischargeDate"
+                               ng-required="true"
+                               end-date-validator
+                               start-date="modal.hospitalAdmission.AdmissionDate"
+                               name="dischargeDate"/>
+                        <div ng-messages="modal.hospitalForm.dischargeDate.$error"
+                             class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                            <div ng-message="endDate">Discharge Date has to be equal or bigger than Admission Date</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 add-autocomplete">
+                    <md-autocomplete class="autocomplete-with-addBtn"
+                                     md-no-cache="true"
+                                     md-selected-item="modal.hospitalAdmission.Hospital"
+                                     md-search-text="searchHospital"
+                                     md-items="hospital in modal.getAllHospitals(searchHospital)"
+                                     md-item-text="hospital.Name"
+                                     md-min-length="3"
+                                     md-floating-label="Hospital:"
+                                     md-require-match="true"
+                                     ng-required="true"
+                                     md-input-name="hospital">
+                        <md-item-template>
+                            <span md-highlight-text="searchHospital" md-highlight-flags="^i">{{hospital.Name}}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            No hospitals matching "{{searchHospital}}" were found.
+                        </md-not-found>
+                        <div ng-messages="modal.hospitalForm.hospital.$error" class="md-input-messages-nice">
+                            <div ng-message="md-require-match">This field is not valid</div>
+                            <div ng-message="required">This field is required</div>
+                        </div>
+                    </md-autocomplete>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <md-input-container class="readonly">
+                        <label>Hospital Address:</label>
+                        <input type="text" ng-readonly="true" ng-disabled="!modal.hospitalAdmission.Hospital" ng-model="modal.hospitalAdmission.Hospital.Address.FullAddress">
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 add-autocomplete">
+                    <md-autocomplete
+                            class="autocomplete-with-addBtn"
+                            md-no-cache="true"
+                            md-selected-item="modal.selectedAdmissionReason"
+                            md-search-text="modal.searchAdmissionReason"
+                            md-items="admissionReason in modal.getAllDiagnoses(modal.searchAdmissionReason)"
+                            md-item-text="admissionReason.description"
+                            md-min-length="2"
+                            md-floating-label="Admission Reason:">
+                        <md-item-template>
+                            <span md-highlight-text="modal.searchAdmissionReason"
+                                  md-highlight-flags="^i"
+                                  simple-tooltip="{{admissionReason.description}}"
+                                  tooltip-theme="tooltipster-black-larger">
+                                {{admissionReason.description}}
+                            </span>
+                        </md-item-template>
+                        <md-not-found>
+                            No Admission Reason matching  "{{modal.searchAdmissionReason}}" were found.
+                        </md-not-found>
+                        <md-icon ng-click="modal.addAdmissionsReason(modal.selectedAdmissionReason)"
+                                 md-svg-src="assets/images/default/plus-square.svg"
+                                 class="add-item-btn"></md-icon>
+                    </md-autocomplete>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="autocomplete-list-item" ng-repeat="diagnosis in modal.hospitalAdmission.Diagnoses track by $index">
+                        {{diagnosis.description}}
+                        <md-icon ng-click="modal.hospitalAdmission.Diagnoses.splice($index, 1)"
+                                 md-svg-src="assets/images/default/clear.svg"
+                                 class="delete-autocomplete-item"></md-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="modal.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button" ng-click="modal.save()">Save</md-button>
+    </md-dialog-actions>
+
+</div>

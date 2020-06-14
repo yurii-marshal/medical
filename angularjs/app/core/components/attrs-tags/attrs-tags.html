@@ -1,0 +1,51 @@
+<div class="attrs-tags">
+    <div class="add-autocomplete">
+        <md-autocomplete id="autocompleteAttrsTags"
+                         class="autocomplete-with-addBtn"
+                         md-selected-item="$ctrl.tag"
+                         md-search-text="$ctrl.searchTextTags"
+                         md-items="tag in $ctrl.getTags($ctrl.searchTextTags)"
+                         md-item-text="tag.Name"
+                         md-min-length="0"
+                         md-floating-label="Tag:"
+                         md-no-cache="true"
+                         md-selected-item-change="$ctrl.addTag($ctrl.tag)"
+                         ng-disabled="$ctrl.autocompleteDisabled"
+                         clear-on-click
+        >
+            <md-item-template>
+                <span class="{{ tag.itemClass || '' }}">{{ tag.Name }}</span>
+            </md-item-template>
+            <md-not-found>
+                <div ng-if="$ctrl.isAddNewTagAllowed()"
+                     ng-click="$ctrl.addTag($ctrl.searchTextTags)">
+                    Add new tag
+                    <span ng-if="$ctrl.searchTextTags">"{{$ctrl.searchTextTags}}"</span>
+                </div>
+                <div> Not found. Please type tag name </div>
+
+
+            </md-not-found>
+        </md-autocomplete>
+    </div>
+    <md-progress-linear
+        ng-if="$ctrl.newTagLoading"
+        md-mode="indeterminate"></md-progress-linear>
+
+    <div class="info-block" ng-if="$ctrl.attrsTags.length>0">
+        <div class="info-block-label">{{$ctrl.tagLabel}}:</div>
+        <div class="info-block-body order-tags">
+            <div ng-repeat="tag in $ctrl.attrsTags"
+                 class="attr-label {{tag.attrClass}}">
+                <md-icon md-svg-src="assets/images/default/tag.svg"></md-icon>
+                <span ng-bind="tag.Name"></span>
+                <div class="delete-tag"
+                     ng-if="!tag.blockRemove"
+                     ng-click="$ctrl.deleteTagsByIndex($index)"
+                ></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,40 @@
+<div class="scroll-title">
+	<p>regular mode</p>
+	<p>scroll-self mode</p>
+</div>
+<div class="scroll-wrapper">
+	<div class="scroll"  
+		appNikoInfiniteScroll
+		(scrollEnd)="onScrollEnd()"
+	>	
+		<div *ngFor="let data of scrollData" class="scroll-data">
+			<div class="data-property w250px"> 
+				<p>{{ data.name }}</p> 
+			</div>
+			<div class="data-property w125px">  
+				<p>{{ data.dob | date: 'dd/MM/yyyy' }}</p>
+			</div>
+			<div class="data-property data-property-status no-divider w110px"> 
+				<p [ngClass]="data.statusName | lowercase">{{ data.statusName }}</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="scroll self" 
+		 appNikoInfiniteScroll
+		 [isScrollSelf]="true"
+		 (scrollEnd)="onScrollEnd()"
+	>	
+		<div *ngFor="let data of scrollData" class="scroll-data">
+			<div class="data-property w250px"> 
+				<p>{{ data.name }}</p> 
+			</div>
+			<div class="data-property w125px">  
+				<p>{{ data.dob | date: 'dd/MM/yyyy' }}</p>
+			</div>
+			<div class="data-property data-property-status no-divider w110px"> 
+				<p [ngClass]="data.statusName | lowercase">{{ data.statusName }}</p>
+			</div>
+		</div>
+	</div>
+</div>

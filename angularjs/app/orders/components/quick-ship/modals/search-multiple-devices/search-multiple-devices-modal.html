@@ -1,0 +1,107 @@
+<div class="modal-window search-multiple-devices-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="searchMultipleDevicesModal"
+     ng-form="$ctrl.searchMultipleDevicesForm"
+>
+
+    <a href="javascript:void(0);" ng-click="$ctrl.onCancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content overflow-x-hidden">
+
+        <md-icon class="modal-icon"
+                 md-svg-src="assets/images/default/inventory.svg"
+        ></md-icon>
+
+        <div class="modal-title">
+            <h2>Select Items:</h2>
+        </div>
+
+        <table class="drowz-table search-multiple-devices-table">
+            <thead>
+                <tr class="drowz-table-header">
+                    <th class="w260px">Name:</th>
+                    <th class="w350px">Location:</th>
+                    <th class="w250px">Serial Number:</th>
+                    <th class="w110px">Lot Number:</th>
+                    <th class="w100px">Available Qty:</th>
+                    <th class="w130px">Selected Qty:</th>
+                </tr>
+            </thead>
+            <tbody scroll-bar
+                   scroll-bar-above-element="true"
+            >
+                <tr class="drowz-table-row"
+                    ng-repeat="itemId in $ctrl.searchState.items.allIds"
+                    ng-if="$ctrl.getAvailableLocationCount($ctrl.searchState.items.byId[itemId]) > 0"
+                >
+                    <td class="w260px">{{ $ctrl.searchState.items.byId[itemId].name }}</td>
+                    <td class="w350px">{{ $ctrl.searchState.items.byId[itemId].location }}</td>
+                    <td class="w250px">{{ $ctrl.searchState.items.byId[itemId].serialNumber || '-' }}</td>
+                    <td class="w110px">{{ $ctrl.searchState.items.byId[itemId].lotNumber || '-' }}</td>
+                    <td class="w100px">
+                        {{ $ctrl.getAvailableLocationCount($ctrl.searchState.items.byId[itemId]) }}
+                    </td>
+                    <td class="w140px">
+                        <md-input-container class="table-cell-input-container pad-right-30">
+                            <label></label>
+                            <input type="number"
+                                   ng-model="$ctrl.searchState.items.byId[itemId].selectCount"
+                                   ng-change="$ctrl.onCalcSelectedItems()"
+                                   name="selectedItemsCount-{{ $index }}"
+                                   ng-pattern="/^[0-9]*$/"
+                                   min="1"
+                                   max="{{ $ctrl.getAvailableLocationCount($ctrl.searchState.items.byId[itemId]) }}"
+                            >
+                            <div ng-messages="$ctrl.searchMultipleDevicesForm['selectedItemsCount-' + $index].$error"
+                                 class="md-input-messages-nice"
+                            >
+                                <div ng-message="max">Max count {{ $ctrl.getAvailableLocationCount($ctrl.searchState.items.byId[itemId]) }}</div>
+                                <div ng-message="min">Min count 1</div>
+                                <div ng-message="number">Only numbers</div>
+                                <div ng-message="required">This field is required</div>
+                                <div ng-message="pattern">Not valid</div>
+                            </div>
+                        </md-input-container>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter space-between">
+
+        <div class="block-items-selected">
+            <span class="items-counter-text">Selected Qty:</span>
+            <span class="items-counter-badge">
+                {{ $ctrl.selectedCount }}
+            </span>
+            <span class="items-counter-text">Ordered Qty:</span>
+            <span class="items-counter-badge">
+                {{ $ctrl.countInOrder }}
+            </span>
+            <span class="items-counter-actions marg-left-7">
+                <md-icon class="reset-icon"
+                         md-svg-src="assets/images/default/clear-filters.svg"
+                         ng-click="$ctrl.onResetSelectedData()"
+                ></md-icon>
+            </span>
+        </div>
+
+        <div class="actions-block">
+            <md-button class="md-raised main-button"
+                       ng-click="$ctrl.onCancel()"
+            >
+                Cancel
+            </md-button>
+
+            <md-button class="md-raised md-primary main-button"
+                       ng-click="$ctrl.onSave()"
+                       ng-disabled="$ctrl.searchMultipleDevicesForm.$invalid || $ctrl.selectedCount === 0"
+            >
+                Select
+            </md-button>
+        </div>
+    </md-dialog-actions>
+
+</div>

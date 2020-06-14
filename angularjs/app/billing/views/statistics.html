@@ -1,0 +1,280 @@
+<div class="statistic-page">
+
+    <div class="statistic-page-header">
+        <div class="header-item">
+            <md-icon class="header-item-icon list-icon"
+                     md-svg-src="assets/images/default/days-sales.svg"></md-icon>
+            <div class="header-item-number green">0</div>
+            <div class="header-item-text">
+                Days Sales <br>
+                Outstanding
+            </div>
+        </div>
+        <div class="header-item">
+            <md-icon class="header-item-icon list-icon"
+                     md-svg-src="assets/images/default/hold-acc.svg"></md-icon>
+            <div class="header-item-number orange">0%</div>
+            <div class="header-item-text">
+                Hold Account <br>
+                Receivable
+            </div>
+        </div>
+        <div class="header-item">
+            <md-icon class="header-item-icon days-icon"
+                     md-svg-src="assets/images/default/days-payment.svg"></md-icon>
+            <div class="header-item-number blue">0</div>
+            <div class="header-item-text">
+                Days <br>
+                Claim Payment
+            </div>
+        </div>
+        <div class="header-item">
+            <md-icon class="header-item-icon"
+                     md-svg-src="assets/images/default/denials.svg"></md-icon>
+            <div class="header-item-number red">0%</div>
+            <div class="header-item-text">
+                Denials
+            </div>
+        </div>
+    </div>
+
+    <div class="statistic-cont">
+        <div class="flex-row">
+            <div class="statistic-block">
+                <v-accordion class="dashboard-block chart-block dashboard-accordion">
+                    <v-pane expanded="true">
+                        <v-pane-header>
+                            <div class="dashboard-block-title">
+                                <span>Open balance:</span>
+                                <span class="dashboard-block-title-description"><strong class="dashboard-block-title-number">$400058.00</strong>total</span>
+                            </div>
+                        </v-pane-header>
+
+                        <v-pane-content>
+                            <div class="dashboard-block-body">
+                                <div class="custom-no-records" ng-if="true">
+                                    <div class="custom-no-records-icon">
+                                        <md-icon md-svg-src="assets/images/default/no-info-icons/pie.svg"></md-icon>
+                                    </div>
+
+                                    <div class="custom-no-records-content">
+                                        <div class="custom-no-records-title">You do not have any Open Balance yet.</div>
+                                        <div class="custom-no-records-text">
+                                            Once you will add orders to the system, the statistics on Top-10 ordering physicians will be displayed on Dashboard
+                                        </div>
+                                    </div>
+                                </div>
+                                <highchart config="stat.newOrdersChart" ng-if="false"></highchart>
+                            </div>
+                        </v-pane-content>
+                    </v-pane>
+                </v-accordion>
+            </div>
+
+            <div class="statistic-block">
+                <v-accordion class="dashboard-block chart-block dashboard-accordion">
+                    <v-pane expanded="true">
+                        <v-pane-header>
+                            <div class="dashboard-block-title">
+                                <span>Active invoices:</span>
+                                <span class="dashboard-block-title-description"><strong class="dashboard-block-title-number">215</strong>total</span>
+                            </div>
+                        </v-pane-header>
+
+                        <v-pane-content>
+                            <div class="dashboard-block-body">
+                                <div class="custom-no-records" ng-if="true">
+                                    <div class="custom-no-records-icon">
+                                        <md-icon md-svg-src="assets/images/default/no-info-icons/pie.svg"></md-icon>
+                                    </div>
+
+                                    <div class="custom-no-records-content">
+                                        <div class="custom-no-records-title">You do not have any Open Balance yet.</div>
+                                        <div class="custom-no-records-text">
+                                            Once you will add orders to the system, the statistics on Top-10 ordering physicians will be displayed on Dashboard
+                                        </div>
+                                    </div>
+                                </div>
+                                <highchart config="stat.newOrdersChart" ng-if="false"></highchart>
+                            </div>
+                        </v-pane-content>
+                    </v-pane>
+                </v-accordion>
+            </div>
+
+            <div class="statistic-block">
+                <v-accordion class="dashboard-block chart-block dashboard-accordion">
+                    <v-pane expanded="true">
+                        <v-pane-header>
+                            <div class="dashboard-block-title">
+                                <span>Denials:</span>
+                                <span class="dashboard-block-title-description"><strong class="dashboard-block-title-number">97</strong>new denials</span>
+                            </div>
+                        </v-pane-header>
+
+                        <v-pane-content>
+                            <div class="dashboard-block-body">
+                                <div class="custom-no-records" ng-if="true">
+                                    <div class="custom-no-records-icon">
+                                        <md-icon md-svg-src="assets/images/default/no-info-icons/pie.svg"></md-icon>
+                                    </div>
+
+                                    <div class="custom-no-records-content">
+                                        <div class="custom-no-records-title">You do not have any Open Balance yet.</div>
+                                        <div class="custom-no-records-text">
+                                            Once you will add orders to the system, the statistics on Top-10 ordering physicians will be displayed on Dashboard
+                                        </div>
+                                    </div>
+                                </div>
+                                <highchart config="stat.newOrdersChart" ng-if="false"></highchart>
+                            </div>
+                        </v-pane-content>
+                    </v-pane>
+                </v-accordion>
+            </div>
+        </div>
+
+        <div class="statistic-block">
+            <v-accordion class="dashboard-block chart-block dashboard-accordion">
+                <v-pane expanded="true">
+                    <v-pane-header>
+                        <div class="dashboard-block-title">
+                            <span>Expirations for next 30 days:</span>
+                        </div>
+                    </v-pane-header>
+
+                    <v-pane-content>
+                        <div class="dashboard-block-body">
+                            <div class="expirations-info">
+                                <div class="info-block flex-cont center">
+                                    <md-icon class="header-item-icon list-icon prescriptions-icon" md-svg-src="assets/images/default/prescriptions-icon.svg"></md-icon>
+                                    <div class="statistic-item-number">12</div>
+                                    <div class="statistic-item-text">
+                                        <p class="statistic-item-name">Prescriptions</p>
+                                        <p><span>24%</span> from all</p>
+                                    </div>
+                                    <button class="md-raised md-button small-btn"><span>View</span></button>
+                                </div>
+
+                                <div class="info-block flex-cont center">
+                                    <md-icon class="header-item-icon list-icon prescriptions-icon" md-svg-src="assets/images/default/prescriptions-icon.svg"></md-icon>
+                                    <div class="statistic-item-number">42</div>
+                                    <div class="statistic-item-text">
+                                        <p class="statistic-item-name">Authorization</p>
+                                        <p><span>24%</span> from all</p>
+                                    </div>
+                                    <button class="md-raised md-button small-btn"><span>View</span></button>
+                                </div>
+
+                                <div class="info-block flex-cont center">
+                                    <md-icon class="header-item-icon list-icon prescriptions-icon" md-svg-src="assets/images/default/prescriptions-icon.svg"></md-icon>
+                                    <div class="statistic-item-number">78</div>
+                                    <div class="statistic-item-text">
+                                        <p class="statistic-item-name">CMNs</p>
+                                        <p><span>24%</span> from all</p>
+                                    </div>
+                                    <button class="md-raised md-button small-btn"><span>View</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </v-pane-content>
+                </v-pane>
+            </v-accordion>
+        </div>
+
+        <div class="statistic-block">
+            <v-accordion class="dashboard-block chart-block dashboard-accordion">
+                <v-pane expanded="true">
+                    <v-pane-header>
+                        <div class="dashboard-block-title">
+                            <span>Account receivable:</span>
+                        </div>
+                    </v-pane-header>
+
+                    <v-pane-content>
+                        <div class="dashboard-block-body">
+                            <div class="custom-no-records" ng-if="true">
+
+                                <div class="custom-no-records"
+                                     ng-if="!dash.statPayers.length">
+                                    <div class="custom-no-records-icon">
+                                        <md-icon md-svg-src="assets/images/default/no-info-icons/areaspline.svg"></md-icon>
+                                    </div>
+                                    <div class="custom-no-records-content">
+                                        <div class="custom-no-records-title">You do not have any Account Receivables.</div>
+                                    </div>
+                                </div>
+                                <highchart id="chart3"
+                                           config="dash.payersChart"
+                                           ng-if="dash.statPayers.length"></highchart>
+                            </div>
+                            <highchart config="stat.newOrdersChart"
+                                       ng-if="false"></highchart>
+                        </div>
+                    </v-pane-content>
+                </v-pane>
+            </v-accordion>
+        </div>
+
+        <div class="statistic-block">
+            <v-accordion class="dashboard-block chart-block dashboard-accordion">
+                <v-pane expanded="true">
+                    <v-pane-header>
+                        <div class="dashboard-block-title">
+                            <span>Account receivable:</span>
+                        </div>
+                    </v-pane-header>
+
+                    <v-pane-content>
+                        <div class="dashboard-block-body">
+                            <div class="custom-no-records" ng-if="true">
+
+                                <div class="custom-no-records" ng-if="!dash.statPayers.length">
+                                    <div class="custom-no-records-icon">
+                                        <md-icon md-svg-src="assets/images/default/no-info-icons/areaspline.svg"></md-icon>
+                                    </div>
+                                    <div class="custom-no-records-content">
+                                        <div class="custom-no-records-title">You do not have any Account Receivables.</div>
+                                    </div>
+                                </div>
+                                <highchart id="chart3" config="dash.payersChart" ng-if="dash.statPayers.length"></highchart>
+                            </div>
+                            <highchart config="stat.newOrdersChart" ng-if="false"></highchart>
+                        </div>
+                    </v-pane-content>
+                </v-pane>
+            </v-accordion>
+        </div>
+
+        <div class="statistic-block">
+            <v-accordion class="dashboard-block chart-block dashboard-accordion">
+                <v-pane expanded="true">
+                    <v-pane-header>
+                        <div class="dashboard-block-title">
+                            <span>Account receivable:</span>
+                        </div>
+                    </v-pane-header>
+
+                    <v-pane-content>
+                        <div class="dashboard-block-body">
+                            <div class="custom-no-records" ng-if="true">
+
+                                <div class="custom-no-records" ng-if="!dash.statPayers.length">
+                                    <div class="custom-no-records-icon">
+                                        <md-icon md-svg-src="assets/images/default/no-info-icons/areaspline.svg"></md-icon>
+                                    </div>
+                                    <div class="custom-no-records-content">
+                                        <div class="custom-no-records-title">You do not have any Account Receivables.</div>
+                                    </div>
+                                </div>
+                                <highchart id="chart3" config="dash.payersChart" ng-if="dash.statPayers.length"></highchart>
+                            </div>
+                            <highchart config="stat.newOrdersChart" ng-if="false"></highchart>
+                        </div>
+                    </v-pane-content>
+                </v-pane>
+            </v-accordion>
+        </div>
+
+    </div>
+</div>

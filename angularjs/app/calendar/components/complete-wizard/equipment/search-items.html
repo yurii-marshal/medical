@@ -1,0 +1,22 @@
+<search-items items="complete.model.selectedOrder.selected"
+              related-order-items="complete.model.selectedHiddenItems"
+              type="equipment"
+              filter-part-numbers="complete.model.partNumbersForSearchFilter"
+              filter-manufacturers="complete.model.manufacturersForSearch"
+              exclude-patient-devices="true"
+              patient-id="complete.model.patientId"
+              search-by-all-locations="!complete.isEventComplete"
+              is-complete-wizard="true"
+              resupply-devices="complete.model.ResupplyProgram.Items"
+>
+</search-items>
+
+<div class="drowz-wizard-footer static-footer">
+    <md-button class="md-raised main-button drowz-wizard-footer-btn"
+               ng-click="complete.cancelEquipment()">Cancel</md-button>
+    <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+               ng-click="complete.saveEquipment()"
+               ng-disabled="!complete.model.selectedOrder.selected.length">
+        Save
+    </md-button>
+</div>

@@ -1,0 +1,107 @@
+.expanse-estimates-wrap {
+
+    .financial-block-body {
+        &.financial-block-body_with-buttons {
+            padding-bottom: 0px;
+            padding-top: 0px;
+        }
+    }
+
+    .details-prices {
+        display: flex;
+        align-items: stretch;
+        box-shadow: $box-shadow;
+    }
+
+    .top-price-block.buttons_block {
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .bold-table-text {
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .expanse-block-header, .expanse-block-footer {
+        background-color: $light-gray-color;
+        padding: 15px;
+        padding-right: 0px;
+
+        .expanse-block-item {
+            padding: 0 10px;
+
+            &.left-divider {
+                border-left: 2px solid $gray-color-eee;
+            }
+
+            .label-text {
+                font-size: 11px;
+                color: $label-color;
+            }
+
+            .bold-text {
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+            .small-bold-text {
+                font-size: 12px;
+                font-weight: bold;
+            }
+        }
+
+    }
+
+    .expanse-block-header {
+        border-radius: 3px 3px 0 0;
+    }
+
+    .expanse-block-footer {
+        border-radius: 3px;
+    }
+
+    .label-block {
+        .status-label {
+            display: block;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+    }
+
+    .info-block-wrap {
+        padding: 3px 10px 0 10px;
+    }
+
+    .m-size-bottom-price-number {
+        line-height: 18px;
+        font-size: 18px;
+        display: inline;
+    }
+
+    .insurance-items {
+        padding: 30px 10px;
+    }
+
+    .insurance-item {
+        border-bottom: 1px solid $lighter-gray-color;
+        padding: 15px 0 5px 0;
+    }
+
+    .insurance-item:last-child {
+        border-bottom: none;
+    }
+
+    .action-required-icon {
+        margin: auto;
+    }
+
+    .align-center {
+        align-items: center;
+    }
+
+    .justify-content-end {
+        justify-content: flex-end;
+    }
+}

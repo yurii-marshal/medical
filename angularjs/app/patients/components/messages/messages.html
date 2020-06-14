@@ -1,0 +1,166 @@
+<div class="patient-messages"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="patient-messages">
+
+    <no-records text="Messages" is-fullpage="true" ng-show="!messages.practices.length"></no-records>
+
+    <div class="messages-header" ng-show="messages.practices.length > 0">
+        <div class="messages-header-btns">
+            <md-button class="md-raised messages-header-btn allmsg-btn-icon"
+                       aria-label="..."
+                       ng-click="messages.setMessageView('all')"
+                       ng-class="{'active': messages.messagesView === 'all'}">
+                <md-icon md-svg-src="assets/images/default/messages-all.svg"></md-icon>
+                View All
+            </md-button>
+            <md-button
+                       class="md-raised messages-header-btn email-btn-icon"
+                       aria-label="..."
+                       ng-click="messages.setMessageView('messages')"
+                       ng-class="{'active': messages.messagesView === 'messages'}">
+                <md-icon md-svg-src="assets/images/default/email.svg"></md-icon>
+                Messages
+            </md-button>
+            <md-button
+                       class="md-raised messages-header-btn"
+                       aria-label="..."
+                       ng-click="messages.setMessageView('alerts')"
+                       ng-class="{'active': messages.messagesView === 'alerts'}">
+                <md-icon md-svg-src="assets/images/default/alert.svg"></md-icon>
+                Alerts
+            </md-button>
+        </div>
+        <div class="messages-header-filters">
+            <md-checkbox ng-model="messages.checkAll"
+                         ng-click="messages.toggleAll()"
+                         class="md-primary messages-check-all"
+                         ng-show="messages.messagesView !== 'all' && messages.messages.length">
+                Select all
+            </md-checkbox>
+            <div class="flex-cont">
+                <md-button class="done"
+                           ng-click="messages.setInactive(messages.selectedItems)"
+                           ng-show="messages.selectedItems[0].Type == 'alert'"
+                           aria-label="..."
+                           simple-tooltip="Mark as Done">
+                    <md-icon md-svg-src="assets/images/default/check-circle.svg"></md-icon>
+                </md-button>
+
+                <md-button class="email-open"
+                           ng-click="messages.setRead(messages.selectedItems)"
+                           ng-show="messages.selectedItems[0].Type == 'message'"
+                           aria-label="..."
+                           simple-tooltip="Mark as Read">
+                    <md-icon md-svg-src="assets/images/default/email-open.svg"></md-icon>
+                </md-button>
+                <md-button class="email"
+                           ng-click="messages.setUnread(messages.selectedItems)"
+                           ng-show="messages.selectedItems[0].Type == 'message'"
+                           aria-label="..."
+                           simple-tooltip="Mark as Unread">
+                    <md-icon md-svg-src="assets/images/default/email.svg"></md-icon>
+                </md-button>
+
+                <md-button ng-click="messages.reloadMessages()"
+                           class="refresh"
+                           aria-label="..."
+                           simple-tooltip="Refresh List">
+                    <md-icon md-svg-src="assets/images/default/refresh.svg"></md-icon>
+                </md-button>
+                <md-input-container class="messages-content-search">
+                    <label></label>
+                    <input type="text"
+                           ng-model="messages.searchText"
+                           ng-model-options="{debounce: 650}"
+                           ng-change="messages.reloadMessages()"
+                           placeholder="Search"
+                           clear-on-click>
+                    <md-button ng-if="!messages.searchText.length"
+                               class="search-btn"
+                               aria-label="...">
+                        <md-icon md-svg-src="assets/images/default/search.svg"></md-icon>
+                    </md-button>
+                </md-input-container>
+                <md-input-container class="messages-content-select">
+                    <label></label>
+                    <md-select ng-model="messages.subjectType"
+                               placeholder="Select Subject"
+                               ng-change="messages.reloadMessages()"
+                               clear-on-click>
+                        <md-option ng-value="1">New Order</md-option>
+                        <md-option ng-value="2">Resupply</md-option>
+                        <md-option ng-value="3">Compilance</md-option>
+                        <md-option ng-value="4">Billing</md-option>
+                        <md-option ng-value="5">Other</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+        </div>
+    </div>
+    <div class="messages-body" ng-show="messages.practices.length > 0">
+        <div class="practices"
+             bs-loading-overlay
+             bs-loading-overlay-reference-id="practices"
+             scroll-bar
+             scroll-bar-above-element="true">
+            <div class="practices-title">Practice List:</div>
+            <md-button class="practice-item"
+                       ng-repeat="practice in messages.practices track by practice.PracticeId"
+                       ng-class="{'active':messages.activePractice.PracticeId === practice.PracticeId}"
+                       ng-click="messages.selectPractice(practice)"
+                       aria-label="...">
+                <div class="practice-title">
+                    <div class="practice-name">{{practice.Name}}</div>
+                    <div class="drowz-round-label" ng-show="(practice.UnreadMessages + practice.ActiveAlerts)>0">
+                        {{(practice.UnreadMessages + practice.ActiveAlerts)}}
+                    </div>
+                </div>
+                <div class="practice-text">
+
+                    <span ng-show="practice.LastMessageType.Id == 1"
+                          class="practice-label message-label"></span>
+
+                    <span ng-show="practice.LastMessageType.Id == 2"
+                          class="practice-label alert-label"></span>
+
+                    &quot;<expandable-text
+                                ng-if="practice.LastMessageText"
+                                text="practice.LastMessageText"
+                                max-length="90"></expandable-text>&quot;
+                </div>
+                <div class="practice-date">{{practice.LastMessageDate | amUtc | amDateFormat: "DD MMM YYYY, h:mm A" }}</div>
+            </md-button>
+        </div>
+        <div class="messages-content"
+             bs-loading-overlay
+             bs-loading-overlay-reference-id="messages">
+
+            <no-records text="Messages" is-fullpage="true" ng-if="!messages.messages.length && messages.messagesView !== 'alerts'"></no-records>
+            <no-records text="Alerts" is-fullpage="true" ng-if="!messages.messages.length && messages.messagesView === 'alerts'"></no-records>
+
+            <div class="messages-content-body"
+                 scroll-bar
+                 scroll-bar-above-element="true"
+                 ng-show="messages.messages.length">
+
+                <patient-message-item
+                    ng-repeat="msg in messages.messages track by msg.Id"
+                    msg="msg"
+                    toggle-item-fn="messages.toggleMsg">
+                </patient-message-item>
+
+            </div>
+            <send-message
+                ng-if="messages.activePractice.PracticeId && messages.patientId"
+                on-submit="messages.sendMessage"
+                new-msg="messages.newMsg"
+                patient-id="messages.patientId"
+                practice-id="messages.activePractice.PracticeId"
+                message-type="messages.messagesView"
+                bs-loading-overlay
+                bs-loading-overlay-reference-id="patient-message-block"
+            ></send-message>
+        </div>
+    </div>
+
+</div>

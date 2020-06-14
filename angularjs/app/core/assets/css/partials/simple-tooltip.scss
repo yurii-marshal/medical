@@ -1,0 +1,283 @@
+.calendar-tooltip {
+    z-index: 9999998;
+
+    &.tooltipster-base {
+        display: block;
+    }
+
+    .tooltipster-box {
+        background: $light-gray-color;
+        border: 1px solid $main-active-color;
+        border-radius: 3px;
+    }
+
+    &.tooltipster-bottom {
+        .tooltipster-arrow {
+            top: -1px;
+
+            .tooltipster-arrow-border {
+                border-bottom-color: $main-active-color;
+            }
+
+            .tooltipster-arrow-background {
+                top: 1px;
+                border-bottom-color: $light-gray-color;
+            }
+        }
+    }
+
+    &.tooltipster-top {
+        .tooltipster-arrow {
+            bottom: -1px;
+
+            .tooltipster-arrow-border {
+                border-top-color: $main-active-color;
+            }
+
+            .tooltipster-arrow-background {
+                top: -1px;
+                border-top-color: $light-gray-color;
+            }
+        }
+    }
+
+    &.tooltipster-left {
+        .tooltipster-arrow {
+            right: -1px;
+
+            .tooltipster-arrow-border {
+                border-left-color: $main-active-color;
+            }
+
+            .tooltipster-arrow-background {
+                left: -1px;
+                border-left-color: $light-gray-color;
+            }
+        }
+    }
+
+    &.tooltipster-right {
+        .tooltipster-arrow {
+            left: -1px;
+
+            .tooltipster-arrow-border {
+                border-right-color: $main-active-color;
+            }
+
+            .tooltipster-arrow-background {
+                left: 1px;
+                border-right-color: $light-gray-color;
+            }
+        }
+    }
+
+    .tooltipster-content {
+        position: relative;
+        padding: 5px 9px;
+        overflow-y: auto;
+        max-height: 350px;
+        text-align: left;
+        font-family: "Roboto", sans-serif;
+        word-wrap: break-word;
+        line-height: 16px;
+        font-size: 12px;
+        color: $font-color;
+
+        .tooltip-row {
+            padding-bottom: 4px;
+
+            > span {
+                &:first-child {
+                    font-weight: 400;
+                }
+
+                &:last-child {
+                    font-weight: 700;
+                }
+            }
+
+            .appointment_id, .start, .end {
+                color: $main-active-color;
+            }
+
+            .patient_name {
+                color: $red-color;
+                background: none;
+            }
+        }
+
+        .tooltip-empty {
+            padding: 10px 0;
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+
+        .transaction-tooltip-row {
+            font-size: 14px;
+            line-height: 18px;
+            text-align: right;
+            white-space: nowrap;
+        }
+    }
+}
+
+.tooltipster-black {
+    word-break: break-word;
+
+    .tooltipster-box {
+        border-radius: 4px;
+        border: none;
+        background: #757575;
+    }
+
+    .tooltipster-content {
+        position: relative;
+        padding: 5px 9px;
+        overflow: hidden;
+        text-align: center;
+        line-height: 12px;
+        font-size: 9px;
+        color: white;
+    }
+}
+
+.tooltipster-black-larger {
+    .tooltipster-box {
+        border-radius: 4px;
+        border: none;
+        background: #757575;
+    }
+
+    .tooltipster-content {
+        position: relative;
+        padding: 5px 9px;
+        overflow: hidden;
+        text-align: center;
+        line-height: 16px;
+        font-size: 12px;
+        color: white;
+    }
+}
+
+
+
+.tooltipster-base.tooltipster-niko {
+
+    .tooltipster-box {
+        position: relative;
+        border: none;
+        border-radius: 3px;
+        box-shadow: $box-shadow, $box-shadow, $box-shadow;
+
+        .tooltipster-content {
+            padding: 10px;
+            font-size: 15px;
+            line-height: 24px;
+            color: $font-color;
+        }
+
+        .tooltipster-arrow-background {
+            display: block !important;
+            box-shadow: $box-shadow;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: -12px;
+            width: 13px;
+            height: 20px;
+            transform: translateY(-50%);
+            background-image: url(../assets/images/tooltip-arrow.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    }
+
+    &.tooltipster-top {
+        .tooltipster-box::before {
+            left: 50%;
+            top: auto;
+            bottom: -15px;
+            transform: translateX(-50%) rotate(270deg);
+        }
+    }
+
+    &.tooltipster-bottom {
+        .tooltipster-box::before {
+            left: 50%;
+            top: -15px;
+            transform: translateX(-50%) rotate(90deg);
+        }
+    }
+
+    &.tooltipster-left {
+        .tooltipster-box::before {
+            left: auto;
+            right: -12px;
+            transform: translateY(-50%) scale(-1, 1);
+        }
+    }
+}
+
+.tooltipster-extra-hours, .tooltipster-service-center, .tooltipster-constraint-hours {
+    .tooltipster-box {
+        border-radius: 8px;
+    }
+
+    .tooltipster-content {
+        position: relative;
+        padding: 3px 5px 2px 3px;
+        overflow: hidden;
+        text-align: left;
+        line-height: 20px;
+        font-size: 11px;
+        color: #212121;
+
+        .tooltip-title {
+            display: flex;
+            align-items: center;
+
+            .circle {
+                width: 16px;
+                height: 16px;
+                margin-right: 4px;
+                background-color: #bfbfbf;
+                border-radius: 50%;
+            }
+
+            .tooltip-text {
+                font-weight: 500;
+            }
+        }
+
+        .tooltip-content {
+            padding-left: 20px;
+            line-height: 20px;
+        }
+    }
+}
+
+.tooltipster-extra-hours {
+    .tooltipster-box {
+        border: 1px solid $orange-color;
+        background: #ffeac4;
+    }
+}
+
+.tooltipster-constraint-hours {
+    .tooltipster-box {
+        border: 1px solid rgb(147, 246, 146);
+        background: rgb(222, 246, 218);
+    }
+}
+
+.tooltipster-service-center {
+    .tooltipster-box {
+        border: 1px solid #0388d1;
+        background: #9bddfb;
+    }
+}

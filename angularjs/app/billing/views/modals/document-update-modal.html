@@ -1,0 +1,62 @@
+<div class="modal-window document-update-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="documentUpdateModalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/document-update.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Request update of
+                <span ng-bind="$ctrl.options.ids.length"></span>
+                <span ng-bind="$ctrl.options.stateName.slice(0,-1)"></span>(s)
+            </h2>
+        </div>
+
+        <div ng-form="$ctrl.actionsForm" class="document-update-form">
+
+            <md-input-container ng-if="$ctrl.isSelectVisible()">
+                <label>Update by:</label>
+                <md-select ng-model="$ctrl.currentAction"
+                           ng-required="true"
+                           name="selected-action">
+                    <md-option ng-value="action.Id"
+                               ng-repeat="action in $ctrl.commonActions">
+                        {{action.Text}}
+                    </md-option>
+                </md-select>
+                <div ng-messages="$ctrl.actionsForm['selected-action'].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required">This field is required</div>
+                </div>
+            </md-input-container>
+
+            <md-input-container ng-if="$ctrl.currentAction == 2">
+                <label>Fax number:</label>
+                <input type="text"
+                       name="fax-number"
+                       ng-model="$ctrl.Fax"
+                       ng-required="true"
+                       input-phone-mask>
+                <div ng-messages="$ctrl.actionsForm['fax-number'].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required"
+                         class="md-input-message-animation"><b>Fax number</b> cannot be empty.</div>
+                    <div ng-message="phone-pattern"
+                         class="md-input-message-animation"><b>Fax number</b> must contain min 10 digits.</div>
+                </div>
+            </md-input-container>
+
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.send($ctrl.currentAction)">Ok</md-button>
+    </md-dialog-actions>
+
+</div>

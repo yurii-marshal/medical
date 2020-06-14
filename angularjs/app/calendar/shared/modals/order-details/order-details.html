@@ -1,0 +1,193 @@
+﻿<div class="modal-window order-details-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/documents.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Order Details:</h2>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block block-width-25-percent">
+                <div class="info-block-label">Order Type:</div>
+                <div class="info-block-body">{{$ctrl.model.Type.Text || $ctrl.model.TypeName}}</div>
+            </div>
+            <div class="info-block block-width-25-percent">
+                <div class="info-block-label">Order Date:</div>
+                <div class="info-block-body">{{$ctrl.model.CreatedDate | amUtc | amDateFormat: "MM/DD/YYYY"}}</div>
+            </div>
+            <div class="info-block block-width-25-percent">
+                <div class="info-block-label">Order Status</div>
+                <div class="info-block-body">{{$ctrl.model.State.Status.Text}}</div>
+            </div>
+            <div class="info-block block-width-25-percent" ng-show="+$ctrl.model.State.Status.Id === 1">
+                <div class="info-block-label">Hold Reason:</div>
+                <div class="info-block-body">{{$ctrl.model.State.HoldReason.Text || '-'}}</div>
+            </div>
+        </div>
+
+        <div class="flow-title">
+            <div class="flow-title-text">Referring Details:</div>
+        </div>
+
+        <div class="flex-row" ng-if="$ctrl.model.ReferralCard">
+            <div class="info-block order-modal-physician-block">
+                <div class="info-block-label">Ref. Provider:</div>
+                <div class="info-block-body">
+                    {{$ctrl.model.ReferralCard | referralDisplayName}}
+                </div>
+            </div>
+            <div class="info-block block-width-25-percent">
+                <div class="info-block-label">Phone:</div>
+                <div class="info-block-body">
+                    <span ng-if="!$ctrl.model.ReferralCard.Location.Phone">-</span>
+                    {{$ctrl.model.ReferralCard.Location.Phone | tel}}
+                </div>
+            </div>
+            <div class="info-block block-width-25-percent">
+                <div class="info-block-label">Fax:</div>
+                <div class="info-block-body">
+                    <span ng-if="!$ctrl.model.ReferralCard.Location.Fax">-</span>
+                    {{$ctrl.model.ReferralCard.Location.Fax | tel}}
+                </div>
+            </div>
+            <div class="info-block block-width-25-percent">
+                <div class="info-block-label">Email:</div>
+                <div class="info-block-body">
+                    {{$ctrl.model.ReferralCard.Location.Email || '-'}}
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-row" ng-if="$ctrl.model.ReferralCard">
+            <div class="info-block grow-1">
+                <div class="info-block-label">Location:</div>
+                <div class="info-block-body">{{$ctrl.model.ReferralCard.Location.Address || '-'}}</div>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <no-records text="Referring Details"
+                        ng-if="!$ctrl.model.ReferralCard"
+                        class="no-records-small"></no-records>
+        </div>
+
+
+        <div class="flow-title">
+            <div class="flow-title-text">Ordered Items:</div>
+        </div>
+        <div class="flex-row products-container"
+             ng-if="$ctrl.model.Products.length"
+             scroll-bar
+             scroll-bar-above-element="true">
+            <div class="info-block grow-1">
+                <div class="info-block-body">
+                    <div class="order-product"
+                         ng-repeat="item in $ctrl.model.Products"
+                    >
+                        <div class="flex-row">
+                            <div class="info-block grow-1">
+                                <div class="info-block-label">Name:</div>
+                                <div class="info-block-body">{{item.Name}}</div>
+                            </div>
+                            <div class="info-block block-width-170 left-divider">
+                                <div class="info-block-label">Manufacturer:</div>
+                                <div class="info-block-body">{{item.Manufacturer || '-'}}</div>
+                            </div>
+                            <div class="info-block block-width-120 left-divider">
+                                <div class="info-block-label">ID/Part #:</div>
+                                <div class="info-block-body">{{item.PartNumber || '-'}}</div>
+                            </div>
+                            <div class="info-block block-width-110 left-divider">
+                                <div class="info-block-label">HCPCS:</div>
+                                <div class="info-block-body flex-cont">
+                                    <div popover-directive="item.allHcpcsCodes"
+                                         hide-first-item="true"
+                                         min-width="50"></div>
+                                </div>
+                            </div>
+                            <div class="info-block block-width-80 left-divider">
+                                <div class="info-block-label">Qty:</div>
+                                <div class="info-block-body">{{item.Count}}</div>
+                            </div>
+                        </div>
+
+                        <div class="flex-row">
+                            <div class="grow-1 pad-left-15 marg-bottom-15"
+                                 ng-if="item.Notes"
+                            >
+                                <p>
+                                  Note: {{item.Notes}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="item-components pad-left-15" ng-if="item.Bundle">
+                            <v-accordion class="flow-accordion grow-1">
+                                <v-pane expanded="false">
+                                    <v-pane-header class="flow-accordion-title"
+                                                   ng-click="$ctrl.getProductComponents(item);"
+                                    >
+                                        <md-icon md-svg-src="assets/images/default/chevron.svg"
+                                                 class="flow-accordion-title-icon"
+                                        ></md-icon>
+                                        <span>Included Items:</span>
+                                        <div class="accordion-line"></div>
+                                    </v-pane-header>
+                                    <v-pane-content class="pad-left-15"
+                                                    bs-loading-overlay
+                                                    bs-loading-overlay-reference-id="bundleComponents{{ item.Id }}"
+                                    >
+                                        <table class="drowz-table regular-table">
+                                            <tr class="drowz-table-header">
+                                                <th class="number-cell" width="45">#</th>
+                                                <th>Name:</th>
+                                                <th>Manufacturer:</th>
+                                                <th>ID/Part #:</th>
+                                                <th>HCPCS:</th>
+                                                <th width="80">Qty</th>
+                                            </tr>
+                                            <tr class="drowz-table-row" ng-repeat="component in item.Components">
+                                                <td class="number-cell">{{$index + 1}}.</td>
+                                                <td ng-bind="component.Name"></td>
+                                                <td ng-bind="component.Manufacturer"></td>
+                                                <td ng-bind="component.PartNumber"></td>
+                                                <td>
+                                                    <div class="flex-cont">
+                                                        <div popover-directive="component.allHcpcsCodes"
+                                                             hide-first-item="true"
+                                                             min-width="50"></div>
+                                                    </div>
+                                                </td>
+                                                <td ng-bind="component.Count"></td>
+                                            </tr>
+                                        </table>
+
+                                        <no-records text="Components:"
+                                                    class="no-records-small"
+                                                    ng-if="item.componentsLoaded && !item.Components.length"
+                                                    no-default-text="true">
+                                        </no-records>
+                                    </v-pane-content>
+                                </v-pane>
+                            </v-accordion>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button"
+                   ng-click="$ctrl.cancel()">Close</md-button>
+    </md-dialog-actions>
+
+</div>

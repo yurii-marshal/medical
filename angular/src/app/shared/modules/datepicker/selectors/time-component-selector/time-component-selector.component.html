@@ -1,0 +1,25 @@
+<div class="time-component-selector">
+    <div class="time-block">
+        <app-time-component-scroller class="time-component-selector__component"
+                                 [value]="date"
+                                 [format]="isMeridiem === true ? 'hh' : 'HH'"
+                                 (up)="plusHour()"
+                                 (down)="minusHour()"
+                                 (selectValue)="selectHour.emit($event)">
+        </app-time-component-scroller>
+        <span class="time-separator">:</span>
+        <app-time-component-scroller class="time-component-selector__component"
+                                 [ngClass]="{'time-component-selector__component_last': isMeridiem === false}"
+                                 [value]="date"
+                                 [format]=" 'mm' "
+                                 (up)="plusMinute()"
+                                 (down)="minusMinute()"
+                                 (selectValue)="selectMinute.emit($event)">
+        </app-time-component-scroller>
+    </div>
+    <div class="mode-block">
+        <button *ngIf="isMeridiem" (click)="togglePmAm()" mat-raised-button color="primary">
+            {{ date?.format("A") }}
+        </button>
+    </div>
+</div>

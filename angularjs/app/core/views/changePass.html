@@ -1,0 +1,80 @@
+<div class="login"
+     ng-form="changepass.changePasswordForm"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="change-password">
+
+    <div class="changepass-block">
+        <div class="login-title">Please enter your temporary password <br>then enter/repeat <span class="blue">your new password.</span></div>
+        <div class="login-row row-with-icon">
+            <md-icon md-svg-src="assets/images/colored/lock-circle.svg" class="login-row-icon"></md-icon>
+            <input style="display:none" type="password" name="fakepasswordremembered"/>
+            <md-input-container>
+                <label>Temporary Password:</label>
+                <input type="password"
+                       name="oldPassword"
+                       ng-model="changepass.vm.oldPassword"
+                       ng-required="true"
+                       autocomplete="new-password"
+                       ng-disabled="changepass.isLoading"
+                       ng-keyup="changepass.submitForm($event)">
+                <div ng-messages="changepass.changePasswordForm.oldPassword.$error" class="md-input-messages-nice">
+                    <div ng-message="required"><b>Temporary Password</b> cannot be empty.</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="login-row row-with-icon">
+            <md-icon md-svg-src="assets/images/colored/lock-circle.svg" class="login-row-icon"></md-icon>
+            <input style="display:none" type="password" name="fakepasswordremembered2"/>
+            <md-input-container>
+                <label>New password:</label>
+                <input type="password"
+                       name="newPassword"
+                       ng-model="changepass.vm.newPassword"
+                       ng-required="true"
+                       ng-pattern="/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/"
+                       autocomplete="new-password"
+                       ng-disabled="changepass.isLoading"
+                       ng-keyup="changepass.submitForm($event)">
+                <div ng-messages="changepass.changePasswordForm.newPassword.$error" class="md-input-messages-nice">
+                    <div ng-message="required"><b>New password</b> cannot be empty.</div>
+                    <div ng-message="pattern">
+                        <b>New password</b> is not valid.
+                        <br/>Must be at least 8 characters.
+                        <br/>Must have at least one digit ('0'-'9').
+                        <br/>Must have at least one lowercase ('a'-'z').
+                        <br/>Must have at least one uppercase ('A'-'Z').
+                        <br/>Must have at least one non alphanumeric character.
+                    </div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="login-row row-with-icon">
+            <md-icon md-svg-src="assets/images/colored/lock-circle.svg" class="login-row-icon"></md-icon>
+            <input style="display:none" type="password" name="fakepasswordremembered3"/>
+            <md-input-container>
+                <label>Repeat new password:</label>
+                <input type="password"
+                       ng-model="changepass.vm.rptPassword"
+                       ng-required="true"
+                       compare-to="changepass.changePasswordForm.newPassword"
+                       name="rptPassword"
+                       autocomplete="new-password"
+                       ng-disabled="changepass.isLoading"
+                       ng-keyup="changepass.submitForm($event)">
+                <div ng-messages="changepass.changePasswordForm.rptPassword.$error" class="md-input-messages-nice">
+                    <div ng-message="required"><b>Repeat new password</b> cannot be empty.</div>
+                    <div ng-message="compareTo"><b>Repeat new password</b> must be equal to <b>New password</b>.</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="login-row">
+            <md-button class="md-raised md-primary login-btn"
+                       ng-click="changepass.save()"
+                       ng-disabled="changepass.isLoading">
+                <icon-loading-white ng-if="changepass.loading"></icon-loading-white>Save</md-button>
+        </div>
+        <div class="login-row">
+            <a href="javascript:void(0);" class="reset-login" ng-click="changepass.cancel()">Cancel</a>
+        </div>
+    </div>
+</div>

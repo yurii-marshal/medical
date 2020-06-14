@@ -1,0 +1,41 @@
+sort-list {
+    height: 12px;
+    line-height: 12px;
+    vertical-align: middle;
+}
+
+.sort-link {
+    position: relative;
+    display: inline-block;
+    padding-right: 16px;
+    color: $dark-blue-color;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: .2s;
+    text-decoration: none;
+
+    .sort-icon {
+        position: absolute;
+        top: 50%;
+        right: 2px;
+        width: 10px;
+        height: 7px;
+        margin-top: -3px;
+        color: inherit;
+        transform: rotate(180deg);
+
+        &.desc {
+            transform: rotate(180deg);
+        }
+
+        &.asc {
+            transform: rotate(0deg);
+        }
+    }
+
+    &:hover, &:focus {
+        text-decoration: none;
+        color: $dark-blue-color;
+    }
+}

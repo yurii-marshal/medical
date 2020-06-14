@@ -1,0 +1,84 @@
+.modal-window {
+    &.select-invoice-modal {
+        overflow-x: scroll;
+        width: auto;
+        min-width: auto;
+
+        .select-invoice-modal-content, .modalFooter{
+            width: 1550px;
+            min-width: 1550px;
+        }
+
+        .search-filters {
+            .clear-filters-btn {
+                display: flex;
+                align-self: center;
+            }
+
+            .hcpcs-autocomplete {
+                md-autocomplete-with-infinite-scroll {
+                    max-width: 100%;
+                    min-width: 100%;
+                }
+            }
+
+            .search-btn-container {
+                display: flex;
+                justify-content: flex-end;
+            }
+        }
+
+        @include clear-filters-btn(16px, true, $gray-color-main, false);
+
+        .invoices-list {
+            max-height: 385px;
+
+            .invoices-list-item {
+                display: block;
+                padding: 20px 0;
+                margin-bottom: 0;
+                border-bottom: 1px solid $lighter-gray-color;
+
+                &:last-of-type {
+                    margin-right: 16px;
+                }
+
+                & > .md-label {
+                    display: block;
+                    margin-left: 50px;
+                }
+
+                .md-container {
+                    top: 50px;
+                }
+
+                select-invoice-item {
+                    display: block;
+                }
+
+                .drowz-table {
+                    border: 1px solid $lighter-gray-color;
+                }
+
+                .status-label-container {
+                    display: flex;
+                    justify-content: flex-end;
+                }
+
+                .left-border {
+                    position: relative;
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        top: 0px;
+                        bottom: 10px;
+                        right: -1px;
+                        width: 2px;
+                        background-color: $lighter-gray-color;
+                    }
+                }
+            }
+        }
+    }
+}

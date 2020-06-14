@@ -1,0 +1,53 @@
+<div class="login-row"
+     (keypress)="onEnterChart($event)"
+     (keyup)="onClickBackspace($event); onCodeChange($event);"
+     (keydown)="onRemoveDigit($event)"
+     (paste)="paste($event.clipboardData.getData('text/plain'))"
+     #inputsContainer
+>
+    <input class="verification-code-input"
+           maxlength="1"
+           type="text"
+           tabindex="1"
+           autocomplete="off"
+    />
+
+    <input class="verification-code-input"
+           maxlength="1"
+           type="text"
+           tabindex="2"
+           autocomplete="off"
+    />
+
+    <input class="verification-code-input"
+           maxlength="1"
+           type="text"
+           tabindex="3"
+           autocomplete="off"
+    />
+
+    <span>
+        -
+    </span>
+
+    <input class="verification-code-input"
+           maxlength="1"
+           type="text"
+           tabindex="4"
+           autocomplete="off"
+    />
+
+    <input class="verification-code-input"
+           maxlength="1"
+           type="text"
+           tabindex="5"
+           autocomplete="off"
+    />
+
+    <input class="verification-code-input"
+           maxlength="1"
+           type="text"
+           tabindex="6"
+           autocomplete="off"
+    />
+</div>

@@ -1,0 +1,321 @@
+<ng-container *ngIf="patient">
+
+    <!--Main block of user picture and name-->
+    <div class="sidebar-padding-block flex-cont stretch main-patient-block">
+
+        <div class="photo-block male"
+             *ngIf="patient.Gender.Id === userGender.MALE"
+        ></div>
+
+        <div class="photo-block female"
+             *ngIf="patient.Gender.Id === userGender.FEMALE"
+        ></div>
+
+        <div class="name-status-block">
+
+            <div class="sidebar-title">
+                {{ patient.Name.First }}
+                {{ patient.Name.Middle }}
+                {{ patient.Name.Last }}
+            </div>
+
+            <div class="status-and-gender flex-cont">
+
+                <div class="flex-cont">
+                    <div class="status-label {{ patient.Status.Id | getCssClass: 'status' }}">
+                        {{ patient.Status.Text }}
+                    </div>
+
+                    <div class="gender-icon">
+
+                        <mat-icon svgIcon="male"
+                                  *ngIf="patient.Gender.Id === userGender.FEMALE"></mat-icon>
+                        <mat-icon svgIcon="female"
+                                  *ngIf="patient.Gender.Id === userGender.MALE"></mat-icon>
+                    </div>
+                </div>
+
+                <button mat-raised-button
+                        class="btn-primary edit-doc"
+                        (click)="openEditDialog()"
+                >
+
+                    <mat-icon svgIcon="edit"></mat-icon>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!--End of main block-->
+
+    <!--Block of tags-->
+    <div *ngIf="tags" class="sidebar-padding-block patient-tags hiding-block">
+
+        <mat-chip-list>
+
+            <div class="attr-label" *ngFor="let tag of tags">
+
+                <mat-icon svgIcon="tagIcon" class="tag-icon"></mat-icon>
+
+                <div class="tag-text">
+                    {{ tag.Name }}
+                </div>
+
+            </div>
+
+        </mat-chip-list>
+
+    </div>
+    <!--End of second block-->
+
+    <!--Block of birthday and address-->
+    <div class="sidebar-padding-block hiding-block">
+
+        <div class="icon-block"
+             *ngIf="patient.MedSageEnrolled">
+
+            <mat-icon svgIcon="ic-pg-medsage" class="icon-block-icon"></mat-icon>
+
+            <div class="info-block">
+                <div class="info-block-label">
+                    MedSage:
+                </div>
+                <div class="info-block-body">
+                    Patient enrolled to MedSage resupply program
+                </div>
+            </div>
+
+        </div>
+        <div class="icon-block"
+             *ngIf="patient.DateOfBirthday">
+
+            <mat-icon svgIcon="calendar-circle-v2" class="icon-block-icon"></mat-icon>
+
+            <div class="info-block">
+                <div class="info-block-label">
+                    DOB:
+                </div>
+                <div class="info-block-body">
+                    {{ patient.DateOfBirthday | amUtc | amDateFormat: "MM/DD/YYYY" }}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="icon-block"
+             *ngIf="patient.Address.AddressLine">
+
+            <mat-icon svgIcon="address" class="icon-block-icon"></mat-icon>
+
+            <div class="info-block">
+                <div class="info-block-label">
+                    Address:
+                </div>
+                <div class="info-block-body">
+                    {{ patient.Address | addressToString }}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="icon-block"
+             *ngIf="patient.Email">
+
+            <mat-icon svgIcon="mail" class="icon-block-icon"></mat-icon>
+
+            <div class="info-block">
+                <div class="info-block-label">
+                    Email:
+                </div>
+                <div class="info-block-body">
+                    {{ patient.Email }}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!--End of third block-->
+
+    <!--Toggle blocks info-->
+    <div class="sidebar-padding-block accordions">
+
+        <app-v-accordion header="phones">
+
+            <div class="icon-block" *ngIf="homePhone">
+
+                <mat-icon svgIcon="home_phone" class="icon-block-icon"></mat-icon>
+
+                <div class="info-block">
+
+                    <div class="info-block-label">
+                        Home Phone:
+                    </div>
+
+                    <div class="info-block-body">
+                        {{ homePhone }}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <app-no-content text="Phones"
+                            type="small"
+                            *ngIf="!homePhone"
+                            defaultLastWord
+            ></app-no-content>
+
+        </app-v-accordion>
+
+        <app-v-accordion header="insurance">
+
+            <ng-container *ngIf="patient.Insurances">
+
+                <div class="icon-block" *ngFor="let item of patient.Insurances; let index = index">
+
+                    <mat-icon svgIcon="insurance" class="icon-block-icon"></mat-icon>
+
+                    <div class="flex-row">
+
+                        <div class="info-block grow-1 insurance-block-title">
+
+                            <div class="info-block-label">
+                                Insurance:
+                            </div>
+
+                            <div class="info-block-body">
+                                {{ item.Name }}
+                            </div>
+
+                        </div>
+
+                        <div class="status-label insurance-status-label primary"
+                             *ngIf="item.PositionIndex === insurancePriority.PRIMARY">
+                            Primary
+                        </div>
+
+                        <div class="status-label insurance-status-label primary"
+                             *ngIf="item.PositionIndex === insurancePriority.SECONDARY">
+                            Secondary
+                        </div>
+
+                        <div class="status-label insurance-status-label primary"
+                             *ngIf="item.PositionIndex === insurancePriority.TERTIARY">
+                            Tertiary
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </ng-container>
+
+            <app-no-content text="Insurance"
+                            type="small"
+                            *ngIf="patient.Insurances.length === 0"
+                            defaultLastWord
+            ></app-no-content>
+
+        </app-v-accordion>
+
+        <app-v-accordion header="active orders">
+
+            <ng-container *ngIf="patient.Orders">
+
+                <div class="icon-block" *ngFor="let order of patient.Orders">
+
+                    <mat-icon svgIcon="orders" class="icon-block-icon"></mat-icon>
+
+                    <div class="info-block">
+
+                        <div class="info-block-label">
+                            Order:
+                        </div>
+
+                        <div class="info-block-body">
+
+                            <a href="#/orders/order/{{ order.Id }}/details" class="underline-after-link">
+                                {{ order.DisplayId }}
+                            </a>
+
+                            <span class="vertical-divider">|</span>
+
+                            <span>{{ order.CreatedDate | date: 'dd/MM/yyyy' }}</span>
+
+                            <span class="vertical-divider">|</span> <br>
+
+                            <span *ngIf="order.Physician">
+                            {{ order.Physician.Name.FullName }}
+                        </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </ng-container>
+
+            <app-no-content text="Orders"
+                            type="small"
+                            *ngIf="!patient.Orders"
+                            defaultLastWord
+            ></app-no-content>
+
+        </app-v-accordion>
+
+        <app-v-accordion header="recent appointments">
+
+            <ng-container *ngIf="patient.RecentAppointments">
+
+                <div class="icon-block" *ngFor="let item of patient.RecentAppointments">
+
+                    <mat-icon svgIcon="calendar" class="icon-block-icon"></mat-icon>
+
+                    <div class="flex-row">
+
+                        <div class="info-block grow-1">
+
+                            <div class="info-block-label">Appointment:</div>
+
+                            <div class="info-block-body">
+
+                                <a href="#/calendar/appointment/{{ item.Id }}"
+                                   class="underline-after-link">
+                                    {{ item.DisplayId }}
+                                </a>
+
+                                <span class="vertical-divider">|</span><br>
+
+                                {{ item.DateRange.From | date: 'dd/MM/yyyy' }}
+
+                            </div>
+
+                        </div>
+
+                        <div class="status-label insurance-status-label {{ item.AppointmentStatus.Id | getCssClass: 'appointment' }}">
+                            {{ item.AppointmentStatus.Text }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </ng-container>
+
+            <app-no-content text="Recent Appointments"
+                            type="small"
+                            *ngIf="patient.RecentAppointments.length === 0"
+                            defaultLastWord
+            ></app-no-content>
+
+        </app-v-accordion>
+
+    </div>
+    <!--End of accordion blocks-->
+
+</ng-container>

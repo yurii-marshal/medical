@@ -1,0 +1,36 @@
+<div class="modal-window correct-address-modal">
+
+    <a href="javascript:void(0);" ng-click="ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content" ng-form="addDoc.addDocumentForm">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/location2.svg"></md-icon>
+
+        <div>
+            <div class="modal-title">
+                <h2>Please select a corrected address:</h2>
+            </div>
+
+            <div class="checkboxes-block"
+                 ng-repeat="item in ctrl.availableAddresses track by $index">
+                <div class="active-title checkboxes-block-label"
+                     ng-bind="item.ModalText"></div>
+                <md-radio-group>
+                    <md-radio-button
+                            ng-value="$index"
+                            ng-repeat="address in item track by $index"
+                            ng-click="ctrl.addressSelected($index, item)"
+                            class="md-primary">
+                        {{address | addressToString}}
+                    </md-radio-button>
+                </md-radio-group>
+            </div>
+        </div>
+
+
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button" ng-click="ctrl.ok()" ng-disabled="!ctrl.isSelectedAddresses()">Ok</md-button>
+    </md-dialog-actions>
+</div>

@@ -1,0 +1,28 @@
+.pdf-page {
+    display: flex;
+    justify-content: space-between;
+
+    .pdf-fields-form {
+        width: 35%;
+
+        form {
+            width: 100%;
+            padding: 10px;
+            .items {
+                padding: 10px 0;
+                mat-form-field {
+                    width: 100%;
+                }
+            }
+        }
+
+    }
+
+    .pdf-container {
+        width: 60%;
+        height: 60vh;
+        position: fixed;
+        right: 0;
+    }
+
+}

@@ -1,0 +1,228 @@
+<div class="modal-window tracking-items-details w830px"
+     ng-class="{'short-details': !$ctrl.trackingDetailsAvailable}"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon"
+                 md-svg-src="assets/images/default/track-in-progress.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Shipment Details:</h2>
+        </div>
+
+        <div class="full-tracking-details"
+             ng-if="$ctrl.trackingDetailsAvailable && $ctrl.trackingDetailsLoaded">
+            <div class="flex-row tracking-flow">
+                <div class="grow-1 info-block flex-row">
+                    <div class="col-w-40">
+                        <div class="info-block">
+                            <div class="info-block-label">Status:</div>
+                            <div class="info-block-body tracking-indicator bordered-block"
+                                 ng-class="{
+                                    'has-error': $ctrl.isFail()
+                                 }"
+                            >
+                                <div ng-repeat="step in $ctrl.trackingSteps"
+                                     class="tracking-step"
+                                     ng-class="{
+                                        'active': step.isActive,
+                                        'last': $last || !$ctrl.trackingSteps[$index+1].isActive
+                                     }"
+                                >
+                                    {{:: step.Name }}
+                                    <div class="arrow-right"></div>
+                                    <div class="arrow-right-border"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pad-left-10 col-w-40">
+                        <div class="info-block-label">Tracking Number:</div>
+                        <div class="info-block-body">
+                            <span class="bordered-block">
+                                {{:: $ctrl.trackingDetails.TrackingNumber }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="pad-left-10 col-w-20">
+                        <div class="info-block-label">Carrier:</div>
+                        <div class="info-block-body">
+                            <span class="bordered-block ellipsis"
+                                  title="{{:: $ctrl.trackingDetails.Carrier }}"
+                            >
+                                {{:: $ctrl.trackingDetails.Carrier }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bordered-block"
+                 ng-class="{
+                  'warning-msg': $ctrl.isFail(),
+                  'info-msg': !$ctrl.isFail()
+                 }"
+                 ng-if="$ctrl.trackingDetails.Status.StatusDetails"
+            >
+                <span>{{:: $ctrl.trackingDetails.Status.StatusDetails }}</span>
+            </div>
+
+            <div class="shipped-from-block">
+                <div class="flex-row">
+                    <div class="info-block w350px">
+                        <div class="info-block-label">From:</div>
+                        <div class="info-block-body">
+                            {{:: $ctrl.trackingDetails.From | addressToString }}
+                        </div>
+                    </div>
+                    <div class="info-block left-divider w200px">
+                        <div class="info-block-label">Shipped Date:</div>
+                        <div class="info-block-body">
+                            {{:: $ctrl.item.ShippedDate | localDateTime: "MM/DD/YYYY" }}
+                        </div>
+                    </div>
+                    <div class="grow-1 left-divider info-block">
+                        <div class="info-block-label">Service:</div>
+                        <div class="info-block-body">
+                            <span>{{:: $ctrl.trackingDetails.Service.Name }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shipped-to-block">
+                <div class="flex-row">
+                    <div class="info-block w350px">
+                        <div class="info-block-label">To:</div>
+                        <div class="info-block-body">
+                            {{:: $ctrl.trackingDetails.To | addressToString }}
+                        </div>
+                    </div>
+                    <div class="info-block w200px left-divider"
+                         ng-if="$ctrl.trackingDetails.Status.Status.Id !== $ctrl.statuses.Delivered"
+                    >
+                        <div class="info-block-label">Expected Delivery Date:</div>
+                        <div class="info-block-body">
+                            {{:: $ctrl.trackingDetails.Eta | localDateTime: "MM/DD/YYYY" }}
+                        </div>
+                    </div>
+                    <div class="info-block w200px left-divider"
+                         ng-if="$ctrl.trackingDetails.Status.Status.Id === $ctrl.statuses.Delivered"
+                    >
+                        <div class="info-block-label">Delivered On:</div>
+                        <div class="info-block-body">
+                            {{:: $ctrl.trackingDetails.Status.StatusDate | localDateTime: "MM/DD/YYYY" }} <span
+                            class="active-text">{{:: $ctrl.trackingDetails.Status.StatusDate| localDateTime: "hh:mm A" }} </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-row">
+                <v-accordion class="flow-accordion" multiple>
+                    <v-pane expanded="false">
+                        <v-pane-header class="flow-accordion-title">
+                            <md-icon md-svg-src="assets/images/default/chevron.svg"
+                                     class="flow-accordion-title-icon"
+                            ></md-icon>
+                            <div class="flow-title-text">
+                                <span>History:</span>
+                            </div>
+                            <div class="accordion-line"></div>
+                        </v-pane-header>
+
+                        <v-pane-content>
+                            <div class="tracking-history-item"
+                                 ng-class="{ 'border-bottom': !$last }"
+                                 ng-repeat="item in $ctrl.trackingDetails.History | orderBy:'-StatusDate'"
+                            >
+                                <div class="flex-row">
+                                    <div class="info-block w220px">
+                                        <div class="info-block-label">Date:</div>
+                                        <div class="info-block-body">
+                                            {{:: item.StatusDate | localDateTime: "MM/DD/YYYY" }}
+                                            <span
+                                                class="active-text">{{:: item.StatusDate | localDateTime: "hh:mm A" }} </span>
+                                        </div>
+                                    </div>
+                                    <div class="info-block w570px left-divider">
+                                        <div class="info-block-label">Location:</div>
+                                        <div class="info-block-body">
+                                            {{:: item.Location | addressToString }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex-row">
+                                    <div class="info-block w220px">
+                                        <div class="info-block-label">&nbsp</div>
+                                        <div class="info-block-body">
+                                            <div class="status-label {{ item.statusClass }}">
+                                                {{ :: item.Status.Name }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info-block w570px left-divider">
+                                        <div class="info-block-label">Details:</div>
+                                        <div class="info-block-body">
+                                            {{:: item.StatusDetails }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </v-pane-content>
+                    </v-pane>
+                </v-accordion>
+            </div>
+        </div>
+
+        <div class="short-tracking-details"
+             ng-if="$ctrl.trackingDetailsAvailable === false"
+        >
+            <div class="flex-row">
+                <div class="col-w-50">
+                    <div class="info-block info-padding">
+                        <div class="info-block-label">Tracking Number:</div>
+                        <div class="info-block-body">
+                            <span class="bordered-block">
+                                {{:: $ctrl.item.TrackingNumber }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-w-50 flex-row">
+                    <div class="col-w-50 info-block info-padding">
+                        <div class="info-block-label">Carrier:</div>
+                        <div class="info-block-body">
+                            <span class="bordered-block">
+                                {{:: $ctrl.item.Carrier || '-' }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-w-50 info-block info-padding">
+                        <div class="info-block-label">Shipped Date:</div>
+                        <div class="info-block-body">
+                            <span class="bordered-block">
+                                {{:: $ctrl.item.ShippedDate | localDateTime: "MM/DD/YYYY" }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.cancel()">OK
+        </md-button>
+    </md-dialog-actions>
+</div>
+

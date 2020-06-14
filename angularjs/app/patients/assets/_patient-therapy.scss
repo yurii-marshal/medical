@@ -1,0 +1,108 @@
+.therapy-body {
+    .flex-row.border-bottom {
+        border-bottom: none;
+        position: relative;
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 15px;
+            right: 15px;
+            height: 1px;
+            background-color: $lighter-gray-color;
+        }
+    }
+
+    .therapy-select-device {
+        max-width: calc(100% - 380px);
+    }
+
+    .therapy-info {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding-top: 15px;
+
+        .therapy-info-block {
+            width: 50%;
+            min-width: 50%;
+            padding-right: 30px;
+
+            &.shadow-left {
+                position: relative;
+                padding-left: 30px;
+                padding-right: 0;
+            }
+        }
+    }
+
+    .accordion-sleep-body {
+        &.is-expanded {
+            .sleep-panel-header {
+                .sleep-panel-img {
+                    transform: translateY(-50%) rotate(180deg);
+                }
+            }
+        }
+
+        .usage-body-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 9px 3px 9px 35px;
+            border-bottom: 1px solid $lighter-gray-color;
+
+            .usage-days-col {
+                width: calc(60% - 25px);
+                min-width: calc(60% - 25px);
+            }
+
+            .days-col {
+                width: calc(40% - 25px);
+                min-width: calc(40% - 25px);
+            }
+
+            .percentage-col {
+                width: 50px;
+                min-width: 50px;
+                text-align: right;
+
+                &.green-col {
+                    color: $green-color;
+                }
+
+                &.blue-col {
+                    color: $main-active-color;
+                }
+
+                &.orange-col {
+                    color: $orange-color;
+                }
+            }
+        }
+
+        .sleep-panel-header {
+            .sleep-panel-img {
+                position: absolute;
+                top: 50%;
+                left: 0;
+                transform: translateY(-50%);
+                display: block;
+                margin: 0;
+                width: 14px;
+                height: 8px;
+                color: $font-color;
+                transition: .2s;
+            }
+        }
+
+        v-pane-content {
+            .usage-body-row {
+                .usage-days-col {
+                    padding-left: 20px;
+                }
+            }
+        }
+    }
+}

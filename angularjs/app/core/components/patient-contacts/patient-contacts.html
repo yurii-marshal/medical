@@ -1,0 +1,118 @@
+<div class="patient-contacts" ng-form="$ctrl.contactsForm">
+    <div class="contact-row">
+        <div class="grow-1">
+            <div class="drowz-wizard-block-row layout-wrap">
+                <div class="contact-item flex-50-percent pad-left-15 pad-right-30"
+                     ng-repeat="contact in $ctrl.contacts track by $index"
+                     ng-if="$ctrl.showContact(contact) && !$ctrl.readonly"
+                >
+                    <div class="drowz-wizard-block-row">
+                        <div class="info-block block-width-150">
+                            <md-input-container>
+                                <label></label>
+                                <md-select ng-model="contact.Type"
+                                           name="contactType-{{$index}}"
+                                           placeholder="Select type"
+                                           ng-change="$ctrl.contactTypeChanged($index, '{{ contact.Type.Id }}')"
+                                           ng-required="!$ctrl.notRequiredPhones">
+                                    <md-option ng-value="contactType"
+                                               ng-selected="contact.Type.Id === contactType.Id"
+                                               ng-repeat="contactType in $ctrl.contactTypes">
+                                        {{contactType.Text}}
+                                    </md-option>
+                                </md-select>
+                                <div ng-messages="$ctrl.contactsForm['contactType-' + $index].$error" class="md-input-messages-nice">
+                                    <div ng-message="required"><b>Type</b> cannot be empty.</div>
+                                    <div ng-message="notUnique"><b>Type</b> must be unique.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block grow-1 custom-contact-input">
+
+                            <input-phone-number class="small-label"
+                                                ng-if="contact.Type.Id && contact.Type.Id !== $ctrl.patientContactTypeConstants.EMAIL_ID"
+                                                form-name="$ctrl.contactsForm"
+                                                input-name="phone"
+                                                label="Phone"
+                                                ng-required="contact.Type"
+                                                ng-model="contact.Value"
+                                                simple-tooltip-enable="$ctrl.isShowTooltip(contact)"
+                                                simple-tooltip="{{ contact.Value | tel }}"
+                                                simple-tooltip-theme="tooltipster-shadow, tooltipster-niko"
+                                                add-directives="input-phone-mask">
+                            </input-phone-number>
+
+                            <md-input-container ng-if="contact.Type.Id && contact.Type.Id === $ctrl.patientContactTypeConstants.WORK_ID"
+                                                class="ext-phone-container">
+                                <label>Ext.:</label>
+                                <input type="text"
+                                       class="ext-phone-input"
+                                       name="extPhone-{{$index}}"
+                                       ng-model="contact.PhoneExtension"
+                                       ng-maxlength="6"
+                                       only-digits-with-length
+                                       max-length="6">
+                                <div ng-messages="$ctrl.contactsForm['extPhone-' + $index].$error" class="md-input-messages-nice">
+                                    <div ng-message="maxlength"><b>Ext. Phone</b> must contain max 6 digits.</div>
+                                </div>
+                            </md-input-container>
+
+                            <input-email ng-if="contact.Type.Id && contact.Type.Id === $ctrl.patientContactTypeConstants.EMAIL_ID"
+                                         form-name="$ctrl.contactsForm"
+                                         input-name="email"
+                                         label="Email:"
+                                         ng-required="contact.Type"
+                                         ng-model="contact.Value">
+                            </input-email>
+                        </div>
+                        <a href="javascript:void(0);"
+                           class="delete-icon-btn"
+                           ng-click="$ctrl.deleteContact($index)"
+                           ng-show="$ctrl.contacts.length > 1 || (!!$ctrl.notRequiredPhones && contact.Type.Id)"
+                           title="Delete Contact">
+                            <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row flex-row" ng-if="$ctrl.showContact(contact) && $ctrl.readonly" ng-repeat="contact in $ctrl.contacts">
+        <div class="info-block">
+            <div class="info-block-label">{{contact.Type.Text}}:</div>
+            <div class="info-block-body">{{contact.Value | tel}}</div>
+        </div>
+        <div class="info-block left-divider" ng-if="contact.Type.Id === $ctrl.patientContactTypeConstants.WORK_ID && contact.PhoneExtension">
+            <div class="info-block-label">Ext.:</div>
+            <div class="info-block-body">{{contact.PhoneExtension}}</div>
+        </div>
+    </div>
+
+    <md-input-container class="hidden-container" ng-if="!$ctrl.notRequiredPhones && !$ctrl.readonly">
+        <input class="hide-this"
+               type="text"
+               ng-model="$ctrl.phones"
+               ng-required="true"
+               name="phones"
+               aria-label="..."
+        >
+        <div ng-messages="$ctrl.contactsForm.phones.$error" class="md-input-messages-nice">
+            <div ng-message="required">Home, Work or Cell phone is required</div>
+        </div>
+    </md-input-container>
+    <md-button class="md-raised add-new-contact middle-btn"
+               ng-click="$ctrl.addEventContact()"
+               ng-hide="$ctrl.contacts.length === $ctrl.contactTypes.length"
+               ng-if="!$ctrl.readonly && !$ctrl.addBtnHide"
+               ng-disabled="$ctrl.isPatientAddContactDisabled()"
+    >
+        <md-icon md-svg-src="assets/images/default/plus.svg"></md-icon>Add Contact
+    </md-button>
+</div>
+
+
+<no-records text="{{$ctrl.noRecordsText}}"
+            class="no-records-small"
+            ng-if="$ctrl.isNoRecordsAvailable()">
+</no-records>

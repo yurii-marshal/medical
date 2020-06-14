@@ -1,0 +1,170 @@
+<div class="infinite-scroll-bg">
+
+    <a href="javascript:void(0);"
+       class="toolbar-single-action"
+       simple-tooltip="Add new team"
+       tooltip-position="left"
+       ui-sref="root.management.personnel_add"
+    ></a>
+
+    <div class="breadcrumbs transparent-bg">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+        <a href="javascript:void(0)" ui-sref="root.management.personnel">Team</a>
+        <a href="javascript:void(0)" class="active">Setup</a>
+    </div>
+
+    <infinity-table
+            class="custom-table personnel-table"
+            load-items-promise="personnelList.getServiceCentersPromise"
+            cache-filters-key="personnelList.cacheFiltersKey"
+            page-size="24"
+            item-alias="item"
+            filters-obj="personnelList.filter"
+            sort-obj="personnelList.sortExpr"
+            default-sort-field="'Name.First'">
+        <infinity-table-sort>
+            <div class="personnel-percent-columns">
+                <md-icon md-svg-src="assets/images/default/user-square.svg" class="main-sort-icon user-icon"></md-icon>
+                <inftbl-sort-list param-name="Name.First">First Name:</inftbl-sort-list>
+            </div>
+            <div class="personnel-percent-columns">
+                <md-icon md-svg-src="assets/images/default/user-square.svg" class="main-sort-icon user-icon"></md-icon>
+                <inftbl-sort-list param-name="Name.Last">Last Name:</inftbl-sort-list>
+            </div>
+
+            <div class="w220px">
+                <md-icon md-svg-src="assets/images/default/location2.svg" class="main-sort-icon location-icon"></md-icon>
+                Login:
+            </div>
+            <div class="w220px">
+                <md-icon md-svg-src="assets/images/default/location2.svg" class="main-sort-icon location-icon"></md-icon>
+                Email:
+            </div>
+            <div class="personnel-percent-columns">
+                <md-icon md-svg-src="assets/images/default/star-half.svg" class="main-sort-icon status-icon"></md-icon>
+                Tags:
+            </div>
+            <div class="w110px"></div>
+        </infinity-table-sort>
+        <infinity-table-filters class="drowz-infinite-row-filter">
+            <div class="personnel-percent-columns">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>type first name</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.firstName"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click>
+                </md-input-container>
+            </div>
+            <div class="personnel-percent-columns">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>type last name</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.lastName"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click>
+                </md-input-container>
+            </div>
+            <div class="w220px">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>type login</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.login"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click>
+                </md-input-container>
+            </div>
+            <div class="w220px">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>type email</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.email"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click>
+                </md-input-container>
+            </div>
+            <div class="personnel-percent-columns no-divider">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>select</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.tags"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click>
+                </md-input-container>
+            </div>
+            <div class="w110px filter-reset-btn align-right">
+                <inftbl-filter-reset-btn></inftbl-filter-reset-btn>
+            </div>
+        </infinity-table-filters>
+        <infinity-table-row class="drowz-infinite-row hide-btns-row"
+                            ng-click="$parent.personnelList.editPersonnel(item.Id)">
+            <div class="custom-table-body">
+                <div class="personnel-percent-columns" ng-bind="item.Name.First"></div>
+                <div class="personnel-percent-columns" ng-bind="item.Name.Last"></div>
+                <div class="w220px" ng-bind="item.Login"></div>
+                <div class="w220px break-word" ng-bind="item.Email"></div>
+                <div class="personnel-percent-columns no-divider">
+                    <tags-tooltip data="item.Tags"></tags-tooltip>
+                </div>
+                <div class="w110px no-divider personnel-btns">
+                    <md-icon ng-if="item.ScheduleAble"
+                             class="schedule-cell-icon active"
+                             md-svg-src="assets/images/default/schedule-calendar.svg"
+                             simple-tooltip="Available for scheduling">
+                    </md-icon>
+
+                    <md-icon ng-if="!item.ScheduleAble"
+                             class="schedule-cell-icon inactive"
+                             md-svg-src="assets/images/default/calendar-inactive.svg"
+                             simple-tooltip="Not available for scheduling">
+                    </md-icon>
+
+                    <a href="javascript:void(0);" class="delete-icon-btn"
+                       confirm-ng-click="$parent.personnelList.delete(item)">
+                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                    </a>
+
+                    <a href="javascript:void(0);"
+                       class="show-personnel-details"
+                       ng-click="$parent.personnelList.toggleItem($event, item)"
+                       ng-class="{'opened': item.show}">
+                        <md-icon md-svg-src="assets/images/default/chevron.svg"></md-icon>
+                    </a>
+                </div>
+            </div>
+
+            <div class="custom-table-body auto-height align-top" ng-if="item.show">
+                <div class="right-personnel-col">
+                    <div class="info-block">
+                        <div class="info-block-label">Credentials:</div>
+                        <div class="info-block-body" ng-bind="item.Credentials || '-'"></div>
+                    </div>
+                    <div class="info-block">
+                        <div class="info-block-label">Certifications:</div>
+                        <div class="info-block-body" ng-bind="item.Certifications || '-'"></div>
+                    </div>
+                </div>
+
+                <div class="grow-1">
+                    <div class="info-block">
+                        <div class="info-block-label">Roles:</div>
+                        <div class="info-block-body">
+                            <span ng-if="!item.Roles.length">-</span>
+                            <div class="role-block"
+                                 ng-repeat="item in item.Roles track by item.Id"
+                                 ng-bind="item.Name">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </infinity-table-row>
+
+        <infinity-table-no-items>
+            <no-records text="Team Members" is-fullpage="true"></no-records>
+        </infinity-table-no-items>
+    </infinity-table>
+
+</div>

@@ -1,0 +1,873 @@
+<div>
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.billing.invoices">Billing</a>
+        <a ng-if="modify.invoiceId"
+           href="javascript:void(0)"
+           ui-sref="root.invoice.details({ invoiceId: modify.invoiceId })">
+            {{modify.model.DisplayId}}
+        </a>
+        <a ng-if="modify.invoiceId" href="javascript:void(0)" class="active">Modify</a>
+        <a ng-if="!modify.invoiceId" href="javascript:void(0)" class="active">Create</a>
+    </div>
+    <div class="invoice-modify-tab bs-loading-overlay-fullscreen"
+         ng-form="modify.form"
+         id="scrollHere"
+         bs-loading-overlay
+         bs-loading-overlay-reference-id="modify">
+
+        <div class="invoice-modify-content">
+            <div class="invoice-modify-header">
+                <div class="invoice-modify-order">
+                    <div class="flex-row">
+                        <div class="info-block block-width-280">
+                            <div class="info-block-label">Patient:</div>
+                            <div class="info-block-body">
+                                <span ng-bind="modify.model.Patient.Name | fullname"></span>
+                                (<span ng-bind="modify.model.Patient.DateOfBirth | amUtc | amDateFormat: 'MM/DD/YYYY'"></span>)
+                            </div>
+                        </div>
+                        <div class="info-block block-width-700"
+                             ng-if="modify.dictionaries.ordersDictionary.length">
+                            <md-input-container>
+                                <label>Order:</label>
+                                <md-select ng-model="modify.model.OrderId"
+                                           ng-change="modify.orderChanged(modify.model.OrderId)"
+                                           clear-on-click
+                                >
+                                    <md-option ng-value="order.Id"
+                                               ng-repeat="order in modify.dictionaries.ordersDictionary">
+                                        Order: {{order.DisplayId}} <span class="vertical-divider">|</span>
+                                        Status: {{order.State.Status.Text}} <span class="vertical-divider">|</span>
+                                        Date: {{order.CreatedDate | amUtc | amDateFormat: "MM/DD/YYYY"}} <span class="vertical-divider">|</span>
+                                        Ref. Provider: {{order.displayName}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block"
+                             ng-if="modify.dictionaries.ordersDictionary && !modify.dictionaries.ordersDictionary.length">
+                            <div class="info-block-label">Order:</div>
+                            <div class="info-block-body">
+                                The patient doesn't have any related orders.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-row">
+                        <attrs-tags class="tags-block"
+                                    tags="modify.model.Tags"
+                                    tags-parent="claim"
+                        ></attrs-tags>
+                    </div>
+                </div>
+                <div class="flex-row">
+                    <div class="left-side">
+                        <div class="blue-border-block">
+                            <div class="info-block grow-1">
+                                <md-input-container>
+                                    <label>Bill to:</label>
+                                    <md-select ng-model="modify.model.BillRecipient"
+                                               name="billTo"
+                                               ng-model-options="{ trackBy: '$value.Id' }"
+                                               ng-change="modify.billToChanged(modify.model.BillRecipient)"
+                                               ng-required="true">
+                                        <md-option ng-value="item"
+                                                   ng-repeat="item in modify.dictionaries.BillTo track by $index">
+                                            {{item.Name}} {{item.PriorityOrderName ? (' - '+item.PriorityOrderName) : ''}}
+                                        </md-option>
+                                    </md-select>
+                                    <div ng-messages="modify.form.billTo.$error" class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <div class="col-xs-6">
+                                <md-input-container>
+                                    <label>Status:</label>
+                                    <md-select ng-model="modify.model.Statuses.Status"
+                                               name="status"
+                                               ng-required="true"
+                                               ng-change="modify.statusChanged(modify.model.Statuses.Status)">
+                                        <md-option ng-value="item.Id"
+                                                   ng-repeat="item in modify.dictionaries.statuses track by item.Id" >
+                                            {{item.Name}}
+                                        </md-option>
+                                    </md-select>
+                                    <div ng-messages="modify.form.status.$error" class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <div class="col-xs-12 info-block marg-v-10 autocomplete-chips-container"
+                                 ng-if="modify.model.Statuses.Status === modify.invoiceStatusConstants.HOLD_STATUS_ID">
+                                <div class="info-block-label">Hold Reason:</div>
+                                <div class="info-block-body">
+                                    <md-chips ng-model="modify.model.HoldReasons"
+                                              class="autocomplete-chips-block"
+                                              md-require-match="true"
+                                              chips-autocomplete-required>
+                                        <md-autocomplete md-no-cache="true"
+                                                         md-menu-container-class="autocomplete-chips-dropdown"
+                                                         md-selected-item="item.Name"
+                                                         md-search-text="searchText"
+                                                         md-items="item in modify.holdReasonsQuerySearch(searchText)"
+                                                         md-item-text="item.Name"
+                                                         placeholder="Enter Hold Reason"
+                                                         ng-required="true"
+                                                         md-input-name="InvoiceHoldReason">
+                                            <md-item-template>
+                                                <span md-highlight-text="searchText"
+                                                      md-highlight-flags="i"
+                                                      title="{{item.Name}}">
+                                                    {{item.Name}}
+                                                </span>
+                                            </md-item-template>
+                                            <md-not-found>Nothing was found</md-not-found>
+
+                                        </md-autocomplete>
+
+                                        <md-chip-template>
+                                            <span title="{{$chip.Name || $chip.Text}}">
+                                                {{$chip.Name || $chip.Text}}
+                                            </span>
+                                        </md-chip-template>
+
+                                    </md-chips>
+                                    <div ng-messages="modify.form.InvoiceHoldReason.$error" class="md-input-messages-nice">
+                                         <div ng-message="chipsAutocompleteRequired">Hold Reason is not valid</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex-row">
+                            <div class="col-xs-4">
+                                <md-input-container>
+                                    <label>Resubmission Code:</label>
+                                    <md-select ng-model="modify.model.Statuses.ResubmissionCode"
+                                               ng-required="true"
+                                               name="resubmissionCode">
+                                        <md-option ng-value="item.Id"
+                                                   ng-repeat="item in modify.dictionaries.resubmissionCodes track by $index"
+                                                   ng-selected="item.Id == modify.model.Statuses.ResubmissionCode">
+                                            <span title="{{item.Name}}">{{item.Name}}</span>
+                                        </md-option>
+                                    </md-select>
+                                    <div ng-messages="modify.form.resubmissionCode.$error" class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="col-xs-4">
+                                <md-input-container>
+                                    <label>Original Ref. #:</label>
+                                    <input type="text"
+                                           name="refNumber"
+                                           ng-required="modify.model.Statuses.ResubmissionCode !== modify.invoiceResubmissionCodeConstants.ORIGINAL_ID"
+                                           ng-model="modify.model.Statuses.PayerOriginalClaimNumber">
+                                    <div ng-messages="modify.form.refNumber.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+
+                            <div class="col-xs-4">
+                                <md-input-container>
+                                    <label>Provider Accept Assignment of Benefits:</label>
+                                    <md-select ng-model="modify.model.ClaimOptions.ProviderAcceptAssignment"
+                                               name="assignment"
+                                               ng-required="true">
+                                        <md-option ng-value="item.Id"
+                                                   ng-repeat="item in modify.dictionaries.acceptAssignmentType track by $index">
+                                            {{item.Name}}
+                                        </md-option>
+                                    </md-select>
+                                    <div ng-messages="modify.form.assignment.$error" class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+
+                        <div class="flex-row">
+                            <div class="col-xs-4 info-block invoice-signature-block">
+                                <div class="info-block-label">Provider Signature on File: *</div>
+                                <div class="info-block-body invoice-signature-date">
+                                    <md-input-container class="grow-1">
+                                        <label></label>
+                                        <md-select ng-model="modify.model.ClaimOptions.ProviderSignatureOnFile"
+                                                   name="providerSignature"
+                                                   ng-change="modify.signatureOnFileChanged('ProviderSignatureOnFile')"
+                                                   ng-required="true"
+                                                   aria-label="...">
+                                            <md-option ng-value="item.Id"
+                                                       ng-repeat="item in modify.dictionaries.signatureOnFile track by $index">
+                                                {{item.Name}}
+                                            </md-option>
+                                        </md-select>
+                                        <div ng-messages="modify.form.providerSignature.$error" class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container class="calendar_icon left-input-icon"
+                                                        ng-if="modify.model.ClaimOptions.ProviderSignatureOnFile === modify.providerSignatureOnFileConstants.YES_ID">
+                                        <label></label>
+                                        <input datetimepicker
+                                               format="MM/DD/YYYY"
+                                               name="providerSignatureDate"
+                                               ng-required="true"
+                                               ng-model="modify.model.ClaimOptions.ProviderSignatureOnFileDate"
+                                               placeholder="Date:">
+                                        <div ng-messages="modify.form.providerSignatureDate.$error"
+                                             class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 info-block invoice-signature-block">
+                                <div class="info-block-label">Insured Signature on File: *</div>
+                                <div class="info-block-body invoice-signature-date">
+                                    <md-input-container class="grow-1">
+                                        <label></label>
+                                        <md-select ng-model="modify.model.ClaimOptions.InsuredSignatureOnFile"
+                                                   ng-change="modify.signatureOnFileChanged('InsuredSignatureOnFile')"
+                                                   aria-label="...">
+                                            <md-option ng-value="item.Id"
+                                                       ng-repeat="item in modify.dictionaries.insuredSignatureOnFile track by $index">
+                                                {{item.Name}}
+                                            </md-option>
+                                        </md-select>
+                                        <div ng-messages="modify.form.insuredSignature.$error" class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container class="calendar_icon left-input-icon"
+                                                        ng-if="modify.model.ClaimOptions.InsuredSignatureOnFile === modify.insuredSignatureOnFileConstants.YES_ID">
+                                        <label></label>
+                                        <input datetimepicker
+                                               format="MM/DD/YYYY"
+                                               name="insuredSignatureDate"
+                                               ng-required="true"
+                                               ng-model="modify.model.ClaimOptions.InsuredSignatureOnFileDate"
+                                               placeholder="Date:">
+                                        <div ng-messages="modify.form.insuredSignatureDate.$error"
+                                             class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 info-block invoice-signature-block">
+                                <div class="info-block-label">Patient Signature on File: *</div>
+                                <div class="info-block-body invoice-signature-date">
+                                    <md-input-container class="grow-1">
+                                        <label></label>
+                                        <md-select ng-model="modify.model.ClaimOptions.PatientSignatureOnFile"
+                                                   name="patientSignature"
+                                                   ng-change="modify.signatureOnFileChanged('PatientSignatureOnFile')"
+                                                   ng-required="true"
+                                                   aria-label="...">
+                                            <md-option ng-value="item.Id"
+                                                       ng-repeat="item in modify.dictionaries.patientSignatureOnFile track by $index">
+                                                {{item.Name}}
+                                            </md-option>
+                                        </md-select>
+                                        <div ng-messages="modify.form.patientSignature.$error" class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container class="calendar_icon left-input-icon"
+                                                        ng-if="modify.model.ClaimOptions.PatientSignatureOnFile === modify.patientSignatureOnFileConstants.YES_ID">
+                                        <label></label>
+                                        <input datetimepicker
+                                               format="MM/DD/YYYY"
+                                               name="patientSignatureOnFileDate"
+                                               ng-required="true"
+                                               ng-model="modify.model.ClaimOptions.PatientSignatureOnFileDate"
+                                               placeholder="Date:">
+                                        <div ng-messages="modify.form.patientSignatureOnFileDate.$error"
+                                             class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex-row">
+                            <div class="col-xs-6">
+                                <md-autocomplete
+                                    md-menu-container-class="autocomplete-item-width-370"
+                                    md-no-cache="true"
+                                    md-selected-item="modify.model.ClaimOptions.PriorAuthNumber"
+                                    md-search-text="searchPriorAuthNumber"
+                                    md-items="code in modify.getPriorAuthNumber(searchPriorAuthNumber)"
+                                    md-item-text="code.Text"
+                                    md-input-name="PriorAuthNumber"
+                                    md-min-length="0"
+                                    md-floating-label="Prior Authorization Number:"
+                                    ng-disabled="!modify.model.BillRecipient.PayerId"
+                                    ng-required="modify.isPriorAuthNumberRequired()"
+                                    clear-on-click>
+                                    <md-item-template>
+                                        <div title="{{ code.OptionText }}" class="ellipsis">
+                                            {{code.OptionText}}
+                                        </div>
+                                    </md-item-template>
+                                    <md-not-found>No available</md-not-found>
+                                    <div class="md-input-messages-nice" ng-messages="modify.form.PriorAuthNumber.$error">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-autocomplete>
+                            </div>
+                            <div class="col-xs-6">
+                                <md-autocomplete-with-infinite-scroll
+                                        md-no-cache="true"
+                                        md-selected-item="modify.model.ClaimOptions.RenderingProvider"
+                                        md-search-text="searchRenderingProvider"
+                                        md-items="item in modify.getRenderingProviders(searchRenderingProvider, pageIndex)"
+                                        md-item-text="item.FullName"
+                                        md-min-length="0"
+                                        md-floating-label="Rendering Provider:"
+                                        clear-on-click>
+                                    <md-item-template>
+                                        <div md-highlight-text="searchRenderingProvider"
+                                             md-highlight-flags="^i"
+                                             title="{{item.FullName}}">
+                                            {{item.FullName}}
+                                        </div>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No Rendering Providers were found.
+                                    </md-not-found>
+                                </md-autocomplete-with-infinite-scroll>
+                            </div>
+                        </div>
+
+                        <div class="flex-row">
+                            <div class="col-xs-6">
+                                <md-autocomplete-with-infinite-scroll
+                                    md-no-cache="true"
+                                    md-selected-item="modify.model.ClaimOptions.ReferringProvider"
+                                    md-search-text="searchReferringProvider"
+                                    md-items="item in modify.getReferringProviders(searchReferringProvider, pageIndex)"
+                                    md-item-text="(item.Name | fullname) + ' (NPI: ' + item.Npi + ')'"
+                                    md-min-length="0"
+                                    md-floating-label="Referring Provider:"
+                                    clear-on-click>
+                                    <md-item-template>
+                                        <div md-highlight-text="searchReferringProvider"
+                                             md-highlight-flags="^i"
+                                             title="(item.Name | fullname) + ' (NPI: ' + item.Npi + ')'"
+                                             ng-if="item.Name"
+                                        >
+                                            {{ item.Name | fullname }} {{ '(NPI: ' +  item.Npi + ')' }}
+                                        </div>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No Referring Providers were found.
+                                    </md-not-found>
+                                </md-autocomplete-with-infinite-scroll>
+                            </div>
+
+                            <div class="col-xs-6">
+                                <md-autocomplete-with-infinite-scroll
+                                        md-no-cache="true"
+                                        md-selected-item="modify.model.ClaimOptions.BillingProvider"
+                                        md-selected-item-change="modify.changedBillingProvider(modify.model.ClaimOptions.BillingProvider)"
+                                        md-search-text="searchBillingProvider"
+                                        md-items="item in modify.getBillingProviders(searchBillingProvider, pageIndex)"
+                                        md-item-text="item.FullName"
+                                        md-min-length="0"
+                                        md-floating-label="Billing Provider:"
+                                        ng-required="true"
+                                        md-input-name="billingProvider"
+                                        md-autocomplete-required
+                                        clear-on-click>
+                                    <md-item-template>
+                                        <div md-highlight-text="searchBillingProvider"
+                                             md-highlight-flags="^i"
+                                             title="{{item.FullName}}">
+                                            {{item.FullName}}
+                                        </div>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No Billing Providers were found.
+                                    </md-not-found>
+                                    <div ng-messages="modify.form.billingProvider.$error" class="md-input-messages-nice">
+                                        <div ng-message="selected">Selected Billing Provider is not valid</div>
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-autocomplete-with-infinite-scroll>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="right-side">
+                        <div class="info-block">
+                            <div class="add-autocomplete">
+                                <md-autocomplete class="autocomplete-with-addBtn"
+                                                 md-no-cache="true"
+                                                 md-selected-item="modify.diagnose"
+                                                 md-search-text="searchDiagnose"
+                                                 md-items="diagnose in modify.getPatientDiagnoses() | filter: searchDiagnose"
+                                                 md-item-text="diagnose.description"
+                                                 md-min-length="0"
+                                                 md-floating-label="Diagnosis:">
+                                    <md-item-template>
+                                <span md-highlight-text="searchDiagnose"
+                                      md-highlight-flags="^i">{{diagnose.description}}</span>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No Diagnosis were found.
+                                    </md-not-found>
+                                    <md-icon ng-click="modify.addDiagnose(modify.diagnose)"
+                                             md-svg-src="assets/images/default/plus-square.svg"
+                                             class="add-item-btn"
+                                             ng-class="{
+                                                'disabled': !modify.diagnose || modify.model.ClaimOptions.Diagnosis.length === modify.maxDiagnosisCount
+                                             }">
+                                    </md-icon>
+                                </md-autocomplete>
+                                <md-button class="md-raised small-btn clear-icon-btn"
+                                           ng-show="modify.invoiceId"
+                                           ng-click="modify.loadDiagnosesFromPatient()">
+                                    <md-icon md-svg-src="assets/images/default/clear-filters.svg"></md-icon>
+                                    Load from Patient
+                                </md-button>
+                            </div>
+                            <div class="diagnoses-error-message" ng-class="{'show-it': modify.showDiagnosesError}">
+                                Invoice must contain at least one diagnosis
+                            </div>
+
+                            <div class="added-diagnoses" ng-if="modify.model.ClaimOptions.Diagnosis.length <= modify.maxDiagnosisCount">
+                                <div ng-repeat="item in modify.model.ClaimOptions.Diagnosis | orderBy: 'id'"
+                                     class="round-chip-block">
+                                    {{item.description || item.Description}}
+                                    <div class="delete-chip" ng-click="modify.deleteDiagnose(item)"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-block">
+                            <md-input-container>
+                                <label>Additional Info:</label>
+                                <textarea rows="1"
+                                          ng-maxlength="modify.notesMaxLength"
+                                          ng-model="modify.model.ClaimOptions.AdditionalInfo"
+                                          name="notes"></textarea>
+                                <div ng-messages="modify.form.notes.$error" class="md-input-messages-nice">
+                                    <div ng-message="maxlength" class="md-input-message-animation">
+                                        Additional info is too long, max length is {{modify.notesMaxLength}} symbols
+                                    </div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <v-accordion class="flow-accordion" multiple>
+                <v-pane expanded="true"
+                        ng-repeat="line in modify.Lines"
+                        ng-init="parentIndex = $index"
+                        pane-has-error="{{line.Satisfied === false}}"
+                >
+
+                    <v-pane-header class="flow-accordion-title">
+                        <md-icon md-svg-src="assets/images/default/chevron.svg"
+                                 class="flow-accordion-title-icon"></md-icon>
+                        <div class="flow-title-text">
+                            <span>Service Line {{$index + 1}}</span>
+                            <div class="status-label dark-blue"
+                                 ng-if="line.PriceType.Name">{{line.PriceType.Name}}</div>
+                            <div class="status-label blue marg-h-5"
+                                 ng-if="line.BillInArrears">In Arrears</div>
+
+                            <span class="attr-label {{attr.AttrClass}}"
+                                  ng-repeat="attr in line.Attributes | unique: 'Code'">
+                                <md-icon md-svg-src="assets/images/default/tag.svg"></md-icon>
+                                <span ng-bind="attr.Name || attr.Text"></span>
+                            </span>
+
+                        </div>
+                        <div class="accordion-line"></div>
+                        <div class="service-line-options"
+                             ng-click="modify.disableAccordionClickToggle($event)">
+                            <div class="warning-text orange-color"
+                                 ng-if="line.HcpcsCode && !line.PriceOption.Id">
+                                Price option has to be selected before saving!
+                            </div>
+                            <input class="hide-this"
+                                   name="line-{{$index}}"
+                                   ng-required="line.HcpcsCode && !line.PriceOption.Id"
+                                   ng-model="line.chosenPriceOption"/>
+                            <md-button class="md-raised small-btn eye-details-btn"
+                                       ng-if="line.PriceOption.Id && !line.isAdded"
+                                       ng-click="modify.showPricingDetails($event, line)">
+                                <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon>
+                                <span>Pricing Details</span>
+                            </md-button>
+
+                            <md-button class="md-raised md-primary small-btn price-options-btn"
+                                       ng-click="modify.showPriceOptions($event, line)"
+                                       ng-disabled="modify.isPriceOptionsDisabled(line, $index)">
+                                <md-icon md-svg-src="assets/images/default/billing.svg"></md-icon>
+                                <span>Price Options</span>
+                            </md-button>
+
+                            <md-button class="md-raised md-primary small-btn rental-options-btn"
+                                       ng-click="modify.showRentalOptions($event, line)"
+                                       ng-show="modify.isRentalOptionsAvailable(line)">
+                                <md-icon md-svg-src="assets/images/default/rental.svg"></md-icon>
+                                <span>{{line.RentStartSettings ? 'Change Rental' : 'Rental Options'}}</span>
+                            </md-button>
+
+                            <div ng-if="line.RentProgramId"
+                                 ng-click="modify.goToRental($event, line.RentProgramId)"
+                                 class="line-period-options">
+                                Period&nbsp;{{line.Period}}&nbsp;|&nbsp;{{line.Cycle.Name}}
+                            </div>
+
+                            <md-button class="delete-icon-btn"
+                                       aria-label="..."
+                                       ng-if="(modify.Lines.length > 1) && !line.RentProgramId"
+                                       ng-click="modify.deleteServiceLine($event, $index)"
+                            >
+                                <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                            </md-button>
+
+                        </div>
+
+                    </v-pane-header>
+
+                    <v-pane-content>
+                        <div class="service-line service-line-edit"
+                             bs-loading-overlay
+                             bs-loading-overlay-reference-id="line-{{$index}}">
+                            <div class="service-line-left">
+                                <div class="flex-row">
+                                    <div class="info-block block-width-150">
+                                        <md-input-container class="calendar_icon">
+                                            <label>DOS from:</label>
+                                            <input datetimepicker
+                                                   format="MM/DD/YYYY"
+                                                   name="dateFrom-{{$index}}"
+                                                   start-date-validator
+                                                   end-date="line.ServicePeriod.To"
+                                                   ng-required="true"
+                                                   ng-model="line.ServicePeriod.From"
+                                                   ng-change="modify.dosChanged($index, line)">
+                                            <div ng-messages="modify.form['dateFrom-'+$index].$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">This field is required</div>
+                                                <div ng-message="startDate">DOS from has to be equal or less than DOS to</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                    <div class="info-block block-width-150">
+                                        <md-input-container class="calendar_icon">
+                                            <label>DOS to:</label>
+                                            <input datetimepicker
+                                                   format="MM/DD/YYYY"
+                                                   name="dateTo-{{$index}}"
+                                                   end-date-validator
+                                                   start-date="line.ServicePeriod.From"
+                                                   ng-required="true"
+                                                   ng-model="line.ServicePeriod.To"
+                                                   ng-change="modify.dosChanged($index, line)">
+                                            <div ng-messages="modify.form['dateTo-'+$index].$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">This field is required</div>
+                                                <div ng-message="endDate">DOS to has to be equal or bigger than DOS from</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                    <div class="info-block block-width-100">
+                                        <md-autocomplete-with-infinite-scroll
+                                            class="pos-autocomplete-block"
+                                            md-no-cache="true"
+                                            md-selected-item="line.PlaceOfService"
+                                            md-search-text="posNameOrCode"
+                                            md-items="item in modify.getPOSDictionary(posNameOrCode, pageIndex)"
+                                            md-item-text="item.Id"
+                                            md-min-length="0"
+                                            md-floating-label="POS:"
+                                            md-menu-container-class="autocomplete-w-300-decorator"
+                                            md-input-name="modify.generatePosInputName($index)"
+                                            ng-required="true"
+                                            md-autocomplete-required
+                                            clear-on-click>
+                                            <md-item-template>
+                                                <div md-highlight-text="posNameOrCode"
+                                                     md-highlight-flags="^i"
+                                                     title="{{item.Id ? (item.Id + ' - ' + item.Name) : ''}}">
+                                                    {{item.Id ? (item.Id + ' - ' + item.Name) : ''}}
+                                                </div>
+                                            </md-item-template>
+                                            <md-not-found>
+                                                Not found
+                                            </md-not-found>
+                                            <div ng-messages="modify.form['pos-' + $index].$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="selected">POS is not valid</div>
+                                                <div ng-message="required">This field is required</div>
+                                            </div>
+                                        </md-autocomplete-with-infinite-scroll>
+                                    </div>
+                                    <div class="info-block block-width-120">
+                                        <md-autocomplete class="hcpcscode-autocomplete-block"
+                                                         md-selected-item="line.HcpcsCode"
+                                                         md-selected-item-change="modify.hcpcsCodeSelected($index, line.HcpcsCode)"
+                                                         md-search-text-change="line._hcpcsCodeChanged = true"
+                                                         md-search-text="searchHcpcsCode"
+                                                         md-items="code in modify.getHcpcsCodes(searchHcpcsCode)"
+                                                         md-item-text="code.Text || code.Name"
+                                                         md-input-name="hcpcs-{{$index}}"
+                                                         md-min-length="2"
+                                                         md-delay="350"
+                                                         ng-required="true"
+                                                         md-menu-container-class="hcpcs-decorator"
+                                                         md-floating-label="HCPCS:"
+                                                         md-require-match="true"
+                                                         clear-on-click>
+                                            <md-item-template>
+                                                <div title="{{code.Description}}">{{code.Text + ' ' + code.Description}}</div>
+                                            </md-item-template>
+                                            <md-not-found>Not found</md-not-found>
+                                            <div ng-messages="modify.form['hcpcs-' + $index].$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">This field is required</div>
+                                                <div ng-message="md-require-match">Code is not valid</div>
+                                            </div>
+                                        </md-autocomplete>
+                                    </div>
+                                    <div class="info-block grow-1 modifier-info-block">
+                                        <div class="info-block-label">Modifiers:</div>
+                                        <div class="info-block-body">
+                                            <modifiers data="line.Modifiers"
+                                                       is-service-line-modifiers="true"></modifiers>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex-row">
+                                    <div class="info-block grow-1">
+                                        <md-input-container>
+                                            <label>Service:</label>
+                                            <input type="text"
+                                                   name="name-{{$index}}"
+                                                   ng-required="true"
+                                                   ng-model="line.Name">
+                                            <div ng-messages="modify.form['name-' + $index].$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">This field is required</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                    <div class="info-block block-width-80">
+                                        <md-input-container>
+                                            <label>Qty:</label>
+                                            <input type="text"
+                                                   only-digits-with-length
+                                                   min="1"
+                                                   name="qty-{{$index}}"
+                                                   ng-required="true"
+                                                   ng-model="line.Quantity"
+                                                   ng-change="line._quantityChanged = true"
+                                                   ng-blur="modify.onChangeQty($index, line.Quantity)"
+                                            >
+                                            <div ng-messages="modify.form['qty-' + $index].$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">This field is required</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                                <div class="flex-row">
+                                    <div class="info-block grow-1">
+                                        <md-autocomplete-with-infinite-scroll
+                                                md-input-id="line-autocomplete-{{$index}}"
+                                                md-no-cache="true"
+                                                md-selected-item-change="modify.selectedProductChanged($index, line)"
+                                                md-selected-item="line.ServiceProduct"
+                                                md-search-text="Name"
+                                                md-items="item in modify.getProducts(Name, pageIndex)"
+                                                md-item-text="item.Name"
+                                                md-min-length="0"
+                                                md-floating-label="Item:"
+                                                clear-on-click>
+                                            <md-item-template>
+                                                <div md-highlight-text="line.nameAndPartNumber" md-highlight-flags="i" title="{{item.nameAndPartNumber || item.Name}}">
+                                                    {{item.nameAndPartNumber || item.Name}}
+                                                </div>
+                                            </md-item-template>
+                                            <md-not-found>No items were found</md-not-found>
+                                        </md-autocomplete-with-infinite-scroll>
+                                    </div>
+                                </div>
+                                <div class="flex-row">
+                                    <div class="info-block grow-1">
+                                        <md-autocomplete
+                                                md-menu-container-class="autocomplete-item-width-370"
+                                                md-no-cache="true"
+                                                md-selected-item="line.PriorAuthNumber"
+                                                md-search-text="searchLinePriorAuthNumber"
+                                                md-items="code in modify.getPriorAuthNumber(searchLinePriorAuthNumber)"
+                                                md-item-text="code.Text"
+                                                md-input-name="PriorAuthNumber-{{ $index }}"
+                                                md-min-length="0"
+                                                md-floating-label="Prior Authorization Number:"
+                                                ng-disabled="!modify.model.BillRecipient.PayerId"
+                                                clear-on-click>
+                                            <md-item-template>
+                                                <div title="{{ code.OptionText }}" class="ellipsis">{{ code.OptionText }}</div>
+                                            </md-item-template>
+                                            <md-not-found>No available</md-not-found>
+                                        </md-autocomplete>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="service-line-right">
+                                <div class="flex-row">
+                                    <div class="info-block grow-1 diagnoses-inputs">
+                                        <div class="info-block-label">Diagnosis:</div>
+                                        <div class="info-block-body">
+                                            <div ng-repeat="(key, value) in line.Diagnosis track by $index"
+                                                 class="line-diagnose-row">
+
+                                                <md-autocomplete
+                                                        ng-show="$index < modify.model.ClaimOptions.Diagnosis.length || line.Diagnosis[key] || $index === 0"
+                                                        md-selected-item="line.Diagnosis[key]"
+                                                        md-selected-item-change="modify.selectedDiagnoseChanged(parentIndex, line.Diagnosis[key], key)"
+                                                        md-items="diagnose in modify.getDiagnosis(diagnoseSearchText)"
+                                                        md-item-text="diagnose.description"
+                                                        md-search-text="diagnoseSearchText"
+                                                        md-min-length="0"
+                                                        md-floating-label="Diagnosis:"
+                                                        md-input-name="diagnose-{{$index}}-{{key}}"
+                                                        ng-required="!modify.isDisableServiceLineDiagnosis(line.Diagnosis, $index, true)"
+                                                        ng-disabled="modify.isDisableServiceLineDiagnosis(line.Diagnosis, $index)"
+                                                        md-no-cache="true"
+                                                        clear-on-click>
+                                                    <md-item-template>{{diagnose.description}}</md-item-template>
+                                                    <md-not-found>
+                                                        No Diagnosis were found.
+                                                    </md-not-found>
+                                                    <div ng-messages="modify.form['diagnose-' + $index + '-' + key].$error"
+                                                         class="md-input-messages-nice">
+                                                        <div ng-message="required">First Diagnosis field is required</div>
+                                                        <div ng-message="md-require-match">Selected Diagnose is not valid</div>
+                                                    </div>
+                                                </md-autocomplete>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="invoice-balance-block">
+                            <div class="invoice-balance-price charge-block align-center">
+                                <span>Charge:</span>
+                                <span class="currency-icon">{{line.TotalAmounts.CleanCharge.Currency}}</span>
+                                <div class="price-number">
+                                    <md-input-container class="invoice-balance-container">
+                                        <label></label>
+                                        <input type="number"
+                                               step="0.01"
+                                               min="0"
+                                               name="charge-{{$index}}"
+                                               ng-required="true"
+                                               ng-change="modify.chargeChanged($index)"
+                                               ng-model="line.TotalAmounts.CleanCharge.Amount"
+                                               price-validator
+                                        >
+                                        <div ng-messages="modify.form['charge-' + $index].$error" class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                            <div ng-message="price">Max 2 digits after point</div>
+                                            <div ng-message="min">
+                                                Min Charge is 0
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                            </div>
+                            <div class="invoice-balance-price align-center">
+                                <span>Sales Tax:</span>
+                                <div class="price-number">
+                                    <div ng-if="!line.TotalAmounts.Tax.Amount">-</div>
+                                    <div ng-if="line.TotalAmounts.Tax.Amount">
+                                        {{line.TotalAmounts.Tax.Currency}}&nbsp;
+                                        {{line.TotalAmounts.Tax.Amount | absNumber:2}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="invoice-balance-price align-center">
+                                <span>Allowed:</span>
+                                <div class="price-number">
+                                    <div ng-if="line.TotalAmounts.Allowance.Amount === undefined">-</div>
+                                    <div ng-if="line.TotalAmounts.Allowance.Amount !== undefined">
+                                        {{line.TotalAmounts.Allowance.Currency}}&nbsp;
+                                        {{line.TotalAmounts.Allowance.Amount | absNumber:2}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="invoice-balance-price align-center">
+                                <span>Payments:</span>
+                                <div class="price-number">
+                                    <div ng-if="line.TotalAmounts.Payments.Amount === undefined">-</div>
+                                    {{line.TotalAmounts.Payments.Currency}}&nbsp;{{line.TotalAmounts.Payments.Amount | absNumber:2}}
+                                </div>
+                            </div>
+                            <div class="invoice-balance-price adjustments-block align-center">
+                                <span>Adjustments:</span>
+                                <div class="price-number">
+                                    <div ng-if="line.TotalAmounts.Adjustments.Amount === undefined">-</div>
+                                    {{line.TotalAmounts.Adjustments.Currency}}&nbsp;{{line.TotalAmounts.Adjustments.Amount | absNumber:2}}
+                                </div>
+                            </div>
+                            <div class="invoice-balance-price align-center">
+                                <span>Balance:</span>
+                                <div class="price-number">
+                                    <div ng-if="line.TotalAmounts.Balance.Amount === undefined">-</div>
+                                    {{line.TotalAmounts.Balance.Currency}}&nbsp;{{line.TotalAmounts.Balance.Amount | absNumber:2}}
+                                </div>
+                            </div>
+                        </div>
+                    </v-pane-content>
+                    <div class="service-line-err" ng-show="line.Satisfied === false">
+                        <md-icon md-svg-src="assets/images/default/alert.svg"></md-icon>
+                        <div>Service Line does not match prior autorization.</div>
+                    </div>
+                </v-pane>
+            </v-accordion>
+
+            <div class="add-service-line-block">
+                <md-button class="md-raised middle-btn add-new-contact"
+                           aria-label="..."
+                           ng-click="modify.addServiceLine()">
+                    <md-icon md-svg-src="assets/images/default/plus.svg"></md-icon>
+                    Add Service Line
+                </md-button>
+            </div>
+        </div>
+
+        <div class="flow-body-footer">
+            <md-button class="md-raised main-button" ng-click="modify.cancel()">Cancel</md-button>
+
+            <md-button class="md-raised md-primary main-button"
+                       ng-click="modify.saveInvoice()"
+                       ng-disabled="modify.isDisabledSave"
+                       scroll-to="#scrollHere"
+                       disabled-scroll="modify.form.$invalid">
+                Save
+            </md-button>
+        </div>
+
+    </div>
+
+</div>

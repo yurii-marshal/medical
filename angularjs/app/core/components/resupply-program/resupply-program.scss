@@ -1,0 +1,38 @@
+.resupply-program {
+    .drowz-wizard-block {
+        .wizard-list .wizard-list-item .wizard-list-item-info .flow-accordion .drowz-table {
+            margin-top: 0;
+        }
+
+        .add-items-btn {
+            margin-left: 0;
+        }
+
+        .frequency-number-container {
+            margin: 0 10px 0 0;
+            width: 60px;
+
+            &:not(:first-of-type) {
+                margin-left: 10px;
+            }
+        }
+
+        .select-period-container {
+            width: 80px;
+            margin: 0;
+        }
+    }
+    .resupply-program-body{
+        &.bottom-filters {
+            display: flex;
+            flex-direction: column-reverse;
+        }
+
+        .info-block-body.not-editable {
+            margin-top: 14px;
+        }
+    }
+}
+
+
+

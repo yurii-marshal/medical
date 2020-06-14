@@ -1,0 +1,26 @@
+<div class="modal-window order-details-prescription-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="order-details-prescription-modal"
+>
+    <a href="javascript:void(0);" ng-click="modal.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content" ng-form="modal.formModal">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/document-update.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Detailed written order</h2>
+        </div>
+
+        <detailed-written-order
+            details="modal.params.options"
+            readonly="false">
+        </detailed-written-order>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="modal.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button" ng-click="modal.save()">Ок</md-button>
+    </md-dialog-actions>
+</div>

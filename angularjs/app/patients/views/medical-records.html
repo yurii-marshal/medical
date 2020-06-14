@@ -1,0 +1,249 @@
+<div class="patient-medical-records"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="loading-medical-records">
+
+    <v-accordion class="vAccordion--default flow-accordion" multiple>
+        <v-pane expanded="true">
+
+            <v-pane-header class="flow-accordion-title">
+                <div class="expand-history" ng-class="{'expanded': medical.showDiagnoseHistory}">
+                    <div class="expand100">
+                        <md-icon md-svg-src="assets/images/default/chevron.svg" class="flow-accordion-title-icon"></md-icon>
+                        <span>Current Diagnosis:</span>
+                        <div class="accordion-line"></div>
+                    </div>
+                    <div class="show50">
+                        <span>Diagnosis History:</span>
+                        <div class="accordion-line"></div>
+                    </div>
+                </div>
+            </v-pane-header>
+            <v-pane-content>
+                <div class="flow-body expand-history" ng-class="{'expanded': medical.showDiagnoseHistory}">
+                    <div class="flow-body-block expand100">
+                        <div class="add-autocomplete">
+                            <md-autocomplete class="autocomplete-with-addBtn input-no-padding"
+                                             md-selected-item="medical.diagnose"
+                                             md-search-text="medical.searchDiagnose"
+                                             md-items="diagnose in medical.getAllDiagnoses(medical.searchDiagnose)"
+                                             md-item-text="diagnose.description"
+                                             md-min-length="2"
+                                             md-floating-label="Add Diagnosis">
+                                <md-item-template>
+                                    <span md-highlight-text="medical.searchDiagnose" md-highlight-flags="^i">{{diagnose.description}}</span>
+                                </md-item-template>
+                                <md-not-found>
+                                    No diagnosis matching "{{medical.searchDiagnose}}" were found.
+                                </md-not-found>
+                                <md-icon ng-click="medical.addSelectedDiagnose(medical.diagnose)"
+                                         md-svg-src="assets/images/default/plus-square.svg"
+                                         class="add-item-btn"
+                                         ng-class="{'disabled': medical.diagnose == undefined || medical.diagnose == ''}"></md-icon>
+                            </md-autocomplete>
+                            <md-button class="md-raised show-history" ng-click="medical.getDiagnosesHistory()">
+                                <md-icon md-svg-src="assets/images/default/history.svg">
+                                </md-icon>
+                                History
+                            </md-button>
+                        </div>
+                        <table class="drowz-table" ng-show="medical.model.diagnoses.length">
+                            <tr class="drowz-table-header">
+                                <th class="regular-left-padding">Code</th>
+                                <th>Diagnosis</th>
+                                <th class="show-date-cell">Addition Date</th>
+                                <th class="buttons-cell">&nbsp;</th>
+                            </tr>
+                            <tr class="drowz-table-row"
+                                ng-repeat="diagnose in medical.model.diagnoses | orderBy:'-AdditionDate' track by $index"
+                            >
+                                <td class="regular-left-padding">{{diagnose.Code}}</td>
+                                <td>{{diagnose.Description}}</td>
+                                <td class="show-date-cell">{{diagnose.AdditionDate | amUtc | amDateFormat: "MM/DD/YYYY"}}</td>
+                                <td class="buttons-cell">
+                                    <a href="javascript:void(0);"
+                                       class="delete-icon-btn"
+                                       ng-click="medical.removeDiagnose(diagnose.Code)"
+                                    >
+                                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                        <no-records text="Sorry, there are no added Diagnosis"
+                                    is-default-text="false"
+                                    class="no-records-small"
+                                    ng-show="!medical.model.diagnoses.length">
+                        </no-records>
+                    </div>
+                    <div class="show50" bs-loading-overlay bs-loading-overlay-reference-id="loading-diagnose-history">
+                        <table class="drowz-table" ng-show="medical.diagnosesHistory.length">
+                            <tr class="drowz-table-header">
+                                <th class="regular-left-padding">Code</th>
+                                <th>Diagnosis</th>
+                                <th class="show-date-cell">Addition Date</th>
+                                <th class="show-date-cell">Removal Date</th>
+                            </tr>
+                            <tr class="drowz-table-row" ng-repeat="diagnose in medical.diagnosesHistory | orderBy:'-To' track by $index">
+                                <td class="regular-left-padding">{{diagnose.Code}}</td>
+                                <td>{{diagnose.Description}}</td>
+                                <td class="show-date-cell">{{diagnose.From | amUtc | amDateFormat: "MM/DD/YYYY"}}</td>
+                                <td class="show-date-cell">{{diagnose.To | amUtc | amDateFormat: "MM/DD/YYYY"}}</td>
+                            </tr>
+                        </table>
+                        <no-records text="Diagnosis History"
+                                    ng-show="!medical.diagnosesHistory.length"
+                                    class="no-records-small">
+                        </no-records>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+        <v-pane expanded="true">
+
+            <v-pane-header class="flow-accordion-title">
+                <div class="expand-history" ng-class="{'expanded': medical.showMedicationHistory}">
+                    <div class="expand100">
+                        <md-icon md-svg-src="assets/images/default/chevron.svg" class="flow-accordion-title-icon"></md-icon>
+                        <span>Current Medications:</span>
+                        <div class="accordion-line"></div>
+                    </div>
+                    <div class="show50">
+                        <span>Medications History:</span>
+                        <div class="accordion-line"></div>
+                    </div>
+                </div>
+            </v-pane-header>
+
+            <v-pane-content>
+                <div class="flow-body expand-history" ng-class="{'expanded': medical.showMedicationHistory}">
+                    <div class="flow-body-block expand100">
+                        <div class="add-autocomplete">
+                            <md-autocomplete class="autocomplete-with-addBtn"
+                                             md-selected-item="medical.medication"
+                                             md-search-text="medical.searchMedication"
+                                             md-items="medication in medical.getAllMedications(medical.searchMedication)"
+                                             md-item-text="medication.Description"
+                                             md-min-length="2"
+                                             md-floating-label="Add Medication"
+                            >
+                                <md-item-template>
+                                    <span md-highlight-text="medical.searchMedication" md-highlight-flags="^i">{{medication.Description}}</span>
+                                </md-item-template>
+                                <md-not-found>
+                                    No medications matching "{{medical.searchMedication}}" were found.
+                                </md-not-found>
+                                <md-icon ng-click="medical.addSelectedMedication(medical.medication)"
+                                         md-svg-src="assets/images/default/plus-square.svg"
+                                         class="add-item-btn"
+                                         ng-class="{'disabled': medical.medication == undefined || medical.medication == ''}"></md-icon>
+                            </md-autocomplete>
+                            <md-button class="md-raised show-history"
+                                       ng-click="medical.getMedicationsHistory()">
+                                <md-icon md-svg-src="assets/images/default/history.svg"></md-icon>
+                                History
+                            </md-button>
+                        </div>
+                        <table class="drowz-table" ng-show="medical.model.medications.length">
+                            <tr class="drowz-table-header">
+                                <th class="regular-left-padding">Medications</th>
+                                <th class="show-date-cell">Addition Date</th>
+                                <th class="buttons-cell">&nbsp;</th>
+                            </tr>
+                            <tr class="drowz-table-row" ng-repeat="medication in medical.model.medications | orderBy:'-AdditionDate' track by $index">
+                                <td class="regular-left-padding">{{medication.Medication}}</td>
+                                <td class="show-date-cell">{{medication.AdditionDate | amUtc | amDateFormat: "MM/DD/YYYY"}}</td>
+                                <td class="buttons-cell">
+                                    <a href="javascript:void(0);" class="delete-icon-btn" ng-click="medical.model.medications.splice($index, 1)">
+                                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                        <no-records text="Sorry, there are no added Medications"
+                                    is-default-text="false"
+                                    class="no-records-small"
+                                    ng-show="!medical.model.medications.length">
+                        </no-records>
+                    </div>
+                    <div class="show50" bs-loading-overlay bs-loading-overlay-reference-id="loading-medication-history">
+                        <table class="drowz-table" ng-show="medical.medicationsHistory.length">
+                            <tr class="drowz-table-header">
+                                <th class="regular-left-padding">Medications</th>
+                                <th class="show-date-cell">Addition Date</th>
+                                <th class="show-date-cell">Removal Date</th>
+                            </tr>
+                            <tr class="drowz-table-row" ng-repeat="medication in medical.medicationsHistory | orderBy:'-To' track by $index">
+                                <td class="regular-left-padding">{{medication.Medication}}</td>
+                                <td class="show-date-cell">{{medication.From | amUtc | amDateFormat: "MM/DD/YYYY"}}</td>
+                                <td class="show-date-cell">{{medication.To | amUtc | amDateFormat: "MM/DD/YYYY"}}</td>
+                            </tr>
+                        </table>
+                        <no-records text="Medications History"
+                                    ng-show="!medical.medicationsHistory.length"
+                                    class="no-records-small">
+                        </no-records>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+        <v-pane expanded="true">
+
+            <v-pane-header class="flow-accordion-title">
+                <md-icon md-svg-src="assets/images/default/chevron.svg" class="flow-accordion-title-icon"></md-icon>
+                <span>Hospital Admission:</span>
+                <div class="accordion-line"></div>
+                <a href="javascript:void(0);"
+                   ng-click="medical.showModal($event)"
+                   class="add-item-btn plus-circle"
+                   simple-tooltip="Add Hospital Admission"
+                   tooltip-position="left">
+                </a>
+            </v-pane-header>
+
+            <v-pane-content>
+                <div class="flow-body">
+                    <div class="flow-body-block">
+                        <no-records text="Sorry, there are no added Hospital Admissions"
+                                    class="no-records-small"
+                                    is-default-text="false"
+                                    ng-show="!medical.model.hospitals.length">
+                        </no-records>
+                        <table class="drowz-table" ng-show="medical.model.hospitals.length">
+                            <tr class="drowz-table-header">
+                                <th class="reason-cell regular-left-padding">Reason</th>
+                                <th>Hospital</th>
+                                <th>Hospital Address</th>
+                                <th class="show-date-cell">Admission Date</th>
+                                <th class="show-date-cell">Discharge Date</th>
+                                <th class="delete-cell">&nbsp;</th>
+                            </tr>
+                            <tr class="drowz-table-row admission-row" ng-repeat="admission in medical.model.hospitals track by $index">
+                                <td class="reason-cell regular-left-padding"><span ng-repeat="reason in admission.Diagnoses">{{reason.CodeWithDescription}}</span></td>
+                                <td>{{admission.Hospital}}</td>
+                                <td>{{admission.HospitalAddress}}</td>
+                                <td class="show-date-cell">{{admission.AdmissionDate}}</td>
+                                <td class="show-date-cell">{{admission.DischargeDate}}</td>
+                                <td class="buttons-cell">
+                                    <a href="javascript:void(0);" class="edit-info-icon" ng-click="medical.showModal($event, admission)">
+                                        <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                                    </a>
+                                    <a href="javascript:void(0);" class="delete-icon-btn" confirm-ng-click="medical.removeHospital($index)"
+                                       confirm-msg="'Are you sure you want to delete this hospital admission?'"
+                                       confirm-btn-ok="Yes"
+                                       confirm-btn-cancel="No"
+                                       confirm-title="Delete Hospital Admission">
+                                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+    </v-accordion>
+
+    <div class="flow-body-footer">
+        <md-button class="md-raised md-primary main-button" ng-click="medical.save()">Save Changes</md-button>
+    </div>
+</div>

@@ -1,0 +1,76 @@
+<div id="scrollHere"
+     class="drowz-wizard bs-loading-overlay-fullscreen complete-wizard"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="completeWizard"
+     ng-form="complete.Form"
+>
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)"
+           ui-sref="root.calendar"
+           ng-if="complete.isEventComplete">
+            Calendar
+        </a>
+        <a href="javascript:void(0)"
+           ui-sref="root.calendar-appointment({ appointmentId: complete.model.eventId })"
+           ng-if="complete.isEventComplete">
+            Appointment Details
+        </a>
+        <a href="javascript:void(0)"
+           ui-sref="root.orders.list"
+           ng-if="!complete.isEventComplete">
+            Orders
+        </a>
+        <a href="javascript:void(0)"
+           ui-sref="root.orders.order.details({ orderId: complete.orderId })"
+           ng-if="!complete.isEventComplete">
+            Order Details
+        </a>
+        <a href="javascript:void(0)" class="active">Complete Wizard</a>
+    </div>
+
+    <div drowz-wizard-tabnames
+         steps="complete.steps"
+         class="drowz-wizard-tabnames">
+        <a href="javascript:void(0);"
+           class="drowz-wizard-tab"
+           ng-repeat="tab in complete.steps track by $index"
+           ng-class="{'active': complete.isActive(tab.view) || $index === 0, 'finished': tab.isFinished}"
+           ng-hide="tab.isHidden">
+            {{tab.title}}
+        </a>
+    </div>
+
+    <div class="drowz-wizard-body clearfix">
+        <ui-view></ui-view>
+    </div>
+
+    <div class="drowz-wizard-footer" ng-show="complete.isNavigationShown()">
+        <md-button class="md-raised main-button drowz-wizard-footer-btn" ng-click="complete.cancel()"
+        >
+            Cancel
+        </md-button>
+        <md-button class="md-raised main-button drowz-wizard-footer-btn"
+                   ng-click="complete.previous()"
+                   ng-disabled="complete.isFirstStep()"
+                   scroll-to="#scrollHere">
+            Previous
+        </md-button>
+        <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                   ng-click="complete.beforeNext()"
+                   ng-hide="complete.isLastStep()"
+                   ng-disabled="complete.isNextBtnActive()"
+                   scroll-to="#scrollHere"
+                   disabled-scroll="complete.Form.$invalid">
+            Next
+        </md-button>
+        <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                   ng-click="complete.complete()"
+                   ng-show="complete.isLastStep()"
+                   scroll-to="#scrollHere"
+                   disabled-scroll="complete.Form.$invalid">
+            Complete
+        </md-button>
+    </div>
+
+</div>
+

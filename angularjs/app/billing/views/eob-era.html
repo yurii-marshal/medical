@@ -1,0 +1,206 @@
+<infinity-table class="eob-era-list"
+                load-items-promise="eob_era.getTransactions"
+                page-size="24"
+                item-alias="item"
+                filters-obj="eob_era.filter"
+                cache-filters-key="eob_era.cacheFiltersKey"
+                default-sort-field="'CreatedOn'"
+                default-sort-value="'false'"
+                sort-obj="eob_era.sortExpr">
+    <infinity-table-sort>
+        <div class="w180px">
+            <md-icon md-svg-src="assets/images/default/calendar-new.svg" class="main-sort-icon date-icon"></md-icon>
+            <inftbl-sort-list param-name="RemittanceDate">Remittance Date:</inftbl-sort-list>
+        </div>
+        <div class="w180px">
+            <md-icon md-svg-src="assets/images/default/calendar-new.svg" class="main-sort-icon date-icon"></md-icon>
+            <inftbl-sort-list param-name="CreatedOn">Created:</inftbl-sort-list>
+        </div>
+        <div class="w110px">
+            <md-icon md-svg-src="assets/images/default/user-square.svg" class="main-sort-icon user-icon"></md-icon>
+            <inftbl-sort-list param-name="InputPayerName">Payer:</inftbl-sort-list>
+        </div>
+        <div class="w130px">
+            <md-icon md-svg-src="assets/images/default/documents.svg" class="main-sort-icon document-icon"></md-icon>
+            <inftbl-sort-list param-name="InputPayerCode">Payer Id:</inftbl-sort-list>
+        </div>
+        <div class="w110px">
+            <md-icon md-svg-src="assets/images/default/billing.svg" class="main-sort-icon billing-icon"></md-icon>
+            Amount:
+        </div>
+        <div class="w250px">
+            <md-icon md-svg-src="assets/images/default/billing.svg" class="main-sort-icon billing-icon"></md-icon>
+            Payment Method:
+        </div>
+        <div class="w170px">
+            <md-icon md-svg-src="assets/images/default/documents.svg"
+                     class="main-sort-icon document-icon"></md-icon>
+            EFT/Check Number:
+        </div>
+        <div class="no-divider w60px">&nbsp;</div>
+        <div class="no-divider w200px">&nbsp;</div>
+        <div class="two-line-status w120px">
+            <md-icon md-svg-src="assets/images/default/star-half.svg"
+                     class="main-sort-icon location-icon"></md-icon>
+            Status:
+        </div>
+        <div class="number-td">&nbsp;</div>
+    </infinity-table-sort>
+
+    <infinity-table-filters class="drowz-infinite-row-filter">
+        <div class="w180px">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search date</label>
+                <input ng-model="$ctrl.filtersObj.RemittanceDate"
+                       datetimepicker
+                       use-current="false"
+                       format="MM/DD/YYYY"
+                       show-today-button="false"
+                       aria-label="..."
+                       clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="w180px">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search date</label>
+                <input ng-model="$ctrl.filtersObj.CreatedOn"
+                       datetimepicker
+                       use-current="false"
+                       format="MM/DD/YYYY"
+                       show-today-button="false"
+                       aria-label="..."
+                       clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="w110px">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search name</label>
+                <input type="text"
+                       ng-model="$ctrl.filtersObj.InputPayerName"
+                       ng-model-options="{debounce: 450}"
+                       clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="w130px">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search</label>
+                <input type="text"
+                       ng-model="$ctrl.filtersObj.InputPayerCode"
+                       ng-model-options="{debounce: 450}"
+                       clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="w120px">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search</label>
+                <input type="number"
+                       ng-model="$ctrl.filtersObj.Amount"
+                       ng-model-options="{debounce: 450}"
+                       clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="w250px">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>select</label>
+                <md-select ng-model="$ctrl.filtersObj.PaymentMethod"
+                           clear-on-click>
+                    <md-option ng-value="method.Code"
+                               ng-repeat="method in $parent.eob_era.methodsDictionary track by $index">
+                        {{::method.Name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div class="w170px">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search</label>
+                <input type="text"
+                       ng-model="$ctrl.filtersObj.TraceNumber"
+                       ng-model-options="{debounce: 450}"
+                       clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="no-divider w60px">&nbsp;</div>
+        <div class="w200px align-right">&nbsp;</div>
+        <div class="two-line-status no-divider w120px">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>select</label>
+                <md-select ng-model="$ctrl.filtersObj.Status"
+                           clear-on-click>
+                    <md-option ng-value="status"
+                               ng-repeat="status in $parent.eob_era.statuses">
+                        {{status}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div class="filter-reset-btn">
+            <inftbl-filter-reset-btn></inftbl-filter-reset-btn>
+        </div>
+    </infinity-table-filters>
+
+    <infinity-table-row class="drowz-infinite-row">
+        <div class="w180px" ng-bind='item.RemittanceDate | amUtc | amDateFormat: "MM/DD/YYYY"'></div>
+        <div class="w180px">
+            <span class="dark-blue-text"
+                  ng-bind='item.CreatedOn | localDateTime:"MM/DD/YYYY"'></span>&nbsp;
+            <span class="active-text"
+                  ng-bind='item.CreatedOn | localDateTime:"hh:mm A"'></span>
+        </div>
+        <div class="w120px" ng-bind="item.InputPayer.Name"></div>
+        <div class="w130px" ng-bind="item.InputPayer.Code"></div>
+        <div class="w120px font-semibold"
+             ng-bind="(item.Amount.Currency) + ' ' + (item.Amount.Amount | number:2)"></div>
+        <div class="w250px" ng-bind="item.PaymentMethod.Name"></div>
+        <div class="w170px">
+            <a href="javascript:void(0)"
+               class="link-with-underline word-break-link"
+               ng-if="item.PaymentId"
+               ui-sref="root.paymentDetails({ paymentId: item.PaymentId })"
+               ng-bind="item.TraceNumber">
+            </a>
+            <span ng-if="!item.PaymentId" ng-bind="item.TraceNumber"></span>
+        </div>
+        <div class="no-divider w60px align-center">
+            <md-button class="connect-icon-btn"
+                       ng-class="{ 'visible' : item.Status.Status.Id === $parent.eob_era.importPaymentStatusConstants.FAILED_STATUS_ID }"
+                       aria-label="..."
+                       ng-click="$parent.eob_era.openSelectPayerModal(item.Id)">
+                <md-icon md-svg-src="assets/images/default/link.svg"></md-icon>
+            </md-button>
+        </div>
+        <div class="no-divider w200px">
+            <div class="flex-cont space-around">
+                <md-button class="md-raised small-btn eye-details-btn"
+                           ng-disabled="item.isEobLoading"
+                           ng-click="$parent.eob_era.openEob(item)"
+                >
+                    <icon-loading-white ng-if="item.isEobLoading"
+                                        class="blue-loading"
+                    ></icon-loading-white>
+                    <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon>
+                    <span>EOB</span>
+                </md-button>
+                <md-button class="md-raised small-btn eye-details-btn"
+                           ng-disabled="item.isEraLoading"
+                           ng-click="$parent.eob_era.openEra(item)">
+                    <icon-loading-white ng-if="item.isEraLoading" class="blue-loading"></icon-loading-white>
+                    <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon>
+                    <span>ERA</span>
+                </md-button>
+            </div>
+        </div>
+        <div class="two-line-status w120px no-divider">
+            <div class="status-label {{item.statusClass}}"
+                 ng-bind="item.Status.Status.Name"></div>
+            <div ng-if="item.Status.FailedResult"
+                 class="status-label bordered-label"
+                 ng-bind="item.Status.FailedResult.Name"></div>
+        </div>
+        <div class="number-td">&nbsp;</div>
+    </infinity-table-row>
+
+    <infinity-table-no-items>
+        <no-records text="EOB/ERA files" is-fullpage="true"></no-records>
+    </infinity-table-no-items>
+</infinity-table>

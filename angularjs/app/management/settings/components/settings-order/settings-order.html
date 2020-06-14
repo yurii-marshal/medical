@@ -1,0 +1,125 @@
+<div class="infinite-scroll-bg management-settings-orders full-height-with-footer"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="settingsOrder"
+     ng-form="order.orderForm"
+>
+
+  <div class="top-block">
+    <div class="breadcrumbs transparent-bg">
+      <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+      <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+      <a href="javascript:void(0)" ui-sref="root.management.settings">Application Settings</a>
+      <a href="javascript:void(0)" class="active">Orders</a>
+    </div>
+
+    <div class="drowz-wizard-body-flex">
+
+      <div class="grow-1">
+        <div class="flex-row">
+          <div class="drowz-wizard-block no-float grow-1">
+            <div class="drowz-wizard-block-title">
+              <div class="wizard-title-text">Order Confirmation:</div>
+              <div class="info-block">
+                <md-switch class="md-primary turn-confirmation"
+                           ng-model="order.model.order.TurnedOn"
+                >
+                  Turn confirmation for orders on/off
+                </md-switch>
+              </div>
+            </div>
+            <div class="drowz-wizard-block-body">
+              <div class="drowz-wizard-block-row">
+                <div class="col-xs-12">
+                  <md-input-container>
+                    <label>Confirmation text:</label>
+                    <input type="text"
+                           ng-model="order.model.order.ConfirmationText"
+                           ng-disabled="!order.model.order.TurnedOn"
+                           ng-required="order.model.order.TurnedOn"
+                           name="orderConfirmationText"
+                    />
+                    <div ng-messages="order.orderForm.orderConfirmationText.$error"
+                         class="md-input-messages-nice"
+                    >
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                  </md-input-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex-row">
+          <div class="drowz-wizard-block no-float grow-1">
+            <div class="drowz-wizard-block-title">
+              <div class="wizard-title-text">Packing slip:</div>
+            </div>
+            <div class="drowz-wizard-block-body">
+              <div class="drowz-wizard-block-row">
+                <div class="col-xs-12">
+                  <md-input-container>
+                    <label>Custom text:</label>
+                    <input type="text"
+                           ng-model="order.model.packingSlip.ConfirmationText"
+                           name="packingSlipConfirmationText"
+                    />
+                  </md-input-container>
+                </div>
+              </div>
+              <div class="drowz-wizard-block-row">
+                <div class="col-xs-12">
+                  <md-switch class="md-primary"
+                             ng-model="order.model.packingSlip.SignatureBlockTurnedOn"
+                  >
+                    Signature Block
+                  </md-switch>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex-row">
+          <div class="drowz-wizard-block no-float grow-1">
+            <div class="drowz-wizard-block-title">
+              <div class="wizard-title-text">Delivery ticket:</div>
+            </div>
+            <div class="drowz-wizard-block-body">
+              <div class="drowz-wizard-block-row">
+                <div class="col-xs-12">
+                  <md-input-container>
+                    <label>Custom text:</label>
+                    <textarea ng-model="order.model.deliveryTicket.Acknowledgement"
+                              ng-required="true"
+                              ng-maxlength="order.deliveryTicketCustomTextMaxLength"
+                              name="deliveryTicketCustomText"
+                    >
+                    </textarea>
+                    <div ng-messages="order.orderForm.deliveryTicketCustomText.$error"
+                         class="md-input-messages-nice"
+                    >
+                      <div ng-message="required">This field is required</div>
+                      <div ng-message="maxlength">Text is to long, max length is {{order.deliveryTicketCustomTextMaxLength}} symbols.</div>
+                    </div>
+                  </md-input-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="flow-body-footer">
+    <md-button class="md-raised main-button"
+               ng-click="order.cancel()">Cancel</md-button>
+    <md-button class="md-raised md-primary main-button"
+               ng-click="order.save()"
+    >
+      Save
+    </md-button>
+  </div>
+
+</div>

@@ -1,0 +1,366 @@
+<div class="order-details">
+
+    <v-accordion class="vAccordion--default flow-accordion" multiple>
+
+        <v-pane expanded="true">
+            <v-pane-header class="flow-accordion-title">
+                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                         class="flow-accordion-title-icon"></md-icon>
+                <span>Order info:</span>
+                <div class="accordion-line"></div>
+            </v-pane-header>
+            <v-pane-content>
+                <div class="flex-row">
+                    <div class="grow-1">
+                        <div class="flex-row">
+                            <div class="info-block grow-1">
+                                <div class="info-block-label">Priority Level:</div>
+                                <div class="info-block-body">
+                                    {{details.model.PriorityLevel.Text || '-'}}
+                                </div>
+                            </div>
+                            <div class="info-block grow-1 left-divider">
+                                <div class="info-block-label">Order Scheduled Date:</div>
+                                <div class="info-block-body">
+                                    {{details.model.StartDate | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <div class="info-block grow-1">
+                                <div class="info-block-label">Additional Notes:</div>
+                                <div class="info-block-body">
+                                    {{details.model.Description || '-'}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-details-aside w400px">
+                        <div class="flex-row">
+                            <div class="info-block w200px">
+                                <div class="info-block-label">Created:</div>
+                                <div class="info-block-body">{{details.model.CreatedDate | localDateTime: "MM/DD/YYYY"}}</div>
+                            </div>
+                            <div class="info-block w200px">
+                                <div class="info-block-label">Modified:</div>
+                                <div class="info-block-body">{{details.model.ModifiedDate ? (details.model.ModifiedDate | localDateTime: "MM/DD/YYYY") : '-'}}</div>
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <div class="info-block w200px">
+                                <div class="info-block-label">Created by:</div>
+                                <div class="info-block-body">{{details.model.CreatedBy | fullname}}</div>
+                            </div>
+                            <div class="info-block w200px">
+                                <div class="info-block-label">Modified by:</div>
+                                <div class="info-block-body">{{details.model.ModifiedBy ? (details.model.ModifiedBy | fullname) : '-'}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+        <v-pane expanded="true"
+                ng-if="details.model.ReferralCard"
+        >
+            <v-pane-header class="flow-accordion-title">
+                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                         class="flow-accordion-title-icon"></md-icon>
+                <span>Referral:</span>
+                <div class="accordion-line"></div>
+            </v-pane-header>
+            <v-pane-content>
+                <div class="flex-row referring-provider-note-block-row"
+                     ng-repeat="item in details.referringProviderNotes"
+                     ng-class="{'last-item': $last}"
+                >
+                    <div class="drowz-message with-icon">
+                        <md-icon class="info-icon" md-svg-src="assets/images/default/alert.svg"></md-icon>
+                        <div class="drowz-message-content">
+                            <span class="status-label {{:: item.labelClass }}">{{:: item.label }}</span>
+                            <span>{{:: item.note }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-row">
+                    <div class="info-block w150px">
+                        <div class="info-block-label">Date:</div>
+                        <div class="info-block-body">
+                            {{details.model.ReferralDate | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                        </div>
+                    </div>
+                    <div class="info-block w310px left-divider">
+                        <div class="info-block-label">Provider:</div>
+                        <div class="info-block-body">
+                            {{details.model.ReferralCard.Physician.Name.FullName || '-'}}
+                        </div>
+                    </div>
+                    <div class="info-block w350px left-divider">
+                        <div class="info-block-label">Practice:</div>
+                        <div class="info-block-body">
+                            {{details.model.ReferralCard.Physician.Practice || '-'}}
+                        </div>
+                    </div>
+                    <div class="info-block w250px left-divider">
+                        <div class="info-block-label">NPI:</div>
+                        <div class="info-block-body">
+                            {{details.model.ReferralCard.Physician.Npi || '-'}}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-row">
+                    <div class="info-block w310px">
+                        <div class="info-block-label">Office Address:</div>
+                        <div class="info-block-body">
+                            {{details.model.ReferralCard.Location.Address}}
+                        </div>
+                    </div>
+                    <div class="info-block w150px left-divider">
+                        <div class="info-block-label">Phone:</div>
+                        <div class="info-block-body">
+                            {{
+                              details.model.ReferralCard.Location.Phone
+                              ? (details.model.ReferralCard.Location.Phone | tel)
+                              : '-'
+                            }}
+                        </div>
+                    </div>
+                    <div class="info-block w150px left-divider">
+                        <div class="info-block-label">Fax:</div>
+                        <div class="info-block-body">
+                            {{
+                             details.model.ReferralCard.Location.Fax
+                             ? (details.model.ReferralCard.Location.Fax | tel)
+                             : '-'
+                            }}
+                        </div>
+                    </div>
+                    <div class="info-block w200px left-divider">
+                        <div class="info-block-label">Email:</div>
+                        <div class="info-block-body">
+                            {{details.model.ReferralCard.Location.Email || '-'}}
+                        </div>
+                    </div>
+                    <div class="info-block w270px left-divider">
+                        <div class="info-block-label">Contact Person:</div>
+                        <div class="info-block-body">
+                            {{details.model.ReferralCard.ContactPerson || '-'}}
+                        </div>
+                    </div>
+                    <div class="info-block w270px left-divider">
+                        <div class="info-block-label">Sales Rep:</div>
+                        <div class="info-block-body">
+                            {{details.model.ReferralCard.SalesAgent.FullName || '-'}}
+                        </div>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+        <v-pane expanded="true" ng-if="details.model.HospitalDischarge">
+            <v-pane-header class="flow-accordion-title">
+                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                         class="flow-accordion-title-icon"></md-icon>
+                <span>Hospital discharge:</span>
+                <div class="accordion-line"></div>
+            </v-pane-header>
+            <v-pane-content>
+                <div class="flex-row">
+                    <div class="info-block w130px">
+                        <div class="info-block-label">Discharge Date:</div>
+                        <div class="info-block-body">
+                            {{details.model.HospitalDischarge.DischargeDate | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                        </div>
+                    </div>
+                    <div class="info-block w130px left-divider">
+                        <div class="info-block-label">From:</div>
+                        <div class="info-block-body">
+                            {{details.model.HospitalDischarge.DischargeFrom}}
+                        </div>
+                    </div>
+                    <div class="info-block w130px left-divider">
+                        <div class="info-block-label">To:</div>
+                        <div class="info-block-body">
+                            {{details.model.HospitalDischarge.DischargeTo}}
+                        </div>
+                    </div>
+                    <div class="info-block w250px left-divider">
+                        <div class="info-block-label">Hospital:</div>
+                        <div class="info-block-body">
+                            {{details.model.HospitalDischarge.Name || '-'}}
+                        </div>
+                    </div>
+                    <div class="info-block w250px left-divider">
+                        <div class="info-block-label">Hospital Address:</div>
+                        <div class="info-block-body">
+                            {{details.model.HospitalDischarge.Address || '-'}}
+                        </div>
+                    </div>
+                    <div class="info-block w250px left-divider">
+                        <div class="info-block-label">Hospital Contact:</div>
+                        <div class="info-block-body">
+                            {{details.model.HospitalDischarge.Contact || '-'}}
+                        </div>
+                    </div>
+                    <div class="info-block w200px left-divider">
+                        <div class="info-block-label">Hospital Room:</div>
+                        <div class="info-block-body">
+                            {{details.model.HospitalDischarge.Room || '-'}}
+                        </div>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+
+        <v-pane expanded="true">
+            <v-pane-header class="flow-accordion-title">
+                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                         class="flow-accordion-title-icon"></md-icon>
+                <span>Ordered Items:</span>
+                <div class="accordion-line"></div>
+            </v-pane-header>
+            <v-pane-content>
+                <div class="order-product"
+                     ng-repeat="item in details.model.Products track by $index"
+                >
+                    <div class="flex-row">
+                        <div class="info-block item-img block-width-100"
+                             ng-if="!item.isAny"
+                        >
+                            <div class="item-img-container">
+                                <img src=""
+                                     ng-src="{{
+                                         item.PictureUrl
+                                         ? (details.WEB_API_INVENTORY_SERVICE_URI + item.PictureUrl)
+                                         : details.noImage
+                                     }}"
+                                     alt="" class="item-img">
+                            </div>
+                        </div>
+                        <div class="info-block grow-1"
+                             ng-if="!item.isAny"
+                        >
+                            <div class="info-block-label">Name:</div>
+                            <div class="info-block-body">{{item.Name}}</div>
+                        </div>
+
+                        <div class="info-block grow-1"
+                             ng-if="item.isAny"
+                        >
+                            <div class="info-block-label">&nbsp;</div>
+                            <div class="info-block-body">
+                                <div class="any-device-block">
+                                    <span>Generic Item</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-block block-width-200 left-divider"
+                             ng-if="!item.isAny"
+                        >
+                            <div class="info-block-label">Manufacturer:</div>
+                            <div class="info-block-body">{{item.Manufacturer || '-'}}</div>
+                        </div>
+                        <div class="info-block block-width-200 left-divider"
+                             ng-if="!item.isAny"
+                        >
+                            <div class="info-block-label">ID/Part #:</div>
+                            <div class="info-block-body">{{item.PartNumber || '-'}}</div>
+                        </div>
+                        <div class="info-block block-width-120 left-divider">
+                            <div class="info-block-label">HCPCS:</div>
+                            <div class="info-block-body flex-cont">
+                                <div popover-directive="item.allHcpcsCodes"
+                                     ng-if="!item.isAny"
+                                     hide-first-item="true"
+                                     min-width="50"></div>
+
+                                <div ng-if="item.isAny">
+                                   {{ item.Code }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-block block-width-200 left-divider">
+                            <div class="info-block-label">Qty:</div>
+                            <div class="info-block-body">{{item.Count}}</div>
+                        </div>
+                    </div>
+
+                    <div class="item-components" ng-if="item.Product.Bundle">
+                        <v-accordion class="flow-accordion grow-1">
+                            <v-pane expanded="false">
+                                <v-pane-header class="flow-accordion-title"
+                                               ng-click="details.getProductComponents(item.Id);"
+                                >
+                                    <md-icon md-svg-src="assets/images/default/chevron.svg"
+                                             class="flow-accordion-title-icon"
+                                    ></md-icon>
+                                    <span>Included Items:</span>
+                                    <div class="accordion-line"></div>
+                                </v-pane-header>
+                                <v-pane-content bs-loading-overlay
+                                                bs-loading-overlay-reference-id="bundleComponents{{ item.Id }}"
+                                >
+                                    <table class="drowz-table regular-table">
+                                        <tr class="drowz-table-header">
+                                            <th class="number-cell" width="45">#</th>
+                                            <th width="110">Image:</th>
+                                            <th>Name:</th>
+                                            <th>Manufacturer:</th>
+                                            <th>ID/Part #:</th>
+                                            <th>HCPCS:</th>
+                                            <th width="80">Qty</th>
+                                        </tr>
+                                        <tr class="drowz-table-row" ng-repeat="component in item.Components">
+                                            <td class="number-cell">{{$index + 1}}.</td>
+                                            <td class="item-img-cell">
+                                                <div class="item-img-container">
+                                                    <img src=""
+                                                         ng-src="{{
+                                                            component.PictureUrl
+                                                                ? (details.WEB_API_INVENTORY_SERVICE_URI + component.PictureUrl)
+                                                                : details.noImage
+                                                         }}" alt=""
+                                                         class="item-img">
+                                                </div>
+                                            </td>
+                                            <td ng-bind="component.Name"></td>
+                                            <td ng-bind="component.Manufacturer"></td>
+                                            <td ng-bind="component.PartNumber"></td>
+                                            <td>
+                                                <div class="flex-cont">
+                                                    <div popover-directive="component.allHcpcsCodes"
+                                                         hide-first-item="true"
+                                                         min-width="50"></div>
+                                                </div>
+                                            </td>
+                                            <td ng-bind="component.Count"></td>
+                                        </tr>
+                                    </table>
+
+                                    <no-records text="Components:"
+                                                class="no-records-small"
+                                                ng-if="item.componentsLoaded && !item.Components.length"
+                                                no-default-text="true">
+                                    </no-records>
+                                </v-pane-content>
+                            </v-pane>
+                        </v-accordion>
+                    </div>
+
+                    <div class="flex-row pad-left-15"
+                         ng-if="item.Notes"
+                    >
+                        <div class="grow-1">
+                            <div class="info-block-body break-word">
+                                Note: {{ item.Notes }}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </v-pane-content>
+        </v-pane>
+
+    </v-accordion>
+
+</div>

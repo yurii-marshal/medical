@@ -1,0 +1,281 @@
+<div class="order small-sidebar">
+
+    <div class="sidebar-container"
+         drowz-sidebar
+         drowz-sidebar-name="order">
+
+        <div class="sidebar"
+             bs-loading-overlay
+             bs-loading-overlay-reference-id="orderSidebar"
+        >
+
+            <div class="sidebar-content"
+                 scroll-bar
+                 scroll-bar-above-element="true">
+
+                <div class="sidebar-padding-block flex-cont stretch hiding-block">
+                    <div class="name-status-block">
+                        <div class="sidebar-title">Order: {{order.model.shortInfo.DisplayId}}</div>
+
+                        <div>
+                            <div class="status-label {{order.orderStateObj.Status.statusClass}}"
+                                 ng-bind="order.orderStateObj.Status.Text"></div>
+                        </div>
+
+                        <md-button class="md-raised small-btn edit-doc"
+                                   aria-label="..."
+                                   ng-click="order.editOrderStatus()"
+                                   ng-if="order.userPermissions.isAllow(order.permissionsCategoriesConstants.ORDERS, order.ordersPermissionsConstants.ORDER_MODIFY)"
+                        >
+                            <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                        </md-button>
+
+                    </div>
+                </div>
+
+                <div class="sidebar-padding-block order-tags hiding-block">
+                    <span class="attr-label {{tag.attrClass}}"
+                          ng-repeat="tag in order.model.Tags">
+                        <md-icon md-svg-src="assets/images/default/tag.svg"></md-icon>
+                        <span ng-bind="tag.Name"></span>
+                    </span>
+                </div>
+
+                <v-accordion class="vAccordion--default sidebar-accordeon sidebar-padding-block hiding-block" multiple>
+                    <v-pane expanded="true">
+                        <v-pane-header class="sidebar-block-title flow-accordion-title">
+                            <span>Short Details:</span>
+                            <div class="accordion-line"></div>
+                            <md-icon md-svg-src="assets/images/default/chevron.svg" class="sidebar-accordeon-icon"></md-icon>
+                        </v-pane-header>
+                        <v-pane-content>
+                            <div class="icon-block">
+                                <md-icon md-svg-src="assets/images/default/user-circle-new.svg" class="icon-block-icon"></md-icon>
+                                <div class="info-block">
+                                    <div class="info-block-label">Patient Name:</div>
+                                    <div class="info-block-body" ng-show="order.model.shortInfo.Patient.Id">
+                                        <div class="insurance-gender-block">
+                                            <a href="javascript:void(0);"
+                                               ui-sref="root.patient.demographics({ patientId: order.model.shortInfo.Patient.Id })"
+                                               class="patient-name-link">
+                                                {{order.model.shortInfo.Patient.Name.FullName}}
+                                                <span ng-if="!order.model.shortInfo.Patient.Name.FullName">
+                                                    {{order.model.shortInfo.Patient.Name | fullname}}
+                                                </span>
+                                            </a>
+                                            <md-icon md-svg-src="assets/images/colored/male.svg"
+                                                     ng-if="order.model.shortInfo.Patient.Gender.Id == 1">
+                                            </md-icon>
+                                            <md-icon md-svg-src="assets/images/colored/female.svg"
+                                                     ng-if="order.model.shortInfo.Patient.Gender.Id == 2">
+                                            </md-icon>
+                                        </div>
+                                    </div>
+                                    <div class="info-block-body" ng-if="!order.model.shortInfo.Patient.Id">
+                                        {{order.model.shortInfo.Patient.Name.FullName}}
+                                        <span ng-if="!order.model.shortInfo.Patient.Name.FullName">
+                                        {{order.model.shortInfo.Patient.Name | fullname}}
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="icon-block">
+                                <md-icon md-svg-src="assets/images/main-menu/calendar.svg"
+                                         class="icon-block-icon"></md-icon>
+                                <div class="info-block">
+                                    <div class="info-block-label uppercase-label">DOB:</div>
+                                    <div class="info-block-body">{{order.model.shortInfo.Patient.DateOfBirth | amUtc | amDateFormat: "MM/DD/YYYY"}}</div>
+                                </div>
+                            </div>
+                            <div class="icon-block"
+                                 ng-if="order.model.shortInfo.Patient.Address.AddressLine">
+                                <md-icon md-svg-src="assets/images/default/address.svg"
+                                         class="icon-block-icon"></md-icon>
+                                <div class="info-block">
+                                    <div class="info-block-label">Patient Address:</div>
+                                    <div class="info-block-body">
+                                        {{::order.model.shortInfo.Patient.Address | addressToString}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="icon-block"
+                                 ng-if="order.model.shortInfo.Patient.HomePhone">
+                                <md-icon md-svg-src="assets/images/default/phone-home.svg"
+                                         class="icon-block-icon"></md-icon>
+                                <div class="info-block">
+                                    <div class="info-block-label">Home Phone:</div>
+                                    <div class="info-block-body">
+                                        {{::order.model.shortInfo.Patient.HomePhone | tel}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="icon-block"
+                                 ng-if="order.model.shortInfo.Patient.Mobile">
+                                <md-icon md-svg-src="assets/images/default/phone-cell.svg"
+                                         class="icon-block-icon"></md-icon>
+                                <div class="info-block">
+                                    <div class="info-block-label">Cell Phone:</div>
+                                    <div class="info-block-body">{{::order.model.shortInfo.Patient.Mobile | tel}}</div>
+                                </div>
+                            </div>
+                            <div class="icon-block">
+                                <md-icon md-svg-src="assets/images/main-menu/calendar.svg"
+                                         class="icon-block-icon"></md-icon>
+                                <div class="info-block">
+                                    <div class="info-block-label">Created Date:</div>
+                                    <div class="info-block-body">{{order.model.shortInfo.CreatedDate | localDateTime: "MM/DD/YYYY"}}</div>
+                                </div>
+                            </div>
+                            <div class="icon-block"
+                                 ng-if="order.model.shortInfo.Patient.PrimaryInsurance">
+                                <md-icon  md-svg-src="assets/images/default/insurance-circle.svg"
+                                          class="icon-block-icon"></md-icon>
+                                <div class="flex-row">
+                                    <div class="info-block grow-1 insurance-block-title">
+                                        <div class="info-block-label">
+                                            Primary Insurance:
+                                        </div>
+                                        <div class="info-block-body">
+                                            {{order.model.shortInfo.Patient.PrimaryInsurance.Name}}
+                                        </div>
+                                    </div>
+                                    <div class="status-label insurance-status-label primary">Primary</div>
+                                </div>
+                            </div>
+                            <div class="icon-block"
+                                 ng-if="order.model.shortInfo.ReferralCard.Id !== order.model.shortInfo.SharedTo[0].Id">
+                                <md-icon md-svg-src="assets/images/default/user-circle-new.svg"
+                                         class="icon-block-icon"></md-icon>
+                                <div class="info-block">
+                                    <div class="info-block-label">Ref. Provider:</div>
+
+                                    <div class="info-block-body"
+                                         ng-if="order.model.ReferralCard.Physician.Name"
+                                    >
+                                        {{order.model.shortInfo.ReferralCard.Physician.Name.FullName}}
+                                        <span ng-if="!order.model.shortInfo.ReferralCard.Physician.Name.FullName">
+                                            {{order.model.shortInfo.ReferralCard.Physician.Name | fullname}}
+                                        </span>
+                                    </div>
+
+                                    <div class="info-block-body"
+                                         ng-if="!order.model.ReferralCard.Physician.Name"
+                                    >
+                                       {{ order.model.ReferralCard.Physician.Practice }}
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="icon-block"
+                                 ng-if="(order.model.shortInfo.ReferralCard.Id !== order.model.shortInfo.SharedTo[0].Id)
+                                        && order.model.shortInfo.ReferralCard.Location.Practice">
+                                <md-icon md-svg-src="assets/images/default/organization-circle.svg"
+                                         class="icon-block-icon"></md-icon>
+                                <div class="info-block">
+                                    <div class="info-block-label">Practice:</div>
+                                    <div class="info-block-body">{{order.model.shortInfo.ReferralCard.Location.Practice}}</div>
+                                </div>
+                            </div>
+                            <div class="icon-block" ng-if="order.model.shortInfo.ReferralCard.Id !== order.model.shortInfo.SharedTo[0].Id">
+                                <md-icon md-svg-src="assets/images/default/address.svg" class="icon-block-icon"></md-icon>
+                                <div class="info-block">
+                                    <div class="info-block-label">Location:</div>
+                                    <div class="info-block-body">{{order.model.shortInfo.ReferralCard.Location.Address || '-'}}</div>
+                                </div>
+                            </div>
+                        </v-pane-content>
+                    </v-pane>
+                    <v-pane expanded="true" ng-if="order.model.shortInfo.SharedTo">
+                        <v-pane-header class="sidebar-block-title flow-accordion-title">
+                            <span>Shared to:</span>
+                            <div class="accordion-line"></div>
+                            <md-icon md-svg-src="assets/images/default/chevron.svg" class="sidebar-accordeon-icon"></md-icon>
+                        </v-pane-header>
+                        <v-pane-content>
+                            <div class="icon-block">
+                                <md-icon md-svg-src="assets/images/main-menu/calendar.svg" class="icon-block-icon"></md-icon>
+                                <div class="info-block">
+                                    <div class="info-block-label">Shared Date:</div>
+                                    <div class="info-block-body">{{order.model.shortInfo.SharedTo[0].SharedDate | amUtc | amDateFormat: "MM/DD/YYYY"}}</div>
+                                </div>
+                            </div>
+                            <div class="icon-block" ng-if="true">
+                                <md-icon md-svg-src="assets/images/default/user-circle-new.svg"
+                                         class="icon-block-icon"></md-icon>
+                                <div class="info-block">
+                                    <div class="info-block-label">Physician:</div>
+                                    <div class="info-block-body">
+                                        {{order.model.shortInfo.SharedTo[0].Physician.Name.FullName}}
+                                        <span ng-if="!order.model.shortInfo.SharedTo[0].Physician.Name.FullName">
+                                            {{order.model.shortInfo.SharedTo[0].Physician.Name || fullname}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="icon-block"
+                                 ng-if="order.model.shortInfo.SharedTo[0].Location.Practice">
+                                <md-icon md-svg-src="assets/images/default/organization-circle.svg"
+                                         class="icon-block-icon"></md-icon>
+                                <div class="info-block">
+                                    <div class="info-block-label">Practice:</div>
+                                    <div class="info-block-body">
+                                        {{order.model.shortInfo.SharedTo[0].Location.Practice}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="icon-block">
+                                <md-icon md-svg-src="assets/images/default/address.svg" class="icon-block-icon"></md-icon>
+                                <div class="info-block">
+                                    <div class="info-block-label">Office Address:</div>
+                                    <div class="info-block-body">{{order.model.shortInfo.SharedTo[0].Location.Address || '-'}}</div>
+                                </div>
+                            </div>
+                            <div class="icon-block">
+                                <md-icon md-svg-src="assets/images/default/phone-home.svg" class="icon-block-icon"></md-icon>
+                                <div class="info-block">
+                                    <div class="info-block-label">Office Phone:</div>
+                                    <div class="info-block-body">{{order.model.shortInfo.SharedTo[0].Location.Phone | tel}}</div>
+                                </div>
+                            </div>
+                            <div class="icon-block">
+                                <md-icon md-svg-src="assets/images/default/phone-work.svg" class="icon-block-icon"></md-icon>
+                                <div class="info-block">
+                                    <div class="info-block-label">Office Fax:</div>
+                                    <div class="info-block-body">{{order.model.shortInfo.SharedTo[0].Location.Fax | tel}}</div>
+                                </div>
+                            </div>
+                        </v-pane-content>
+                    </v-pane>
+                </v-accordion>
+
+            </div>
+
+            <md-button class="toggle-menu-slide" aria-label="...">
+                <md-icon md-svg-src="assets/images/default/chevron.svg" class="toggle_menu_arrow"></md-icon>
+            </md-button>
+
+        </div>
+
+        <div class="main-content">
+
+            <drowz-tabs items="order.tabs"></drowz-tabs>
+
+            <toolbar items="order.toolbarItems"
+                     ng-hide="order.isToolbarItemsHidden"
+            ></toolbar>
+
+            <div class="breadcrumbs">
+                <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+                <a href="javascript:void(0)" ui-sref="root.orders.list">Orders</a>
+                <a href="javascript:void(0)" class="active">{{order.model.shortInfo.DisplayId}}</a>
+            </div>
+
+            <div ng-form="order.main"
+                 bs-loading-overlay
+                 bs-loading-overlay-reference-id="orderPage"
+                 ui-view>
+            </div>
+
+        </div>
+    </div>
+</div>

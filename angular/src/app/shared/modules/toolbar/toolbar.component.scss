@@ -1,0 +1,81 @@
+@import "~assets/styles/base/variables";
+@import "~assets/styles/utils/mixins";
+
+.toolbar-container {
+    position: fixed;
+    z-index: 10;
+    right: 57px;
+    top: 91px;
+    width: 244px;
+    display: inline-flex;
+
+    .action-buttons-container {
+        width: 200px;
+        position: fixed;
+        z-index: 10;
+        transition: all 0.3s;
+        top: -2000px;
+
+        &.menu-open {
+            top: 91px;
+        }
+
+        button {
+            text-align: left;
+            background-color: $main-active-color;
+            color: $white-color;
+            border: 0;
+            border-radius: 35px;
+            margin-bottom: 3px;
+            cursor: pointer;
+            @include size(200px, 38px);
+
+            &:hover {
+                background: $main-active-hover-color;
+            }
+
+            &.hiddenMenuItem {
+                display: none;
+            }
+
+            mat-icon {
+                color: $white-color;
+                margin-left: 7px;
+                margin-right: 10px;
+                vertical-align: middle;
+            }
+
+            .button-text {
+                color: #fff;
+                font-size: 12px;
+                font-weight: 300;
+            }
+
+        }
+    }
+
+    .plus-button-icon {
+        color: $white-color;
+        background-color: $main-active-color;
+        border-radius: 50%;
+        border: 0;
+        margin-left: 202px;
+        cursor: pointer;
+        @include size(38px, 38px);
+        transition: transform .3s;
+        padding-top: 4px;
+
+        &:hover {
+            background: $main-active-hover-color;
+        }
+
+        &.close-button-icon {
+            transform: rotate(45deg);
+        }
+
+        mat-icon {
+            width: 14px;
+            height: 14px;
+        }
+    }
+}

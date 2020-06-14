@@ -1,0 +1,147 @@
+﻿<form class="modal-window edit-patient-attrs-modal"
+     [formGroup]="editPatientForm"
+>
+
+    <app-loading [show]="isSendingRequest"></app-loading>
+
+    <mat-dialog-content class="modal-body">
+
+        <a href="javascript:void(0);"
+           (click)="cancel()"
+           class="close-modal"
+        ></a>
+
+        <mat-icon class="modal-icon" svgIcon="setup-rect"></mat-icon>
+
+        <div class="modal-title">
+            <h2>Edit Patient Status:</h2>
+        </div>
+
+        <div class="select-patient-status {{ data.patient.Status.Id | getCssClass: 'status'}}">
+
+            <div class="flex-row">
+
+                <mat-form-field class="w100">
+
+                    <mat-label>Status:</mat-label>
+
+                    <mat-select [formControlName]="'status'">
+
+                        <mat-option *ngFor="let status of statuses"
+                                    [value]="status.Id"
+                        >
+                            {{ status.Text }}
+                        </mat-option>
+
+                    </mat-select>
+
+                </mat-form-field>
+
+            </div>
+
+            <div class="flex-row inactivity-reason"
+                 *ngIf="editPatientForm.controls['status'].value === patientStatusConstants.INACTIVE_STATUS_ID">
+
+                <div class="info-block">
+
+                    <mat-form-field class="w100">
+
+                        <mat-label>Reason of Inactive:</mat-label>
+
+                        <mat-select [formControlName]="'reason'" (change)="onReasonChange()">
+
+                            <mat-option *ngFor="let reason of inactivityReasons"
+                                        [value]="reason.Id"
+                            >
+                                {{ reason.Text }}
+                            </mat-option>
+
+                        </mat-select>
+
+                        <mat-error *ngIf="editPatientForm.get('reason').invalid">
+                            This field is required
+                        </mat-error>
+
+                    </mat-form-field>
+
+                </div>
+
+                <div class="info-block date-block calendar_icon icon-right pad-left-0">
+
+                    <app-datetimepicker
+                        [formControlName]="'date'"
+                        placeholder="DC Date"
+                        [mode]="'date'"
+                        [displayClearButton]="displayClearButton"
+                        [showTodayButton]="true"
+                        [displayImage]="true"
+                        [imagePosition]="'right'"
+                        [dateFormat]="'MM/DD/YYYY'"
+                    ></app-datetimepicker>
+
+                </div>
+
+            </div>
+
+            <div class="flex-row"
+                 *ngIf="editPatientForm.controls['reason'].value === patientInactivityReasonConstants.OTHER_ID">
+
+                <div class="grow-1">
+
+                    <mat-form-field class="w100">
+
+                        <input matInput
+                               autocomplete="off"
+                               placeholder="Custom reason text:"
+                               type="text"
+                               formControlName="inactivityReasonText"
+                        />
+
+                        <mat-error *ngIf="editPatientForm.get('inactivityReasonText').invalid">
+                            This field is required
+                        </mat-error>
+
+                    </mat-form-field>
+
+                </div>
+
+            </div>
+
+            <div class="flex-row">
+
+                <app-attrs-tags class="grow-1"
+                                [inputWidth]="tagsWidth"
+                                [tagType]="'patient'"
+                                [tags]="patientTags"
+                ></app-attrs-tags>
+
+            </div>
+
+        </div>
+
+    </mat-dialog-content>
+
+    <mat-dialog-actions class="flex-row">
+
+        <span>
+
+            <button class="niko-mat-button"
+                    mat-raised-button
+                    (click)="cancel()"
+            >
+                Cancel
+            </button>
+
+            <button class="niko-mat-button"
+                    mat-raised-button
+                    color="primary"
+                    (click)="send()"
+            >
+                Save
+            </button>
+
+        </span>
+
+    </mat-dialog-actions>
+
+</form>

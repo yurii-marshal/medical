@@ -1,0 +1,491 @@
+.sidebar-container {
+    position: relative;
+    min-height: 100%;
+    min-width: 1600px;
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding-left: $sidebar-big-regular-width;
+    overflow: hidden;
+    transition: padding-left .3s;
+    will-change: padding-left;
+
+    @include respond-to(normScreens) {
+        padding-left: $sidebar-small-regular-width;
+    }
+
+    &.menu-close:not(.no-fold-sidebar) {
+        padding-left: $sidebar-hidden-width;
+
+        .sidebar {
+            width: $sidebar-hidden-width;
+
+            .sidebar-link {
+                width: $sidebar-hidden-width;
+                min-width: $sidebar-hidden-width;
+                overflow: hidden;
+
+                .menu-arrow {
+                    opacity: 0;
+                    visibility: hidden;
+                    width: 0;
+                    height: 0;
+                    overflow: hidden;
+                    font-size: 0;
+                }
+
+                .menu-icon {
+                    margin: 4px 0 0;
+                }
+            }
+
+            .apply-btn {
+                opacity: 0;
+                visibility: hidden;
+                z-index: -100;
+            }
+
+            .hiding-block {
+                width: 300px;
+                height: 100px;
+                overflow: hidden;
+                opacity: 0;
+                transform: translateX(-600px);
+            }
+        }
+
+        .sidebar {
+            z-index: 12;
+
+            .toggle_menu_arrow {
+                transform: rotate(-90deg);
+            }
+        }
+    }
+
+    .main-content {
+        flex-grow: 1;
+
+        toolbar {
+            position: relative;
+            z-index: 6;
+
+            @include respond-to(appMinWidth) {
+                position: absolute;
+                top: calc(#{$drowz-tabs-height} - #{$drowz-toolbar-height} / 2);
+                right: 17px;
+
+                > .action-toolbar {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                }
+            }
+        }
+    }
+}
+
+.small-sidebar.hide-sidebar {
+
+    .breadcrumbs {
+        left: auto;
+    }
+
+    .sidebar-container {
+        padding-left: 0;
+
+        @include respond-to(normScreens) {
+            padding-left: 0;
+        }
+    }
+
+    patient-short-info-sidebar {
+        display: none;
+    }
+}
+
+.has-infinite-table {
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: 100%;
+
+    > .infinite-scroll-bg {
+        flex-grow: 1;
+    }
+}
+
+.hiding-block {
+    will-change: transform, opacity;
+    transition: .3s;
+}
+
+.messages-content-body {
+    &.above-element {
+        .mCSB_scrollTools {
+            width: 3px;
+        }
+    }
+}
+
+.sidebar {
+    position: fixed;
+    display: block;
+    top: $main-menu-height;
+    left: 0;
+    bottom: 0;
+    z-index: 6;
+    width: $sidebar-big-regular-width;
+    background-color: #fff;
+    transition: .3s;
+    overflow: hidden;
+
+    &::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background-color: $lighter-gray-color;
+    }
+
+    @include respond-to(normScreens) {
+        width: $sidebar-small-regular-width;
+    }
+
+    @include respond-to(appMinWidth) {
+        position: absolute;
+        top: 0;
+    }
+
+    .info-block {
+        .info-block-body {
+            font-size: 14px;
+        }
+    }
+}
+
+.menu-close {
+    .sidebar-padding-block.main-patient-block {
+        flex-direction: column;
+        padding: 5px;
+
+        .photo-block {
+            min-width: 42px;
+            width: 42px;
+            height: 42px;
+            margin: 0 0 10px;
+        }
+
+        .view-info-icon {
+            visibility: hidden;
+            opacity: 0;
+            z-index: -1000;
+        }
+
+        .sidebar-title {
+            display: none;
+        }
+
+        .status-and-gender {
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+
+            .status-label {
+                font-size: 11px;
+                padding-left: 3px;
+                padding-right: 3px;
+                margin-bottom: 5px;
+            }
+
+            .gender-icon {
+                md-icon {
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
+
+.sidebar-padding-block {
+    position: relative;
+    padding: 15px 10px 5px 20px;
+
+    &.sidebar-accordeon {
+        padding-top: 8px;
+        padding-bottom: 7px;
+
+        &.sidebar-accordeon-overflow-visible {
+            overflow: visible;
+
+            v-pane {
+                overflow: visible;
+
+                &.is-expanded {
+                    > v-pane-content {
+                        overflow: visible;
+                    }
+                }
+            }
+        }
+    }
+
+    & + .sidebar-accordeon {
+        padding-top: 0;
+    }
+
+    .sidebar-block-title {
+        margin-bottom: 10px;
+        color: $dark-blue-color;
+        font-size: 12px;
+        font-weight: $font-weight-semibold;
+        text-transform: uppercase;
+        transition: .2s;
+    }
+
+    .insurance-status-label {
+        min-width: 60px;
+        margin-top: 22px;
+    }
+
+    .photo-block {
+        min-width: 90px;
+        width: 90px;
+        height: 90px;
+        margin-right: 20px;
+        overflow: hidden;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        transition: .2s;
+    }
+
+    .name-status-block {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: .2s;
+
+        &.with-avatar {
+            max-width: calc(100% - 110px);
+        }
+
+        &.with-link {
+            .sidebar-title {
+                padding-right: 35px;
+            }
+        }
+
+        .sidebar-title {
+            color: $main-active-color;
+            font-size: 22px;
+            line-height: 26px;
+            transition: .2s;
+            word-break: break-word;
+        }
+
+        .gender-icon {
+            transition: .2s;
+
+            md-icon {
+                width: 14px;
+                height: 14px;
+                margin-left: 7px;
+            }
+        }
+
+        .status-label {
+            transition: .2s;
+        }
+    }
+
+    .edit-info-icon, .view-info-icon {
+        position: absolute;
+        top: 18px;
+        right: 16px;
+    }
+}
+
+.accordion-line {
+    flex-grow: 1;
+    height: 1px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: $lighter-gray-color;
+}
+
+.sidebar-accordeon {
+    v-pane {
+        position: relative;
+
+        > .sidebar-accordeon-icon {
+            position: absolute;
+            top: 10px;
+            right: 2px;
+            min-width: 12px;
+            width: 12px;
+            height: 12px;
+            color: $gray-color;
+            transition: .2s;
+        }
+    }
+
+    .sidebar-block-title {
+        margin-bottom: 0;
+        border-bottom: 0;
+        transform: translateZ(0);
+
+        &:hover, &:focus {
+            color: currentColor;
+        }
+
+        &::before, &::after {
+            display: none;
+        }
+
+        > div {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+
+            > .sidebar-accordeon-icon {
+                min-width: 12px;
+                width: 12px;
+                height: 12px;
+                color: $gray-color;
+                transition: .2s;
+            }
+        }
+    }
+
+    .is-expanded {
+        .sidebar-accordeon-icon {
+            transform: rotate(180deg);
+        }
+
+        > v-pane-content {
+            padding-top: 10px;
+            padding-bottom: 7px;
+        }
+    }
+
+    &.search-accordeon {
+        position: relative;
+        margin-bottom: 8px;
+
+        .sidebar-block-title {
+            color: $main-active-color;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .sidebar-accordeon-icon {
+            top: 13px;
+            width: 10px;
+            height: 5px;
+        }
+    }
+}
+
+.sidebar-link, .md-button.sidebar-link:not([disabled]) {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin: 0;
+    padding: 7px 13px 7px 18px;
+    color: white;
+    text-transform: none;
+    font-size: 14px;
+    border-radius: 0px;
+    transition: padding .3s, font-size .3s;
+
+    &:hover, &:focus, &.active {
+        background-color: #ababab;
+    }
+
+    md-icon {
+        color: white;
+
+        &.menu-icon {
+            margin-left: 0;
+            margin-right: 22px;
+            width: 16px;
+            height: 16px;
+            max-width: 16px;
+            max-height: 16px;
+            min-width: 16px;
+            min-height: 16px;
+            margin-top: 4px;
+            margin-bottom: 0;
+            transition: 350ms;
+
+            &.w20 {
+                width: 20px;
+                max-width: 20px;
+            }
+
+            &.w21 {
+                width: 21px;
+                max-width: 21px;
+            }
+
+            &.h21 {
+                height: 21px;
+                max-height: 21px;
+            }
+
+            &.h22 {
+                height: 22px;
+                max-height: 22px;
+            }
+
+            &.h23 {
+                height: 31px;
+                max-height: 23px;
+            }
+        }
+
+        &.menu-arrow {
+            display: block;
+            margin: 4px 0 0 9px;
+            max-width: 8px;
+            width: 8px;
+            min-width: 8px;
+            max-height: 12px;
+            height: 12px;
+            min-height: 12px;
+            transform: rotate(-90deg);
+            transition: 350ms;
+        }
+    }
+}
+
+.toggle-menu-slide {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+    min-width: $sidebar-hidden-width;
+    height: 38px;
+    background-color: $lighter-gray-color;
+    text-align: center;
+    line-height: 38px;
+    border-radius: 0;
+
+    .toggle_menu_arrow {
+        width: 12px;
+        height: 7px;
+        color: $dark-blue-color;
+        transform: rotate(90deg);
+        transition: 350ms;
+    }
+}

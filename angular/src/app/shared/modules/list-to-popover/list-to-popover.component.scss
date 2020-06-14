@@ -1,0 +1,108 @@
+@import "~assets/styles/base/variables";
+@import "~assets/styles/utils/mixins";
+
+:host {
+    overflow: hidden;
+
+    .popover-wrapper {
+
+        .popover {
+            position: relative;
+            padding-right: 28px;
+            min-height: 18px;
+
+            &.only-icon {
+                padding-right: 23px;
+            }
+
+            .hidden-item {
+                position: absolute;
+                visibility: hidden;
+                white-space: nowrap;
+            }
+
+            .ellipsis-item {
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+
+            &::after {
+                content: "";
+                    position: absolute;
+                    top: 50%;
+                    right: 4px;
+                    -webkit-transform: translateY(-50%);
+                    transform: translateY(-50%);
+                    width: 18px;
+                    height: 18px;
+                    border-radius: 50%;
+                    color: $gray-color;
+                    fill: $gray-color;
+                    background-image: url(../../../../assets/images/colored/info.svg);
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    background-position: center;
+            }
+        }
+    }
+
+}
+
+::ng-deep {
+
+    .tippy-popper {
+
+        &[x-placement^=left] {
+            .tippy-tooltip {
+
+                .tippy-arrow {
+                    transform: rotate(-135deg);
+                    right: -6px;
+                }
+            }
+        }
+
+        &[x-placement^=top] {
+            .tippy-tooltip {
+
+                .tippy-arrow {
+                    transform: rotate(-45deg);
+                    bottom: -6px;
+                }
+            }
+        }
+
+        &[x-placement^=right] {
+            .tippy-tooltip {
+
+                .tippy-arrow {
+                    left: -6px;
+                }
+            }
+        }
+
+        .tippy-tooltip {
+            box-shadow: $box-shadow, $box-shadow, $box-shadow;
+            background-color: $white-color;
+            font-size: $font-size-md;
+            color: $font-color;
+            padding: 11px 10px;
+
+            .tippy-arrow {
+                position: absolute;
+                box-sizing: border-box;
+                border: 7px solid black;
+                border-color: transparent transparent white white;
+                transform: rotate(45deg);
+                box-shadow: -2px 2px 3px 0 rgba(0, 0, 0, 0.1);
+                box-sizing: border-box;
+                transform-origin: center;
+            }
+
+            .tippy-content {
+                text-align: left;
+            }
+        }
+    }
+}

@@ -1,0 +1,46 @@
+<div class="flex-row">
+    <div class="barcode-scan-block">
+        <md-icon md-svg-src="assets/images/default/barcode.svg"></md-icon>
+        <md-input-container>
+            <label>Scan or Enter Manufacturer Barcode:</label>
+            <input type="text"
+                   auto-focus
+                   ng-model="addBar.barcodeId"
+                   on-press-enter="addBar.addBarcode()">
+        </md-input-container>
+        <md-button class="md-primary md-raised small-btn enter-barcode-btn"
+                   ng-click="addBar.addBarcode()"
+                   ng-disabled="!addBar.barcodeId">
+            Enter
+        </md-button>
+    </div>
+</div>
+<div ng-if="addBar.lastItem">
+    <div class="last-scanned-item-title">
+        <span>Last Scanned Item:</span>
+    </div>
+    <div class="flex-row row">
+        <md-icon md-svg-src="assets/images/default/inventory.svg" class="last-scanned-image"></md-icon>
+        <div class="info-block">
+            <div class="info-block-label">Manufacturer Barcode:</div>
+            <div class="info-block-body">{{addBar.lastItem.barcodeId}}</div>
+        </div>
+        <div class="info-block">
+            <div class="info-block-label">Product ID:</div>
+            <div class="info-block-body">{{addBar.lastItem.productId}}</div>
+        </div>
+        <div class="info-block">
+            <div class="info-block-label">Product Name:</div>
+            <div class="info-block-body">{{addBar.lastItem.productName}}</div>
+        </div>
+        <div class="info-block">
+            <div class="info-block-label">Manufacturer:</div>
+            <div class="info-block-body">{{addBar.lastItem.manufacturer}}</div>
+        </div>
+        <div class="info-block">
+            <div class="info-block-label">Part #:</div>
+            <div class="info-block-body">{{addBar.lastItem.partNumber}}</div>
+        </div>
+
+    </div>
+</div>

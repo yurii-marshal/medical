@@ -1,0 +1,12 @@
+<div class="modal-advanced">
+    <div class="modal-header">
+        <mat-icon>settings</mat-icon>
+        <h1>ADVANCED FILTERS</h1>
+    </div>
+
+    <div class="modal-body">
+        <app-dynamic-form [config]="config" #form="dynamicForm" (submit)="submit($event)"></app-dynamic-form>
+        {{ form.valid }}
+        {{ form.value | json }}
+    </div>
+</div>

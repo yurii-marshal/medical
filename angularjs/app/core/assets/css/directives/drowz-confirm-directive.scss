@@ -1,0 +1,194 @@
+.drwz-confirm-container {
+    opacity: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: block;
+    overflow: hidden;
+    z-index: 1000;
+    transition: opacity .2s;
+}
+
+.drwz-confirm-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(22, 22, 22, 0.5);
+    z-index: 1001;
+    transition: .2s;
+}
+
+.drowz-confirm-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 1002;
+    display: block;
+    max-width: 95%;
+    max-height: 98%;
+    padding: 25px 20px 20px 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.24);
+    border-radius: 3px;
+    transition: .2s;
+    transform: scale(0.5) translate(-50%, -50%);
+
+    &.show-it {
+        transform: translate(-50%, -50%);
+    }
+
+    .drowz-confirm-cancel {
+        position: absolute;
+        top: 13px;
+        right: 13px;
+        width: 24px;
+        height: 24px;
+        z-index: 1003;
+        cursor: pointer;
+
+        &::after, &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            background-color: $gray-color-main;
+            transform: rotate(45deg);
+            transition: background-color .2s;
+        }
+
+        &::after {
+            height: 2px;
+            width: 18px;
+            margin-top: -1px;
+            margin-left: -9px;
+        }
+
+        &::before {
+            width: 2px;
+            height: 18px;
+            margin-top: -9px;
+            margin-left: -1px;
+        }
+
+        &:hover {
+            &::after, &::before {
+                background-color: $gray-color;
+            }
+        }
+    }
+
+    .drowz-confirm-dialog-icon {
+        margin: 0 auto 10px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    &.delete {
+        .drowz-confirm-dialog-icon {
+            width: 31px;
+            height: 40px;
+            background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjUgMyAxNCAxOCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE4Ij48cGF0aCBmaWxsPSIjZmY0ODQ4IiBkPSJNNiwxOWMwLDEuMSwwLjksMiwyLDJoOGMxLjEsMCwyLTAuOSwyLTJWN0g2VjE5eiBNOC41LDExLjlsMS40LTEuNGwyLjEsMi4xbDIuMS0yLjFsMS40LDEuNEwxMy40LDE0bDIuMSwyLjFsLTEuNCwxLjRMMTIsMTUuNGwtMi4xLDIuMWwtMS40LTEuNGwyLjEtMi4xTDguNSwxMS45eiBNMTUuNSw0bC0xLTFoLTVsLTEsMUg1djJoMTRWNEgxNS41eiIvPjwvc3ZnPg==);
+        }
+
+        .confirm-btn {
+            display: none;
+        }
+    }
+
+    &.confirm {
+        .drowz-confirm-dialog-icon {
+            width: 36px;
+            height: 36px;
+            background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjEuNSAxLjUgMTUgMTUiIHdpZHRoPSIxNSIgaGVpZ2h0PSIxNSI+PHBhdGggZmlsbD0iIzA2YWVkNSIgZD0iTTksMS41QzQuOSwxLjUsMS41LDQuOSwxLjUsOXMzLjQsNy41LDcuNSw3LjVzNy41LTMuNCw3LjUtNy41UzEzLjEsMS41LDksMS41eiBNOS44LDEyLjhIOC4zdi0xLjVoMS41VjEyLjh6IE05LjgsOS44SDguM1Y1LjNoMS41VjkuOHoiLz48L3N2Zz4=);
+        }
+        
+        .delete-btn {
+            display: none;
+        }
+    }
+
+    &.max-width-450 {
+        max-width: 450px;
+    }
+}
+
+.drowz-confirm-dialog-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-top: 20px;
+
+    button.drowz-confirm-btn {
+        margin: 0 20px 0 0;
+
+        &:last-of-type {
+            margin-right: 0;
+        }
+    }
+}
+
+.drowz-confirm-dialog-content {
+    padding: 5px 0;
+    text-align: center;
+    font-size: 14px;
+    color: $font-color;
+    font-weight: 400;
+    line-height: 22px;
+}
+
+.drowz-confirm-dialog-title {
+    margin-bottom: 10px;
+    padding-top: 10px;
+    color: #2a3f54;
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-align: center;
+}
+.drowz-confirm-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    min-width: 110px;
+    margin: 0 10px;
+    padding: 0 15px;
+    box-shadow: $box-shadow;
+    background-color: $lighter-gray-color;
+    color: $font-color;
+    text-align: center;
+    text-transform: none;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 40px;
+    transition: .2s;
+    border: none;
+    border-radius: 3px;
+
+    &:hover {
+        background-color: #fff;
+    }
+
+    &.delete-btn {
+        background-color: $red-color;
+        color: #fff;
+
+        &:hover {
+            background-color: darken($red-color, 20%);
+        }
+    }
+
+    &.confirm-btn {
+        background-color: $main-active-color;
+        color: #fff;
+
+        &:hover {
+            background-color: $main-active-hover-color;
+        }
+    }
+}

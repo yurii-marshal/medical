@@ -1,0 +1,147 @@
+.appointment-details {
+    position: relative;
+    padding: 30px 25px 30px 30px;
+
+    .appointment-details-left-col {
+        flex-grow: 1;
+    }
+
+    .appointment-details-right-col {
+        position: relative;
+        width: 400px;
+        min-width: 400px;
+        padding-left: 15px;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 10px;
+            width: 1px;
+            background-color: $lighter-gray-color;
+        }
+
+        &.no-divider {
+            &::before {
+                content: none;
+            }
+        }
+    }
+}
+
+.appointment-status {
+    width: 200px;
+    margin: 0;
+}
+
+.appointment-details-page {
+    .appointment-order-details {
+        padding-left: 0;
+    }
+}
+
+.appointment-order-details {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding-left: 120px;
+    padding-top: 20px;
+    padding-bottom: 5px;
+
+    &:not(:last-of-type) {
+        border-bottom: 1px solid $lighter-gray-color;
+    }
+
+    .flex-row + .flex-row {
+        padding-top: 10px;
+    }
+
+    > .status-label {
+        position: absolute;
+        top: 20px;
+        left: 0;
+        margin: 0;
+    }
+}
+
+.appointment-document-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+
+    &:not(:last-of-type) {
+        border-bottom: 1px solid $lighter-gray-color;
+    }
+
+    .info-block {
+        margin-bottom: 0;
+    }
+}
+
+.pickup-items-table {
+    .pickup-items-table-header {
+        height: 30px;
+        background-color: $lighter-gray-color;
+        color: $dark-blue-color;
+        font-weight: $font-weight-semibold;
+        font-size: 11px;
+    }
+
+    .pickup-items-table-row {
+        display: flex;
+        align-items: stretch;
+        justify-content: flex-start;
+        flex-direction: column;
+
+        &:not(:last-of-type) {
+            border-bottom: 1px solid $lighter-gray-color;
+        }
+    }
+
+    .main-item-row, .bundle-item-row, .pickup-items-table-header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        > .pickup-items-table-cell {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 5px;
+            padding-right: 5px;
+
+            &.number-cell {
+                justify-content: center;
+                width: 35px;
+                min-width: 35px;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+
+            &.name-cell {
+                > .status-label {
+                    min-width: 60px;
+                    margin-left: 15px;
+                }
+            }
+
+            &.cell-width-100 {
+                width: 100px;
+                min-width: 100px;
+            }
+
+            &.cell-width-200 {
+                width: 200px;
+                min-width: 200px;
+            }
+        }
+    }
+
+    .main-item-row, .bundle-item-row {
+        min-height: 40px;
+    }
+}

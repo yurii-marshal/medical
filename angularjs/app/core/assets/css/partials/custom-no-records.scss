@@ -1,0 +1,117 @@
+.custom-no-records {
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    flex-grow: 1;
+    min-height: 170px;
+    color: $gray-color;
+    font-weight: $font-weight-normal;
+
+    &.with-hside-pad {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    &.with-vside-pad {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    &.horizontal {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .custom-no-records-icon {
+            width: auto;
+            height: 100px;
+            padding-right: 0;
+            margin-top: 35px;
+            margin-bottom: 30px;
+
+            > md-icon {
+                height: 100%;
+            }
+        }
+
+        .custom-no-records-content {
+            align-items: center;
+            padding-bottom: 35px;
+            text-align: center;
+        }
+    }
+
+    .custom-no-records-icon {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 215px;
+        padding-right: 30px;
+
+        > md-icon {
+            margin: 0;
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            color: currentColor;
+        }
+    }
+
+    .custom-no-records-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+
+        .custom-no-records-title {
+            margin-bottom: 20px;
+            font-size: $font-size-md;
+            font-weight: $font-weight-semibold;
+        }
+
+        .custom-no-records-btn.md-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin: 30px 0 0 0;
+
+            md-icon {
+                display: block;
+                margin: 0 10px 0 0;
+
+                &.document-icon {
+                    width: 16px;
+                    height: 20px;
+                }
+
+                &.user-icon {
+                    width: 20px;
+                    height: 20px;
+                }
+
+                &.billing-icon {
+                    width: 19px;
+                    height: 18px;
+                }
+
+                &.calendar-icon {
+                    width: 16px;
+                    height: 16px;
+                }
+
+                &.new-invoice-icon {
+                    width: 18px;
+                    height: 18px;
+                    transform: rotate(90deg);
+                }
+
+                &.user-square-icon {
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+        }
+    }
+}

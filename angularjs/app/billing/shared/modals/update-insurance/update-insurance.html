@@ -1,0 +1,81 @@
+<div class="modal-window update-insurance-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="updateInsurance">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/shield.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Select Insurance To Download From Patient:</h2>
+        </div>
+
+        <infinity-table load-items-promise="$ctrl.getInsurances"
+                        page-size="100"
+                        class="custom-table double-row-table invoices-list">
+
+            <infinity-table-filters class="drowz-infinite-row-filter">
+                <div class="number-td">
+                    <md-checkbox class="md-primary"
+                                 aria-label="..."
+                                 ng-click="$ctrl.selectAllFn()"
+                                 ng-checked="$ctrl.isSelectAll">
+                    </md-checkbox>
+                </div>
+                <div class="w230px header">Insurance</div>
+                <div class="w200px header">Insurance Payer ID</div>
+                <div class="w200px header">Policy Number</div>
+                <div class="w130px no-divider header">Status</div>
+            </infinity-table-filters>
+
+            <infinity-table-row class="drowz-infinite-row">
+                <div class="custom-table-body auto-height no-divider">
+                    <div class="number-td">
+                        <md-checkbox class="md-primary"
+                                     aria-label="..."
+                                     ng-click="$parent.$ctrl.toggleItem($event, item)"
+                                     ng-checked="item.isSelected">
+                        </md-checkbox>
+                    </div>
+                    <div>
+                        <span class="cell-wrap w230px">
+                            {{item.Payer.Name}}
+                        </span>
+                    </div>
+                    <div>
+                        <span class="cell-wrap w200px">
+                            {{item.Payer.ClaimCode || '-'}}
+                        </span>
+                    </div>
+                    <div>
+                        <span class="cell-wrap w200px">
+                            {{item.PolicyNumber || '-'}}
+                        </span>
+                    </div>
+                    <div class="w130px no-divider">
+                        <div class="status-label {{item.statusClass}}">
+                            {{item.Archived ? 'Archived' : item.Status.Text}}
+                        </div>
+                    </div>
+                </div>
+            </infinity-table-row>
+
+            <infinity-table-no-items>
+                <no-records text="Insurances"></no-records>
+            </infinity-table-no-items>
+
+        </infinity-table>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter" layout="row" layout-align="end center">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button"
+                   ng-disabled="!$ctrl.getSelectedItems().length"
+                   ng-click="$ctrl.save()">Save</md-button>
+    </md-dialog-actions>
+
+</div>
+

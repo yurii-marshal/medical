@@ -1,0 +1,29 @@
+.provider-view {
+    .provider-locations {
+        .flow-accordion {
+            .contacts-container.left-divider {
+                @include left-divider(30px, $lighter-gray-color, 2px);
+            }
+
+            .delete-location {
+                visibility: hidden;
+                transition: visibility 100ms linear;
+            }
+
+            v-pane {
+                &:hover {
+                    cursor: pointer;
+
+                    .accordion-line {
+                        transition: background-color 100ms linear;
+                        background-color: darken($lighter-gray-color, 10%);
+                    }
+
+                    .delete-location {
+                        visibility: visible;
+                    }
+                }
+            }
+        }
+    }
+}

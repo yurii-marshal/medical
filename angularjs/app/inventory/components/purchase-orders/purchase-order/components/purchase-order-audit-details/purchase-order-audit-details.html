@@ -1,0 +1,134 @@
+<div class="audit-details"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="purchaseOrderAuditDetails">
+
+    <div class="exit">
+        <md-button class="md-raised small-btn arrow-back-button"
+                   ng-click="purchaseOrderAuditDetails.backToAuditList()">
+            <md-icon md-svg-src="assets/images/default/arrow-back.svg"></md-icon>
+            Back to Audit records
+        </md-button>
+    </div>
+
+    <v-accordion class="vAccordion--default flow-accordion"
+                 multiple
+                 ng-if="purchaseOrderAuditDetails.items.length">
+        <v-pane expanded="true">
+            <v-pane-header class="flow-accordion-title">
+                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                         class="flow-accordion-title-icon"></md-icon>
+                <span>Items:</span>
+                <div class="accordion-line"></div>
+            </v-pane-header>
+            <v-pane-content>
+                <div class="order-item"
+                     ng-repeat="item in purchaseOrderAuditDetails.items track by $index"
+                >
+                    <div class="flex-row">
+                        <div class="info-block item-img w100px">
+                            <div class="item-img-container">
+                                <img src=""
+                                     ng-src="{{
+                                             item.PictureUrl
+                                             ? (purchaseOrderAuditDetails.WEB_API_INVENTORY_SERVICE_URI + item.PictureUrl)
+                                             : purchaseOrderAuditDetails.noImage
+                                         }}"
+                                     alt="" class="item-img">
+                            </div>
+                        </div>
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">Name:</div>
+                            <div class="info-block-body">{{ item.Name }}</div>
+                        </div>
+                        <div class="info-block w200px left-divider">
+                            <div class="info-block-label">Mfg:</div>
+                            <div class="info-block-body">{{ item.Manufacturer || '-' }}</div>
+                        </div>
+                        <div class="info-block w200px left-divider">
+                            <div class="info-block-label">ID/Part #:</div>
+                            <div class="info-block-body">{{ item.PartNumber || '-' }}</div>
+                        </div>
+                        <div class="info-block w120px left-divider">
+                            <div class="info-block-label">HCPCS:</div>
+                            <div class="info-block-body flex-cont">
+                                <div popover-directive="item.allHcpcsCodes"
+                                     hide-first-item="true"
+                                     min-width="50"></div>
+                            </div>
+                        </div>
+                        <div class="info-block w100px left-divider">
+                            <div class="info-block-label">Qty:</div>
+                            <div class="info-block-body">{{ item.Qty }}</div>
+                        </div>
+                        <div class="info-block w200px left-divider">
+                            <div class="info-block-label">Price:</div>
+                            <div class="info-block-body font-bold">$ {{ item.Price | number:2 }}</div>
+                        </div>
+                    </div>
+                    <div class="item-components" ng-if="item.IsBundle">
+                        <v-accordion class="flow-accordion grow-1">
+                            <v-pane expanded="false">
+                                <v-pane-header class="flow-accordion-title"
+                                               ng-click="purchaseOrderAuditDetails.getProductComponents(item);"
+                                >
+                                    <md-icon md-svg-src="assets/images/default/chevron.svg"
+                                             class="flow-accordion-title-icon"
+                                    ></md-icon>
+                                    <span>Included Items:</span>
+                                </v-pane-header>
+                                <v-pane-content bs-loading-overlay
+                                                bs-loading-overlay-reference-id="bundleComponents{{ item.ProductId }}"
+                                >
+                                    <table class="drowz-table regular-table">
+                                        <tr class="drowz-table-header">
+                                            <th class="number-cell" width="45">#</th>
+                                            <th width="110">Photo:</th>
+                                            <th>Name:</th>
+                                            <th>Manufacturer:</th>
+                                            <th>ID/Part #:</th>
+                                            <th>HCPCS:</th>
+                                            <th width="80">Qty</th>
+                                        </tr>
+                                        <tr class="drowz-table-row" ng-repeat="component in item.Components">
+                                            <td class="number-cell">{{ $index + 1 }}.</td>
+                                            <td class="item-img-cell">
+                                                <div class="item-img-container">
+                                                    <img src=""
+                                                         ng-src="{{
+                                                                        component.PictureUrl
+                                                                            ? (purchaseOrderAuditDetails.WEB_API_INVENTORY_SERVICE_URI + component.PictureUrl)
+                                                                            : purchaseOrderAuditDetails.noImage
+                                                                     }}" alt=""
+                                                         class="item-img">
+                                                </div>
+                                            </td>
+                                            <td ng-bind="component.Name"></td>
+                                            <td ng-bind="component.Manufacturer"></td>
+                                            <td ng-bind="component.PartNumber"></td>
+                                            <td>
+                                                <div class="flex-cont">
+                                                    <div popover-directive="component.allHcpcsCodes"
+                                                         hide-first-item="true"
+                                                         min-width="50"></div>
+                                                </div>
+                                            </td>
+                                            <td ng-bind="component.Count"></td>
+                                        </tr>
+                                    </table>
+
+                                    <no-records text="Components:"
+                                                class="no-records-small"
+                                                ng-if="item.componentsLoaded && !item.Components.length"
+                                                no-default-text="true">
+                                    </no-records>
+                                </v-pane-content>
+                            </v-pane>
+                        </v-accordion>
+                    </div>
+
+                </div>
+            </v-pane-content>
+        </v-pane>
+    </v-accordion>
+
+</div>

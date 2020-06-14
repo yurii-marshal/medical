@@ -1,0 +1,174 @@
+@import '../base/variables';
+
+.status-label, div.status-label {
+  display: inline-block;
+  max-width: 100%;
+  height: 19px;
+  padding: 0 10px;
+  border-radius: 3px;
+  line-height: 18px;
+  color: #FFF;
+  font-size: 12px;
+  text-align: center;
+  font-weight: 400;
+  text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+  background-color: $bright-blue-label;
+
+  + .status-label :not(.new-line-label) {
+    margin-left: 10px;
+  }
+
+  &.active, &.green, &.new, &.completed-appointment {
+    background-color: $green-color;
+  }
+
+  &.not-completed, &.processing, &.gray {
+    background-color: $gray-color-main;
+  }
+
+  &.middle-gray {
+    background-color: $middle-gray-color;
+  }
+
+  &.dark-gray {
+    background-color: $dark-gray-color;
+  }
+
+  &.delivered, &.primary, &.blue, &.open, &.confirmed-appointment, &.accepted {
+    background-color: $main-active-color;
+  }
+
+  &.orange, &.pending, &.inactive, &.scheduled-appointment {
+    background-color: $orange-color;
+  }
+
+  &.dark-blue {
+    background-color: $dark-blue-color;
+  }
+
+  &.light-blue {
+    background-color: $light-blue-color;
+  }
+
+  &.rejected, &.red {
+    background-color: $red-color;
+  }
+
+  &.expired-item-label {
+    width: 60px;
+    min-width: 60px;
+    margin: 16px 15px 0 20px;
+  }
+
+  &.bordered-label {
+    line-height: 16px;
+    border: 1px solid $middle-gray-color;
+    color: $middle-gray-color;
+    background-color: transparent;
+  }
+
+}
+
+.drowz-round-label {
+  display: inline-block;
+  @include size(20px, 20px);
+  background-color: $orange-color;
+  border-radius: 50%;
+  color: #ffffff;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: center;
+  font-size: $font-size-xs;
+}
+
+.two-line-status {
+  .status-label {
+    margin: 1px 10px 1px 0;
+  }
+}
+
+.attr-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  max-width: 100%;
+  padding: 0 10px 0 7px;
+  margin: 0 10px 5px 0;
+  line-height: 20px;
+  height: 22px;
+  border-radius: 20px;
+  border: 1px solid $middle-gray-color;
+  background-color: transparent;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 400;
+  text-transform: none;
+
+  span {
+    color: #333;
+  }
+
+  &.allowable-label {
+    background-color: $dark-gray-color;
+    border-radius: 3px;
+    height: 19px;
+    padding: 0 10px;
+    line-height: 18px;
+    font-size: 12px;
+    border: 0;
+
+    span {
+      color: #fff;
+    }
+  }
+
+  mat-icon {
+    transform: rotateY(180deg);
+    @include size(12px, 100%);
+    min-width: 12px;
+    margin: 0 5px 0 0;
+    color: currentColor;
+  }
+
+  $classes-list: 'orange-label',
+  'light-green-label',
+  'red-label',
+  'dark-blue-label',
+  'light-violet-label',
+  'bright-green-label',
+  'bright-yellow-label',
+  'bright-violet-label',
+  'bright-blue-label',
+  'light-blue-label',
+  'light-gray-label',
+  'lilac-label',
+  'mint-label',
+  'cobalt-blue-label',
+  'sky-blue-label';
+
+  $colors-list: $orange-label,
+  $light-green-label,
+  $red-label,
+  $dark-blue-label,
+  $light-violet-label,
+  $bright-green-label,
+  $bright-yellow-label,
+  $bright-violet-label,
+  $bright-blue-label,
+  $light-blue-label,
+  $light-gray-label,
+  $lilac-label,
+  $mint-label,
+  $cobalt-blue-label,
+  $sky-blue-label;
+
+  @each $class in $classes-list {
+    $i: index($classes-list, $class);
+    &.#{$class} {
+      color: nth($colors-list, $i);
+    }
+  }
+}

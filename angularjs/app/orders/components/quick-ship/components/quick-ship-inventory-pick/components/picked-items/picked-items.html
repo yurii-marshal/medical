@@ -1,0 +1,102 @@
+<div class="received-equipment-list">
+    <div class="received-equipment-item"
+         ng-repeat="id in $ctrl.pickedItems.items.allIds track by $index">
+
+        <div class="flex-row">
+            <div class="info-block block-width-50">
+                <div class="info-block-label">&nbsp;</div>
+                <div class="info-block-body">{{$index+1}}.</div>
+            </div>
+            <div class="info-block item-img block-width-100">
+                <div class="item-img-container">
+                    <img src=""
+                         ng-src="{{$ctrl.pickedItems.items.byId[id].pictureUrl
+                                ? ($ctrl.WEB_API_INVENTORY_SERVICE_URI + $ctrl.pickedItems.items.byId[id].pictureUrl)
+                                : $ctrl.noImage}}"
+                         alt="..."
+                         class="item-img">
+                </div>
+            </div>
+            <div class="info-block grow-1">
+                <div class="info-block-label">Name:</div>
+                <div class="info-block-body">{{$ctrl.pickedItems.items.byId[id].name}}</div>
+            </div>
+            <div class="info-block block-width-350 left-divider">
+                <div class="info-block-label">Location:</div>
+                <div class="info-block-body">{{$ctrl.pickedItems.items.byId[id].location}}</div>
+            </div>
+            <div class="info-block block-width-270 left-divider"
+                 ng-if="!$ctrl.pickedItems.components.allIds.length">
+                <div class="info-block-label">Serial Number:</div>
+                <div class="info-block-body">{{$ctrl.pickedItems.items.byId[id].serialNumber || '-'}}</div>
+            </div>
+            <div class="info-block block-width-270 left-divider"
+                 ng-if="!$ctrl.pickedItems.components.allIds.length">
+                <div class="info-block-label">Lot Number:</div>
+                <div class="info-block-body">{{$ctrl.pickedItems.items.byId[id].lotNumber || '-'}}</div>
+            </div>
+            <div class="info-block block-width-140 left-divider">
+                <div class="info-block-label">Qty:</div>
+                <div class="info-block-body">{{$ctrl.pickedItems.items.byId[id].count}}</div>
+            </div>
+            <div class="info-block button-cell">
+                <div class="info-block-label">&nbsp;</div>
+                <div class="info-block-body">
+                    <md-button
+                        class="delete-icon-btn"
+                        aria-label="..."
+                        confirm-ng-click="$ctrl.deletePickedItem(id)"
+                        confirm-msg="'Are you sure you want to remove item <span class=\'active-text\'>{0}</span> ?'.format($ctrl.pickedItems.items.byId[id].name)"
+                        confirm-btn-ok="Remove"
+                        confirm-btn-cancel="Cancel"
+                        confirm-title="Remove Item"
+                        confirm-class-name="max-width-450">
+                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                    </md-button>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-row"
+             ng-if="$ctrl.pickedItems.components.allIds.length">
+            <div class="info-block grow-1">
+                <v-accordion class="vAccordion--default flow-accordion">
+                    <v-pane expanded="false">
+
+                        <v-pane-header class="flow-accordion-title">
+                            <md-icon md-svg-src="assets/images/default/chevron.svg"
+                                     class="flow-accordion-title-icon"></md-icon>
+                            <span>Included Items:</span>
+                            <div class="accordion-line"></div>
+                        </v-pane-header>
+
+                        <v-pane-content>
+                            <div class="flow-body">
+                                <table class="drowz-table small-table regular-table">
+                                    <tr class="drowz-table-header">
+                                        <th class="number-cell">#</th>
+                                        <th class="equipment-percentage-cells">Name</th>
+                                        <th class="cell-250px">Serial Number</th>
+                                        <th class="cell-250px">Lot Number</th>
+                                        <th class="cell-100px">Qty</th>
+                                    </tr>
+                                    <tr class="drowz-table-row"
+                                        ng-repeat="cId in $ctrl.pickedItems.components.allIds track by $index">
+                                        <td class="number-cell">{{$index + 1}}.</td>
+                                        <td class="equipment-percentage-cells">
+                                            {{$ctrl.pickedItems.components.byId[cId].name}}
+                                        </td>
+                                        <td class="cell-250px">{{$ctrl.pickedItems.components.byId[cId].serialNumber || '-'}}</td>
+                                        <td class="cell-250px">{{$ctrl.pickedItems.components.byId[cId].lotNumber || '-'}}</td>
+                                        <td class="cell-100px">{{$ctrl.pickedItems.components.byId[cId].count}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </v-pane-content>
+                    </v-pane>
+                </v-accordion>
+            </div>
+        </div>
+    </div>
+
+</div>

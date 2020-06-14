@@ -1,0 +1,167 @@
+<div class="dashboard">
+
+    <div class="dashboard-header">
+
+        <div class="dashboard-block dashboard-search-block">
+            <div class="dashboard-block-body">
+                <md-autocomplete class="search-field"
+                                 md-selected-item="dash.quickSearchSelectedItem"
+                                 md-selected-item-change="dash.openPatient(dash.quickSearchSelectedItem.Id)"
+                                 md-search-text="dash.quickSearchText"
+                                 md-items="item in dash.getQuickSearchItems(dash.quickSearchText)"
+                                 md-item-text="item.Value"
+                                 md-min-length="2"
+                                 md-delay="350"
+                                 md-floating-label="Quick Search:"
+                                 md-input-name="quickSearch">
+                    <md-item-template>
+                        <span md-highlight-text="dash.quickSearchText"
+                              md-highlight-flags="i">
+                            {{item.Value}}
+                        </span>
+                    </md-item-template>
+                    <md-not-found>No patients were found</md-not-found>
+                    <md-icon class="search-icon" md-svg-src="assets/images/default/search.svg"></md-icon>
+                </md-autocomplete>
+
+            </div>
+        </div>
+
+        <div class="dashboard-main-links">
+            <div class="dashboard-main-link"
+                 ui-sref="root.tasks.assigned_to_me"
+                 ng-if="dash.counters.Tasks.isLoaded">
+                <md-icon class="link-icon" md-svg-src="assets/images/default/calendar-circle-v2.svg"></md-icon>
+                <div class="link-content">
+                    <div class="link-number">{{dash.counters.Tasks.value}}</div>
+                    <div class="link-text">My<br> Tasks</div>
+                </div>
+            </div>
+            <div class="dashboard-main-link"
+                 ui-sref="root.patients.list({isOnlyNewPatients: true})"
+                 ng-if="dash.counters.NewPatients.isLoaded">
+                <md-icon class="link-icon" md-svg-src="assets/images/main-menu/patients.svg"></md-icon>
+                <div class="link-content">
+                    <div class="link-number">{{dash.counters.NewPatients.value}}</div>
+                    <div class="link-text">New<br> Patients</div>
+                </div>
+            </div>
+            <div class="dashboard-main-link" ui-sref="root.orders.list_new"
+                 ng-if="dash.counters.NewOrders.isLoaded">
+                <md-icon class="link-icon" md-svg-src="assets/images/main-menu/orders.svg"></md-icon>
+                <div class="link-content">
+                    <div class="link-number">{{dash.counters.NewOrders.value}}</div>
+                    <div class="link-text">New<br> Orders</div>
+                </div>
+            </div>
+            <div class="dashboard-main-link"
+                 ui-sref="root.billing.invoices({'filterByStatus':'New'})"
+                 ng-if="dash.counters.NewInvoces.isLoaded && dash.userPermissions.isAllow(dash.permissionsCategoriesConstants.BILLING, dash.billingPermissionsConstants.VIEW)"
+            >
+                <md-icon class="link-icon" md-svg-src="assets/images/main-menu/billing.svg"></md-icon>
+                <div class="link-content">
+                    <div class="link-number">{{dash.counters.NewInvoces.value}}</div>
+                    <div class="link-text">New<br> Invoices</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="flex-row align-stretch">
+        <dashboard-communication
+            class="dashboard-communication dashboard-block"
+            ng-class="{'long-block': !dash.currentUser.profile.ScheduleAble}"
+        >
+        </dashboard-communication>
+
+        <dashboard-appointments ng-if="dash.currentUser.profile.ScheduleAble"
+                                class="dashboard-block dashboard-appointments"></dashboard-appointments>
+    </div>
+
+    <rss-list
+        max-items-per-source="1"
+        urls="dash.urlsList"
+    ></rss-list>
+
+    <v-accordion class="dashboard-block chart-block dashboard-accordion">
+        <v-pane expanded="true">
+            <v-pane-header>
+                <div class="dashboard-block-title">Statistics:</div>
+            </v-pane-header>
+            <v-pane-content>
+                <div class="dashboard-block-body">
+                    <div class="statistic-block patient-volume-statistic">
+                        <div class="active-title flow-body-active-title">Patient Volume:</div>
+                        <div class="custom-no-records" ng-if="!dash.statPatients.length">
+                            <div class="custom-no-records-icon">
+                                <md-icon md-svg-src="assets/images/default/no-info-icons/areaspline.svg"></md-icon>
+                            </div>
+                            <div class="custom-no-records-content">
+                                <div class="custom-no-records-title">You do not have any Patients yet.</div>
+                                <div class="custom-no-records-text">
+                                    Once you will add patients to the system, the statistics on patients volume monthly will be displayed on Dashboard
+                                </div>
+                                <md-button class="md-raised md-primary middle-btn custom-no-records-btn"
+                                           ui-sref="root.patients.add.step1">
+                                    <md-icon md-svg-src="assets/images/default/user-circle.svg" class="user-icon"></md-icon>
+                                    <span>New Patient</span>
+                                </md-button>
+                            </div>
+                        </div>
+                        <highchart id="chart1"
+                                   config="dash.patientChart"
+                                   ng-if="dash.statPatients.length"></highchart>
+                    </div>
+                    <div class="flex-row">
+                        <div class="statistic-block physician-statistic">
+                            <div class="active-title flow-body-active-title">Top 10 ordering physicians:</div>
+                            <div class="custom-no-records" ng-if="!dash.statPhysicians.length">
+                                <div class="custom-no-records-icon">
+                                    <md-icon md-svg-src="assets/images/default/no-info-icons/column.svg"></md-icon>
+                                </div>
+                                <div class="custom-no-records-content">
+                                    <div class="custom-no-records-title">You do not have any Orders yet.</div>
+                                    <div class="custom-no-records-text">
+                                        Once you will add orders to the system, the statistics on Top-10 ordering physicians will be displayed on Dashboard
+                                    </div>
+                                    <md-button class="md-raised md-primary middle-btn custom-no-records-btn"
+                                               ui-sref="root.orders.add.step1">
+                                        <md-icon md-svg-src="assets/images/default/documents.svg" class="document-icon"></md-icon>
+                                        <span>New Order</span>
+                                    </md-button>
+                                </div>
+                            </div>
+                            <highchart id="chart2"
+                                       config="dash.physiciansChart"
+                                       ng-if="dash.statPhysicians.length"></highchart>
+                        </div>
+                        <div class="statistic-block payers-statistic">
+                            <div class="active-title flow-body-active-title">Top 10 Payers:</div>
+                            <div class="custom-no-records" ng-if="!dash.statPayers.length">
+                                <div class="custom-no-records-icon">
+                                    <md-icon md-svg-src="assets/images/default/no-info-icons/pie.svg"></md-icon>
+                                </div>
+                                <div class="custom-no-records-content">
+                                    <div class="custom-no-records-title">You do not have any Payers yet.</div>
+                                    <div class="custom-no-records-text">
+                                        Once you will add payers to the system and bill invoices to them, the statistics on Top-10 payers will be displayed on Dashboard
+                                    </div>
+                                    <md-button class="md-raised md-primary middle-btn custom-no-records-btn"
+                                               ui-sref="root.management.billing.payers({showNewPayerModal: true})">
+                                        <md-icon md-svg-src="assets/images/default/billing.svg" class="billing-icon"></md-icon>
+                                        <span>New Payer</span>
+                                    </md-button>
+                                </div>
+                            </div>
+                            <highchart id="chart3"
+                                       config="dash.payersChart"
+                                       ng-if="dash.statPayers.length"></highchart>
+                        </div>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+    </v-accordion>
+
+</div>

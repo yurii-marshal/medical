@@ -1,0 +1,100 @@
+@import "../../../../../../../../assets/styles/utils/mixins";
+@import "../../../../../../../../assets/styles/base/variables";
+
+.modal-window {
+
+    &.edit-patient-attrs-modal {
+        position: relative;
+        min-width: 416px;
+        width: 416px;
+
+        .mat-dialog-content {
+            padding: 24px;
+        }
+
+        .modal-icon {
+            display: block;
+            margin: 0 auto 15px;
+            background-color: $white-color;
+
+            @include size(34px, 34px);
+        }
+
+        .select-patient-status {
+
+            .flex-row {
+                padding-right: 25px;
+            }
+
+            .md-primary.small-btn {
+                margin: 0;
+            }
+
+            .status-select {
+
+                .md-select-value {
+                    font-weight: $font-weight-semibold;
+                    transition: color .2s;
+                }
+
+            }
+
+            &.hold {
+
+                .mat-select-value span {
+                    color: $orange-label;
+                }
+
+            }
+
+            &.active {
+
+                .mat-select-value span {
+                    color: $bright-green-label;
+                }
+
+            }
+
+            &.inactive {
+
+                .mat-select-value span {
+                    color: $middle-gray-color;
+                }
+
+            }
+
+            .inactivity-reason {
+                padding-left: 0;
+
+                .info-block {
+                    padding-left: 0;
+                    width: 100%;
+                }
+
+                .date-block {
+                    padding: 0;
+                    width: 120px;
+                    min-width: 120px;
+
+                    .mat-form-field {
+                        width: 120px;
+                    }
+
+                    &:before {
+                        right: 0;
+                    }
+
+                }
+
+            }
+
+        }
+
+        .mat-dialog-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+    }
+
+}

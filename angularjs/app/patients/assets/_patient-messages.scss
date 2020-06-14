@@ -1,0 +1,615 @@
+.patient-messages {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height});
+
+    @include respond-to(appMinWidth) {
+        height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height} - 20px);
+    }
+
+    .messages-body {
+        display: flex;
+        align-items: stretch;
+        overflow: hidden;
+        height: 100%;
+    }
+}
+
+.messages-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 103px;
+    padding: 15px 15px 15px 0;
+    margin-left: 15px;
+    border-bottom: 1px solid $lighter-gray-color;
+
+    .messages-header-btns {
+        display: flex;
+        align-items: center;
+        width: 350px;
+
+        .md-button.md-raised.messages-header-btn {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 60px;
+            width: 100px;
+            margin-right: 8px;
+            padding-top: 9px;
+            padding-bottom: 7px;
+            text-transform: uppercase;
+            line-height: normal;
+            font-size: 14px;
+
+            &.email-btn-icon {
+                md-icon {
+                    height: 16px;
+                }
+            }
+
+            &.allmsg-btn-icon {
+                md-icon {
+                    width: 22px;
+                    height: 22px;
+                }
+            }
+
+            &:hover, &.active {
+                color: #fff;
+                background-color: $dark-gray-color;
+
+                md-icon {
+                    color: #fff;
+                }
+            }
+
+            md-icon {
+                display: block;
+                width: 20px;
+                height: 20px;
+                color: $main-active-color;
+                margin: 0 0 3px;
+            }
+        }
+    }
+
+    .messages-header-filters {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-left: 33px;
+        padding-right: 15px;
+        width: calc(100% - 350px);
+
+        .messages-check-all {
+            display: block;
+            margin-bottom: 0;
+            margin-right: 15px;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: $main-active-color;
+            font-weight: 500;
+
+            .md-label {
+                margin-left: 40px;
+            }
+        }
+
+        > .flex-cont {
+            flex-grow: 1;
+        }
+
+        .done {
+
+        }
+
+        .refresh, .email, .email-open, .done {
+            display: block;
+            padding: 0;
+            margin: 0 20px;
+            background: none;
+
+            &:first-child {
+                margin-left: 10px;
+            }
+
+            &:hover {
+                md-icon {
+                    color: $main-active-color;
+                }
+            }
+
+            md-icon {
+                display: block;
+                max-height: 100%;
+                max-width: 100%;
+                color: $dark-blue-color;
+                transition: .2s;
+            }
+        }
+
+        .refresh {
+            width: 18px;
+            height: 23px;
+        }
+
+        .email {
+            width: 22px;
+            height: 18px;
+        }
+
+        .email-open {
+            width: 22px;
+            height: 24px;
+        }
+
+        .done {
+            width: 20px;
+            height: 20px;
+        }
+
+        .messages-content-select {
+            width: 280px;
+            margin: 0 10px;
+        }
+
+        .messages-content-search {
+            position: relative;
+            margin: 0 10px;
+            flex-grow: 1;
+
+            .search-btn {
+                position: absolute;
+                top: 50%;
+                right: 3px;
+                margin: -6px 0 0;
+                padding: 0;
+                width: 13px;
+                min-width: 13px;
+                height: 13px;
+                min-height: 13px;
+                display: block;
+                background: none;
+
+                &:hover {
+                    md-icon {
+                        color: $main-active-hover-color;
+                    }
+                }
+
+                md-icon {
+                    display: block;
+                    max-height: 100%;
+                    max-width: 100%;
+                    color: $gray-color;
+                    transition: .2s;
+                }
+            }
+        }
+    }
+}
+
+.practices {
+    position: relative;
+    width: 370px;
+    height: 100%;
+    overflow: hidden;
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 15px;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        width: 2px;
+        background-color: $lighter-gray-color;
+    }
+
+    .practices-title {
+        margin-bottom: 10px;
+        padding-top: 15px;
+        padding-left: 30px;
+        color: $main-active-color;
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+
+    .md-button.practice-item {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        height: auto;
+        padding: 22px 10px 15px 30px;
+        margin: 0;
+        text-transform: none;
+        text-align: left;
+        transition: .2s;
+
+        &:not(:last-of-type) {
+            border-bottom: 1px solid $lighter-gray-color;
+        }
+
+        &:hover, &:focus, &.active {
+            background-color: $light-gray-color;
+        }
+
+        .practice-title {
+            display: flex;
+            align-items: stretch;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 8px;
+            color: $dark-blue-color;
+            font-size: 14px;
+            line-height: 18px;
+            font-weight: 500;
+
+            .practice-name {
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .drowz-round-label {
+                min-width: 20px;
+                margin-right: 12px;
+                margin-left: 12px;
+            }
+        }
+
+        .practice-text {
+            max-height: 36px;
+            margin-bottom: 8px;
+            padding-left: 1px;
+            padding-right: 45px;
+            overflow: hidden;
+            color: #414141;
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 18px;
+            font-style: italic;
+            white-space: normal;
+            word-break: break-all;
+
+            .practice-label {
+                position: relative;
+                display: inline-block;
+                height: 9px;
+                width: 9px;
+                margin-right: 10px;
+                border-width: 1px;
+                border-style: solid;
+                border-right: 0;
+
+                &::before, &::after {
+                    content: "";
+                    position: absolute;
+                    right: -5px;
+                    display: block;
+                    height: 1px;
+                    width: 6px;
+                }
+
+                &::before {
+                    top: 1px;
+                    transform: rotate(45deg);
+                }
+                &::after {
+                    bottom: 1px;
+                    transform: rotate(-45deg);
+                }
+
+                &.message-label {
+                    border-color: $main-active-color;
+
+                    &::before, &::after {
+                        background-color: $main-active-color;
+                    }
+                }
+
+                &.alert-label {
+                    border-color: $red-color;
+
+                    &::before, &::after {
+                        background-color: $red-color;
+                    }
+                }
+            }
+        }
+
+        .practice-date {
+            color: #8b8b8b;
+            font-size: 10px;
+            line-height: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}
+
+.messages-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    width: calc(100% - 370px);
+    height: 100%;
+    overflow: hidden;
+
+    .messages-content-body {
+        height: calc(100% - 190px);
+        overflow: hidden;
+    }
+
+    .messages-content-footer {
+        height: 190px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 10px 35px 10px 52px;
+        box-shadow: inset 0 1px 0 0 #e8e8e8;
+
+        .messages-content-footer-select {
+            padding-right: 55px;
+        }
+
+        .messages-content-footer-textarea {
+            padding-left: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .message-input {
+            flex: 1 1 auto;
+            display: block;
+
+            textarea {
+                max-height: 52px;
+                font-size: 13px;
+                line-height: 20px;
+                transition: height 0.3s ease;
+            }
+        }
+
+        .send-message {
+            display: block;
+            width: 43px;
+            height: 40px;
+            min-width: 10px;
+            min-height: 10px;
+            margin: 0 0 0 30px;
+            padding: 0;
+            overflow: visible;
+            background: none;
+
+            md-icon {
+                display: block;
+                width: 43px;
+                height: 40px;
+                transform: rotate(-15deg);
+                color: $main-active-color;
+                transition: .2s;
+            }
+
+            &:hover {
+                md-icon {
+                    transform: rotate(0deg);
+                }
+            }
+        }
+
+        .send-as-alert {
+            width: 140px;
+            margin: 0 0 0 15px;
+            font-size: 14px;
+            color: $gray-color-main;
+        }
+    }
+
+    .msg-item {
+        position: relative;
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: 20px 30px 30px 70px;
+        border-radius: 0;
+        border: 0;
+        background-color: white;
+        transition: .2s;
+
+        &:not(:last-of-type) {
+            border-bottom: 1px solid $lighter-gray-color;
+        }
+
+        &:hover, &.md-checked {
+            background-color: $light-gray-color;
+
+            .show-more-btn {
+                color: #fff;
+                background-color: $gray-color;
+
+                &::before {
+                    border-top-color: #fff;
+                }
+
+                &:hover {
+                    background-color: $dark-gray-color;
+                }
+            }
+        }
+
+        .md-container {
+            top: 20px;
+            left: 29px;
+            transform: none;
+        }
+
+        .md-label {
+            margin: 0;
+            display: block;
+        }
+
+        .msg-item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 20px;
+            margin-bottom: 18px;
+            line-height: 20px;
+            white-space: nowrap;
+
+            .left-item-header, .right-item-header {
+                display: flex;
+                align-items: center;
+                overflow: hidden;
+            }
+
+            .left-item-header {
+                max-width: 60%;
+                justify-content: flex-start;
+            }
+
+            .right-item-header {
+                justify-content: flex-end;
+                padding-left: 15px;
+                max-width: 40%;
+            }
+
+            .status-label {
+                margin-right: 15px;
+                text-transform: uppercase;
+            }
+
+            .msg-item-user {
+                position: relative;
+                margin-right: 5px;
+                font-size: 16px;
+                font-weight: 500;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+
+                &::after {
+                    content: " |";
+                    color: $gray-color-main;
+                }
+            }
+
+            .msg-item-theme {
+                font-size: 16px;
+                font-weight: 500;
+                line-height: 20px;
+            }
+
+            .alert-icon, .message-icon {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 86px;
+                font-size: 10px;
+                font-weight: 500;
+                text-transform: uppercase;
+
+                md-icon {
+                    width: 18px;
+                    margin: 0 5px 0 0;
+                }
+            }
+
+            .alert-icon {
+                color: $red-color;
+
+                md-icon {
+                    color: $red-color;
+                    height: 14px;
+                    width: 14px;
+                }
+            }
+
+            .message-icon {
+                color: $main-active-color;
+
+                md-icon {
+                    color: $main-active-color;
+                    height: 12px;
+                    width: 16px;
+                }
+            }
+
+            .msg-item-date {
+                width: 145px;
+                text-align: right;
+                color: #8b8b8b;
+                font-size: 12px;
+                font-weight: 400;
+            }
+        }
+
+        .msg-item-content {
+            .msg-item-details {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                margin-bottom: 10px;
+                font-size: 13px;
+                font-weight: 400;
+                font-style: italic;
+
+                .msg-item-details-item {
+                    color: $font-color;
+                    margin-right: 2px;
+
+                    &:not(:last-of-type)::after {
+                        content: "|";
+                        color: $gray-color-main;
+                        font-style: normal;
+                    }
+
+                    .msg-item-details-label {
+                        color: #5e5e5e;
+                    }
+                }
+            }
+
+            .msg-item-text {
+                font-size: 13px;
+                font-weight: 400;
+                line-height: 22px;
+            }
+        }
+
+        &.alert-item {
+            &::after, .status-label {
+                background-color: $red-color;
+            }
+
+            .message-icon {
+                display: none;
+            }
+
+            .msg-item-theme {
+                color: $red-color;
+            }
+        }
+
+        &.message-item {
+            &::after, .status-label {
+                background-color: $main-active-color;
+            }
+
+            .alert-icon {
+                display: none;
+            }
+
+            .msg-item-theme {
+                color: $main-active-color;
+            }
+        }
+    }
+}

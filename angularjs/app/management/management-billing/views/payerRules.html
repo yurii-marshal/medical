@@ -1,0 +1,68 @@
+<div class="payer-rules-tab full-height-with-footer" ng-form="payerRules.RulesForm">
+
+    <div class="flex-row payer-rules-header">
+        <md-button class="round-btn"
+                   ui-sref="root.management.payer.rules.prescription"
+                   ng-class="{'active': payerRules.isActive('root.management.payer.rules.prescription')}">
+            Prescription
+        </md-button>
+        <md-button class="round-btn"
+                   ui-sref="root.management.payer.rules.authorization"
+                   ng-class="{'active': payerRules.isActive('root.management.payer.rules.authorization')}">
+            Authorization
+        </md-button>
+        <md-button class="round-btn"
+                   ui-sref="root.management.payer.rules.resupply"
+                   ng-class="{'active': payerRules.isActive('root.management.payer.rules.resupply')}">
+            Resupply
+        </md-button>
+        <md-button class="round-btn"
+                   ui-sref="root.management.payer.rules.cmn"
+                   ng-class="{'active': payerRules.isActive('root.management.payer.rules.cmn')}">
+            CMN
+        </md-button>
+        <md-button class="round-btn"
+                   ui-sref="root.management.payer.rules.compilance"
+                   ng-class="{'active': payerRules.isActive('root.management.payer.rules.compilance')}">
+            Compliance
+        </md-button>
+        <md-button class="round-btn"
+                   ui-sref="root.management.payer.rules.tasks"
+                   ng-class="{'active': payerRules.isActive('root.management.payer.rules.tasks')}">
+            Tasks
+        </md-button>
+        <md-button class="round-btn"
+                   ui-sref="root.management.payer.rules.combine"
+                   ng-class="{'active': payerRules.isActive('root.management.payer.rules.combine')}">
+            Combine line items
+        </md-button>
+        <md-button class="round-btn"
+                   ui-sref="root.management.payer.rules.split"
+                   ng-class="{'active': payerRules.isActive('root.management.payer.rules.split')}">
+            Split line items
+        </md-button>
+        <md-button class="round-btn"
+                   ui-sref="root.management.payer.rules.rental"
+                   ng-class="{'active': payerRules.isActive('root.management.payer.rules.rental')}">
+            Rental
+        </md-button>
+        <md-button class="round-btn"
+                   ui-sref="root.management.payer.rules.rendering-provider"
+                   ng-class="{'active': payerRules.isActive('root.management.payer.rules.rendering-provider')}">
+            Rendering Provider
+        </md-button>
+    </div>
+
+    <div class="payer-rules-content" ui-view></div>
+
+    <div class="flow-body-footer">
+        <md-button class="md-raised main-button"
+                   ng-click="payerRules.cancel()">
+            Cancel
+        </md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="payerRules.save()">
+            Save
+        </md-button>
+    </div>
+</div>

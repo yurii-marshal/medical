@@ -1,0 +1,97 @@
+<div class="has-infinite-table">
+    <div class="infinite-scroll-bg">
+
+        <a href="javascript:void(0);"
+           class="toolbar-single-action"
+           ng-click="payers.addPayer()"
+           simple-tooltip="Add new payer"
+           tooltip-position="left"></a>
+
+        <div class="breadcrumbs transparent-bg">
+            <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+            <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+            <a href="javascript:void(0)" ui-sref="root.management.billing">Billing</a>
+            <a href="javascript:void(0)" class="active">Payers</a>
+        </div>
+
+        <infinity-table load-items-promise="payers.getPayers"
+                        page-size="24"
+                        item-alias="payer"
+                        filters-obj="payers.filter"
+                        sort-obj="payers.sortExpr"
+                        cache-filters-key="payers.cacheFiltersKey"
+                        default-sort-field="'Name'">
+            <infinity-table-sort>
+                <div>
+                    <md-icon md-svg-src="assets/images/default/insurance-v2-square.svg"
+                             class="main-sort-icon insurance-v2-square"></md-icon>
+                    <inftbl-sort-list param-name="Name">Name:</inftbl-sort-list>
+                </div>
+                <div class="order-id-td no-divider">
+                    <md-icon md-svg-src="assets/images/default/insurance-v2-square.svg"
+                             class="main-sort-icon insurance-v2-square"></md-icon>
+                    ID:
+                </div>
+                <div class="no-divider"></div>
+                <div class="assign-td no-divider">&nbsp;</div>
+            </infinity-table-sort>
+
+            <infinity-table-filters class="drowz-infinite-row-filter">
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>type payer name here</label>
+                        <input type="text"
+                               ng-model="$ctrl.filtersObj.name"
+                               ng-model-options="{debounce: 450}"
+                               clear-on-click/>
+                    </md-input-container>
+                </div>
+                <div class="order-id-td no-divider">
+                    <md-autocomplete-with-infinite-scroll class="drowz-infinite-autocomplete in-grid-filter-pos"
+                                     md-no-cache="true"
+                                     md-selected-item="$ctrl.filtersObj.claimCode"
+                                     md-search-text="searchPayerId"
+                                     md-items="item in $parent.payers.getPayerIds(searchPayerId, pageIndex)"
+                                     md-item-text="item.Text"
+                                     md-min-length="1"
+                                     md-floating-label="type id"
+                                     ng-model-options="{debounce: 450}"
+                                     md-menu-class="order-id-autocomplete"
+                                     clear-on-click
+                                     drowz-clear-value>
+                        <md-item-template>
+                            <span md-highlight-text="searchPayerId" md-highlight-flags="^i">{{::item.Text}}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            No payer id was found
+                        </md-not-found>
+                    </md-autocomplete-with-infinite-scroll>
+                </div>
+                <div class="no-divider"></div>
+                <div class="assign-td filter-reset-btn">
+                    <inftbl-filter-reset-btn></inftbl-filter-reset-btn>
+                </div>
+            </infinity-table-filters>
+
+            <infinity-table-row class="drowz-infinite-row hide-btns-row" ng-click="$parent.payers.goToPayer(payer.Id)">
+                <div ng-bind="payer.Name"></div>
+                <div class="order-id-td no-divider" ng-bind="payer.ClaimCode"></div>
+                <div class="no-divider"></div>
+                <div class="assign-td center-cell no-divider">
+                    <md-button class="delete-icon-btn" aria-label="..."
+                               confirm-ng-click="$parent.payers.deletePayer(payer.Id)"
+                               confirm-msg="'Are you sure you want to delete the {0} payer?'.format(payer.Name)"
+                               confirm-title="Delete payer"
+                    >
+                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                    </md-button>
+                </div>
+            </infinity-table-row>
+
+            <infinity-table-no-items>
+                <no-records text="Payers" is-fullpage="true"></no-records>
+            </infinity-table-no-items>
+        </infinity-table>
+
+    </div>
+</div>

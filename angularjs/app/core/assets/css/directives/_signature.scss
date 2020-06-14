@@ -1,0 +1,17 @@
+.signature-pad {
+    padding-top : 20px;
+
+    .signature-pad-body {
+        width: 100%;
+        height: 400px;
+    }
+}
+
+.signature-error {
+    padding-left: 20px;
+    padding-bottom: 15px;
+
+    md-input-container {
+        margin-top: 0;
+    }
+}

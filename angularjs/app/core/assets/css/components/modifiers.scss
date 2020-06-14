@@ -1,0 +1,93 @@
+modifiers {
+    display: block;
+    width: 100%;
+}
+
+.modifier-info-block.info-block {
+    .info-block-label {
+        margin-bottom: 0;
+    }
+
+    .info-block-body {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+}
+
+.modifiers-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.modifier-block {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    flex-direction: column;
+    width: 25%;
+    padding-right: 5px;
+
+    .modifier-autocomplete-block {
+        min-width: 100%;
+
+        md-input-container {
+            margin: -1px 0 0 0;
+            padding-left: 0;
+
+            > label {
+                display: none;
+            }
+        }
+
+        md-autocomplete-wrap {
+            md-progress-linear.md-inline {
+                top: 30px;
+                bottom: auto;
+                height: 2px;
+            }
+        }
+
+        .clear-field {
+            top: 11px;
+        }
+    }
+
+    .hidden-error-msgs {
+        position: relative;
+        top: -7px;
+        margin: 0;
+        padding: 0;
+
+        > input {
+            display: none;
+        }
+
+        .md-input-messages-nice {
+            .md-input-message-animation {
+                opacity: 1;
+                margin: 0;
+            }
+        }
+    }
+}
+
+.modifier-decorator {
+    min-width: 500px !important;
+}
+
+.modifiers-dropdown {
+    > li[md-virtual-repeat] {
+        padding: 0;
+        padding-left:10px;
+
+        > span, md-autocomplete-parent-scope > span {
+            display: block;
+            line-height: 48px;
+            height: 48px;
+            padding: 0 5px;
+        }
+    }
+}

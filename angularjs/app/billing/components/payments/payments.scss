@@ -1,0 +1,10 @@
+.payments-list {
+    .notes-td {
+        md-icon {
+            @include size(18px, 18px);
+            min-width: 18px;
+            min-height: 18px;
+            fill: $main-active-color;
+        }
+    }
+}

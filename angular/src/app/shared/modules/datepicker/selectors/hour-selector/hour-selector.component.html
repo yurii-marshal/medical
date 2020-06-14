@@ -1,0 +1,14 @@
+<div class="date-set">
+    <ul class="date-set__dates">
+        <li *ngFor="let hour of hours()"
+            [ngClass]="
+                {
+                     'date-set__date': true,
+                     'selected': isCurrentHour(hour)
+                }"
+            [style.flexBasis]="isMeridiem === true ? '33%' : '25%'"
+            (mousedown)="isCurrentHour(hour) ? hour : dateChange.emit(hour); $event.preventDefault(); $event.stopPropagation();">
+            {{ hour.format(isMeridiem === true ? 'hh' : 'HH') }}
+        </li>
+    </ul>
+</div>

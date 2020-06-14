@@ -1,0 +1,18 @@
+@import "~assets/styles/base/variables";
+
+:host /deep/ .dynamic-field {
+  margin-bottom: 15px;
+
+  .dynamic-label {
+    display: inline-block;
+    width: 200px;
+    font-size: 16px;
+    line-height: 30px;
+    font-weight: 600;
+    letter-spacing: 0px;
+    margin-bottom: 10px;
+    margin-right: 30px;
+    text-align: right;
+    color: $main-active-color;
+  }
+}

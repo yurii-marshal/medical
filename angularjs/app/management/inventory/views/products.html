@@ -1,0 +1,16 @@
+<div class="infinite-scroll-bg inventory-products">
+
+    <toolbar items="products.toolbarItems"></toolbar>
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+        <a href="javascript:void(0)" ui-sref="root.management.inventory">Inventory</a>
+        <a href="javascript:void(0)" class="active">Catalog</a>
+
+        <!--<drowz-tabs items="products.tabs"></drowz-tabs>-->
+    </div>
+    <load-products-status is-loading="products.isLoading" is-management="true"></load-products-status>
+    <div ui-view></div>
+
+</div>

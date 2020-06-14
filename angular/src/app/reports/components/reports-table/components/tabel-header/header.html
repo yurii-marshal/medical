@@ -1,0 +1,21 @@
+<div>
+    <div class="customSortDownLabel"
+         *ngIf="params.enableSorting && this.sorted === 'asc'"
+         (click)="onSortRequested('desc', $event)">
+        <mat-icon svgIcon="arrow"
+                  class="header-arrow-table arrow-up"
+        ></mat-icon>
+    </div>
+    <div class="customSortDownLabel"
+         *ngIf="params.enableSorting && (this.sorted === 'desc' || this.sorted === '')"
+         (click)="onSortRequested('asc', $event)"
+    >
+        <mat-icon svgIcon="arrow"
+                  class="header-arrow-table"
+        ></mat-icon>
+    </div>
+
+    <div class="customHeaderLabel">
+        {{ params.displayName }}
+    </div>
+</div>

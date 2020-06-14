@@ -1,0 +1,115 @@
+<div class="addresses-block"
+     ng-controller="eventAddressController as addrCtrl"
+     ng-init="addrCtrl.isModalWorkingHours = false"
+     ng-form="addressForm">
+
+    <div class="addresses-fields">
+        <div class="active-title flow-body-active-title">
+            Departure Address:
+            <md-button class="md-raised copy-to-btn to-arrival"
+                       aria-label="..."
+                       ng-click="addrCtrl.copyDepartureToArrival()"
+                       simple-tooltip="Copy Departure Address to Arrival Address"
+                       tooltip-position="left">
+                <md-icon md-svg-src="assets/images/default/arrow.svg"></md-icon>
+            </md-button>
+        </div>
+        <div class="info-block">
+            <md-input-container>
+                <label>Address (line 1):</label>
+                <input type="text"
+                       ng-model="addrCtrl.DepartureAddress.AddressLine"
+                       ng-required="addrCtrl.isDepartureAddressRequired"
+                       name="DepartureAddres_AddressLine">
+                <div ng-messages="addressForm.DepartureAddres_AddressLine.$error" class="md-input-messages-nice">
+                    <div ng-message="required">This field is required.</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="info-block">
+            <md-input-container>
+                <label>Address (line 2):</label>
+                <input type="text" ng-model="addrCtrl.DepartureAddress.AddressLine2">
+            </md-input-container>
+        </div>
+        <div class="info-block">
+            <md-input-container>
+                <label>City:</label>
+                <input type="text"
+                       ng-model="addrCtrl.DepartureAddress.City"
+                       ng-required="addrCtrl.isDepartureAddressRequired"
+                       name="DepartureAddres_City">
+                <div ng-messages="addressForm.DepartureAddres_City.$error" class="md-input-messages-nice">
+                    <div ng-message="required">This field is required.</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="flex-row">
+            <div class="info-block block-width-50-percent">
+                <input-state-string
+                        form-name="addressForm"
+                        input-name="departureState"
+                        selected-item="addrCtrl.DepartureAddress.State"
+                        ng-required="addrCtrl.isDepartureAddressRequired"
+                ></input-state-string>
+            </div>
+            <div class="info-block block-width-50-percent">
+                <input-zip-string
+                        form-name="addressForm"
+                        input-name="departureZip"
+                        selected-item="addrCtrl.DepartureAddress.Zip"
+                        ng-required="addrCtrl.isDepartureAddressRequired"
+                ></input-zip-string>
+            </div>
+        </div>
+
+    </div>
+    <div class="addresses-fields">
+        <div class="active-title flow-body-active-title">
+            <md-button class="md-raised copy-to-btn to-departure"
+                       aria-label="..."
+                       ng-click="addrCtrl.copyArrivalToDeparture()"
+                       simple-tooltip="Copy Arrival Address to Departure Address"
+                       tooltip-position="right">
+                <md-icon md-svg-src="assets/images/default/arrow.svg"></md-icon>
+            </md-button>
+            <span>Arrival Address:</span>
+        </div>
+
+        <div class="info-block">
+            <md-input-container>
+                <label>Address (line 1):</label>
+                <input type="text" ng-model="addrCtrl.ArrivalAddress.AddressLine">
+            </md-input-container>
+        </div>
+        <div class="info-block">
+            <md-input-container>
+                <label>Address (line 2):</label>
+                <input type="text" ng-model="addrCtrl.ArrivalAddress.AddressLine2">
+            </md-input-container>
+        </div>
+        <div class="info-block">
+            <md-input-container>
+                <label>City:</label>
+                <input type="text" ng-model="addrCtrl.ArrivalAddress.City">
+            </md-input-container>
+        </div>
+        <div class="flex-row">
+            <div class="info-block block-width-50-percent">
+                <input-state-string
+                        form-name="addressForm"
+                        input-name="arrivalState"
+                        selected-item="addrCtrl.ArrivalAddress.State"
+                ></input-state-string>
+            </div>
+            <div class="info-block block-width-50-percent">
+                <input-zip-string
+                        form-name="addressForm"
+                        input-name="arrivalZip"
+                        selected-item="addrCtrl.ArrivalAddress.Zip"
+                ></input-zip-string>
+            </div>
+        </div>
+    </div>
+
+</div>

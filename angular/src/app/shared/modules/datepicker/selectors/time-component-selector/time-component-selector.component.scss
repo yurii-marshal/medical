@@ -1,0 +1,38 @@
+.time-component-selector__am-pm {
+    cursor: pointer
+}
+
+.time-component-selector {
+    font-size: 2em;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+
+    .time-block {
+        font-size: 2em;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        margin: 20px 0 15px 40px;
+    }
+}
+
+.time-component-selector__component {
+    padding-right: .5em
+}
+
+.time-component-selector__component_last {
+    padding-right: 0
+}
+
+.time-separator {
+    user-select: none;
+    font-size: 54px;
+    margin: 0 40px 0 15px;
+}
+
+button {
+    margin-left: 15px;
+    margin-bottom: 30px;
+    box-shadow: none !important;
+}

@@ -1,0 +1,208 @@
+// Layout with small fixed width sidebar
+.small-sidebar {
+    min-height: 100%;
+    width: 100%;
+
+    .sidebar {
+        top: calc(#{$breadscrumbs-height} + #{$main-menu-height});
+        width: $sidebar-big-regular-width;
+
+        @include respond-to(appMinWidth) {
+            top: $breadscrumbs-height;
+        }
+    }
+
+    .sidebar-content {
+        height: calc(100% - 40px);
+    }
+
+    .sidebar-container {
+        padding-left: $sidebar-big-regular-width;
+        overflow: hidden;
+        transition: padding-left 350ms;
+        will-change: padding-left;
+
+        .main-content {
+            padding-top: $breadscrumbs-height;
+        }
+    }
+
+    drowz-tabs {
+        position: fixed;
+        z-index: 3;
+        top: $main-menu-height;
+        right: 0;
+        left: $sidebar-big-regular-width;
+        transform: translateZ(0);
+
+        @include respond-to(appMinWidth) {
+            position: absolute;
+            top: 0;
+        }
+    }
+
+    .breadcrumbs {
+        position: fixed;
+        z-index: 2;
+        top: $main-menu-height;
+        left: 0;
+        width: $sidebar-big-regular-width;
+        transform: translateZ(0);
+
+        @include respond-to(appMinWidth) {
+            position: absolute;
+            top: 0;
+        }
+    }
+}
+
+// Calendar layout with regular sidebar
+.regular-sidebar {
+    min-height: 100%;
+    width: 100%;
+
+    .sidebar-content {
+        height: calc(100% - 40px);
+
+        .mCSB_container {
+            padding-bottom: 30px;
+        }
+    }
+
+    .sidebar-padding-block {
+        padding-bottom: 5px;
+
+        .sidebar-block-title {
+            font-size: 14px;
+        }
+    }
+
+    .sidebar-accordeon .is-expanded .sidebar-block-title {
+        margin-bottom: 0;
+    }
+
+    &.h100 {
+        height: calc(100vh - #{$main-menu-height});
+
+        @include respond-to(appMinWidth) {
+            height: auto;
+        }
+    }
+
+    &.sidebar-with-menu {
+        .sidebar {
+            top: $main-menu-height;
+            width: $sidabar-menu-width;
+
+            @include respond-to(appMinWidth) {
+                top: 0;
+            }
+        }
+
+        .sidebar-container {
+            padding-left: $sidabar-menu-width;
+            overflow: hidden;
+            transition: padding-left 350ms;
+            will-change: padding-left;
+
+            &.menu-close {
+                padding-left: $sidebar-hidden-width;
+            }
+        }
+    }
+}
+
+.dark-sidebar {
+    min-height: 100%;
+    width: 100%;
+
+    .sidebar-content {
+        background-color: $dark-gray-color;
+    }
+
+    .toggle-menu-slide {
+        background-color: $dark-blue-color;
+
+        &:hover, &:focus {
+            background-color: rgba($dark-gray-color, 0.9);
+        }
+
+        .toggle_menu_arrow {
+            color: #fff;
+        }
+    }
+
+    .menu-close {
+        .toggle-menu-slide {
+            background-color: $dark-gray-color;
+
+            &:hover, &:focus {
+                background-color: rgba($dark-gray-color, 0.9);
+            }
+        }
+    }
+
+    .sidebar-link, .md-button.sidebar-link:not([disabled]) {
+        color: #fff;
+
+        &:hover, &:focus, &.active {
+            background-color: $main-active-color;
+        }
+    }
+}
+
+.main-content {
+    &.appointment-details-page {
+        .breadcrumbs {
+            width: auto;
+            right: 0;
+        }
+    }
+}
+
+.white-block {
+    display: block;
+    background-color: $white-color;
+    box-shadow: $box-shadow;
+    border-radius: 3px;
+
+    .white-block-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 50px;
+        min-height: 50px;
+        padding: 0 20px;
+        border-bottom: 1px solid $calendar-gray-color;
+        text-transform: uppercase;
+        color: $dark-blue-color;
+        font-size: 16px;
+        font-weight: $font-weight-bold;
+        transition: .2s;
+    }
+
+    .white-block-body {
+        position: relative;
+        max-height: calc(100% - 50px);
+    }
+
+    .title-icon-btn {
+        .mat-icon {
+            @include size(14px, 18px);
+            line-height: 18px;
+            color: $dark-blue-color;
+
+            &:hover, &:focus {
+                color: $dark-blue-color;
+            }
+
+            &.chevron {
+                transform: rotate(90deg);
+
+                &.active {
+                    transform: rotate(-90deg);
+                }
+            }
+        }
+    }
+}

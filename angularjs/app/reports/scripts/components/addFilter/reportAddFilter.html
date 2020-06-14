@@ -1,0 +1,22 @@
+<md-autocomplete
+        md-menu-container-class="reports-dropdown"
+        md-no-cache="true"
+        md-selected-item="$ctrl.selectedFilter"
+        md-search-text="$ctrl.searchFilter"
+        md-items="filter in $ctrl.filters | filter: { Name: $ctrl.searchFilter }"
+        md-item-text="filter.Name"
+        md-min-length="0"
+        md-floating-label="Select Filter:"
+        md-selected-item-change="$ctrl.addFilter($ctrl.selectedFilter)"
+        clear-on-click>
+    <md-item-template>
+        <div md-highlight-text="$ctrl.searchFilter"
+             md-highlight-flags="i"
+             class="item-title">
+            {{filter.Name}}
+        </div>
+    </md-item-template>
+    <md-not-found>
+        No filters were found
+    </md-not-found>
+</md-autocomplete>

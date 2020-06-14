@@ -1,0 +1,94 @@
+<div class="modal-window edit-patient-attrs-modal"
+     ng-form="$ctrl.Form"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="statusEditModal">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.close()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon"
+                 md-svg-src="assets/images/default/setup-rect.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Edit Patient Status:</h2>
+        </div>
+
+        <div class="select-patient-status {{$ctrl.patientStatus.statusClass}}">
+            <div class="flex-row">
+                <md-input-container class="grow-1">
+                    <label>Status:</label>
+                    <md-select ng-model="$ctrl.patientStatus"
+                               class="status-select"
+                               ng-model-options="{trackBy: '$value.Id'}">
+                        <md-option ng-value="status"
+                                   ng-repeat="status in $ctrl.statuses track by $index">
+                            <span ng-bind="status.Text"></span>
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div class="flex-row inactivity-reason"
+                 ng-if="+$ctrl.patientStatus.Id === $ctrl.patientStatusConstants.INACTIVE_STATUS_ID">
+                <div class="info-block w220px pad-left-0">
+                    <md-input-container>
+                        <label>Reason of Inactive:</label>
+                        <md-select ng-model="$ctrl.patientInactivityReason"
+                                   name="patientInactivityReason"
+                                   ng-model-options="{trackBy: '$value.Id'}"
+                                   ng-required="true">
+                            <md-option ng-value="reason"
+                                       ng-repeat="reason in $ctrl.inactivityReasons">
+                                {{reason.Text}}
+                            </md-option>
+                        </md-select>
+                        <div ng-messages="$ctrl.Form.patientInactivityReason.$error"
+                             class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div class="info-block date-block calendar_icon icon-right pad-left-0">
+                    <md-input-container>
+                        <label>DC Date:</label>
+                        <input datetimepicker
+                               format="MM/DD/YYYY"
+                               use-current="false"
+                               ng-model="$ctrl.patientDcDate">
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="flex-row" ng-if="$ctrl.isInactiveStatusTextVisible()">
+                <div class="grow-1">
+                    <md-input-container>
+                        <label>Custom reason text:</label>
+                        <input type="text"
+                               ng-model="$ctrl.patientInactiveStatusText"
+                               name="inactiveStatusText"
+                               ng-required="true">
+                        <div ng-messages="$ctrl.Form.inactiveStatusText.$error" class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="flex-row">
+               <attrs-tags class="grow-1"
+                          tags="$ctrl.patientTags"
+                          tags-parent="patient"
+               ></attrs-tags>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter"
+                       layout="row"
+                       layout-align="end center">
+        <md-button class="md-raised main-button"
+                   ng-click="$ctrl.close()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button"
+                   ng-click="$ctrl.save()">Save</md-button>
+    </md-dialog-actions>
+
+</div>

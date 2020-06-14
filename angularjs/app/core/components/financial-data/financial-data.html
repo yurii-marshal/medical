@@ -1,0 +1,83 @@
+<div class="financial-data">
+
+    <div class="financial-block charge-block">
+        <div class="financial-block-header">Charges:</div>
+        <div class="financial-block-body">
+            <div class="financial-sum">
+                <md-icon md-svg-src="assets/images/default/dollar-circle.svg" class="sum-icon"></md-icon>
+                <div class="sum-number">{{$ctrl.amounts.Charged.Amount | absNumber:2}}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="financial-block payments-block">
+        <div class="financial-block-header">Payments:</div>
+        <div class="financial-block-body">
+            <div class="financial-sum">
+                <md-icon md-svg-src="assets/images/default/dollar-circle.svg" class="sum-icon"></md-icon>
+                <div class="sum-number">
+                    {{$ctrl.amounts.Payments.Amount | absNumber:2}}
+                    <div class="unapplied-payments"
+                         ng-if="$ctrl.amounts.UnappliedPatientPayments && !($ctrl.amounts.UnappliedPatientPayments.Amount === 0)">
+                        <span class="unapplied-payments-number">
+                            {{$ctrl.amounts.UnappliedPatientPayments.Currency}}
+                            {{$ctrl.amounts.UnappliedPatientPayments.Amount | absNumber:2}}
+                        </span>
+                        - Unapplied
+                    </div>
+                </div>
+            </div>
+            <div class="financial-detail">
+                <div class="financial-detail-title">
+                    <md-icon md-svg-src="assets/images/default/document.svg" class="insurance-icon"></md-icon>
+                    Insurance:
+                </div>
+                <div class="financial-detail-number">
+                    {{$ctrl.amounts.InsurancePayments.Currency}}
+                    {{$ctrl.amounts.InsurancePayments.Amount | absNumber:2}}
+                </div>
+            </div>
+            <div class="financial-detail">
+                <div class="financial-detail-title">
+                    <md-icon md-svg-src="assets/images/default/user_v2.svg" class="patient-icon"></md-icon>
+                    Patient:
+                </div>
+                <div class="financial-detail-number">
+                    {{$ctrl.amounts.PatientPayments.Currency}}
+                    {{$ctrl.amounts.PatientPayments.Amount | absNumber:2}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="financial-block balance-block">
+        <div class="financial-block-header">Balance:</div>
+        <div class="financial-block-body">
+            <div class="financial-sum">
+                <md-icon md-svg-src="assets/images/default/dollar-circle.svg" class="sum-icon"></md-icon>
+                <div class="sum-number">{{$ctrl.amounts.Balance.Amount | absNumber:2}}</div>
+            </div>
+            <div class="financial-detail">
+                <div class="financial-detail-title">
+                    <md-icon md-svg-src="assets/images/default/document.svg" class="insurance-icon"></md-icon>
+                    Insurance:
+                </div>
+                <div class="financial-detail-number">
+                    {{$ctrl.amounts.InsuranceBalance.Currency}}
+                    {{$ctrl.amounts.InsuranceBalance.Amount | absNumber:2}}
+                </div>
+            </div>
+            <div class="financial-detail">
+                <div class="financial-detail-title">
+                    <md-icon md-svg-src="assets/images/default/user_v2.svg" class="patient-icon"></md-icon>
+                    Patient:
+                </div>
+                <div class="financial-detail-number">
+                    {{$ctrl.amounts.PatientBalance.Currency}}
+                    {{$ctrl.amounts.PatientBalance.Amount | absNumber:2}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

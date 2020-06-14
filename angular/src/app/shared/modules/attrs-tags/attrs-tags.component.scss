@@ -1,0 +1,61 @@
+@import "~assets/styles/base/variables";
+@import "~assets/styles/utils/mixins";
+
+.tags-container {
+
+    .tags-display-name {
+        width: 100%;
+        position: relative;
+        display: block;
+        margin-bottom: 7px;
+        color: $label-color;
+        font-size: 11px;
+        line-height: 11px;
+        font-weight: 400;
+        margin-top: -10px;
+    }
+
+    .tag-text {
+        color: $font-color;
+    }
+
+    .delete-icon {
+        cursor: pointer;
+        margin: 0 0 0 7px;
+        display: inline-block;
+        color: $light-gray-label;
+        @include size(14px, 14px);
+
+        &:hover {
+            color: $dark-black-color;
+        }
+    }
+
+    .tag-icon {
+        transform: rotateY(180deg);
+        @include size(12px, 100%);
+        margin: 0 5px 0 0;
+    }
+
+    mat-progress-bar {
+        height: 1px;
+        position: absolute;
+        top: 31px;
+        z-index: 1;
+    }
+
+    .clean-button {
+        vertical-align: bottom;
+        padding-top: 3px;
+        color: $light-gray-label;
+        cursor: pointer;
+
+        &.hidden-button {
+            visibility: hidden;
+        }
+
+        &:hover {
+            color: $dark-black-color;
+        }
+    }
+}

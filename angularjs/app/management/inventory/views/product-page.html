@@ -1,0 +1,562 @@
+<div class="drowz-wizard product-page bs-loading-overlay-fullscreen"
+     ng-form="product.form"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="productPage">
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+        <a href="javascript:void(0)" ui-sref="root.management.inventory">Inventory</a>
+        <a href="javascript:void(0)" ui-sref="root.management.inventory.products">Catalog</a>
+        <a href="javascript:void(0)" class="active">
+            <span ng-if="!product.productId">New</span>
+            <span ng-if="product.productId">Edit</span>
+            Product
+        </a>
+    </div>
+
+    <div class="drowz-wizard-body">
+        <div class="drowz-wizard-body-flex">
+
+            <div class="grow-1">
+                <div class="drowz-wizard-block no-float">
+                    <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">Description:</div>
+                    </div>
+                    <div class="drowz-wizard-block-body">
+                        <div class="flex-row row">
+                            <div class="info-block grow-1">
+                                <md-input-container>
+                                    <label>Name:</label>
+                                    <input type="text"
+                                           ng-model="product.model.Name"
+                                           ng-disabled="product.UsedByEquipment || product.disableEdit"
+                                           ng-required="true"
+                                           name="name"/>
+                                    <div ng-messages="product.form.name.$error" class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="info-block col-xs-3">
+                                <md-input-container>
+                                    <label>Status:</label>
+                                    <md-select ng-model="product.model.Status"
+                                               ng-model-options="{trackBy: '$value.Id'}"
+                                               ng-disabled="product.UsedByEquipment || product.disableEdit"
+                                               ng-required="true"
+                                               name="status">
+                                        <md-option ng-value="item" ng-repeat="item in product.statuses">
+                                            {{item.Name}}
+                                        </md-option>
+                                    </md-select>
+                                    <div ng-messages="product.form.status.$error" class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="info-block col-xs-3" ng-if="product.productId">
+                                <div class="info-block-label">ID:</div>
+                                <div class="info-block-body">{{product.productId}}</div>
+                            </div>
+                        </div>
+
+                        <div class="flex-row row">
+                            <div class="info-block grow-1">
+                                <md-input-container>
+                                    <label>Description:</label>
+                                    <textarea cols="1"
+                                              rows="1"
+                                              name="description"
+                                              ng-maxlength="1023"
+                                              ng-model="product.model.Description">
+                                    </textarea>
+                                    <div ng-messages="product.form.description.$error" class="md-input-messages-nice">
+                                        <div ng-message="maxlength"><b>Text</b> is to long, max length is 1023 symbols.</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+
+                        <div class="flex-row row">
+                            <div class="info-block col-xs-3">
+                                <md-autocomplete-with-infinite-scroll md-no-cache="true"
+                                                 md-selected-item="product.model.Manufacturer"
+                                                 md-search-text="searchManufacturer"
+                                                 md-items="item in product.getManufacturersByName(searchManufacturer, pageIndex)"
+                                                 md-item-text="item.Name"
+                                                 md-min-length="0"
+                                                 ng-required="true"
+                                                 ng-disabled="product.UsedByEquipment || product.disableEdit"
+                                                 md-floating-label="Manufacturer:"
+                                                 clear-on-click
+                                                 md-require-match="true"
+                                                 md-input-name="manufacturer">
+                                    <md-item-template>
+                                        <span md-highlight-flags="^i" title="{{item.Name}}">{{item.Name}}</span>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No Manufacturers were found
+                                    </md-not-found>
+                                    <div ng-messages="product.form.manufacturer.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                        <div ng-message="md-require-match">Selected Manufacturer is not valid</div>
+                                    </div>
+                                </md-autocomplete-with-infinite-scroll>
+                            </div>
+                            <div class="info-block col-xs-3">
+                                <md-autocomplete-with-infinite-scroll md-no-cache="true"
+                                                 md-selected-item="product.model.Category"
+                                                 md-search-text="searchCategory"
+                                                 md-items="item in product.getCategoriesByName(searchCategory, pageIndex)"
+                                                 md-item-text="item.Name"
+                                                 md-min-length="0"
+                                                 ng-required="true"
+                                                 md-floating-label="Category:"
+                                                 ng-disabled="product.UsedByEquipment || product.disableEdit"
+                                                 clear-on-click
+                                                 md-require-match="true"
+                                                 md-input-name="category">
+                                    <md-item-template>
+                                        <span md-highlight-flags="^i" title="{{item.Name}}">{{item.Name}}</span>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No Categories were found
+                                    </md-not-found>
+                                    <div ng-messages="product.form.category.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                        <div ng-message="md-require-match">Selected Category is not valid</div>
+                                    </div>
+                                </md-autocomplete-with-infinite-scroll>
+                            </div>
+                            <div class="info-block col-xs-3">
+                                <md-autocomplete-with-infinite-scroll md-no-cache="true"
+                                                 md-selected-item="product.model.Group"
+                                                 md-search-text="searchGroup"
+                                                 md-items="item in product.getGroupsByName(searchGroup, pageIndex)"
+                                                 md-item-text="item.Name"
+                                                 md-min-length="0"
+                                                 ng-required="true"
+                                                 md-floating-label="Group:"
+                                                 clear-on-click
+                                                 md-require-match="true"
+                                                 ng-disabled="product.UsedByEquipment || product.disableEdit"
+                                                 md-input-name="group">
+                                    <md-item-template>
+                                        <span md-highlight-flags="^i" title="{{item.Name}}">{{item.Name}}</span>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No Groups were found
+                                    </md-not-found>
+                                    <div ng-messages="product.form.group.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                        <div ng-message="md-require-match">Selected Group is not valid</div>
+                                    </div>
+                                </md-autocomplete-with-infinite-scroll>
+                            </div>
+                            <div class="info-block col-xs-3">
+                                <md-input-container>
+                                    <label>Part #:</label>
+                                    <input type="text"
+                                           ng-model="product.model.PartNumber"
+                                           ng-required="true"
+                                           ng-disabled="product.UsedByEquipment || product.disableEdit"
+                                           name="partNumber"/>
+                                    <div ng-messages="product.form.partNumber.$error" class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="drowz-wizard-block no-float">
+                    <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">Properties:</div>
+                    </div>
+                    <div class="drowz-wizard-block-body">
+                        <div class="flex-row row align-stretch">
+                            <div class="info-block block-width-25-percent">
+                                <md-input-container>
+                                    <label>Type:</label>
+                                    <md-select ng-model="product.model.Type"
+                                               ng-model-options="{trackBy: '$value.Id'}"
+                                               ng-change="product.typeChanged()"
+                                               ng-disabled="product.UsedByEquipment || product.disableEdit"
+                                               ng-required="true"
+                                               name="type">
+                                        <md-option ng-value="item" ng-repeat="item in product.types">
+                                            {{item.Name}}
+                                        </md-option>
+                                    </md-select>
+                                    <div ng-messages="product.form.type.$error" class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="info-block block-width-25-percent flex-cont center" ng-if="!product.isBundle">
+                                <div class="info-block-label">&nbsp;</div>
+                                <div class="info-block-body">
+                                    <md-checkbox class="md-primary"
+                                                 ng-model="product.model.Options.Lotted"
+                                                 ng-disabled="product.UsedByEquipment || product.disableEdit"
+                                    >
+                                        Lotted
+                                    </md-checkbox>
+                                </div>
+                            </div>
+                            <div class="info-block block-width-25-percent  flex-cont center" ng-show="product.model.Type && product.model.Type.Code==='Serialized'">
+                                <div class="info-block-label">&nbsp;</div>
+                                <div class="info-block-body">
+                                    <md-checkbox class="md-primary"
+                                                 ng-model="product.model.Options.DataCollection">
+                                        Therapy Data
+                                    </md-checkbox>
+                                </div>
+                            </div>
+                            <div class="info-block block-width-25-percent  flex-cont center" ng-if="!product.isBundle">
+                                <div class="info-block-label">&nbsp;</div>
+                                <div class="info-block-body">
+                                    <md-checkbox class="md-primary" ng-model="product.model.Options.Resupply">
+                                        Resupply
+                                    </md-checkbox>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-picture-block">
+                <div class="drowz-wizard-block no-float">
+                    <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">Image:</div>
+                        <md-button class="delete-icon-btn"
+                                   aria-label="..."
+                                   ng-click="product.removePicture()">
+                            <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                        </md-button>
+                    </div>
+                    <div class="drowz-wizard-block-body product-picture-container"
+                         bs-loading-overlay
+                         bs-loading-overlay-reference-id="pictureContainer">
+
+                        <div class="product-picture"
+                             ng-style="{'background-image':'url(' + product.productSrc + ')'}">
+                        </div>
+
+                        <file-upload files="product.uploadedFile"
+                                     max-count="1"
+                                     max-size="5"
+                                     extensions="product.uploadExtensions"
+                                     button-text="Upload Image"></file-upload>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="drowz-wizard-block no-float"  ng-if="!product.isBundle">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">HCPCS:</div>
+            </div>
+            <div class="drowz-wizard-block-body">
+                <div class="flex-row row">
+                    <div class="info-block col-xs-3">
+                        <md-autocomplete md-input-name="primaryHcpcsCode"
+                                         md-no-cache="true"
+                                         md-selected-item="product.model.HcpcsCodes.Primary"
+                                         md-search-text="product.searchPrimaryHcpcs"
+                                         md-items="item in product.getHcpcsCodes(product.searchPrimaryHcpcs, 'primary')"
+                                         md-item-text="item.Id"
+                                         md-menu-container-class="hcpcs-decorator"
+                                         md-min-length="2"
+                                         md-floating-label="Primary HCPCS:"
+                                         ng-required="true"
+                                         md-autocomplete-required
+                                         ng-disabled="product.UsedByEquipment || product.disableEdit"
+                                         md-require-match="true"
+                        >
+                            <md-item-template>
+                                <div md-highlight-text="product.searchPrimaryHcpcs" md-highlight-flags="^i">
+                                    {{item.Id + ' ' + item.Description}}
+                                </div>
+                            </md-item-template>
+                            <md-not-found>
+                                No codes matching "{{product.searchPrimaryHcpcs}}" were found.
+                            </md-not-found>
+                            <div ng-messages="product.form.primaryHcpcsCode.$error" class="md-input-messages-nice">
+                                <div ng-message="required">Primary HCPCS code is required</div>
+                                <div ng-message="md-require-match">Selected code is not valid</div>
+                            </div>
+                        </md-autocomplete>
+                    </div>
+                    <div class="info-block col-xs-3">
+                        <div class="add-autocomplete">
+                            <md-autocomplete class="autocomplete-with-addBtn"
+                                             md-no-cache="true"
+                                             md-selected-item="product.selectedHcpcs"
+                                             md-search-text="product.searchHcpcs"
+                                             md-items="item in product.getHcpcsCodes(product.searchHcpcs, 'additional')"
+                                             md-item-text="item.Id"
+                                             md-menu-container-class="hcpcs-decorator"
+                                             md-min-length="2"
+                                             md-floating-label="Additional HCPCS:"
+                                             ng-disabled="product.UsedByEquipment || product.disableEdit">
+                                <md-item-template>
+                                    <span md-highlight-text="product.searchHcpcs" md-highlight-flags="^i">{{item.Id + ' ' + item.Description}}</span>
+                                </md-item-template>
+                                <md-not-found>
+                                    No codes matching "{{product.searchHcpcs}}" were found.
+                                </md-not-found>
+                                <md-icon ng-click="product.addHcpcs(product.selectedHcpcs)"
+                                         md-svg-src="assets/images/default/plus-square.svg"
+                                         class="add-item-btn"></md-icon>
+                            </md-autocomplete>
+                        </div>
+                    </div>
+                    <div class="info-block">
+                        <div ng-if="product.model.HcpcsCodes.Additional.length > 0">
+                            <div ng-repeat="item in product.model.HcpcsCodes.Additional"
+                                 class="role-block"
+                                 ng-click="product.deleteHcpcsByIndex($index)">
+                                <span>{{item}}</span>
+                                <div class="delete-role" ng-hide="product.UsedByEquipment || product.disableEdit" ng-click="pruduct.deleteHcpcsByIndex($index)"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="drowz-wizard-block no-float" ng-if="!product.isBundle">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Price:</div>
+            </div>
+            <div class="drowz-wizard-block-body">
+                <div class="flex-row row">
+                    <div class="info-block col-xs-3">
+                        <md-input-container class="currency-container">
+                            <div class="currency-icon">$</div>
+                            <label>Purchase:</label>
+                            <input type="number"
+                                   min="0"
+                                   step="0.01"
+                                   name="purchasePrice"
+                                   ng-model="product.model.Pricing.PurchasePrice"
+                                   price-validator
+                            >
+                            <div ng-messages="product.form.purchasePrice.$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="min">Min purchase amount is 0</div>
+                                <div ng-message="price">Max 2 digits after point</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="drowz-wizard-block no-float" ng-if="product.isBundle">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Price:</div>
+            </div>
+            <div class="drowz-wizard-block-body">
+                <div class="flex-row row">
+                    <div class="info-block col-xs-3">
+                        <md-input-container class="currency-container">
+                            <div class="currency-icon">$</div>
+                            <label>Purchase:</label>
+                            <input type="number"
+                                   min="0"
+                                   step="0.01"
+                                   name="bundlePurchasePrice"
+                                   ng-model="product.model.Pricing.PurchasePrice"
+                                   price-validator
+                            >
+                            <div ng-messages="product.form.bundlePurchasePrice.$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="min">Min purchase amount is 0</div>
+                                <div ng-message="price">Max 2 digits after point</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="drowz-wizard-block no-float" ng-if="!product.isBundle">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Maintenance:</div>
+            </div>
+            <div class="drowz-wizard-block-body">
+                <div class="flex-row row">
+                    <div class="info-block col-xs-3">
+                        <div class="info-block-label">&nbsp;</div>
+                        <div class="info-block-body">
+                            <md-checkbox class="md-primary service-required-checkbox" ng-change="product._setDefaultInterval()" ng-model="product.isServiceRequired">
+                                Service Required
+                            </md-checkbox>
+                        </div>
+                    </div>
+                    <div class="info-block col-xs-3">
+                        <md-input-container>
+                            <label>From:</label>
+                            <md-select ng-model="product.model.Servicing.StartType"
+                                       ng-required="product.isServiceRequired"
+                                       ng-model-options="{trackBy: '$value.Id'}"
+                                       name="startType"
+                                       ng-disabled="!product.isServiceRequired">
+                                <md-option ng-value="item" ng-repeat="item in product.startTypes">
+                                    {{item.Name}}
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="product.form.startType.$error" class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div class="info-block col-xs-3">
+                        <md-input-container>
+                            <label>Interval:</label>
+                            <input type="number"
+                                   min="0"
+                                   step="1"
+                                   ng-model="product.model.Servicing.Interval"
+                                   ng-required="product.isServiceRequired"
+                                   name="interval"
+                                   ng-disabled="!product.isServiceRequired">
+                            <div ng-messages="product.form.interval.$error" class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div class="info-block col-xs-3">
+                        <md-input-container>
+                            <label>Cycle:</label>
+                            <md-select ng-model="product.model.Servicing.Cycle"
+                                       ng-required="product.isServiceRequired"
+                                       ng-model-options="{trackBy: '$value.Id'}"
+                                       name="cycle"
+                                       ng-disabled="!product.isServiceRequired">
+                                <md-option ng-value="item" ng-repeat="item in product.cycles">
+                                    {{item.Name}}
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="product.form.cycle.$error" class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="drowz-wizard-block no-float" ng-show="product.isBundle">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Items:</div>
+            </div>
+            <div class="drowz-wizard-block-body">
+                <div class="bundle-items">
+                    <div class="add-autocomplete">
+                        <md-autocomplete-with-infinite-scroll
+                            class="autocomplete-with-addBtn input-no-padding"
+                             md-no-cache="true"
+                             md-selected-item="product.selectedItem"
+                             md-search-text="product.searchItemText"
+                             md-items="item in product.getBundleProducts(product.searchItemText, pageIndex)"
+                             md-item-text="item.Name"
+                             md-min-length="0"
+                             md-floating-label="Add Item:"
+                             ng-required="product.isBundle && !(product.model.Components && product.model.Components.length)"
+                             ng-disabled="product.UsedByEquipment || product.disableEdit">
+                            <md-item-template>
+                                <span md-highlight-text="product.searchItemText" md-highlight-flags="^i" ng-bind="item.Name+(item.Name?' - Part#: ':'')+item.PartNumber"></span>
+                            </md-item-template>
+                            <md-not-found>
+                                No items matching "{{product.searchItemText}}" were found.
+                            </md-not-found>
+                        </md-autocomplete-with-infinite-scroll>
+                        <md-icon ng-click="product.addSelectedItem(product.selectedItem)"
+                                 style="margin-left: -20px;position: relative;"
+                                 md-svg-src="assets/images/default/plus-square.svg"
+                                 class="add-item-btn"
+                                 ng-class="{'disabled': product.selectedItem == undefined || product.selectedItem == ''}"
+                        ></md-icon>
+                    </div>
+                    <div class="bundle-item"
+                         ng-repeat="component in product.model.Components track by $index"
+                    >
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">Model Name:</div>
+                            <div class="info-block-body">{{component.Name}}</div>
+                        </div>
+                        <div class="info-block block-width-230 left-divider">
+                            <div class="info-block-label">Part #:</div>
+                            <div class="info-block-body">{{component.PartNumber}}</div>
+                        </div>
+                        <div class="info-block block-width-230 left-divider">
+                            <div class="info-block-label">Manufacturer:</div>
+                            <div class="info-block-body">{{component.Manufacturer}}</div>
+                        </div>
+                        <div class="info-block block-width-230 left-divider">
+                            <div class="info-block-label">HCPCS:</div>
+                            <div class="info-block-body">
+                                <div class="flex-cont">
+                                    <div popover-directive="component.allHcpcsCodes"
+                                         hide-first-item="true"
+                                         min-width="50"
+                                    ></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-block block-width-80 left-divider">
+                            <md-input-container class="qty-container">
+                                <label>Qty:</label>
+                                <input type="number"
+                                       min="1"
+                                       step="1"
+                                       ng-required="true"
+                                       ng-disabled="product.UsedByEquipment || product.disableEdit"
+                                       ng-model="component.Count">
+                            </md-input-container>
+                        </div>
+                        <div class="info-block bundle-item-delete">
+                            <a href="javascript:void(0);"
+                               class="delete-icon-btn"
+                               ng-click="product.deleteItemByIndex($index)"
+                               ng-hide="product.UsedByEquipment || product.disableEdit"
+                            >
+                                <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <md-input-container class="hidden-validation-input">
+                    <label></label>
+                    <input type="text"
+                           ng-model="product.model.Components"
+                           ng-required="product.isBundle"
+                           name="components" />
+                    <div ng-messages="product.form.components.$error" class="md-input-messages-nice">
+                        <div ng-message="required">Components are required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="drowz-wizard-footer">
+        <md-button class="md-raised main-button drowz-wizard-footer-btn" ng-click="product.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                   aria-label="..."
+                   ng-click="product.save()">
+            <span ng-if="!product.productId">Create</span>
+            <span ng-if="product.productId">Save</span>
+        </md-button>
+    </div>
+
+</div>

@@ -1,0 +1,28 @@
+<div class="modal-window satisfied-invoice-modal">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/alert.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Confirm Action:</h2>
+        </div>
+
+        <div class="center-text">
+            <span class="font-semibold">{{$ctrl.infoText}}</span>
+            do<span ng-if="this.nonSatisfiedLines.length === 1">es</span>
+            not match prior authorization.
+            <br>
+            Do you want to save invoice anyway?
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button" ng-click="$ctrl.save()">Save</md-button>
+    </md-dialog-actions>
+
+</div>

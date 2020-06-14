@@ -1,0 +1,140 @@
+<div class="inbox-list preview-container" ng-class="{'opened-preview': list.isOpenedPreview}">
+    <div class="inf-table-container">
+        <infinity-table load-items-promise="list.getInboxList"
+                        page-size="24"
+                        item-alias="item"
+                        parent-container=".inf-table-container"
+                        filters-obj="list.filterObj"
+                        sort-obj="list.sortExpr"
+                        default-sort-field="'ReceivedDate'"
+                        default-sort-value="'false'">
+            <infinity-table-sort>
+                <div class="number-td">&nbsp;</div>
+                <div>
+                    <md-icon md-svg-src="assets/images/default/calendar-new.svg" class="main-sort-icon date-icon"></md-icon>
+                    <inftbl-sort-list param-name="ReceivedDate">Received:</inftbl-sort-list>
+                </div>
+                <div>
+                    <md-icon md-svg-src="assets/images/default/phone-default.svg" class="main-sort-icon phone-icon"></md-icon>
+                    Caller ID:
+                </div>
+                <div>
+                    <md-icon md-svg-src="assets/images/default/phone-default.svg" class="main-sort-icon phone-icon"></md-icon>
+                    Fax Line:
+                </div>
+                <div>
+                    <md-icon md-svg-src="assets/images/default/tasks.svg" class="main-sort-icon tasks-icon"></md-icon>
+                    ID:
+                </div>
+                <div class="no-divider">
+                    <md-icon md-svg-src="assets/images/default/documents.svg" class="main-sort-icon document-icon"></md-icon>
+                    # Pages:
+                </div>
+                <div class="w60px no-divider">&nbsp;</div>
+            </infinity-table-sort>
+
+            <infinity-table-filters class="drowz-infinite-row-filter">
+                <div class="number-td">
+                    <md-checkbox class="md-primary"
+                                 aria-label="..."
+                                 ng-click="$ctrl.selectAllFn()"
+                                 ng-checked="$ctrl.isSelectAll">
+                    </md-checkbox>
+                </div>
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search date</label>
+                        <input ng-model="$ctrl.filtersObj.ReceivedDate"
+                               datetimepicker
+                               use-current="false"
+                               format="MM/DD/YYYY"
+                               show-today-button="false"
+                               aria-label="stardivate"
+                               clear-on-click>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search id</label>
+                        <input type="text"
+                               ng-model="$ctrl.filtersObj.CallerId"
+                               ng-model-options="{debounce: 450}"
+                               clear-on-click>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search</label>
+                        <input type="text"
+                               ng-model="$ctrl.filtersObj.FaxLine"
+                               ng-model-options="{debounce: 450}"
+                               clear-on-click>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search</label>
+                        <input type="text"
+                               ng-model="$ctrl.filtersObj.ExternalId"
+                               ng-model-options="{debounce: 450}"
+                               clear-on-click>
+                    </md-input-container>
+                </div>
+                <div class="no-divider">
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search</label>
+                        <input type="text"
+                               ng-model="$ctrl.filtersObj.Pages"
+                               ng-model-options="{debounce: 450}"
+                               clear-on-click>
+                    </md-input-container>
+                </div>
+                <div class="number-td w60px filter-reset-btn">
+                    <inftbl-filter-reset-btn></inftbl-filter-reset-btn>
+                </div>
+            </infinity-table-filters>
+
+            <infinity-table-row class="drowz-infinite-row hide-btns-row"
+                                ng-class="{'font-semibold' : !item.Read}">
+                <div class="number-td">
+                    <md-checkbox ng-checked="item.isSelected"
+                                 aria-label="..."
+                                 ng-click="$parent.list.toggleItem(item)"
+                                 class="md-primary">
+                    </md-checkbox>
+                </div>
+                <div ng-bind='item.ReceivedDate | amDateFormat: "MM/DD/YYYY hh:mm A"'></div>
+                <div ng-bind="item.CallerId | tel"></div>
+                <div ng-bind="item.FaxLine | tel"></div>
+                <div ng-bind="item.ExternalId"></div>
+                <div class="no-divider" ng-bind="item.Pages"></div>
+                <div class="w60px align-center no-divider">
+                    <md-button aria-label="..."
+                               class="view-info-icon"
+                               ng-class="{'active' : $parent.list.highlightViewButton(item)}"
+                               ng-click="$parent.list.viewFile($event, item)">
+                        <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon>
+                    </md-button>
+                </div>
+            </infinity-table-row>
+
+            <infinity-table-no-items>
+                <no-records text="Inbox Items" is-fullpage="true"></no-records>
+            </infinity-table-no-items>
+        </infinity-table>
+    </div>
+
+    <div class="show-file-container" ng-class="{'open': list.isOpenedPreview}">
+        <div class="show-file-header">
+            <md-button class="hide-preview small-btn"
+                       ng-click="list.hideViewFileContainer()">
+                <md-icon md-svg-src="assets/images/default/download.svg"></md-icon>
+                Hide Preview
+            </md-button>
+        </div>
+        <div class="show-file-content">
+            <embed src="" id="pdfPreview" type='application/pdf' />
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,52 @@
+<div class="actions">
+    <mat-checkbox color="primary" 
+                  (change)="setStepOptional(1, $event.checked)"
+    >Skip second step</mat-checkbox>
+</div>
+
+<mat-horizontal-stepper [linear]="true"
+                        [@.disabled]="true"
+                        (selectionChange)="onStepChange()"
+>
+    <ng-template matStepperIcon="edit">
+        <!--<mat-icon>check</mat-icon>-->
+    </ng-template>
+
+    <mat-step [stepControl]="firstFormGroup" [label]="'Referral'">
+        <form [formGroup]="firstFormGroup">
+            <mat-form-field>
+                <input matInput placeholder="Referral" formControlName="firstCtrl" required>
+            </mat-form-field>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" [label]="'Medical'">
+        <form [formGroup]="secondFormGroup">
+            <mat-form-field>
+                <input matInput placeholder="Medical" formControlName="secondCtrl" required>
+            </mat-form-field>
+        </form>
+    </mat-step>
+    <mat-step [label]="'Items'"></mat-step>
+    <mat-step [label]="'Rx'"></mat-step>
+    <mat-step [label]="'Tags'"></mat-step>
+    <mat-step [label]="'Documents'"></mat-step>
+    <mat-step [label]="'Summary'"></mat-step>
+</mat-horizontal-stepper>
+
+<div>
+    <button mat-button
+            [disabled]="isPreviousStepButtonDisabled()"
+            (click)="previousStep()"
+    >Previous</button>
+    <button mat-raised-button
+            color="primary"
+            class="mat-raised-button mat-primary"
+            [disabled]="isNextStepButtonDisabled()"
+            (click)="nextStep()"
+    >Next</button>
+    <button mat-raised-button
+            color="primary"
+            class="mat-raised-button mat-primary"
+            (click)="resetStepper()"
+    >Reset</button>
+</div>

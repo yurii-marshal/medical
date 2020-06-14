@@ -1,0 +1,34 @@
+.blue-scroll-theme {
+
+  .ps {
+
+    .ps__rail-y {
+      background: $gray-color-main;
+      width: 3px;
+      opacity: 0.5;
+    }
+
+    &.ps--active-y {
+      .ps__rail-y {
+        background: $gray-color-main;
+        width: 3px;
+
+        &:hover {
+          width: 3px;
+        }
+
+        .ps__thumb-y {
+          width: 3px;
+          background: $main-active-color;
+          left: 1px;
+
+          &:hover {
+            background-color: $main-active-hover-color;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
+

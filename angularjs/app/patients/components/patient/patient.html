@@ -1,0 +1,35 @@
+<div class="small-sidebar"
+     ng-class="{'hide-sidebar': patient.isManageResupplyPage}"
+>
+    <div class="sidebar-container"
+         drowz-sidebar
+         drowz-sidebar-name="patient"
+    >
+
+        <patient-short-info-sidebar
+                class="sidebar"
+                patient-id="patient.patientId"
+                patient="patient.shortInfo">
+        </patient-short-info-sidebar>
+
+        <div class="main-content">
+
+            <drowz-tabs items="patient.tabs" is-active="patient.isActive"></drowz-tabs>
+
+            <toolbar items="patient.toolbarItems"></toolbar>
+
+            <div class="breadcrumbs">
+                <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+                <a href="javascript:void(0)" ui-sref="root.patients.list">Patients</a>
+                <a href="javascript:void(0)" class="active">{{patient.shortInfo.Name.FullName}}</a>
+            </div>
+
+            <div ng-form="patient.main"
+                 bs-loading-overlay
+                 bs-loading-overlay-reference-id="patientPage"
+                 ui-view>
+            </div>
+
+        </div>
+    </div>
+</div>

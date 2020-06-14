@@ -1,0 +1,21 @@
+<div class="modal-window submit-invoice-modal">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/billing.svg"></md-icon>
+
+        <div class="center-text">
+            Pricing record contains prefilled values for {{$ctrl.additionalText}}.
+            Do you want to use them?
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button" ng-click="$ctrl.save()">Apply</md-button>
+    </md-dialog-actions>
+
+</div>

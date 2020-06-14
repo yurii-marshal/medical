@@ -1,0 +1,75 @@
+.attrs-tags {
+    position: relative;
+
+    .info-block {
+        padding: 0;
+    }
+
+    md-progress-linear {
+        position: absolute;
+        top: 41px;
+        height: 2px;
+
+        .md-container{
+            height: 2px;
+        }
+    }
+
+    .attr-label {
+        .delete-tag {
+            position: relative;
+            margin: 0 0 0 7px;
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+
+            &::after, &::before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                background-color: #d6d6d6;
+                transform: rotate(45deg);
+                transition: .2s;
+            }
+
+            &::after {
+                height: 2px;
+                width: 18px;
+                margin-top: -1px;
+                margin-left: -9px;
+            }
+
+            &::before {
+                width: 2px;
+                height: 18px;
+                margin-top: -9px;
+                margin-left: -1px;
+            }
+
+            &:hover {
+                &::after, &::before {
+                    background-color: $gray-color;
+                }
+            }
+        }
+    }
+}
+
+.md-virtual-repeat-container {
+    .md-autocomplete-suggestions {
+        li {
+            position: relative;
+
+            span.add-new-tag-item {
+                border-bottom: 1px solid $lighter-gray-color;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 0 15px;
+            }
+        }
+    }
+}

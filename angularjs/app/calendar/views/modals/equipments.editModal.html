@@ -1,0 +1,23 @@
+﻿<div class="modal-window delete-modal">
+    <md-toolbar class="modal-title">
+        <div class="md-toolbar-tools">
+            <h2>Edit Device Barcode</h2>
+            <a href="javascript:void(0);" ng-click="editModal.cancel()" class="close-modal"></a>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="modal-padding" ng-form="editModal.editForm">
+            <md-input-container>
+                <label>Barcode:</label>
+                <input type="text" ng-model="editModal.barcodes" name="barcode" ng-required="true"/>
+                <div ng-messages="editModal.editForm.barcode.$error" class="md-input-messages-nice">
+                    <div ng-message="required">This field is required</div>
+                </div>
+            </md-input-container>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter" layout="row" layout-align="space-between center">
+        <md-button class="md-raised" ng-click="editModal.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised" ng-click="editModal.save()">Save</md-button>
+    </md-dialog-actions>
+</div>

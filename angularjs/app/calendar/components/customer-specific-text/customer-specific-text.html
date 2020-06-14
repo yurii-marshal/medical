@@ -1,0 +1,8 @@
+<div bs-loading-overlay bs-loading-overlay-reference-id="customerSpecificText">
+    <div class="drowz-wizard-block no-float" ng-repeat="item in $ctrl.specificTextList track by $index">
+        <div class="drowz-wizard-block-title">
+            <div ng-bind-html="item.Title | markDownToHtml" class="wizard-title-text"></div>
+        </div>
+        <div class="drowz-wizard-block-body" ng-bind-html="item.Text | markDownToHtml"></div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+<div class="modal-window re-assign-billing-provider-modal"
+     ng-form="$ctrl.modalForm"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/alert_rect_icon.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Attention!</h2>
+        </div>
+
+        <div ng-if="!$ctrl.checkingProviders">
+            <div class="modal-body">
+                <div class="marg-v-20 flex-cont">
+                    <md-icon class="attention-icon" md-svg-src="assets/images/default/alert.svg"></md-icon>
+                    <span>The <span class="red-color">{{$ctrl.providerName}}</span> is used as a default billing provider for some locations.</span>
+                </div>
+                <div class="marg-v-20 flex-cont"
+                     ng-if="$ctrl.isHaveReassignProviders"
+                >
+                    <md-icon class="attention-icon" md-svg-src="assets/images/default/alert.svg"></md-icon>
+                    <span>Please choose the billing provider for replacement before deletion.</span>
+                </div>
+
+                <div class="marg-v-20 flex-cont"
+                     ng-if="!$ctrl.isHaveReassignProviders"
+                >
+                    <md-icon class="attention-icon" md-svg-src="assets/images/default/alert.svg"></md-icon>
+                    <span>There're no available items for reassigning.</span>
+                </div>
+            </div>
+
+            <div class="flex-row">
+                <div class="info-block grow-1">
+                    <md-autocomplete-with-infinite-scroll
+                            ng-if="$ctrl.isHaveReassignProviders"
+                            md-no-cache="true"
+                            md-selected-item="$ctrl.reAssignedBillingProvider"
+                            md-search-text="searchText"
+                            md-items="item in $ctrl.getBillingProviders(searchText, pageIndex)"
+                            md-item-text="item.FullName"
+                            md-min-length="0"
+                            md-floating-label="Billing Provider:"
+                            md-input-name="billingProvider"
+                            clear-on-click
+                            ng-required="true"
+                            md-autocomplete-required>
+                        <md-item-template>
+                            <span md-highlight-flags="^i" title="{{item.FullName}}">{{item.FullName}}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            No Billing Providers were found
+                        </md-not-found>
+                        <div ng-messages="$ctrl.modalForm.billingProvider.$error"
+                             class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                            <div ng-message="selected">Selected Billing Provider is not valid</div>
+                        </div>
+                    </md-autocomplete-with-infinite-scroll>
+                </div>
+            </div>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-if="$ctrl.isHaveReassignProviders"
+                   ng-click="$ctrl.confirm()">
+            Confirm
+        </md-button>
+    </md-dialog-actions>
+
+</div>

@@ -1,0 +1,14 @@
+<div [formGroup]="demoForm">
+    <mat-form-field>
+        <input matInput
+               placeholder="Text:"
+               type="text"
+               autocomplete="off"
+               formControlName="text"
+        />
+        <mat-error [appErrorMessages]="demoForm.controls.text">
+            <div data-error-message="required"> This field is required.</div>
+            <div data-error-message="email"> This field is not email.</div>
+        </mat-error>
+    </mat-form-field>
+</div>

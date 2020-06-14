@@ -1,0 +1,52 @@
+<div class="modal-window remove-device-modal"
+     ng-form="$ctrl.Form"
+>
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon modal-icon-red" md-svg-src="assets/images/default/trash.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Remove Device?</h2>
+        </div>
+
+        <div class="flex-row flex-row-center">
+            <div>
+                <p class="text-center">Are you sure you want to remove <b>{{ $ctrl.deviceName }}</b> device?</p>
+            </div>
+        </div>
+
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter space-between">
+
+            <div class="info-block">
+                <div class="flex-row">
+                    <div class="remove-count-label">Quantity:</div>
+                    <div class="info-block block-width-200">
+                <md-input-container>
+                    <input type="number"
+                           name="countItems"
+                           ng-model="$ctrl.countItems"
+                           min="1"
+                           max="{{$ctrl.maxCountToMove}}"
+                           ng-required="true"
+                    >
+                    <div ng-messages="$ctrl.Form['countItems'].$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="max">The number of device couldn't be greater than {{$ctrl.maxCountToMove}}</div>
+                        <div ng-message="min">The number of device should be greater or equal 1</div>
+                    </div>
+                </md-input-container>
+            </div>
+                </div>
+            </div>
+
+            <div class="info-block">
+                <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+                <md-button class="md-raised md-primary main-button" ng-click="$ctrl.remove()">Remove</md-button>
+            </div>
+    </md-dialog-actions>
+</div>

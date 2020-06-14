@@ -1,0 +1,13 @@
+.b-header-title-buttons {
+    color: $font-color;
+    margin: 0 10px;
+    vertical-align: 2px;
+
+    .round-btn.md-button{
+        background-color: transparent;
+    }
+}
+
+.flex-row-center{
+    justify-content: center;
+}

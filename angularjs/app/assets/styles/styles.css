@@ -1,0 +1,278 @@
+@font-face {
+  font-family: "Open Sans", serif;
+  src: url("../fonts/open-sans.ttf") format("embedded-truetype");
+}
+/* line 6, styles.scss */
+* {
+  outline: none;
+}
+
+/* line 9, styles.scss */
+body {
+  font-family: "Roboto";
+  color: #5e5e5e;
+}
+
+/* line 14, styles.scss */
+.container_ {
+  min-width: 1024px;
+}
+
+/* OVERRIDE angular-ui modal widnows*/
+/* line 19, styles.scss */
+.modal-dialog {
+  width: 374px;
+}
+
+/* line 22, styles.scss */
+.modal-dialog .modal-header {
+  color: #3dbafb;
+  text-transform: uppercase;
+  padding: 18px 0 1px 15px;
+  border: none;
+}
+
+/* line 28, styles.scss */
+.modal-dialog .modal-content {
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border: none;
+  padding-bottom: 15px;
+}
+
+/* line 36, styles.scss */
+.modal-dialog .modal-body {
+  font-size: 16px;
+  overflow: hidden;
+}
+
+/* line 41, styles.scss */
+.modal-dialog .two-buttons-inmiddle {
+  margin: 20px 0 0 15px;
+  overflow: hidden;
+}
+
+/* line 46, styles.scss */
+.modal-dialog .two-buttons-inmiddle .button-style {
+  width: 164px;
+  float: left;
+  background: #3dbafb;
+  color: #fff;
+  height: 38px;
+  line-height: 38px;
+  text-align: center;
+  font-size: 16px;
+  margin-right: 15px;
+}
+
+/* line 57, styles.scss */
+.modal-dialog .two-buttons-inmiddle .button-style:hover {
+  text-decoration: none;
+}
+
+/* line 60, styles.scss */
+.modal-dialog .two-buttons-inmiddle .button-style.cancel {
+  color: #5e5e5e;
+  background: #eeeeee;
+}
+
+/* line 64, styles.scss */
+.modal-dialog .two-buttons-inmiddle .button-style:hover {
+  opacity: 0.8;
+}
+
+/* line 68, styles.scss */
+input[type=text]::-ms-clear {
+  display: none;
+}
+
+/* Global Icons */
+/* line 75, styles.scss */
+.icon_file_exel {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  margin-left: 4px;
+}
+/* line 81, styles.scss */
+.icon_file_exel:before {
+  display: block;
+  content: '';
+  background: url(../../../assets/images/icon_excel.png) no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  width: 14px;
+  height: 14px;
+  position: absolute;
+  top: 1px;
+  left: -3px;
+}
+
+/* line 97, styles.scss */
+.icon_file_pdf {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  margin-left: 4px;
+}
+/* line 103, styles.scss */
+.icon_file_pdf:before {
+  display: block;
+  content: '';
+  background: url(../../../assets/images/icon_pdf.png) no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  width: 14px;
+  height: 14px;
+  position: absolute;
+  top: 1px;
+  left: -3px;
+}
+
+/*Loader*/
+/* line 119, styles.scss */
+div.app-loading {
+  position: fixed;
+}
+
+/* line 122, styles.scss */
+div.app-loading div.animated-container {
+  background-color: #7a7a7a;
+  bottom: 0px;
+  left: 0px;
+  opacity: 1.0;
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  z-index: 999999;
+}
+
+/* line 132, styles.scss */
+div.app-loading div.animated-container.ng-leave {
+  opacity: 1.0;
+  transition: all linear 200ms;
+  -webkit-transition: all linear 200ms;
+}
+
+/* line 137, styles.scss */
+div.app-loading div.animated-container.ng-leave-active {
+  opacity: 0;
+}
+
+/* line 140, styles.scss */
+.message {
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+  color: white;
+  position: absolute;
+}
+
+/* line 147, styles.scss */
+.messaging {
+  position: absolute;
+  top: 40%;
+  left: 45%;
+}
+
+/* start loader style */
+/* line 153, styles.scss */
+.loader {
+  font-size: 10px;
+  text-indent: -9999em;
+  border-top: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-right: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-left: 1.1em solid #ffffff;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: load8 1.1s infinite linear;
+  animation: load8 1.1s infinite linear;
+  position: relative;
+}
+
+/* line 167, styles.scss */
+.loader,
+.loader:after {
+  border-radius: 50%;
+  width: 10em;
+  height: 10em;
+}
+
+@-webkit-keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+/* end loader style */
+/* nice scroll */
+/* line 196, styles.scss */
+.nicescroll-cursors {
+  cursor: pointer;
+}
+
+/* end nice scroll */
+/* webkit css endless rotation-animation */
+@-webkit-keyframes rotating /* Safari and Chrome */ {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotating {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+/* line 234, styles.scss */
+.rotating {
+  -webkit-animation: rotating 2s linear infinite;
+  -moz-animation: rotating 2s linear infinite;
+  -ms-animation: rotating 2s linear infinite;
+  -o-animation: rotating 2s linear infinite;
+  animation: rotating 2s linear infinite;
+}

@@ -1,0 +1,59 @@
+<div class="drowz-wizard-block-title flex-row">
+    <div class="wizard-title-text">Items:</div>
+    <div class="control-block">
+         <div class="main-delivery-method flex-row grow-1">
+            <div class="method-label">Delivery Method:</div>
+            <md-input-container class="method-select">
+                <md-select ng-model="$ctrl.shipmentDeliveryMethod"
+                           clear-on-click>
+                    <md-option ng-value="method.id"
+                               ng-repeat="method in $ctrl.deliveryMethods">
+                        {{::method.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+
+        <md-button class="md-raised md-primary small-btn"
+                   ng-click="$ctrl.applyMethodToAll()">
+            Apply to All
+        </md-button>
+        <md-button class="md-raised md-primary small-btn"
+                   ng-click="$ctrl.goToAddItems()"
+        >
+            Add
+        </md-button>
+    </div>
+</div>
+
+<div class="drowz-wizard-block-body"
+     ng-form="$ctrl.shipItemsForm">
+    <div class="warning-msg"
+         ng-show="$ctrl.getUnfulfilledItemsAmount()">
+        <span class="counter"
+              ng-bind="$ctrl.getUnfulfilledItemsAmount()"></span>
+        <span>items left to fulfill!</span>
+    </div>
+
+    <div class="grow-1"
+         ng-repeat="hash in $ctrl.products.items.allHashes track by $index">
+            <shipment-product
+                class="shipment-product"
+                index="$index + 1"
+                hash="hash"
+                linked-items="$ctrl.linkedItems"
+                linked-item-components="$ctrl.linkedItemComponents"
+                product="$ctrl.products.items.byHash[hash]"
+                components="$ctrl.products.components"
+                inventory="$ctrl.inventory.byId[$ctrl.products.items.byHash[hash].productId]"
+                delivery-methods="$ctrl.deliveryMethods"
+                delivery-companies="$ctrl.deliveryCompanies"
+            ></shipment-product>
+    </div>
+
+    <no-records text="Items:"
+                class="no-records-small"
+                ng-if="!$ctrl.products.items.allHashes.length"
+                no-default-text="true">
+    </no-records>
+</div>

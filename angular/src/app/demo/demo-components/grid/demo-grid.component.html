@@ -1,0 +1,101 @@
+<app-grid>
+    <app-grid-filter #gridFilter
+                     [gridHeaderItems]="gridHeaderItems"
+                     [filtersGroup]="patientsFormGroup"
+                     [gridStateName]="gridStateName"
+                     (filtersChange)="getGridData(false, $event)"
+                     (filtersReset)="onFiltersReset()"
+    >
+        <form [formGroup]="gridFilter.gridFiltersForm"
+              novalidate
+              class="grid-filter-form"
+              type="patients"
+        >
+            <mat-form-field class="form-item w250px">
+                <input matInput
+                       formControlName="fullName"
+                       placeholder="type name"
+                       appClearOnClick
+                >
+            </mat-form-field>
+            <mat-form-field class="form-item w125px" [owlDateTimeTrigger]="dob">
+                <input matInput
+                       formControlName="dateOfBirthday"
+                       [owlDateTime]="dob"
+                       placeholder="date"
+                       appClearOnClick
+                >
+                <owl-date-time [pickerType]="'calendar'" #dob></owl-date-time>
+            </mat-form-field>
+            <mat-form-field class="form-item w200px">
+                <input matInput
+                       formControlName="phoneNumber"
+                       placeholder="phone"
+                       appClearOnClick
+                >
+            </mat-form-field>
+            <mat-form-field class="form-item w400px">
+                <input matInput
+                       formControlName="fullAddress"
+                       placeholder="type address"
+                       appClearOnClick
+                >
+            </mat-form-field>
+            <mat-form-field class="form-item grow-1">
+                <input matInput
+                       formControlName="locationName"
+                       placeholder="type location"
+                       appClearOnClick
+                >
+            </mat-form-field>
+            <mat-form-field class="form-item w110px no-divider select-with-clear">
+                <mat-select matNativeControl
+                            formControlName="status"
+                            placeholder="select"
+                            appClearOnClick
+                >
+                    <mat-option value="1">Active</mat-option>
+                    <mat-option value="2">Inactive</mat-option>
+                    <mat-option value="3">Hold</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </form>
+    </app-grid-filter>
+    <app-grid-item [isAllItemsLoaded]="isAllGridItemsLoaded" [isAppNoContent]="isAppNoContent">
+        <div *ngIf="isGridReload"
+             appNikoInfiniteScroll
+             (scrollEnd)="getGridData(true)"
+             [isLoading]="isGridItemsLoading"
+        >
+            <div class="grid-item" *ngFor="let item of gridData">
+                <div class="grid-item-data">
+                    <div class="item-property w250px">
+                        <p>{{ item.name }}</p>
+                    </div>
+                    <div class="item-property w125px">
+                        <p>{{ item.dob | date: 'dd/MM/yyyy' }}</p>
+                    </div>
+                    <div class="item-property w200px">
+                        <app-list-to-popover [popoverItems]="item.phones"></app-list-to-popover>
+                    </div>
+                    <div class="item-property w400px">
+                        <p>{{ item.address?.fullAddress }}</p>
+                    </div>
+                    <div class="item-property w300px">
+                        <p>{{ item.locationName }}</p>
+                    </div>
+                    <div class="item-property item-property-status no-divider w110px">
+                        <p [ngClass]="item.statusName | lowercase">{{ item.statusName }}</p>
+                    </div>
+                    <div class="number-data"></div>
+                </div>
+                <div class="grid-item-tags" *ngIf="item.tags.length">
+                    <div class="item-tag" *ngFor="let tag of item.tags">
+                        <mat-icon svgIcon="tag" class="tag-icon"></mat-icon>
+                        <p>{{ tag.name }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </app-grid-item>
+</app-grid>

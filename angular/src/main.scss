@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,500italic,700,900');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+@import "~normalize-scss/sass/_normalize.scss";
+
+// Common
+@import "assets/styles/base/variables";
+@import "assets/styles/utils/mixins";
+@import "assets/styles/utils/utilities";
+@import "assets/styles/base/base";
+@import "assets/styles/components/grid";
+@import "assets/styles/base/typography";
+
+// Layouts
+@import "assets/styles/layouts/main";
+@import "assets/styles/layouts/white-block";
+@import "assets/styles/layouts/icon-block";
+@import "assets/styles/layouts/drowz-wizard";
+@import "assets/styles/layouts/pagination";
+@import "assets/styles/layouts/financial-data";
+@import "assets/styles/layouts/breadcrumbs";
+@import "assets/styles/layouts/buttons";
+@import "assets/styles/layouts/forms";
+@import "assets/styles/layouts/status-labels";
+@import "assets/styles/layouts/toasts";
+@import "assets/styles/layouts/dialogs";
+@import "assets/styles/layouts/accordion";
+@import "assets/styles/layouts/stepper";
+@import "assets/styles/layouts/icons";
+@import "assets/styles/layouts/table";
+@import "assets/styles/layouts/info-block";
+@import "assets/styles/layouts/signature";
+
+// Sections
+@import "assets/styles/sections/sidebar";
+@import "assets/styles/sections/auth";
+@import "assets/styles/sections/patient";
+
+// Vendors
+@import "assets/styles/vendor/perfect-scrollbar";
+@import 'assets/styles/vendor/date-time-picker';
+@import "assets/styles/layouts/ag-greed-customize";
+@import '~ngx-toastr/toastr.css';

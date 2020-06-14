@@ -1,0 +1,111 @@
+<div class="modal-window search-items-details-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/documents.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>{{$ctrl.model.Name}}</h2>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <div class="info-block-label">Manufacturer:</div>
+                <div class="info-block-body">
+                    {{$ctrl.model.Manufacturer.Name || $ctrl.model.Manufacturer || '-'}}
+                </div>
+            </div>
+            <div class="info-block block-width-180">
+                <div class="info-block-label">Group:</div>
+                <div class="info-block-body">
+                    {{$ctrl.model.Group.Name || $ctrl.model.Group || '-'}}
+                </div>
+            </div>
+            <div class="info-block block-width-200">
+                <div class="info-block-label">Category:</div>
+                <div class="info-block-body">
+                    {{$ctrl.model.Category.Name || $ctrl.model.Category || '-'}}
+                </div>
+            </div>
+            <div class="info-block block-width-120">
+                <div class="info-block-label">HCPCS:</div>
+                <div class="info-block-body">
+                    <div popover-directive="$ctrl.model.allHcpcsCodes"
+                         hide-first-item="true"
+                         min-width="50"></div>
+                </div>
+            </div>
+            <div class="info-block block-width-130">
+                <div class="info-block-label">ID/Part #:</div>
+                <div class="info-block-body">{{$ctrl.model.PartNumber || '-'}}</div>
+            </div>
+        </div>
+
+        <div class="flex-row" ng-if="$ctrl.type === 'equipment'">
+            <div class="info-block grow-1">
+                <div class="info-block-label">Serial Number:</div>
+                <div class="info-block-body">{{$ctrl.model.SerialNumber || '-'}}</div>
+            </div>
+            <div class="info-block block-width-180">
+                <div class="info-block-label">Lot Number:</div>
+                <div class="info-block-body">{{$ctrl.model.LotNumber || '-'}}</div>
+            </div>
+            <div class="info-block block-width-120">
+                <div class="info-block-label">QTY:</div>
+                <div class="info-block-body">{{$ctrl.model.Count || '-'}}</div>
+            </div>
+
+            <div class="info-block block-width-330">&nbsp;</div>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <div class="info-block-label">Description:</div>
+                <div class="info-block-body">
+                    <span ng-if="!$ctrl.model.Description">-</span>
+                    <format-string-by-paragraphs text="$ctrl.model.Description"></format-string-by-paragraphs>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-items-modal-body" ng-if="$ctrl.model.Components.length">
+            <div class="active-title flow-body-active-title">Items:</div>
+            <table class="drowz-table">
+                <tr class="drowz-table-header">
+                    <th class="number-cell" width="45">#</th>
+                    <th>Name:</th>
+                    <th>ID/Part #:</th>
+                    <th width="100">HCPCS:</th>
+                    <th>Manufacturer:</th>
+                    <th width="100"
+                        ng-if="$ctrl.type === 'equipment'">Serial Number:</th>
+                    <th width="100"
+                        ng-if="$ctrl.type === 'equipment'">Lot Number:</th>
+                    <th width="50">Qty:</th>
+                </tr>
+                <tr class="drowz-table-row" ng-repeat="item in $ctrl.model.Components">
+                    <td class="number-cell">{{$index + 1}}.</td>
+                    <td>{{item.Name}}</td>
+                    <td>{{item.PartNumber}}</td>
+                    <td>
+                        <div popover-directive="item.allHcpcsCodes"
+                             hide-first-item="true"
+                             min-width="50"></div>
+                    </td>
+                    <td>{{item.Manufacturer || item.ManufacturerName || '-'}}</td>
+                    <td ng-if="$ctrl.type === 'equipment'">{{item.SerialNumber || '-'}}</td>
+                    <td ng-if="$ctrl.type === 'equipment'">{{item.LotNumber || '-'}}</td>
+                    <td>{{item.Count}}</td>
+                </tr>
+            </table>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Close</md-button>
+    </md-dialog-actions>
+</div>

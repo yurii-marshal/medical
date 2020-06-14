@@ -1,0 +1,15 @@
+<div class="main-content inventory-page">
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.inventory.list">Inventory</a>
+        <a href="javascript:void(0)" class="active">{{ inventoryRoot.activeTabName }}</a>
+
+        <drowz-tabs items="inventoryRoot.tabs"></drowz-tabs>
+    </div>
+
+    <div bs-loading-overlay
+         bs-loading-overlay-reference-id="inventoryPage"
+         ui-view
+    >
+    </div>
+</div>

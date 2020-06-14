@@ -1,0 +1,25 @@
+﻿<div class="modal-window submit-invoice-modal">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.close()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/shield.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Manual Verification:</h2>
+        </div>
+
+        <div class="center-text">
+            By this, you are verifying insurance eligibility and policy coverage<br>
+            for patient&nbsp;<span class="active-text">{{$ctrl.insurance.Holder.Name.FullName}}</span>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter" layout="row" layout-align="end center">
+        <md-button class="md-raised main-button" ng-click="$ctrl.close()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button" ng-click="$ctrl.verify()">OK</md-button>
+    </md-dialog-actions>
+
+</div>

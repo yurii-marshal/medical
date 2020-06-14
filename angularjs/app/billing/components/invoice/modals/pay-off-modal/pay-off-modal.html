@@ -1,0 +1,117 @@
+<div class="modal-window write-pay-off-modal"
+     ng-form="$ctrl.modalForm"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/list.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Pay Off:<span ng-if="$ctrl.invoiceBalance">&nbsp;
+                &nbsp;{{$ctrl.invoiceBalance.Currency}}&nbsp;
+                {{$ctrl.invoiceBalance.Amount | number:2}}</span></h2>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <md-autocomplete md-no-cache="true"
+                                 md-selected-item="$ctrl.previousPayment"
+                                 md-selected-item-change="$ctrl.previousPaymentChanged($ctrl.previousPayment)"
+                                 md-search-text="searchPreviousPayment"
+                                 md-items="item in $ctrl.searchPayments(searchPreviousPayment)"
+                                 md-item-text="item.shortName"
+                                 md-min-length="2"
+                                 md-floating-label="Search Previous Payment:"
+                                 md-input-name="previousPayment"
+                                 md-require-match="true"
+                                 ng-required="true"
+                                 clear-on-click>
+                    <md-item-template>
+                        <span md-highlight-flags="^i" title="{{item.shortName}}">{{item.shortName}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                        No Previous Payments were found
+                    </md-not-found>
+                    <div ng-messages="$ctrl.modalForm.previousPayment.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="md-require-match">Previous Payment must be selected.</div>
+                    </div>
+                </md-autocomplete>
+            </div>
+        </div>
+
+        <div class="flex-row" ng-if="$ctrl.paymentInfo">
+            <div class="info-block col-xs-6">
+                <div class="info-block-label">Source:</div>
+                <div class="info-block-body">{{$ctrl.paymentInfo.Source}}</div>
+            </div>
+            <div class="info-block col-xs-6">
+                <div class="info-block-label">Date:</div>
+                <div class="info-block-body">{{$ctrl.paymentInfo.Date | amUtc | amDateFormat: "MM/DD/YYYY hh:mm A"}}</div>
+            </div>
+        </div>
+
+        <div class="flex-row" ng-if="$ctrl.paymentInfo">
+            <div class="info-block col-xs-3">
+                <div class="info-block-label">Amount:</div>
+                <div class="info-block-body">
+                    {{$ctrl.paymentInfo.Amount.Currency}}
+                    {{$ctrl.paymentInfo.Amount.Amount | number:2}}
+                </div>
+            </div>
+            <div class="info-block col-xs-3">
+                <div class="info-block-label">Unapplied:</div>
+                <div class="info-block-body">
+                    {{$ctrl.paymentInfo.Remains.Currency}}
+                    {{$ctrl.paymentInfo.Remains.Amount | number:2}}
+                </div>
+            </div>
+            <div class="info-block col-xs-6">
+                <div class="info-block-label">Ref. Number:</div>
+                <div class="info-block-body">
+                    <span ng-if="!$ctrl.paymentInfo.Reference">-</span>
+                    {{$ctrl.paymentInfo.Reference}}
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <md-input-container>
+                    <label>Note:</label>
+                    <textarea ng-model="$ctrl.Note" rows="1"></textarea>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div ng-if="$ctrl.paymentInfo.Remains.Amount == 0"
+             class="red-color font-italic">No available funds.</div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-if="($ctrl.invoiceBalance.Amount - $ctrl.paymentInfo.Remains.Amount) > 0
+                   && $ctrl.paymentInfo.Remains.Amount"
+                   ng-disabled="$ctrl.paymentInfo.Remains.Amount == 0"
+                   confirm-ng-click="$ctrl.onlySave()"
+                   confirm-type="confirm"
+                   confirm-msg="'The unapplied payment amount is insufficient for paying off. <br>
+                   Do you want to add transaction on available amount
+                   <b>({0}{1})</b>?'.format($ctrl.paymentInfo.Remains.Currency, $ctrl.getFilteredNumber($ctrl.paymentInfo.Remains.Amount, 2))">
+            Save
+        </md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-disabled="$ctrl.paymentInfo.Remains.Amount == 0"
+                   ng-if="($ctrl.invoiceBalance.Amount - $ctrl.paymentInfo.Remains.Amount) <= 0"
+                   ng-click="$ctrl.save()">
+            Save
+        </md-button>
+    </md-dialog-actions>
+
+</div>

@@ -1,0 +1,136 @@
+<div class="flex-row"
+     ng-form="$ctrl.codesForm"
+>
+    <div class="w100px pad-h-5 number-info-block">
+        <div class="block-prescription-diagnosis">
+            <md-autocomplete md-no-cache="true"
+                             md-selected-item="$ctrl.patientDiagnosis[0]"
+                             md-search-text="searchDiagnose1"
+                             md-input-name="Diagnose1"
+                             md-items="diagnose in $ctrl.getPatientDiagnosis($ctrl.patientDiagnosis) | filter: searchDiagnose1"
+                             md-item-text="diagnose.Code"
+                             md-min-length="0"
+                             md-menu-container-class="autocomplete-item-width-300"
+                             md-floating-label="diagnosis"
+                             ng-required="$ctrl.isDiagnoseRequire(0)"
+                             ng-init="searchDiagnose1=($ctrl.patientDiagnosis[0] && $ctrl.patientDiagnosis[0].Code)"
+                             clear-on-click
+            >
+                <md-item-template>
+                    <span md-highlight-text="searchDiagnose1"
+                          md-highlight-flags="^i"
+                    >
+                        {{diagnose.Code}} - {{ diagnose.Description }}
+                    </span>
+                </md-item-template>
+                <md-not-found>
+                    No diagnosis were found.
+                </md-not-found>
+
+                <div ng-messages="$ctrl.codesForm['Diagnose1'].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required">Required</div>
+                    <div ng-message="selected">Not valid</div>
+                </div>
+
+            </md-autocomplete>
+        </div>
+    </div>
+    <div class="w100px pad-h-5 number-info-block">
+        <div class="block-prescription-diagnosis">
+            <md-autocomplete md-no-cache="true"
+                             md-selected-item="$ctrl.patientDiagnosis[1]"
+                             md-search-text="searchDiagnose2"
+                             md-input-name="Diagnose2"
+                             md-items="diagnose in $ctrl.getPatientDiagnosis($ctrl.patientDiagnosis) | filter: searchDiagnose2"
+                             md-item-text="diagnose.Code"
+                             md-min-length="0"
+                             md-menu-container-class="autocomplete-item-width-300"
+                             md-floating-label="diagnosis"
+                             ng-required="$ctrl.isDiagnoseRequire(1)"
+                             ng-init="searchDiagnose2=($ctrl.patientDiagnosis[1] && $ctrl.patientDiagnosis[1].Code)"
+                             clear-on-click
+            >
+                <md-item-template>
+                    <span md-highlight-text="searchDiagnose2"
+                          md-highlight-flags="^i"
+                    >
+                        {{diagnose.Code}} - {{ diagnose.Description }}
+                    </span>
+                </md-item-template>
+                <md-not-found>
+                    No diagnosis were found.
+                </md-not-found>
+                <div ng-messages="$ctrl.codesForm['Diagnose2'].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required">Required</div>
+                    <div ng-message="selected">Not valid</div>
+                </div>
+            </md-autocomplete>
+        </div>
+    </div>
+    <div class="w100px pad-h-5 number-info-block">
+        <div class="block-prescription-diagnosis">
+            <md-autocomplete md-no-cache="true"
+                             md-selected-item="$ctrl.patientDiagnosis[2]"
+                             md-search-text="searchDiagnose3"
+                             md-input-name="Diagnose3"
+                             md-items="diagnose in $ctrl.getPatientDiagnosis($ctrl.patientDiagnosis) | filter: searchDiagnose3"
+                             md-item-text="diagnose.Code"
+                             md-min-length="0"
+                             md-menu-container-class="autocomplete-item-width-300"
+                             md-floating-label="diagnosis"
+                             ng-required="$ctrl.isDiagnoseRequire(2)"
+                             ng-init="searchDiagnose3=($ctrl.patientDiagnosis[2] && $ctrl.patientDiagnosis[2].Code)"
+                             clear-on-click
+            >
+                <md-item-template>
+                    <span md-highlight-text="searchDiagnose3"
+                          md-highlight-flags="^i"
+                    >
+                        {{diagnose.Code}} - {{ diagnose.Description }}
+                    </span>
+                </md-item-template>
+                <md-not-found>
+                    No diagnosis were found.
+                </md-not-found>
+                <div ng-messages="$ctrl.codesForm['Diagnose3'].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required">Required</div>
+                    <div ng-message="selected">Not valid</div>
+                </div>
+            </md-autocomplete>
+        </div>
+    </div>
+    <div class="w100px pad-h-5 number-info-block">
+        <div class="block-prescription-diagnosis">
+            <md-autocomplete md-no-cache="true"
+                             md-selected-item="$ctrl.patientDiagnosis[3]"
+                             md-search-text="searchDiagnose4"
+                             md-items="diagnose in $ctrl.getPatientDiagnosis($ctrl.patientDiagnosis) | filter: searchDiagnose4"
+                             md-input-name="Diagnose4"
+                             md-item-text="diagnose.Code"
+                             md-min-length="0"
+                             md-menu-container-class="autocomplete-item-width-300"
+                             md-floating-label="diagnosis"
+                             ng-required="$ctrl.isDiagnoseRequire(3)"
+                             ng-init="searchDiagnose4=($ctrl.patientDiagnosis[3] && $ctrl.patientDiagnosis[3].Code)"
+                             clear-on-click
+            >
+                <md-item-template>
+                    <span md-highlight-text="searchDiagnose4"
+                          md-highlight-flags="^i">{{diagnose.Code}} - {{ diagnose.Description }}
+                    </span>
+                </md-item-template>
+                <md-not-found>
+                    No diagnosis were found.
+                </md-not-found>
+                <div ng-messages="$ctrl.codesForm['Diagnose4'].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required">Required</div>
+                    <div ng-message="selected">Not valid</div>
+                </div>
+            </md-autocomplete>
+        </div>
+    </div>
+</div>

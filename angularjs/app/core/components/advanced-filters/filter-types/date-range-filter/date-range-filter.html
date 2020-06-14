@@ -1,0 +1,47 @@
+<div class="flex-row">
+    <div class="filters-block-label active-text font-semibold"
+         ng-bind="$ctrl.options.label + ':'"></div>
+
+    <div ng-form="$ctrl.dateRangeFilterForm" class="filters-block-body">
+
+        <div class="date-range-filter">
+            <md-input-container class="calendar_icon range-calendar-icon left-input-icon">
+                <label>From:</label>
+                <input ng-model="$ctrl.options.filterStart.filterValue"
+                       name="date-range-from"
+                       datetimepicker
+                       use-current="false"
+                       format="MM/DD/YYYY"
+                       min-date="{{ $ctrl.options.filterStart.minDate }}"
+                       start-date-validator
+                       end-date="$ctrl.options.filterEnd.filterValue"
+                       ng-required="$ctrl.options.filterEnd.filterValue"
+                       clear-on-click>
+                <div ng-messages="$ctrl.dateRangeFilterForm['date-range-from'].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required">This field is required for custom date filter</div>
+                    <div ng-message="startDate">Date from has to be equal or less than date to</div>
+                </div>
+            </md-input-container>
+            <span>&#8212;</span>
+            <md-input-container class="calendar_icon range-calendar-icon left-input-icon">
+                <label>To:</label>
+                <input ng-model="$ctrl.options.filterEnd.filterValue"
+                       name="date-range-to"
+                       datetimepicker
+                       use-current="false"
+                       format="MM/DD/YYYY"
+                       min-date="{{ $ctrl.options.filterEnd.minDate }}"
+                       end-date-validator
+                       start-date="$ctrl.options.filterStart.filterValue"
+                       clear-on-click>
+                <div ng-messages="$ctrl.dateRangeFilterForm['date-range-to'].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="endDate">Date to has to be equal or bigger than date from</div>
+                </div>
+            </md-input-container>
+        </div>
+
+
+    </div>
+</div>

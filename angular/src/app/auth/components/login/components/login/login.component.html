@@ -1,0 +1,83 @@
+<div class="login-block"
+     [formGroup]="loginForm"
+>
+    <div class="login-title">Enter your login and password to
+        <span class="blue">sign in</span>
+    </div>
+
+    <div class="login-row row-with-icon">
+            <mat-icon svgIcon="user-circle"
+                      class="login-row-icon"></mat-icon>
+            <mat-form-field>
+                <input matInput
+                       placeholder="Login:"
+                       type="text"
+                       tabindex="1"
+                       formControlName="username"
+                       autocomplete="off"
+                       (keyup)="submitForm($event)"
+                />
+
+                <mat-error *ngIf="loginForm.controls.username.invalid">
+                    <b>Login</b> cannot be empty.
+                </mat-error>
+
+            </mat-form-field>
+        </div>
+
+        <div class="login-row row-with-icon">
+            <mat-icon svgIcon="lock-circle"
+                      class="login-row-icon"></mat-icon>
+            <mat-form-field>
+
+                <input style="display:none"
+                       type="password"
+                       name="fakepasswordremembered"/>
+
+                <input matInput
+                       placeholder="Password:"
+                       type="password"
+                       tabindex="2"
+                       formControlName="password"
+                       autocomplete="new-password"
+                       (keyup)="submitForm($event)"
+                />
+
+                <mat-error *ngIf="loginForm.controls.password.invalid">
+                    <b>Password</b> cannot be empty.
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="login-row">
+            <mat-checkbox color="primary"
+                          formControlName="remember"
+            >
+                Remember me
+            </mat-checkbox>
+        </div>
+
+        <div class="login-row">
+            <button class="login-btn spinner-btn"
+                    tabindex="3"
+                    mat-raised-button
+                    color="primary"
+                    (click)="login()"
+            >
+                <mat-progress-spinner *ngIf="isLoading"
+                                      mode="indeterminate"
+                                      [diameter]="27">
+                </mat-progress-spinner>
+                <span>Log in</span>
+            </button>
+        </div>
+
+        <div class="login-row">
+            <a href="javascript:void(0);"
+               routerLink="/forgotpass"
+               class="reset-login"
+            >
+                Forgot Your Password?
+            </a>
+        </div>
+</div>

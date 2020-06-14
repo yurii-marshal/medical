@@ -1,0 +1,324 @@
+<div class="prescription-details"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="prescriptionDetails">
+
+    <div class="prescription-header">
+
+        <md-button class="md-raised small-btn arrow-back-button"
+                   ui-sref="root.patient.prescription">
+            <md-icon md-svg-src="assets/images/default/arrow.svg"
+                     class="rotate-arrow"></md-icon>
+            Back to prescription list
+        </md-button>
+
+        <div class="person-signed-info" ng-if="details.model.SignInfo">
+            <md-icon md-svg-src="assets/images/default/monitor-pen.svg"
+                     class="monitor-sign-icon"></md-icon>
+
+            <span class="active-text uppercase font-semibold">digitally signed</span>&nbsp;by&nbsp;
+            <span class="font-semibold">{{details.model.SignInfo.Physician.PhysicianName.FullName}}</span>&nbsp;
+            | NPI: {{details.model.SignInfo.Physician.Npi}}
+            | Date: {{details.model.SignInfo.Date | amUtc | amDateFormat: "YYYY.MM.DD hh:mm:ss A"}} EDT
+        </div>
+
+    </div>
+
+    <div class="flow-title">
+        <span class="flow-title-text">Details:</span>
+    </div>
+    <div class="flex-row">
+        <div class="prescription-item-status two-line-status">
+            <div class="status-label {{details.model.StatusClass}}">
+                {{details.model.Status.Text}}
+            </div>
+            <div class="status-label dark-blue"
+                  ng-if="details.model.InProgress"
+                  simple-tooltip="{{details.model.InProgressStartDate | amUtc | amDateFormat: 'MM/DD/YYYY'}}">
+                  In Progress
+            </div>
+        </div>
+        <div class="grow-1">
+            <div class="flex-row">
+                <div class="info-block block-width-40-percent">
+                    <div class="flex-row">
+                        <div class="info-block block-width-140">
+                            <div class="info-block-label">Effective Date:</div>
+                            <div class="info-block-body">
+                                {{ details.model.EffectiveDate
+                                  ? (details.model.EffectiveDate | amUtc | amDateFormat: "MM/DD/YYYY")
+                                  : '-'}}
+                            </div>
+                        </div>
+                        <div class="info-block grow-1"
+                             ng-class="{'left-divider': details.model.TreatingProvider.PhysicianName}"
+                             ng-if="details.model.TreatingProvider.PhysicianName">
+                            <div class="info-block-label">Treating Physician:</div>
+                            <div class="info-block-body">
+                                {{details.model.TreatingProvider.PhysicianName.FullName}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grow-1">
+                    <div class="flex-row">
+                        <div class="info-block block-width-200 left-divider">
+                            <div class="info-block-label">NPI:</div>
+                            <div class="info-block-body">
+                                {{details.model.TreatingProvider.Npi || '-'}}
+                            </div>
+                        </div>
+                        <div class="info-block grow-1 left-divider">
+                            <div class="info-block-label">Practice:</div>
+                            <div class="info-block-body">
+                                {{details.model.TreatingProvider.Practice || '-'}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="info-block block-width-40-percent">
+                    <div class="info-block-label">Location:</div>
+                    <div class="info-block-body">
+                        {{details.model.TreatingProvider.Location.Address || '-'}}
+                    </div>
+                </div>
+                <div class="grow-1">
+                    <div class="info-block grow-1 left-divider">
+                        <div class="info-block-label">Contact:</div>
+                        <div class="info-block-body flex-cont">
+                            <div popover-directive="details.model.TreatingProvider.Location.Contacts"
+                                 is-array-with-type="true">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="details-sidebar">
+            <div class="flex-row">
+                <div class="info-block grow-1">
+                    <div class="info-block-label">
+                        <span ng-if="!details.model.ModifiedDate">Created By:</span>
+                        <span ng-if="details.model.ModifiedDate">Modified By:</span>
+                    </div>
+                    <div class="info-block-body">
+                        <span ng-if="!details.model.ModifiedDate">
+                             {{details.model.CreatedBy.FullName || '-'}}
+                        </span>
+                        <span ng-if="details.model.ModifiedDate">
+                             {{details.model.ModifiedBy.FullName || '-'}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="info-block grow-1">
+                    <div class="info-block-label">
+                        <span ng-if="!details.model.ModifiedDate">Created:</span>
+                        <span ng-if="details.model.ModifiedDate">Modified:</span>
+                    </div>
+                    <div class="info-block-body">
+                        <span ng-if="!details.model.ModifiedDate">
+                            {{details.model.CreatedOn | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                        </span>
+                        <span ng-if="details.model.ModifiedDate">
+                            {{details.model.ModifiedDate | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flow-title">
+        <span class="flow-title-text">Items:</span>
+    </div>
+    <div class="prescription-items">
+        <div class="prescription-details-item"
+             ng-repeat="item in details.model.Products track by $index">
+
+            <!--PRESCRIPTION ITEM BLOCK FOR PRODUCTS (bundle/not bundle)-->
+            <div class="prescription-item-header" ng-if="!item.isAny">
+                <div class="flex-row">
+                    <div class="info-block block-width-86">
+                        <div class="info-block-body product-img">
+                            <img src=""
+                                 ng-src="{{
+                               item.PictureUrl
+                                   ? (details.WEB_API_INVENTORY_SERVICE_URI + item.PictureUrl)
+                                   : details.noImage
+                             }}"
+                                 alt=""/>
+                        </div>
+                    </div>
+                    <div class="info-block block-width-400">
+                        <div class="info-block-label">Name:</div>
+                        <div class="info-block-body">{{item.Name}}</div>
+                    </div>
+
+                    <div class="info-block grow-1">
+                        <div class="flex-row pad-bottom-15">
+                            <div class="info-block block-width-250 left-divider">
+                                <div class="info-block-label">Manufacturer:</div>
+                                <div class="info-block-body">{{item.Manufacturer || '-'}}</div>
+                            </div>
+                            <div class="info-block block-width-250 left-divider">
+                                <div class="info-block-label">Part #:</div>
+                                <div class="info-block-body">{{item.PartNumber || '-'}}</div>
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <div class="info-block block-width-250 left-divider">
+                                <div class="info-block-label">HCPCS:</div>
+                                <div class="info-block-body flex-cont">
+                                    <div ng-if="item.allHcpcsCodes.length"
+                                         popover-directive="item.allHcpcsCodes"
+                                         hide-first-item="true"
+                                         min-width="50"></div>
+                                    <div ng-if="!item.allHcpcsCodes.length"> - </div>
+                                </div>
+                            </div>
+                            <div class="info-block block-width-250 left-divider">
+                                <div class="info-block-label">Qty:</div>
+                                <div class="info-block-body">{{item.Count}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="details-sidebar"
+                         ng-if="!item.isBundle"
+                    >
+                        <div class="flex-row">
+                            <div class="info-block grow-1">
+                                <div class="info-block grow-1">
+                                    <div class="info-block-label">Length of need:</div>
+                                    <div class="info-block-body">{{item.LengthOfNeed}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <div class="info-block grow-1">
+                                <div class="info-block-label">Diagnosis:</div>
+                                <div class="info-block-body">
+                                    <div class="code-with-slash"
+                                         ng-repeat="diagnose in item.Diagnosis"
+                                         ng-if="item.Diagnosis.length"
+                                    >
+                                        {{diagnose.Code || '-'}}
+                                    </div>
+                                    <div ng-if="!item.Diagnosis.length">-</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--PRESCRIPTION ITEM BLOCK FOR ANY device of this category-->
+            <div class="prescription-item-header" ng-if="item.isAny">
+                <div class="info-block grow-1">
+                    <div class="info-block-label">&nbsp;</div>
+                    <div class="info-block-body">
+                        <div class="any-device-block">
+                            <span>Generic Item</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-block block-width-300 left-divider">
+                    <div class="info-block-label">Diagnosis:</div>
+                    <div class="info-block-body">
+                        <div class="code-with-slash"
+                             ng-repeat="diagnose in item.Diagnosis"
+                             ng-if="item.Diagnosis.length"
+                        >
+                            {{diagnose.Code || '-'}}
+                        </div>
+                        <div ng-if="!item.Diagnosis.length">-</div>
+                    </div>
+                </div>
+                <div class="info-block block-width-100 left-divider">
+                    <div class="info-block-label">HCPCS:</div>
+                    <div class="info-block-body flex-cont">
+                        <div popover-directive="item.Code"></div>
+                    </div>
+                </div>
+                <div class="info-block block-width-130 left-divider">
+                    <div class="info-block-label">Length of need:</div>
+                    <div class="info-block-body">{{item.LengthOfNeed}}</div>
+                </div>
+                <div class="info-block block-width-80 left-divider">
+                    <div class="info-block-label">Qty:</div>
+                    <div class="info-block-body">{{item.Count}}</div>
+                </div>
+            </div>
+
+            <!--NOTES for product OR any device-->
+            <div class="prescription-item-header" ng-if="item.Description">
+                <div class="info-block block-width-86" ng-if="!item.isAny">&nbsp;</div>
+                <div class="info-block grow-1">
+                    <div class="info-block-label">Notes:</div>
+                    <div class="info-block-body">{{item.Description}}</div>
+                </div>
+            </div>
+
+            <!--PRESCRIPTION ITEM COMPONENTS for bundle devices-->
+            <div class="prescription-item-bundle"
+                 ng-if="item.isBundle && item.Components.length">
+                <div class="flow-title">
+                    <span class="flow-title-text">Included Items:</span>
+                </div>
+                <table class="drowz-table">
+                    <tr class="drowz-table-header">
+                        <th class="regular-left-padding number-cell">#</th>
+                        <th width="120"></th>
+                        <th width="300">Name:</th>
+                        <th>Manufacturer:</th>
+                        <th>Part #:</th>
+                        <th width="100">HCPCS:</th>
+                        <th width="130">Length of need:</th>
+                        <th width="300">Diagnosis:</th>
+                        <th width="65">Qty:</th>
+                    </tr>
+                    <tr class="drowz-table-row"
+                        ng-repeat="bundleItem in item.Components track by $index">
+                        <td class="regular-left-padding number-cell">{{$index+1}}.</td>
+                        <td>
+                            <div class="product-img">
+                                <img src=""
+                                     ng-src="{{
+                                       bundleItem.PictureUrl
+                                         ? (details.WEB_API_INVENTORY_SERVICE_URI + bundleItem.PictureUrl)
+                                         : details.noImage
+                                     }}"
+                                     alt=""/>
+                            </div>
+                        </td>
+                        <td>{{bundleItem.Name}}</td>
+                        <td>{{bundleItem.Manufacturer || '-'}}</td>
+                        <td>{{bundleItem.PartNumber || '-'}}</td>
+                        <td>
+                            <div ng-if="bundleItem.allHcpcsCodes.length"
+                                 popover-directive="bundleItem.allHcpcsCodes"
+                                 hide-first-item="true"
+                                 min-width="50"></div>
+                            <div ng-if="!bundleItem.allHcpcsCodes.length"> - </div>
+                        </td>
+                        <td>{{bundleItem.LengthOfNeed}}</td>
+                        <td>
+                            <div class="code-with-slash"
+                                 ng-repeat="diagnose in bundleItem.Diagnosis"
+                                 ng-if="bundleItem.Diagnosis.length"
+                            >
+                                {{ diagnose.Code || '-' }}
+                            </div>
+                            <div ng-if="!bundleItem.Diagnosis.length">-</div>
+                        </td>
+                        <td>{{bundleItem.Count}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

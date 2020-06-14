@@ -1,0 +1,276 @@
+<div ng-form="$ctrl.form" class="resupply-program-body"
+     ng-class="{ 'bottom-filters': $ctrl.isFiltersBottomPosition }">
+    <div class="resupply-program-header">
+        <div class="info-block block-width-250 flex-cont">
+
+            <div ng-if="$ctrl.isDeliveryDateByDefault">
+                <md-switch class="md-primary"
+                           ng-change="$ctrl.setByDefaultWithinDate()"
+                           ng-model="$ctrl.model.groupItemsForDelivery">
+                    Group Items for Delivery
+                </md-switch>
+            </div>
+
+            <div ng-if="!$ctrl.isDeliveryDateByDefault">
+                <md-switch class="md-primary"
+                           ng-model="$ctrl.model.groupItemsForDelivery">
+                    Group Items for Delivery
+                </md-switch>
+            </div>
+        </div>
+        <div class="info-block block-width-300 flex-cont"
+             ng-if="$ctrl.model.groupItemsForDelivery"
+        >
+            <md-switch class="md-primary"
+                       ng-model="$ctrl.model.ResupplyReplaceBundleItems"
+            >
+                Replace items with bundle if available
+            </md-switch>
+        </div>
+
+        <div class="info-block block-width-270 left-divider flex-cont center">
+            <div class="flex-cont">
+                Delivery date within:
+                <md-input-container class="eligible-days-container">
+                    <label></label>
+                    <input type="text"
+                           name="eligibleDates"
+                           min="1"
+                           only-digits-with-length
+                           ng-disabled="!$ctrl.model.groupItemsForDelivery"
+                           ng-required="$ctrl.model.groupItemsForDelivery"
+                           ng-model="$ctrl.model.DeliveryGroupingDays">
+                    <div ng-messages="$ctrl.form.eligibleDates.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">Required</div>
+                    </div>
+                </md-input-container>
+                day(s)
+            </div>
+        </div>
+        <div class="info-block block-width-320 left-divider flex-cont center">
+            <md-switch class="md-primary"
+                       ng-model="$ctrl.model.ConfirmationRequired">
+                Confirmation Required for Delivery
+            </md-switch>
+        </div>
+        <div class="info-block block-width-300 left-divider flex-cont center">
+            <md-switch class="md-primary"
+                       ng-model="$ctrl.model.Hold"
+                       ng-change="$ctrl.toggleHoldResupplyProgram()">
+                Hold Resupply Program
+            </md-switch>
+        </div>
+    </div>
+
+    <div class="drowz-wizard-block no-float resupply-program-add">
+        <div class="drowz-wizard-block-title">
+            <div class="wizard-title-text">Resupply Program:</div>
+            <md-button class="md-raised md-primary small-btn add-items-btn"
+                       ng-click="$ctrl.addItem()"
+            >
+                Add
+            </md-button>
+        </div>
+        <div class="drowz-wizard-block-body">
+            <div class="wizard-list">
+                <div class="resupply-program-list-header" ng-if="$ctrl.model.Items.length">
+                    <div class="resupply-main-col">
+                        <div class="resupply-item-title">
+                            <span>Supply:</span>
+                            <div class="accordion-line"></div>
+                        </div>
+                    </div>
+                    <div class="resupply-frequency-col">
+                        <div class="resupply-item-title">
+                            <span>Frequency:</span>
+                            <div class="accordion-line"></div>
+                        </div>
+                    </div>
+                    <div class="resupply-delivery-col">
+                        <div class="resupply-item-title">
+                            <span>Delivery/Shipment:</span>
+                            <div class="accordion-line"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-cont stretch resupply-item-container"
+                     ng-repeat="item in $ctrl.model.Items track by $index"
+                     ng-if="$ctrl.periodsDictionary.length">
+                    <div class="resupply-main-col">
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">Name:</div>
+                            <div class="info-block-body block-resupply-item-name not-editable">{{item.Product.Name}}</div>
+                        </div>
+                        <div class="info-block block-width-120 left-divider">
+                            <div class="info-block-label">Manufacturer:</div>
+                            <div class="info-block-body not-editable">{{item.Product.Manufacturer || '-'}}</div>
+                        </div>
+                        <div class="info-block block-width-100 left-divider">
+                            <div class="info-block-label">ID/Part #:</div>
+                            <div class="info-block-body not-editable">{{item.Product.PartNumber || '-'}}</div>
+                        </div>
+                        <div class="info-block block-width-100 left-divider">
+                            <div class="info-block-label not-editable">HCPCS:</div>
+                            <div class="info-block-body not-editable">
+                                <div popover-directive="item.Product.HcpcsCodes"
+                                     hide-first-item="true"
+                                     min-width="50"></div>
+                            </div>
+                        </div>
+                        <div class="info-block block-width-80 left-divider">
+                            <div class="info-block-label">Qty:</div>
+                            <div class="info-block-body flex-cont">
+                                <md-input-container>
+                                    <label></label>
+                                    <input type="text"
+                                           only-digits-with-length
+                                           min="1"
+                                           name="Count{{$index}}"
+                                           ng-model="item.Frequency.Quantity"
+                                           ng-required="true"
+                                           ng-change="$ctrl.onCalcNextScheduleFromInputs(item)"
+                                    >
+                                    <div ng-messages="$ctrl.form['Count'+$index].$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">Required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="resupply-frequency-col">
+                        <div class="info-block block-width-320">
+                            <div class="info-block-label">Frequency:</div>
+                            <div class="info-block-body flex-cont">
+                                <md-input-container class="frequency-number-container">
+                                    <label></label>
+                                    <input type="text"
+                                           ng-model="item.Frequency.Frequency"
+                                           only-digits-with-length
+                                           min="1"
+                                           max-count-value="{{ $ctrl.getMaxFrequency(item) }}"
+                                           ng-required="true"
+                                           name="modelFrequency{{$index}}"
+                                           ng-change="$ctrl.onCalcNextScheduleFromInputs(item)"
+                                    >
+                                    <div ng-messages="$ctrl.form['modelFrequency' + $index].$error"
+                                         class="md-input-messages-nice w250px"
+                                    >
+                                        <div ng-message="required">Required</div>
+                                        <div ng-message="maxCountValueRequired">
+                                            Delivery can't be more often then 1 per day.
+                                        </div>
+                                    </div>
+                                </md-input-container>
+                                time(s) per
+                                <md-input-container class="frequency-number-container">
+                                    <label></label>
+                                    <input type="text"
+                                           ng-model="item.Frequency.PeriodValue"
+                                           only-digits-with-length
+                                           min="1"
+                                           ng-required="true"
+                                           name="modelPeriodValue{{$index}}"
+                                           ng-change="$ctrl.onCalcNextScheduleFromInputs(item)"
+                                    >
+                                    <div ng-messages="$ctrl.form['modelPeriodValue'+$index].$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">Required</div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container class="select-period-container">
+                                    <label></label>
+                                    <md-select ng-model="item.Frequency.PeriodType.Id"
+                                               aria-label="..."
+                                               ng-required="true"
+                                               name="modelPeriodSelect{{$index}}"
+                                               ng-change="$ctrl.onCalcNextScheduleFromInputs(item)"
+                                    >
+                                        <md-option ng-value="option.Id"
+                                                   ng-repeat="option in $ctrl.periodsDictionary">
+                                            {{option.Text}}
+                                        </md-option>
+                                    </md-select>
+                                    <div ng-messages="$ctrl.form['modelPeriodSelect'+$index].$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">Required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="resupply-delivery-col">
+                        <div class="info-block block-width-140">
+                            <div class="info-block-label">Recent:</div>
+                            <div class="info-block-body flex-cont not-editable">
+                                {{ $ctrl.getRecentDateText(item) }}
+                            </div>
+                        </div>
+
+                        <div class="info-block block-width-160 left-divider">
+                            <div class="info-block-label">Next Eligible:</div>
+                            <div class="info-block-body flex-cont not-editable">
+                                {{ item.NextEligibleDate || $ctrl.getToday() }}
+                            </div>
+                        </div>
+
+                        <div class="info-block block-width-160 left-divider">
+                            <div class="info-block-label">Next Scheduled:</div>
+                            <div class="info-block-body flex-cont">
+                                <md-input-container>
+                                    <label></label>
+                                    <input ng-model="item.NextScheduledDate"
+                                           name="nextDelivery{{$index}}"
+                                           ng-change="$ctrl.setCustomNextScheduled($index)"
+                                           datetimepicker
+                                           use-current="false"
+                                           format="MM/DD/YYYY"
+                                           min-date="today"
+                                           ng-required="true"
+                                           clear-on-click>
+                                    <div ng-messages="$ctrl.form['nextDelivery'+$index].$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">Required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div class="info-block block-width-60">
+                            <div class="info-block-label">Hold:</div>
+                            <div class="info-block-body flex-cont">
+                                <md-switch class="md-primary"
+                                           aria-label="..."
+                                           ng-model="item.Hold"
+                                           ng-disabled="$ctrl.model.Hold">
+                                </md-switch>
+                            </div>
+                        </div>
+                        <div class="info-block button-cell">
+                            <div class="info-block-label">&nbsp;</div>
+                            <div class="info-block-body">
+                                <a href="javascript:void(0);"
+                                   class="delete-icon-btn"
+                                   confirm-ng-click="$ctrl.deleteItem(item)"
+                                   confirm-msg="'Are you sure you want to remove item <span class=\'active-text\'>{0}</span> ?'.format(item.Name)"
+                                   confirm-btn-ok="Remove"
+                                   confirm-btn-cancel="Cancel"
+                                   confirm-title="Remove Item"
+                                   confirm-class-name="max-width-450">
+                                     <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <no-records text="Items Selected"
+                            class="no-records-small"
+                            ng-if="!$ctrl.model.Items.length"
+                            no-default-text="true">
+                </no-records>
+            </div>
+        </div>
+    </div>
+
+</div>

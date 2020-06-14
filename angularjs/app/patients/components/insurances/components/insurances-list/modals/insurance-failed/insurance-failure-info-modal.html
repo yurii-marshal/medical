@@ -1,0 +1,46 @@
+<div class="modal-window insurance-failure-info-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/alert_rect_icon.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Details</h2>
+        </div>
+
+        <div class="flex-row" ng-if="$ctrl.patientInfo">
+            <div class="info-block block-width-33-percent">
+                <div class="info-block-label">First Name:</div>
+                <div class="info-block-body">{{$ctrl.patientInfo.Name.FirstName}}</div>
+            </div>
+            <div class="info-block block-width-33-percent left-divider">
+                <div class="info-block-label">Last Name:</div>
+                <div class="info-block-body">{{$ctrl.patientInfo.Name.LastName}}</div>
+            </div>
+            <div class="info-block block-width-33-percent left-divider">
+                <div class="info-block-label">DOB:</div>
+                <div class="info-block-body">{{$ctrl.patientInfo.DateOfBirth | amUtc | amDateFormat: 'MM/DD/YYYY'}}</div>
+            </div>
+        </div>
+
+        <div class="flex-row" ng-repeat="item in $ctrl.errors">
+            <div class="info-block">
+                <div class="flex-cont">
+                    <md-icon class="attention-icon" md-svg-src="assets/images/default/alert.svg"></md-icon>
+                    <div class="red-color">{{item.RejectMessage || item.Text || item.Message}}</div>
+                </div>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Close</md-button>
+    </md-dialog-actions>
+
+</div>
+

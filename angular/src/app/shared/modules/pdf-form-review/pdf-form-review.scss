@@ -1,0 +1,26 @@
+@import "~assets/styles/base/variables";
+
+.pdf-form-review {
+    height: 100%;
+    padding: 20px;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px 0 rgba(10, 10, 10, 0.15);
+    background-color: $wizard-title-color;
+
+    .canvas-block {
+        height: 100%;
+        overflow-y: scroll;
+        position: relative;
+
+        .canvas-pdf, .canvas-highlight {
+            width: 100%;
+            padding-bottom: 10px;
+        }
+
+        .canvas-highlight {
+            position: absolute;
+            top: 0;
+        }
+
+    }
+}

@@ -1,0 +1,94 @@
+<div class="modal-window edit-patient-attrs-modal edit-invoice-attrs-modal invoice-modify-content"
+     ng-form="$ctrl.form"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="statusEditModal">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.close()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon"
+                 md-svg-src="assets/images/default/setup-rect.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Edit Invoice Status:</h2>
+        </div>
+
+        <div class="select-patient-status {{ $ctrl.model.Statuses.Status.statusClass }}">
+            <div class="flex-row">
+                <md-input-container class="grow-1">
+                    <label>Status:</label>
+                    <md-select ng-model="$ctrl.model.Statuses.Status"
+                               class="status-select"
+                               ng-change="$ctrl.statusChanged()"
+                               ng-model-options="{trackBy: '$value.Id'}">
+                        <md-option ng-value="status"
+                                   ng-repeat="status in $ctrl.statuses track by $index">
+                            <span ng-bind="status.Name"></span>
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div class="flex-row">
+                <div class="col-xs-12 info-block marg-v-10 autocomplete-chips-container"
+                     ng-if="$ctrl.model.Statuses.Status.Id === $ctrl.invoiceStatusConstants.HOLD_STATUS_ID">
+                    <div class="info-block-label">Hold Reason:</div>
+                    <div class="info-block-body">
+                        <md-chips ng-model="$ctrl.model.Statuses.HoldReasons"
+                                  class="autocomplete-chips-block"
+                                  md-require-match="true"
+                                  chips-autocomplete-required>
+                            <md-autocomplete md-no-cache="true"
+                                             md-menu-container-class="autocomplete-chips-dropdown"
+                                             md-selected-item="item.Name"
+                                             md-search-text="searchText"
+                                             md-items="item in $ctrl.holdReasonsQuerySearch(searchText)"
+                                             md-item-text="item.Name"
+                                             placeholder="Enter Hold Reason"
+                                             ng-required="true"
+                                             md-input-name="InvoiceHoldReason">
+                                <md-item-template>
+                                                <span md-highlight-text="searchText"
+                                                      md-highlight-flags="i"
+                                                      title="{{item.Name}}">
+                                                    {{item.Name}}
+                                                </span>
+                                </md-item-template>
+                                <md-not-found>Nothing was found</md-not-found>
+
+                            </md-autocomplete>
+
+                            <md-chip-template>
+                                            <span title="{{$chip.Name || $chip.Text}}">
+                                                {{$chip.Name || $chip.Text}}
+                                            </span>
+                            </md-chip-template>
+
+                        </md-chips>
+                        <div ng-messages="$ctrl.form.InvoiceHoldReason.$error" class="md-input-messages-nice">
+                            <div ng-message="chipsAutocompleteRequired">Hold Reason is not valid</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-row">
+                <attrs-tags class="grow-1"
+                            tags="$ctrl.model.Tags"
+                            tags-parent="claim"
+                            disable-add-new-tags="!$ctrl.userPermissions.isAllow($ctrl.permissionsCategoriesConstants.BILLING, $ctrl.billingPermissionsConstants.TAG_CREATE)"
+                ></attrs-tags>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter"
+                       layout="row"
+                       layout-align="end center">
+        <md-button class="md-raised main-button"
+                   ng-click="$ctrl.close()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button"
+                   ng-click="$ctrl.save()">Save</md-button>
+    </md-dialog-actions>
+
+</div>

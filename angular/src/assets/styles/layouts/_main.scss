@@ -1,0 +1,21 @@
+.main-content {
+  &.appointment-details-page {
+    .breadcrumbs {
+      width: auto;
+      right: 0;
+    }
+  }
+}
+
+.main-app-container {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding-top: $main-menu-height;
+  @include size(100%, 100%);
+
+  .main-app-view {
+    flex-grow: 1;
+    width: 100%;
+  }
+}

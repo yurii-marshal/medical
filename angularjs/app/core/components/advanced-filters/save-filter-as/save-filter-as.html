@@ -1,0 +1,21 @@
+<div class="flex-row" ng-form="$ctrl.saveFilterForm">
+
+    <div class="filters-block-label active-text font-semibold">
+        <md-checkbox class="md-primary save-filter-checkbox" ng-model="$ctrl.needToSave">
+            Save This Filter as:
+        </md-checkbox>
+    </div>
+    <div class="filters-block-body">
+        <md-input-container class="grow-1">
+            <label>Filter Name:</label>
+            <input type="text"
+                   name="filterName"
+                   ng-model="$ctrl.newFilterName"
+                   ng-disabled="!$ctrl.needToSave"
+                   ng-required="$ctrl.needToSave">
+            <div ng-messages="$ctrl.saveFilterForm.filterName.$error" class="md-input-messages-nice">
+                <div ng-message="required">This field is required</div>
+            </div>
+        </md-input-container>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+.inventory-page {
+    .inventory-list {
+        padding-top: 20px;
+    }
+
+    .breadcrumbs {
+        background: #e0e5ec;
+
+        drowz-tabs {
+            background: #e0e5ec;
+            margin: auto;
+
+            .drowz-tabs-link {
+                &:hover, &:focus {
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}
+
+.input-container-receive-price {
+    margin: -8px 0 0 0;
+}

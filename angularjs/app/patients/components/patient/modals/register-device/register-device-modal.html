@@ -1,0 +1,65 @@
+<div class="modal-window register-device-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="registerDevice">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.close()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content"
+                       ng-form="$ctrl.regDeviceForm">
+
+        <md-icon class="modal-icon"
+                 md-svg-src="assets/images/default/register-device.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Register Device:</h2>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <md-input-container>
+                    <label>Device:</label>
+                    <md-select ng-model="$ctrl.regModel.device"
+                               ng-required="true"
+                               name="device">
+                        <md-option ng-value="device"
+                                   ng-repeat="device in $ctrl.deviceList">
+                            {{device.Name}}
+                        </md-option>
+                    </md-select>
+                    <div ng-messages="$ctrl.regDeviceForm.device.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+        <div class="flex-row">
+            <div class="info-block col-xs-6">
+                <md-input-container>
+                    <label>Monitoring Start Date:</label>
+                    <input ng-model="$ctrl.regModel.monitoringStartDate"
+                           datetimepicker
+                           use-current="false"
+                           format="MM/DD/YYYY"
+                           show-today-button="false"
+                           aria-label="startdate"
+                           name="monitoringStartDate"
+                           ng-required="true" />
+                    <div ng-messages="$ctrl.regDeviceForm.monitoringStartDate.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter"
+                       layout="row"
+                       layout-align="end center">
+        <md-button class="md-raised main-button"
+                   ng-click="$ctrl.close()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button"
+                   ng-click="$ctrl.save()"
+                   ng-disabled="$ctrl.regDeviceForm.$invalid">Ok</md-button>
+    </md-dialog-actions>
+</div>

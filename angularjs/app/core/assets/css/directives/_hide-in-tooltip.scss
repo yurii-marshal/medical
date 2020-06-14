@@ -1,0 +1,178 @@
+.hide-in-tooltip-block {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+
+    .ellipsis-line {
+        display: block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .hidden-line {
+        position: absolute;
+        display: inline;
+        width: auto;
+        max-width: calc(100% + 20px);
+        visibility: hidden;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    &.with-icon {
+        width: calc(100% - 34px);
+        .hide-in-tooltip {
+            min-width: calc(100% + 64px);
+            margin-left: 17px;
+        }
+    }
+
+    &:hover {
+        .hide-in-tooltip {
+            opacity: 1;
+            z-index: 99;
+            visibility: visible;
+        }
+    }
+
+    &.has-arrow {
+        padding-right: 15px;
+        cursor: pointer;
+
+        &::after, &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: 5px;
+            height: 10px;
+            width: 3px;
+            background-color: $gray-color;
+        }
+
+        &::after {
+            transform: translateY(-50%) translateX(2px) rotate(45deg);
+        }
+
+        &::before {
+            transform: translateY(-50%) translateX(-3px) rotate(-45deg);
+        }
+    }
+}
+
+.hide-in-tooltip {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    position: absolute;
+    bottom: 50%;
+    right: 50%;
+    z-index: 100;
+    max-width: 430px;
+    min-width: calc(100% + 30px);
+    max-height: 400px;
+    min-height: calc(100% + 20px);
+    overflow: hidden;
+    padding: 10px;
+    transform: translate(50%, 50%);
+    background-color: #fff;
+    box-shadow: $box-shadow, $box-shadow, $box-shadow-top, $box-shadow-top;     // for gain more bigger box-shadow
+    border-radius: 3px;
+    opacity: 0;
+    visibility: hidden;
+    transition: .2s;
+    will-change: opacity, visibility;
+
+    &.tags-tooltip {
+        display: block;
+        padding-top: 6px;
+        padding-bottom: 6px;
+
+        &::before {
+            display: none;
+        }
+
+        .tag-rectangle {
+            position: relative;
+            display: block;
+            float: left;
+            max-width: 100%;
+            margin: 4px 6px 4px 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    .tooltip-row {
+        display: block;
+        max-width: 100%;
+        padding: 2px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .text-tooltip-block {
+        padding-left: 5px;
+        padding-bottom: 1px;
+        line-height: 1.7;
+    }
+}
+
+.info-tooltip {
+    position: relative;
+    max-width: 100%;
+
+    &.with-icon {
+        width: calc(100% - 34px);
+    }
+
+    &.has-tooltip {
+        padding-right: 28px;
+        cursor: pointer;
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: 4px;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            color: $gray-color;
+            fill: $gray-color;
+            background-image: url(../assets/images/colored/info.svg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    }
+
+    .ellipsis-line {
+        display: block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .hidden-line {
+        position: absolute;
+        display: inline;
+        width: auto;
+        max-width: calc(100% + 20px);
+        visibility: hidden;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+}
+
+.formatted-tooltip {
+    td:first-child {
+        padding-right: 10px;
+    }
+}

@@ -1,0 +1,127 @@
+<div class="sidebar-content"
+     scroll-bar
+     scroll-bar-above-element="true">
+
+    <v-accordion id="my-accordion"
+                 class="calendar-left-menu vAccordion--default sidebar-accordeon sidebar-padding-block hiding-block"
+                 multiple
+                 control="calendarEv.accordion">
+        <v-pane ng-repeat="(key, values) in calendarEv.groupedFilters track by $index"
+                id="{{'Pane_' + $index}}"
+                ng-init="values.length ? pane.isExpanded = true : pane.isExpanded = false"
+                expanded="pane.isExpanded">
+            <v-pane-header class="sidebar-block-title flow-accordion-title">
+                <span class="active-text">{{key}}:</span>
+                <div class="accordion-line"></div>
+                <md-icon md-svg-src="assets/images/default/chevron.svg" class="sidebar-accordeon-icon"></md-icon>
+            </v-pane-header>
+            <v-pane-content>
+                <no-records ng-if="key.toLowerCase() === 'personnel' && !values.length" text="Personnel" class="no-records-small"></no-records>
+                <no-records ng-if="key.toLowerCase() === 'personnel tag' && !values.length" text="Tags" class="no-records-small"></no-records>
+
+                <div ng-repeat="value in values track by $index" class="filterrow readonly-filter">
+                    <div class="filter-name">{{value.Description}}</div>
+                    <div class="filterrow-controls">
+                        <a href="javascript:void(0);"
+                           class="delete-filter"
+                           ng-click="calendarEv.deleteParameter(key,$index)">
+                            <md-icon md-svg-src="assets/images/default/trash.svg" class="delete-filter-icon"></md-icon>
+                        </a>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+        <v-pane expanded="true">
+            <v-pane-header class="sidebar-block-title flow-accordion-title">
+                <span class="active-text">Add new filter:</span>
+                <div class="accordion-line"></div>
+                <md-icon md-svg-src="assets/images/default/chevron.svg" class="sidebar-accordeon-icon"></md-icon>
+            </v-pane-header>
+            <v-pane-content>
+                <div class="search-filter-content">
+                    <md-autocomplete md-no-cache="true"
+                                     md-selected-item="calendarEv.selectedFilter"
+                                     md-search-text="calendarEv.searchFilter"
+                                     md-items="filter in calendarEv.getFilterParameters()"
+                                     md-item-text="filter.Description"
+                                     md-min-length="1"
+                                     md-selected-item-change="calendarEv.addFilter(calendarEv.selectedFilter)"
+                                     md-floating-label="Search filter"
+                                     class="apply-autocomplete"
+                                     clear-on-click>
+                        <md-item-template>
+                    <span md-highlight-text="calendarEv.searchFilter" md-highlight-flags="i" class="item-title">
+                        {{filter.Description}}
+                    </span>
+                        </md-item-template>
+                        <md-not-found>
+                            No data was found
+                        </md-not-found>
+                        <a href="javascript:void(0);" ng-click="calendarEv.clearFilters()" class="clear-filters">clear all
+                            filters</a>
+                    </md-autocomplete>
+                </div>
+                <md-button class="md-raised md-primary apply-btn middle-btn" ng-click="calendarEv.applyFilters()"
+                           ng-disabled="calendarEv.groupedFilters.length === 0">Apply
+                </md-button>
+            </v-pane-content>
+        </v-pane>
+        <v-pane expanded="true" ng-hide="calendarEv.filter.Id">
+            <v-pane-header class="sidebar-block-title flow-accordion-title">
+                <span class="active-text">Save this filter as:</span>
+                <div class="accordion-line"></div>
+                <md-icon md-svg-src="assets/images/default/chevron.svg" class="sidebar-accordeon-icon"></md-icon>
+            </v-pane-header>
+            <v-pane-content>
+                <div class="search-filter-content">
+                    <md-input-container class="save-filter">
+                        <label>Filter name</label>
+                        <input type="text" ng-model="calendarEv.filterName">
+                        <md-button class="save-filter-btn" ng-show="calendarEv.filterName" ng-click="calendarEv.saveFilter()">
+                            Save
+                        </md-button>
+                    </md-input-container>
+                </div>
+            </v-pane-content>
+        </v-pane>
+        <v-pane expanded="true">
+            <v-pane-header class="sidebar-block-title flow-accordion-title">
+                <span class="active-text">My saved filters:</span>
+                <div class="accordion-line"></div>
+                <md-icon md-svg-src="assets/images/default/chevron.svg" class="sidebar-accordeon-icon"></md-icon>
+            </v-pane-header>
+            <v-pane-content>
+                <no-records ng-if="calendarEv.savedFilters.length === 0" text="Saved Filters" class="no-records-small"></no-records>
+                <div class="filterrow" ng-repeat="savedFilter in calendarEv.savedFilters track by $index" edit-field is-updated="calendarEv.isUpdated">
+                    <a href="javascript:void(0);"
+                       class="filter-name"
+                       title="{{savedFilter.Name}}"
+                       ng-click="calendarEv.loadFilter(savedFilter)"
+                       ng-class="{'selected':calendarEv.activeFilterName == savedFilter.Name}">{{savedFilter.Name}}</a>
+                    <input type="text" class="edit-filter-input" value="{{savedFilter.Name}}"
+                           ng-keydown="calendarEv.editSavedFilter($event, savedFilter)">
+                    <div class="filterrow-controls">
+                        <a href="javascript:void(0)" title="Edit filter" class="edit-filter-btn">
+                            <md-icon md-svg-src="assets/images/default/edit.svg" class="edit-filter-icon"></md-icon>
+                        </a>
+                        <a href="javascript:void(0)" title="Save filter" class="save-filter-btn" ng-click="calendarEv.editSavedFilter($event, savedFilter)">
+                            <img src="assets/images/apply.png" alt="" class="save-filter-icon">
+                        </a>
+                        <a href="javascript:void(0);"
+                           class="delete-filter"
+                           title="Delete filter"
+                           confirm-ng-click="calendarEv.deleteFilter(savedFilter)"
+                           confirm-msg="'Are you sure want to delete the filter?'">
+                            <md-icon md-svg-src="assets/images/default/trash.svg" class="delete-filter-icon"></md-icon>
+                        </a>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+    </v-accordion>
+
+</div>
+
+<md-button class="toggle-menu-slide" aria-label="...">
+    <md-icon md-svg-src="assets/images/default/chevron.svg" class="toggle_menu_arrow"></md-icon>
+</md-button>

@@ -1,0 +1,198 @@
+<div ng-if="payerRules.showRuleView">
+    <div class="flex-row space-between payer-rules-row">
+        <div class="payer-rules-search">
+            <md-input-container class="search-field">
+                <label>Search HCPCS:</label>
+                <input type="text"
+                       ng-change="payerRules.searchChanged()"
+                       ng-model="payerRules.searchRulesHcpcs.HcpcsCodes"
+                       clear-on-click>
+                <md-icon class="search-icon" md-svg-src="assets/images/default/search.svg"></md-icon>
+            </md-input-container>
+        </div>
+
+        <div class="flex-cont">
+            Order Confirmation:
+            <md-switch class="md-primary payer-rules-confirmation-switch"
+                       aria-label="..."
+                       ng-model="payerRules.model.Restrictions.ResupplyModel.ResuplyRequiredForDelivery">
+            </md-switch>
+
+            <md-button class="md-raised add-new-contact middle-btn" ng-click="payerRules.addResupplyRule()">
+                <md-icon md-svg-src="assets/images/default/plus.svg"></md-icon>
+                <span>Add Rule</span>
+            </md-button>
+        </div>
+    </div>
+
+    <div class="payer-rules-flex-row"
+         ng-repeat="rule in payerRules.model.Restrictions.ResupplyModel.ResupplyRules | filter: payerRules.searchRulesHcpcs:strict track by $index">
+        <div class="w600px">
+            <div class="flex-row">
+                <div class="info-block add-autocomplete block-width-155">
+            <md-autocomplete
+                    class="autocomplete-with-addBtn"
+                    md-no-cache="true"
+                    md-selected-item="rule.selectedCode"
+                    md-search-text="rule.searchHcpcs"
+                    md-items="item in payerRules.getResupplyHcpcsCodes(rule.searchHcpcs)"
+                    md-item-text="item.Text"
+                    md-min-length="0"
+                    md-floating-label="HCPCS:"
+                    md-menu-container-class="hcpcs-decorator"
+                    ng-required="!rule.HcpcsCodes.length"
+                    md-autocomplete-required
+                    md-input-name="ruleHcpcsRestrictions-{{$index}}">
+                <md-item-template>
+                    <span md-highlight-flags="^i"
+                          title="{{item.Description}}">{{item.Text + ' ' + item.Description}}</span>
+                </md-item-template>
+                <md-not-found>
+                    No hcpcs codes were found.
+                </md-not-found>
+                <md-icon md-svg-src="assets/images/default/plus-square.svg"
+                         ng-click="payerRules.addHcpcsCode(rule)"
+                         ng-class="{'disabled': !rule.selectedCode }"
+                         class="add-item-btn">
+                </md-icon>
+                <div ng-messages="payerRules.RulesForm['ruleHcpcsRestrictions-' + $index].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required">This field is required</div>
+                    <div ng-message="selected">HCPCS must be selected.</div>
+                </div>
+            </md-autocomplete>
+        </div>
+
+                <div class="info-block selected-hcpcs-codes">
+            <div class="round-chip-block"
+                 ng-repeat="item in rule.HcpcsCodes track by $index">
+                <span ng-bind="item"></span>
+                <div class="delete-chip" ng-click="payerRules.removeResupplyCode(rule.HcpcsCodes, item)"></div>
+            </div>
+        </div>
+            </div>
+        </div>
+
+        <div class="grow-1 left-divider">
+            <div class="flex-row">
+                <div class="info-block block-width-190">
+                    <div class="info-block-label">Frequency: *</div>
+                    <div class="info-block-body flex-cont">
+                        <md-input-container>
+                            <label></label>
+                            <input type="text"
+                                   only-digits-with-length
+                                   min="1"
+                                   name="ruleFrequency-{{$index}}"
+                                   ng-model="rule.Frequency"
+                                   ng-required="true">
+                            <div ng-messages="payerRules.RulesForm['ruleFrequency-' + $index].$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">Required</div>
+                            </div>
+                        </md-input-container>
+                        <span class="addition-info">time(s)per</span>
+                    </div>
+                </div>
+
+                <div class="info-block block-width-100">
+                    <div class="info-block-label">Period: *</div>
+                    <div class="info-block-body flex-cont">
+                        <md-input-container>
+                            <label></label>
+                            <input type="text"
+                                   only-digits-with-length
+                                   min="1"
+                                   name="rulePeriod-{{$index}}"
+                                   ng-model="rule.Period"
+                                   ng-required="true">
+                            <div ng-messages="payerRules.RulesForm['rulePeriod-' + $index].$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">Required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </div>
+
+                <div class="info-block select-info block-width-180">
+                    <md-input-container>
+                        <label></label>
+                        <md-select aria-label="..."
+                                   name="rulePeriodType-{{$index}}"
+                                   ng-model="rule.PeriodType"
+                                   ng-required="true">
+                            <md-option ng-value="item.Id" ng-repeat="item in payerRules.dictionaries.ResupplyPeriods">
+                                {{item.Text}}
+                            </md-option>
+                        </md-select>
+                        <div ng-messages="payerRules.RulesForm['rulePeriodType-' + $index].$error"
+                             class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div class="info-block block-width-70">
+                    <div class="info-block-label">Qty: *</div>
+                    <div class="info-block-body flex-cont">
+                        <md-input-container>
+                            <label></label>
+                            <input type="text"
+                                   only-digits-with-length
+                                   min="1"
+                                   name="ruleQuantity-{{$index}}"
+                                   ng-model="rule.Quantity"
+                                   ng-required="true">
+                            <div ng-messages="payerRules.RulesForm['ruleQuantity-' + $index].$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">Required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-row marg-top-10">
+                <div class="info-block grow-1">
+                    <md-input-container class="fix-label-for-chips">
+                        <md-chips  class="customize-chips-style"
+                                   ng-model="rule.Plans"
+                                   placeholder="Select Plan"
+                        >
+                            <md-autocomplete
+                                class="w300px"
+                                md-no-cache="true"
+                                md-items="item in payerRules.getPlans(searchText, rule.Plans)"
+                                md-search-text="searchText"
+                                md-selected-item="item.Name"
+                                md-item-text="item.Name"
+                                md-selected-item="item.Name"
+                                md-min-length="0"
+                                placeholder="{{ payerRules.getPlaceholderForPlanChips(rule.Plans) }}"
+                            >
+                                <md-item-template>
+                           <span title="{{ item.Name }}">
+                           {{ item.Name }}
+                           </span>
+                                </md-item-template>
+                                <md-not-found>Not found</md-not-found>
+                            </md-autocomplete>
+                            <md-chip-template>
+                        <span title="{{ $chip.Name }}">
+                        {{ $chip.Name }}
+                        </span>
+                            </md-chip-template>
+                        </md-chips>
+                    </md-input-container>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-block block-width-20">
+            <a href="javascript:void(0);"
+               class="delete-icon-btn resupply-rules-delete-btn"
+               ng-click="payerRules.deleteRule(payerRules.model.Restrictions.ResupplyModel.ResupplyRules, $index, 'resupply')">
+                <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+            </a>
+        </div>
+    </div>
+</div>

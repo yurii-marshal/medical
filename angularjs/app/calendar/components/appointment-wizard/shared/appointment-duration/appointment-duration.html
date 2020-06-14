@@ -1,0 +1,23 @@
+<md-input-container ng-class="{'readonly': $ctrl.readonly}" ng-form="$ctrl.durationForm">
+    <label class="has-duration-tooltip">
+        Duration:
+        <div class="duration-tooltip"
+             ng-if="!$ctrl.readonly"
+             simple-tooltip="e.g 1h 45m"
+             tooltip-position="right">i</div>
+    </label>
+    <input ng-model="$ctrl.model.selectedDuration"
+           ng-readonly="$ctrl.readonly"
+           ng-required="!$ctrl.readonly"
+           ng-pattern="/^(\d{1,2}h)?\s?(\d{1,2}m)?$/"
+           name="duration"
+           ng-change="$ctrl.durationChanged()"
+           duration-validator>
+    <div ng-messages="$ctrl.durationForm.duration.$error"
+         ng-if="!$ctrl.readonly"
+         class="md-input-messages-nice">
+        <div ng-message="required">This field is required</div>
+        <div ng-message="duration_out_of_range">Invalid duration. Duration should be in range: <nobr>0h 05m - 23h 59m</nobr></div>
+        <div ng-message="pattern">Invalid format</div>
+    </div>
+</md-input-container>

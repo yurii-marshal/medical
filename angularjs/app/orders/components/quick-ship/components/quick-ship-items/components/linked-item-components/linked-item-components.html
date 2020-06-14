@@ -1,0 +1,64 @@
+<div class="item-components marg-left-150">
+    <v-accordion class="flow-accordion grow-1">
+        <v-pane expanded="false">
+
+            <v-pane-header class="flow-accordion-title">
+                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                         class="flow-accordion-title-icon"
+                ></md-icon>
+                <span>Included Items:</span>
+            </v-pane-header>
+
+            <v-pane-content>
+                <table class="drowz-table regular-table">
+                    <tr class="drowz-table-header">
+                        <th class="number-cell" width="45">#</th>
+                        <th width="110">Photo:</th>
+                        <th>Name:</th>
+                        <th>Manufacturer:</th>
+                        <th>ID/Part #:</th>
+                        <th>HCPCS:</th>
+                        <th width="220">Serial Number:</th>
+                        <th width="220">Lot Number:</th>
+                        <th width="80">Qty</th>
+                    </tr>
+                    <tr class="drowz-table-row"
+                        ng-repeat="itemHash in $ctrl.linkedItemComponentsHashes track by $index">
+                        <td class="number-cell"
+                            ng-bind="($index + 1) + '.'"></td>
+                        <td class="item-img-cell">
+                            <div class="item-img-container">
+                                <img src=""
+                                     ng-src="{{$ctrl.linkedItemComponents.byId[itemId].pictureUrl
+                                                    ? ($ctrl.WEB_API_INVENTORY_SERVICE_URI + $ctrl.linkedItemComponents.byId[itemId].pictureUrl)
+                                                    : $ctrl.noImage
+                                                }}"
+                                     alt=""
+                                     class="item-img">
+                            </div>
+                        </td>
+                        <td ng-bind="$ctrl.linkedItemComponents.byHash[itemHash].name"></td>
+                        <td ng-bind="$ctrl.linkedItemComponents.byHash[itemHash].manufacturer"></td>
+                        <td ng-bind="$ctrl.linkedItemComponents.byHash[itemHash].partNumber"></td>
+                        <td>
+                            <div class="flex-cont">
+                                <div popover-directive="$ctrl.linkedItemComponents.byHash[itemHash].hcpcsCodes"
+                                     hide-first-item="true"
+                                     min-width="50"></div>
+                            </div>
+                        </td>
+                        <td>
+                            {{ :: $ctrl.linkedItemComponents.byHash[itemHash].serialNumber || '-'  }}
+                        </td>
+                        <td>
+                            {{ :: $ctrl.linkedItemComponents.byHash[itemHash].lotNumber || '-'  }}
+                        </td>
+                        <td>
+                            <span ng-bind="$ctrl.linkedItemComponents.byHash[itemHash].count"></span>
+                        </td>
+                    </tr>
+                </table>
+            </v-pane-content>
+        </v-pane>
+    </v-accordion>
+</div>

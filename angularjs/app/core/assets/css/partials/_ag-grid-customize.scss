@@ -1,0 +1,97 @@
+.table-green-text {
+    color: green;
+}
+
+.table-red-text {
+    color: red;
+}
+
+.ag-theme-material {
+    background-color: transparent;
+
+    .ag-header-cell-resize {
+        right: 10px;
+    }
+
+    .ag-header-row {
+        border-bottom: none;
+
+        .ag-header-cell {
+            padding: 0 11px;
+
+            &:first-child {
+                padding-left: 24px;
+            }
+            &:last-child {
+                padding-right: 24px;
+            }
+
+            .ag-header-cell-label {
+                position: relative;
+                overflow: visible;
+
+                .ag-header-icon {
+                    position: absolute;
+                    left: -22px;
+                    margin: 0;
+                }
+
+                .ag-header-cell-text {
+                    text-transform: uppercase;
+
+                    &::after {
+                        content: ':';
+                    }
+                }
+            }
+        }
+    }
+
+    .ag-body {
+        .ag-row {
+            .ag-cell.ag-cell-value {
+                padding: 0 10px;
+
+                &:first-child {
+                    padding-left: 23px;
+                }
+                &:last-child {
+                    padding-right: 23px;
+                }
+            }
+        }
+    }
+
+    .ag-ltr {
+        .ag-cell-focus {
+            border: 1px solid transparent;;
+        }
+    }
+
+    .ag-cell-focus {
+        border: 1px solid transparent;
+    }
+
+    .ag-layout-normal, .ag-layout-auto-height {
+        .ag-body {
+            background-color: white;
+            border-radius: 3px;
+            box-shadow: 10px 0px 0px gray;
+        }
+
+        .ag-row-hover{
+            background-color: transparent;
+        }
+        .ag-overlay-no-rows-center {
+            display: block;
+            margin-top: 25px;
+        }
+    }
+
+    .ag-font-style {
+        user-select: initial;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        -webkit-user-select: text;
+    }
+}

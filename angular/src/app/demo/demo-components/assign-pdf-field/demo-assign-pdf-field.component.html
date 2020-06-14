@@ -1,0 +1,49 @@
+<form [formGroup]="demoFormGroup">
+
+    <h2>DemoFormGroup</h2>
+
+    <div formArrayName="items" class="items"
+         *ngFor="let item of getControls(); let i = index;">
+
+        <div [formGroupName]="i">
+
+            <mat-form-field class="value-input-field">
+
+                <input matInput
+                       name="header"
+                       placeholder="Header:"
+                       formControlName="headerControl"
+                >
+
+            </mat-form-field>
+
+            <app-assign-pdf-field-form
+                (assignFieldFocus)="onAssignFieldFocus(item)"
+                formControlName="mapControl"
+                [required]="true"
+            >
+            </app-assign-pdf-field-form>
+
+        </div>
+
+    </div>
+    <button class="btn-big"
+            placeholder="Submit"
+            (click)="addItem()"
+    >
+        Add Item
+    </button>
+
+    <button class="btn-big"
+            placeholder="Submit"
+            (click)="onSubmit()"
+    >
+        Submit
+    </button>
+
+    <div class="output">
+        <h3>this.demoFormGroup.get('items').value:</h3>
+        <code> {{ formJSON }} </code>
+    </div>
+
+</form>

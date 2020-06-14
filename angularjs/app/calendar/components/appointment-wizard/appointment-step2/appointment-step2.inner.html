@@ -1,0 +1,339 @@
+<div class="drowz-wizard-body-flex" ng-form="$ctrl.appointmentStep2Form">
+
+    <div class="drowz-wizard-block grow-1 drowz-wizard-flex-block">
+        <div class="drowz-wizard-block-title">
+            <div class="wizard-title-text">Search Appointments:</div>
+        </div>
+        <div class="drowz-wizard-block-body">
+            <div class="drowz-wizard-block-row">
+                <div class="info-block col-xs-3" >
+                    <div class="info-block-label">&nbsp;</div>
+                    <md-checkbox ng-model="$ctrl.isAppointmentTimeManually"
+                                 ng-change="$ctrl.setDefaultStep2()"
+                                 aria-label="..."
+                                 class="md-primary set-appointment-checkbox">
+                        Set appointment time manually
+                    </md-checkbox>
+                </div>
+                <div class="col-xs-9">
+                    <div class="drowz-wizard-block-row" ng-if="!$ctrl.isAppointmentTimeManually">
+                        <div class="info-block col-xs-4">
+                            <md-input-container>
+                                <label>Start Date:</label>
+                                <input ng-model="$ctrl.startDate"
+                                       name="startDate"
+                                       datetimepicker
+                                       format="MM/DD/YYYY"
+                                       min-date="today"
+                                       aria-label="startDate"
+                                       start-date-validator
+                                       end-date="$ctrl.endDate"
+                                       ng-required="true">
+                                <div ng-messages="$ctrl.appointmentStep2Form.startDate.$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="required">This field is required</div>
+                                    <div ng-message="startDate">Date has to be equal or less than End Date</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block col-xs-4">
+                            <md-input-container>
+                                <label>End Date:</label>
+                                <input ng-model="$ctrl.endDate"
+                                       datetimepicker
+                                       name="endDate"
+                                       format="MM/DD/YYYY"
+                                       min-date="today"
+                                       max-date="{{$ctrl.maxDate}}"
+                                       aria-label="endDate"
+                                       end-date-validator
+                                       ng-required="true"
+                                       start-date="$ctrl.startDate">
+                                <div ng-messages="$ctrl.appointmentStep2Form.endDate.$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="required">This field is required</div>
+                                    <div ng-message="endDate">Date has to be equal or bigger than Start Date</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block col-xs-4">
+                            <md-input-container>
+                                <label>Part of Day:</label>
+                                <md-select ng-model="$ctrl.partOfDay">
+                                    <md-option ng-repeat="part in $ctrl.dictionaries.partsOfDay" ng-value="part.Id"
+                                               ng-selected="part.Id === 4">
+                                        {{part.Text}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div class="drowz-wizard-block-row" ng-if="$ctrl.isAppointmentTimeManually">
+                        <div class="info-block col-xs-3">
+                            <md-input-container>
+                                <label>Start Date:</label>
+                                <input ng-model="$ctrl.appoitmentDate"
+                                       datetimepicker
+                                       format="MM/DD/YYYY"
+                                       min-date="{{$ctrl.canAddPast}}"
+                                       aria-label="appoitmentDate">
+                            </md-input-container>
+                        </div>
+                        <div class="info-block col-xs-3">
+                            <md-input-container>
+                                <label>From:</label>
+                                <input type="text"
+                                       datetimepicker
+                                       format="LT"
+                                       stepping="1"
+                                       ng-model="$ctrl.timeFrom"
+                                       ng-model-options="{debounce: 0}"
+                                       start-time-validator
+                                       end-time="$ctrl.timeTo"
+                                       on-time-change="$ctrl.timeUpdate"
+                                       name="timeFrom"
+                                >
+                                <div ng-messages="$ctrl.appointmentStep2Form.timeFrom.$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="startTime">Time "From" must be less than time "To"</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block col-xs-3">
+                            <md-input-container>
+                                <label>To:</label>
+                                <input type="text"
+                                       datetimepicker
+                                       format="LT"
+                                       stepping="1"
+                                       ng-model="$ctrl.timeTo"
+                                       end-time-validator
+                                       start-time="$ctrl.timeFrom"
+                                       on-time-change="$ctrl.timeUpdate"
+                                       name="timeTo"
+                                       ng-disabled="true">
+                                <div ng-messages="$ctrl.appointmentStep2Form.timeTo.$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="endTime">Time "To" must be greater than time "From"</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block col-xs-3">
+                            <appointment-duration readonly="true"></appointment-duration>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="drowz-wizard-block flex-360 flex-max-360">
+        <div class="drowz-wizard-block-title">
+            <div class="wizard-title-text">Locations*:</div>
+        </div>
+        <div class="drowz-wizard-block-body">
+            <div ng-if="!$ctrl.isAppointmentTimeManually">
+                <md-checkbox ng-repeat="location in $ctrl.dictionaries.locationTypes track by location.Id"
+                             class="md-primary db"
+                             ng-checked="$ctrl.isSelectedLocation(location.Id)"
+                             ng-click="$ctrl.changeAppointmentAddress(location.Id)">
+                    {{location.Text}}
+                </md-checkbox>
+            </div>
+            <div ng-if="$ctrl.isAppointmentTimeManually">
+                <md-radio-group ng-model="$ctrl.selectedEventLocation">
+                    <md-radio-button ng-value="location.Id"
+                                     ng-repeat="location in $ctrl.dictionaries.locationTypes track by location.Id">
+                        {{location.Text}}
+                    </md-radio-button>
+                </md-radio-group>
+            </div>
+        </div>
+    </div>
+
+    <div class="drowz-wizard-block flex-360 flex-max-360">
+        <div class="drowz-wizard-block-title">
+            <div class="wizard-title-text">Patient Address:</div>
+        </div>
+        <div class="drowz-wizard-block-body">
+            <div class="info-block">
+                <div class="info-block-label">Address:</div>
+                <div class="info-block-body">{{$ctrl.selectedPatient.Address | addressToString}}</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="drowz-wizard-body-flex">
+
+    <div class="drowz-wizard-block grow-1 service-centers"
+         ng-if="$ctrl.isSelectedLocation($ctrl.locationTypes.serviceCenter)"
+    >
+        <div class="drowz-wizard-block-title">
+            <div class="wizard-title-text">Patient Service Center:</div>
+        </div>
+        <div class="drowz-wizard-block-body with-scroll">
+
+            <div class="appointments-service-centers-filter">
+                <div class="info-block block-width-50-percent">
+                    <md-input-container class="service-centers-filter-md-input">
+                        <label>Name:</label>
+                        <input type="text"
+                               ng-model="$ctrl.serviceCentersFilters.Name"
+                               ng-change="$ctrl.filterServiceCenters()"
+                               clear-on-click>
+                    </md-input-container>
+                </div>
+                <div class="info-block grow-1">
+                    <md-input-container class="service-centers-filter-md-input location-filter-input">
+                        <label>Address:</label>
+                        <input type="text"
+                               ng-model="$ctrl.serviceCentersFilters.searchAddress"
+                               ng-change="$ctrl.filterServiceCenters()"
+                               clear-on-click>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <md-radio-group ng-model="$ctrl.selectedServiceCenter"
+                            ng-show="$ctrl.isAppointmentTimeManually"
+            >
+                <md-virtual-repeat-container class="service-centers-block">
+                    <div md-virtual-repeat="center in $ctrl.serviceCentersList"
+                         class="service-center-repeat"
+                    >
+                        <md-radio-button ng-value="center.Id">
+                            <div class="drowz-wizard-block-row">
+                                <div class="info-block col-xs-6">
+                                    <div class="info-block-label">Name:</div>
+                                    <div class="info-block-body">{{center.Name}}</div>
+                                </div>
+                                <div class="info-block col-xs-6">
+                                    <div class="info-block-label">Address:</div>
+                                    <div class="info-block-body">{{center.Address | addressToString}}</div>
+                                </div>
+                            </div>
+                        </md-radio-button>
+                    </div>
+                </md-virtual-repeat-container>
+            </md-radio-group>
+
+            <md-virtual-repeat-container class="service-centers-block"
+                                         ng-show="!$ctrl.isAppointmentTimeManually && $ctrl.serviceCentersList.length"
+            >
+                <div md-virtual-repeat="center in $ctrl.serviceCentersList" class="service-center-repeat">
+                    <md-checkbox aria-label="..."
+                                 class="md-primary db"
+                                 ng-click="$ctrl.selectServiceCenter(center.Id)"
+                                 ng-checked="$ctrl.isSelectedServiceCenter(center.Id)">
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block col-xs-6">
+                                <div class="info-block-label">Name:</div>
+                                <div class="info-block-body">{{center.Name}}</div>
+                            </div>
+                            <div class="info-block col-xs-6">
+                                <div class="info-block-label">Address:</div>
+                                <div class="info-block-body">{{center.Address | addressToString}}</div>
+                            </div>
+                        </div>
+                    </md-checkbox>
+                </div>
+            </md-virtual-repeat-container>
+
+            <div ng-if="!$ctrl.serviceCentersList.length">
+                <no-records text="Patient Service Centers"></no-records>
+            </div>
+        </div>
+
+        <div class="border-top no-float search-appointments-block"
+             ng-if="$ctrl.isSelectedLocation($ctrl.locationTypes.serviceCenter) && $ctrl.isAppointmentTimeManually"
+        >
+            <div class="pad-h-20 pad-v-5">
+                <div class="search-appointments-row">
+                    <div class="pad-top-15 block-width-250">
+                        <md-checkbox ng-model="$ctrl.isTeamMemberRequired"
+                                     aria-label="&nbsp;"
+                                     class="md-primary">
+                            No team member required
+                        </md-checkbox>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="drowz-wizard-block flex-360 flex-max-360"
+         ng-if="$ctrl.isAppointmentTimeManually && $ctrl.isPersonnelBlockShow && !$ctrl.isTeamMemberRequired">
+        <div class="drowz-wizard-block-title">
+            <div class="wizard-title-text">Field team:</div>
+        </div>
+        <div class="drowz-wizard-block-body">
+            <no-records text="Team Members" class="no-records-small" ng-show="!$ctrl.personnel.length"></no-records>
+            <div class="info-block" ng-show="$ctrl.personnel.length">
+                <div>Available {{$ctrl.personnel.length}} team member(s):</div>
+            </div>
+            <div class="info-block" ng-show="$ctrl.personnel.length">
+                <md-input-container>
+                    <label>Team Member:</label>
+                    <md-select ng-model="$ctrl.person"
+                               ng-change="$ctrl.selectPersonnel()">
+                        <md-option ng-repeat="person in $ctrl.personnel" ng-value="person"
+                                   ng-selected="$ctrl.personnel.length===1">
+                            {{person.Name.FullName}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="drowz-wizard-block no-float search-appointments-block"
+     ng-if="$ctrl.isSearchAppointmentsBlockShown()">
+    <div class="drowz-wizard-block-body">
+        <div class="drowz-wizard-block-row search-appointments-row">
+            <div class="info-block">
+                <md-button class="md-raised md-primary middle-btn"
+                           ng-click="$ctrl.searchAppointments()">
+                    Search appointments
+                </md-button>
+            </div>
+            <div class="info-loading"
+                 ng-show="$ctrl.isSearchingAppointments">
+                <div class="animated-container">
+                    <div class="messaging">
+                        <div class="loader"></div>
+                        <div class="text">Searching Appointments...</div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-block block-width-250">
+                <md-checkbox ng-model="$ctrl.emergencyCallChecked"
+                             aria-label="..."
+                             class="md-primary">
+                    Emergency Call
+                </md-checkbox>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="drowz-wizard-block no-float"
+     ng-if="$ctrl.isAppointmentsShown"
+     ng-class="{'appointments-shown':$ctrl.isAppointmentsShown}">
+    <div class="drowz-wizard-block-title">
+        <div class="wizard-title-text">Available Appointments:</div>
+    </div>
+    <div class="drowz-wizard-block-body with-scroll"
+         ng-if="$ctrl.appointments && $ctrl.appointments.length > 0">
+        <appointments-list
+                appointments="$ctrl.appointments"
+                choosen-appointment="$ctrl.choosenAppointment"
+                is-selected-appointment="$ctrl.isSelectedAppointment">
+        </appointments-list>
+    </div>
+    <div class="drowz-wizard-block-body" ng-if="!$ctrl.appointments || $ctrl.appointments.length === 0">
+        <no-records text-array="['Sorry, no available','Appointments were found']" is-default-text="false"></no-records>
+    </div>
+</div>

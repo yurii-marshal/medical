@@ -1,0 +1,332 @@
+<div class="flow-body column-body therapy-body therapy-data-wrap"
+     ng-class="{'no-records': !therapy.devices.length}"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="patientTherapy">
+
+    <no-records text="Sleep Therapy data"
+                is-fullpage="true"
+                ng-if="!therapy.devices.length"
+    ></no-records>
+
+    <!--TODO check what model wil come in case of absent registration data on device-->
+    <div class="drowz-message with-icon" ng-if="therapy.device.NOTAVAVAILABLE">
+        <md-icon class="info-icon" md-svg-src="assets/images/default/alert.svg"></md-icon>
+        <div class="drowz-message-content">
+            Therapy data no available. Either device not registered or no data received yet
+        </div>
+    </div>
+
+    <div class="flow-body-block"
+         ng-show="therapy.devices.length">
+
+        <div class="flex-row border-bottom">
+
+            <div class="info-block therapy-select-device grow-1">
+                <md-input-container>
+                    <label>Select Device:</label>
+                    <md-select ng-model="therapy.device"
+                               ng-model-options="{ trackBy: '$value.Id' }"
+                               md-on-close="therapy.getTherapy(therapy.device.Id)">
+                        <md-option ng-value="device"
+                                   ng-repeat="device in therapy.devices">
+                            {{device.Device.ProductName}}
+                            <span ng-show="device.Device.HcpcsCodes[0]"> -
+                                <span class="active-text font-italic">
+                                    HCPCS Code: {{device.Device.HcpcsCodes[0]}}
+                                </span>
+                            </span>
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div class="info-block block-width-200">
+                <div class="flex-row">
+                    <div>
+                        <div class="info-block-label">Compliance Start Date:</div>
+                        <div class="info-block-body">
+                            {{therapy.device.StartDate ? (therapy.device.StartDate | amUtc | amDateFormat: "MM/DD/YYYY") : "-"}}
+                        </div>
+                    </div>
+                    <div>
+                        <md-button class="md-raised small-btn edit-data-btn"
+                                   aria-label="..."
+                                   ng-click="therapy.changeComplianceDate()"
+                        >
+                            <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                        </md-button>
+                    </div>
+                </div>
+            </div>
+
+            <md-button class="md-raised pdf-icon-btn middle-btn"
+                       ng-click="therapy.getReport()"
+                       ng-show="therapy.therapy.Type.Id === therapy.therapiesTypes.Respironics || therapy.therapy.Type.Id === therapy.therapiesTypes.Resmed">
+                <md-icon md-svg-src="assets/images/default/pdf.svg"></md-icon>
+                Detailed Report
+            </md-button>
+
+        </div>
+
+        <div class="therapy-info"
+             ng-show="therapy.device">
+            <div class="therapy-info-block">
+                <div class="active-title flow-body-active-title">
+                    Best {{ therapy.therapy.Options.CompliancePeriod }} days of compliance:
+                    <span class="dark-gray-text flex-cont"
+                          ng-show="!therapy.hasMetData()">
+                        <md-icon class="progress-icon"
+                                 md-svg-src="assets/images/default/progress.svg"></md-icon>
+                        in progress...
+                    </span>
+                    <span class="dark-gray-text"
+                          ng-hide="!therapy.hasMetData() || !therapy.therapy.Met.BestPeriod"
+                    >
+                        {{therapy.therapy.Met.BestPeriod.From | amUtc | amDateFormat: "MM/DD/YYYY"}} -
+                        {{therapy.therapy.Met.BestPeriod.To | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                    </span>
+
+                    <span class="dark-gray-text"
+                          ng-if="!therapy.therapy.Met.BestPeriod && therapy.hasMetData()"
+                    >
+                        -
+                    </span>
+
+                </div>
+                <table class="drowz-table">
+                    <tr class="drowz-table-row">
+                        <td class="regular-left-padding">Compliance Met</td>
+                        <td class="text-right-cell" ng-hide="therapy.therapy.Met.InProgress">
+                            <span ng-show="therapy.therapy.Met.IsMet">Yes</span>
+                            <span ng-hide="therapy.therapy.Met.IsMet">No</span>
+                        </td>
+                        <td class="text-right-cell" ng-show="therapy.therapy.Met.InProgress">-</td>
+                    </tr>
+                    <tr class="drowz-table-row">
+                        <td class="regular-left-padding">Compliance Percentage</td>
+                        <td class="text-right-cell">
+                            <span ng-hide="!therapy.hasMetData()">
+                                {{therapy.therapy.Met.CompliancePercentage}}
+                            </span>
+                            <span ng-show="!therapy.hasMetData()">-</span>
+                        </td>
+                    </tr>
+                </table>
+                <div class="active-title flow-body-active-title">
+                    Usage:
+                    <span class="dark-gray-text flex-cont">
+                        {{therapy.therapy.DataUsage.Period.From | amUtc | amDateFormat: "MM/DD/YYYY"}} -
+                        {{therapy.therapy.DataUsage.Period.To | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                    </span>
+                </div>
+                <v-accordion multiple>
+                    <v-pane expanded="true" class="accordion-sleep-body">
+                        <v-pane-header class="sleep-panel-header">
+                            <div class="usage-body-row">
+                                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                                         class="sleep-panel-img"></md-icon>
+                                <div class="usage-days-col">Usage Days</div>
+                                <div class="days-col">{{therapy.therapy.DataUsage.UsageDaysTotal}}/{{therapy.therapy.DataUsage.PeriodDaysTotal || '-'}} Days</div>
+                                <div class="percentage-col green-col">
+                                    <span ng-if="therapy.therapy.DataUsage.UsageDaysPercentage">
+                                        {{therapy.therapy.DataUsage.UsageDaysPercentage}}%
+                                    </span>
+                                </div>
+                            </div>
+                        </v-pane-header>
+                        <v-pane-content>
+                            <div class="usage-body-row">
+                                <span class="usage-days-col">
+                                    >= {{therapy.therapy.DataUsage.MinHoursUsage}} hours
+                                </span>
+                                <span class="days-col">
+                                    {{therapy.therapy.DataUsage.DaysWithMoreMinHoursUsageNumber}} Days
+                                </span>
+                                <span class="percentage-col blue-col">
+                                    <span ng-if="therapy.therapy.DataUsage.DaysWithMoreThatMinHoursUsagePercentage">
+                                        {{therapy.therapy.DataUsage.DaysWithMoreThatMinHoursUsagePercentage}}%
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="usage-body-row">
+                                <span class="usage-days-col">
+                                    < {{therapy.therapy.DataUsage.MinHoursUsage}} hours
+                                </span>
+                                <span class="days-col">
+                                    {{therapy.therapy.DataUsage.DaysWithLessMinHoursUsageNumber}} Days
+                                </span>
+                                <span class="percentage-col orange-col">
+                                    <span ng-if="therapy.therapy.DataUsage.DaysWithLessThatMinHoursUsagePercentage">
+                                        {{therapy.therapy.DataUsage.DaysWithLessThatMinHoursUsagePercentage}}%
+                                    </span>
+                                </span>
+                            </div>
+                        </v-pane-content>
+                    </v-pane>
+                </v-accordion>
+                <v-accordion multiple>
+                    <v-pane class="accordion-sleep-body">
+                        <v-pane-header class="sleep-panel-header">
+                            <div class="usage-body-row">
+                                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                                         class="sleep-panel-img"></md-icon>
+                                <div class="usage-days-col">Usage Hours</div>
+                                <div class="days-col">
+                                    {{therapy.therapy.DataUsage.UsageHoursTotalInSeconds}}
+                                </div>
+                            </div>
+                        </v-pane-header>
+                        <v-pane-content>
+                            <div class="usage-body-row">
+                                <span class="usage-days-col">Average usage (total days)</span>
+                                <span class="days-col">
+                                    {{therapy.therapy.DataUsage.AverageUsageTotalDaysInSeconds}}
+                                </span>
+                            </div>
+                            <div class="usage-body-row">
+                                <span class="usage-days-col">Average usage (days used)</span>
+                                <span class="days-col">
+                                    {{therapy.therapy.DataUsage.AverageUsageDaysUsedInSeconds}}
+                                </span>
+                            </div>
+                            <div class="usage-body-row">
+                                <span class="usage-days-col">Median usage (days used)</span>
+                                <span class="days-col">
+                                    {{therapy.therapy.DataUsage.MedianUsageDaysUsedInSeconds}}
+                                </span>
+                            </div>
+                        </v-pane-content>
+                    </v-pane>
+                </v-accordion>
+            </div>
+            <div class="therapy-info-block shadow-left">
+                <div class="active-title flow-body-active-title">Therapy:</div>
+                <table class="drowz-table"
+                       ng-show="therapy.therapy.Type.Id.toString() === '1'">
+                    <tr class="drowz-table-row">
+                        <td>Average AHI</td>
+                        <td class="cell-200px text-right-cell">{{therapy.therapy.Therapy.EventsAHi}}</td>
+                    </tr>
+                    <tr class="drowz-table-row">
+                        <td>Average CA Index</td>
+                        <td class="cell-200px text-right-cell">
+                            {{therapy.therapy.Therapy.ApneaIndexCentral}}
+                        </td>
+                    </tr>
+                    <tr class="drowz-table-row">
+                        <td>Average Time in Large Leak</td>
+                        <td class="cell-100px text-right-cell">
+                            {{therapy.therapy.Therapy.LargeLeakInSeconds}}
+                        </td>
+                    </tr>
+                    <tr class="drowz-table-row">
+                        <td>Average % of Night in Large Leak</td>
+                        <td class="cell-200px text-right-cell">
+                            <span ng-if="therapy.therapy.Therapy.AveragePercentageOfNightInLargeLeak">
+                                {{therapy.therapy.Therapy.AveragePercentageOfNightInLargeLeak}}%
+                            </span>
+                        </td>
+                    </tr>
+                    <tr class="drowz-table-row">
+                        <td>Average Time in Periodic Breathing</td>
+                        <td class="cell-200px text-right-cell">
+                            {{therapy.therapy.Therapy.PeriodicBreathingInSeconds}}
+                        </td>
+                    </tr>
+                    <tr class="drowz-table-row">
+                        <td>Average % of Night in Periodic Breathing</td>
+                        <td class="cell-200px text-right-cell">
+                            <span ng-if="therapy.therapy.Therapy.AveragePercentageOfNightInPeriodicBreathing">
+                                {{therapy.therapy.Therapy.AveragePercentageOfNightInPeriodicBreathing}}%
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+                <table class="drowz-table" ng-show="therapy.therapy.Type.Id.toString() === '2'">
+                    <tr class="drowz-table-row">
+                        <td>Leaks - L/min</td>
+                        <td>
+                            <div class="info-block">
+                                <div class="info-block-label">Median:</div>
+                                <div class="info-block-body">{{therapy.therapy.Therapy.LeaksMedian}}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="info-block">
+                                <div class="info-block-label">95th percentile:</div>
+                                <div class="info-block-body">{{therapy.therapy.Therapy.Leaks95Percent}}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="info-block">
+                                <div class="info-block-label">Maximum:</div>
+                                <div class="info-block-body">{{therapy.therapy.Therapy.LeaksMax}}</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="drowz-table-row">
+                        <td>Events per hour</td>
+                        <td>
+                            <div class="info-block">
+                                <div class="info-block-label">AI:</div>
+                                <div class="info-block-body">{{therapy.therapy.Therapy.EventsAi}}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="info-block">
+                                <div class="info-block-label">HI:</div>
+                                <div class="info-block-body">{{therapy.therapy.Therapy.EventsHi}}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="info-block">
+                                <div class="info-block-label">AHI:</div>
+                                <div class="info-block-body">{{therapy.therapy.Therapy.EventsAHi}}</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="drowz-table-row">
+                        <td>Apnea Index</td>
+                        <td>
+                            <div class="info-block">
+                                <div class="info-block-label">Central:</div>
+                                <div class="info-block-body">
+                                    {{therapy.therapy.Therapy.ApneaIndexCentral}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="info-block">
+                                <div class="info-block-label">Obstructive:</div>
+                                <div class="info-block-body">
+                                    {{therapy.therapy.Therapy.ApneaIndexObstructive}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="info-block">
+                                <div class="info-block-label">Unknown:</div>
+                                <div class="info-block-body">
+                                    {{therapy.therapy.Therapy.ApneaIndexUnknown}}
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="flow-body-block" ng-show="therapy.devices.length">
+        <div class="info-block">
+            <div class="info-block-label">Notice:</div>
+            <div class="info-block-body">
+                The compliance data displayed here may not appear on a &quot;real-time&quot; basis.
+                Data refreshes daily based on information received since the previous update.
+                Complete updates may be delayed by temporary lapses in patient wireless connectivity
+                or other delaying factors.
+            </div>
+        </div>
+    </div>
+
+</div>

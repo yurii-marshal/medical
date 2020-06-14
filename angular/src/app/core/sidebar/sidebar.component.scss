@@ -1,0 +1,76 @@
+@import "../../../assets/styles/base/variables";
+
+.blue-scroll-theme {
+
+    .sidebar {
+        width: 300px;
+        height: calc(100% - 40px);
+        transition: 350ms;
+        display: block;
+
+        .toggle-menu-slide {
+            width: 100%;
+            max-width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            z-index: 10;
+            border: none;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            padding: 0 15px;
+            text-align: center;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 40px;
+            background-color: $lighter-gray-color;
+
+            &:hover {
+                background-color: rgb(234, 234, 234);
+            }
+
+            .turn-chevron {
+                transition: 350ms;
+                width: 12px;
+                height: 10px;
+                color: $dark-blue-color;
+                display: flex;
+                flex-shrink: 0;
+                justify-content: center;
+                transform: rotate(180deg);
+                margin: auto;
+            }
+
+        }
+
+        &.closed-sidebar {
+            width: 52px;
+
+            .toggle-menu-slide .turn-chevron {
+                transform: rotate(0deg);
+            }
+
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: $lighter-gray-color;
+        }
+
+    }
+
+    &.hidden {
+        display: none;
+    }
+}
+
+.test {
+    min-height: 300px;
+}

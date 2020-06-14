@@ -1,0 +1,19 @@
+<div class="date-set">
+    <app-period-switch [period]="date?.format('YYYY')"
+                   (prev)="prev()"
+                   (next)="next()"
+                   (modeChange)="modeChanged.emit($event)">
+    </app-period-switch>
+    <ul class="date-set__dates">
+        <li *ngFor="let month of _value"
+            [ngClass]="
+                {
+                     'date-set__date': true,
+                     'selected': isSelected(month),
+                     'not-allowed': !isAllowedDate(month)
+                }"
+            (mousedown)="onDateSelected(month)">
+            {{ month.format("MMM") }}
+        </li>
+    </ul>
+</div>

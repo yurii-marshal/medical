@@ -1,0 +1,157 @@
+<div class="flex-row"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="receiveStep2">
+    <div class="col-xs-6 flex-row align-start">
+        <div class="flex-row subwizard-container-block pad-left-0 w100">
+            <md-icon md-svg-src="assets/images/default/inventory.svg"
+                     class="subwizard-container-icon marg-top-15"></md-icon>
+            <md-input-container class="subwizard-container">
+                <label>Scan or Enter Product Barcode or Use Search for Product Lookup:</label>
+                <input type="text"
+                       auto-focus
+                       ng-model="recWiz.pairCurrent.product.barcode"
+                       on-press-enter="recWiz.searchProductByBarcode()"/>
+            </md-input-container>
+            <div class="subwizard-container-btns">
+                <md-button class="md-raised small-btn"
+                           ng-click="recWiz.searchProductModal()">
+                    Search
+                </md-button>
+                <md-button class="md-primary md-raised small-btn enter-barcode-btn"
+                           ng-click="recWiz.searchProductByBarcode()"
+                           ng-disabled="!recWiz.pairCurrent.product.barcode">
+                    Enter
+                </md-button>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6 with-blue-border">
+        <div class="flex-row subwizard-container-block clear-info-block-padding">
+            <md-icon md-svg-src="assets/images/default/location.svg"
+                     class="subwizard-container-icon"
+            ></md-icon>
+            <div class="flex-row grow-1"
+                 ng-class="{'bottom-divider': recWiz.pairCurrent.purchaseOrder.Id}"
+            >
+                <div class="grow-1 info-block">
+                    <div class="info-block-label">Destination Location:</div>
+                    <div class="info-block-body">
+                        {{recWiz.pairCurrent.location.Name + ", " + recWiz.pairCurrent.location.Description}}
+                    </div>
+                </div>
+                <div class="subwizard-container-btns">
+                    <md-button class="md-raised small-btn" ng-click="recWiz.searchLocationModal($event)">
+                        Change
+                    </md-button>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-row subwizard-container-block margin-top-15"
+             ng-if="recWiz.pairCurrent.purchaseOrder.Id"
+        >
+            <md-icon md-svg-src="assets/images/default/ic-packingslip-blue.svg"
+                     class="subwizard-container-icon"
+            ></md-icon>
+
+            <div class="info-block grow-1">
+                <div class="info-block-label">Select Purchase Order:</div>
+                <div class="info-block-body">
+                    {{ recWiz.pairCurrent.purchaseOrder.DisplayId }}
+                </div>
+            </div>
+
+            <div class="subwizard-container-btns">
+                <md-button class="md-raised small-btn" ng-click="recWiz.selectPurchaseOrderModal()">
+                    Change
+                </md-button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- prev item -->
+<hr class="drowz-line" ng-if="recWiz.pairLast">
+<div class="scanned-item-block last-scanned" ng-if="recWiz.pairLast">
+    <div class="flex-row">
+        <div class="col-xs-12 subwizard-container-block current-prev-item">
+            <md-icon md-svg-src="assets/images/default/check-circle.svg"
+                     class="subwizard-container-icon success-icon"></md-icon>
+            <div class="info-block block-width-25-percent">
+                <div class="info-block-label">Last Scanned Item:</div>
+                <div class="info-block-body">{{recWiz.pairLast.product.Name}}</div>
+            </div>
+            <div class="info-block block-width-25-percent left-divider"
+                 ng-if="recWiz.pairLast.product.serialNumber">
+                <div class="info-block-label">Serial Number:</div>
+                <div class="info-block-body">{{recWiz.pairLast.product.serialNumber}}</div>
+            </div>
+            <div class="info-block block-width-25-percent left-divider"
+                 ng-if="recWiz.pairLast.product.lotNumber">
+                <div class="info-block-label">Lot Number:</div>
+                <div class="info-block-body">{{recWiz.pairLast.product.lotNumber}}</div>
+            </div>
+            <div class="info-block block-width-25-percent left-divider"
+                 ng-if="recWiz.pairLast.product.deviceNumber">
+                <div class="info-block-label">Device Number:</div>
+                <div class="info-block-body">{{recWiz.pairLast.product.deviceNumber}}</div>
+            </div>
+
+            <div class="info-block left-divider">
+                <div class="info-block-label">Purchase price:</div>
+                <div class="info-block-body">
+                    <span>$</span>&nbsp;{{recWiz.pairLast.product.PurchasePrice >= 0
+                    ? (recWiz.pairLast.product.PurchasePrice | absNumber:2)
+                    : '-'}}
+                </div>
+            </div>
+            <div class="subwizard-container-btns btn-for-edit-purchase">
+                <md-button class="md-raised small-btn"
+                           ng-click="recWiz.editPurchaseModal(recWiz.pairLast.product.PurchasePrice)">
+                    Edit
+                </md-button>
+            </div>
+            <div class="subwizard-container-btns">
+                <div class="info-block left-divider">
+                    <div class="info-block-label">Qty:</div>
+                    <div class="info-block-body">{{recWiz.pairLast.product.Count}}</div>
+                </div>
+                <md-button class="md-raised small-btn"
+                           ng-if="recWiz.pairLast.product.Multiple"
+                           ng-click="recWiz.editQtyModal($event, 'last' ,null)">
+                    Change Qty
+                </md-button>
+                <md-button class="md-raised small-btn"
+                           ng-click="recWiz.editNotesModal($event, 'last' ,null)">
+                    Notes
+                </md-button>
+            </div>
+        </div>
+    </div>
+    <div class="bundle-items-row"
+         ng-if="recWiz.pairLast.product && recWiz.pairLast.product.Type.Code==='Bundle' && recWiz.pairLast.product.Components">
+        <div class="wizard-components-title">Items:</div>
+        <table class="drowz-table small-table regular-table">
+            <tr class="drowz-table-header">
+                <th class="number-cell">#</th>
+                <th class="cell-35-percent">Name</th>
+                <th class="cell-20-percent">Serial Number</th>
+                <th class="cell-20-percent">Lot Number</th>
+                <th class="cell-20-percent"
+                    ng-if="recWiz.pairLast.product.NeedDeviceNumber">Device Number
+                </th>
+                <th class="cell-10-percent">Qty</th>
+            </tr>
+            <tr class="drowz-table-row" ng-repeat="item in recWiz.pairLast.product.Components track by $index">
+                <td class="number-cell">{{$index +1}}.</td>
+                <td class="cell-35-percent">{{item.Name}}</td>
+                <td class="cell-20-percent">{{item.serialNumber}}</td>
+                <td class="cell-20-percent">{{item.lotNumber}}</td>
+                <td class="cell-20-percent"
+                    ng-if="recWiz.pairLast.product.NeedDeviceNumber">{{item.deviceNumber}}
+                </td>
+                <td class="cell-10-percent">{{item.Count}}</td>
+            </tr>
+        </table>
+    </div>
+</div>

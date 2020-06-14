@@ -1,0 +1,50 @@
+.management-settings-orders {
+  .turn-confirmation {
+    .md-container {
+      order : 2;
+    }
+    .md-label {
+      margin-right: 8px;
+    }
+    .md-container {
+      margin-right: 0;
+    }
+  }
+  md-input-container .md-input[disabled] {
+    border-color: #cccccc;
+    border-style: dotted;
+    color: rgba(0, 0, 0, 0.38);
+  }
+}
+.management-settings-statements {
+  .flex-row {
+    .info-block {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+    .payment-method {
+      .md-label {
+        color: #06aed5;
+        font-weight: 500;
+      }
+      md-input-container .md-input[disabled] {
+        border-color: #cccccc;
+        border-style: dotted;
+      }
+      textarea {
+        max-height: 145px;
+        overflow-y: auto;
+      }
+    }
+    .credit-cards {
+      md-icon {
+        height: 35px;
+        width: 54px;
+        padding: 3px 0;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        margin-right: 10px;
+      }
+    }
+  }
+}

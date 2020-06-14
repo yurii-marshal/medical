@@ -1,0 +1,53 @@
+<div class="flex-row">
+    <div class="filters-block-label active-text font-semibold"
+         ng-bind="$ctrl.options.label + ':'"></div>
+
+    <div ng-form="$ctrl.selectInputRangeFilterForm" class="filters-block-body">
+
+        <md-input-container class="select-filter">
+            <label></label>
+            <md-select ng-model="$ctrl.selectedFilter"
+                       ng-change="$ctrl.setSelection($ctrl.selectedFilterIndex)"
+                       clear-on-click>
+                <md-option ng-value="item" ng-repeat="item in $ctrl.options.items track by $index">
+                    {{::item.displayName}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+
+        <div class="input-range-filter" ng-if="$ctrl.selectedFilter.isCustom">
+            <md-input-container>
+                <label>From:</label>
+                <input type="number"
+                       ng-model="$ctrl.selectedFilter.filterStart.filterValue"
+                       name="input-range-start"
+                       min="0"
+                       max="{{$ctrl.selectedFilter.filterEnd.filterValue}}"
+                       ng-required="$ctrl.selectedFilter.isCustom"
+                       clear-on-click>
+                <div ng-messages="$ctrl.selectInputRangeFilterForm['input-range-start'].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required">This field is required for custom filter</div>
+                    <div ng-message="max">Balance aging from has to be equal or less than balance aging to</div>
+                </div>
+            </md-input-container>
+            <span>&#8212;</span>
+            <md-input-container>
+                <label>To:</label>
+                <input type="number"
+                       ng-model="$ctrl.selectedFilter.filterEnd.filterValue"
+                       name="input-range-end"
+                       min="{{$ctrl.selectedFilter.filterStart.filterValue}}"
+                       ng-required="$ctrl.selectedFilter.isCustom"
+                       clear-on-click>
+                <div ng-messages="$ctrl.selectInputRangeFilterForm['input-range-end'].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required">This field is required for custom filter</div>
+                    <div ng-message="min">Balance aging to has to be equal or bigger than balance aging from</div>
+                </div>
+            </md-input-container>
+         </div>
+
+        <div class="filter-units" ng-if="$ctrl.selectedFilter">Days</div>
+    </div>
+</div>

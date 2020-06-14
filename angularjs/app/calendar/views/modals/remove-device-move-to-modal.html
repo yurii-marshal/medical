@@ -1,0 +1,80 @@
+<div class="modal-window move-to-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="searchLocation">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/inventory.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Move To:</h2>
+        </div>
+
+        <div class="search-modal-filters">
+            <div class="select-col">
+                <md-button class="clear-filters" ng-click="$ctrl.clearFilters()" aria-label="...">
+                    <md-icon md-svg-src="assets/images/default/clear-filters.svg"></md-icon>
+                </md-button>
+            </div>
+            <div class="name-col">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>Search</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.Name"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click>
+                </md-input-container>
+            </div>
+            <div class="productId-col">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>Select location type</label>
+                    <md-select ng-model="$ctrl.filtersObj.TypeId">
+                        <md-option ng-value="item.Id" ng-repeat="item in $ctrl.locationTypes">
+                            {{item.Name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="search-products-table">
+            <div class="search-products-header">
+                <div class="select-col">Select:</div>
+                <div class="name-col">Location Name:</div>
+            </div>
+            <div class="products-container"
+                 scroll-bar
+                 scroll-bar-above-element="true"
+            >
+
+                <no-records text="Locations" ng-if="!$ctrl.locationsList.length"></no-records>
+
+                <md-radio-group ng-model="$ctrl.selectedLocation">
+                    <md-radio-button ng-value="item"
+                                     class="md-primary search-product-row"
+                                     ng-repeat="item in $ctrl.locationsList track by $index">
+                        <div class="search-products-row">
+                            <div class="name-col">{{item.DisplayName}}</div>
+                            <div class="productId-col">{{item.Type.Name}}</div>
+                        </div>
+                    </md-radio-button>
+                </md-radio-group>
+                <div class="flex-cont center" ng-show="$ctrl.showMoreButton">
+                    <div ng-click="$ctrl.showMore()" class="show-more-btn"> show more </div>
+                </div>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.save()"
+                   ng-disabled="!$ctrl.selectedLocation">
+            Move
+        </md-button>
+    </md-dialog-actions>
+</div>

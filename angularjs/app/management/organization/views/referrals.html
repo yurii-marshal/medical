@@ -1,0 +1,185 @@
+<div class="infinite-scroll-bg">
+
+    <a href="javascript:void(0);"
+       class="toolbar-single-action"
+       ng-click="referrals.addReferral()"
+       simple-tooltip="Add new referring provider"
+       tooltip-position="left"></a>
+
+    <div class="breadcrumbs transparent-bg">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+        <a href="javascript:void(0)" ui-sref="root.management.organization">Organization</a>
+        <a href="javascript:void(0)" class="active">Referring Providers</a>
+    </div>
+
+    <infinity-table load-items-promise="referrals.getReferrals"
+                    class="referrals-list"
+                    page-size="24"
+                    item-alias="referral"
+                    filters-obj="referrals.filter"
+                    sort-obj="referrals.sortExpr"
+                    cache-filters-key="referrals.cacheFiltersKey"
+    >
+        <infinity-table-sort>
+            <div>
+                <md-icon md-svg-src="assets/images/default/insurance-v2-square.svg"
+                         class="main-sort-icon insurance-v2-square"></md-icon>
+                <inftbl-sort-list param-name="Physician.FullName">Physician:</inftbl-sort-list>
+            </div>
+            <div>
+                <md-icon md-svg-src="assets/images/default/organization.svg"
+                         class="main-sort-icon organization-icon"></md-icon>
+                <inftbl-sort-list param-name="Practice">Practice:</inftbl-sort-list>
+            </div>
+            <div class="w160px">
+                <md-icon md-svg-src="assets/images/default/documents.svg"
+                         class="main-sort-icon document-icon"></md-icon>
+                NPI:
+            </div>
+            <div class="w220px">
+                <md-icon md-svg-src="assets/images/default/location2.svg"
+                         class="main-sort-icon location-icon"></md-icon>
+                Location Address:
+            </div>
+            <div class="w170px no-divider">
+                <md-icon md-svg-src="assets/images/default/phone-default.svg"
+                         class="main-sort-icon phone-icon"></md-icon>
+                Contact:
+            </div>
+            <div class="w170px">
+                <md-icon md-svg-src="assets/images/default/user-square.svg"
+                         class="main-sort-icon location-icon"></md-icon>
+                <inftbl-sort-list param-name="ContactPerson">Contact Person:</inftbl-sort-list>
+            </div>
+            <div>
+                <md-icon md-svg-src="assets/images/default/user-square.svg"
+                         class="main-sort-icon location-icon"></md-icon>
+                <inftbl-sort-list param-name="SalesAgent">Sales Rep:</inftbl-sort-list>
+            </div>
+            <div class="w160px">
+                <md-icon md-svg-src="assets/images/default/documents.svg"
+                         class="main-sort-icon document-icon"></md-icon>
+                PECOS
+            </div>
+            <div class="w80px no-divider">&nbsp;</div>
+        </infinity-table-sort>
+
+        <infinity-table-filters class="drowz-infinite-row-filter">
+            <div>
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>search</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj['filter.fullName']"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click/>
+                </md-input-container>
+            </div>
+            <div >
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>search</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj['filter.practice']"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click />
+                </md-input-container>
+            </div>
+            <div class="w160px">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>search</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj['filter.npi']"
+                           ng-model-options="{debounce: 350}"
+                           clear-on-click>
+                </md-input-container>
+            </div>
+            <div class="w220px">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>search address</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj['filter.address']"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click />
+                </md-input-container>
+            </div>
+            <div class="w170px no-divider">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>search phone</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj['filter.phone']"
+                           ng-model-options="{debounce: 350}"
+                           clear-on-click>
+                </md-input-container>
+            </div>
+            <div class="w170px">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>search</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj['filter.contactPerson']"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click />
+                </md-input-container>
+            </div>
+            <div>
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>search</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj['filter.salesAgent']"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click />
+                </md-input-container>
+            </div>
+            <div class="w200px">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>select</label>
+                    <md-select clear-on-click name="source" ng-model="$ctrl.filtersObj['filter.pecosEnrollment']">
+                        <md-option value="true">Enrolled</md-option>
+                        <md-option value="false">Not Enrolled</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div class="w80px filter-reset-btn align-right">
+                <inftbl-filter-reset-btn></inftbl-filter-reset-btn>
+            </div>
+        </infinity-table-filters>
+
+        <infinity-table-row class="drowz-infinite-row hide-btns-row"
+                            ng-click="$parent.referrals.goToReferral(referral.Id)">
+            <div ng-bind="referral.ReferralCardSource.Name.FullName || '-'"></div>
+            <div>
+                <div ng-if="!referral.ReferralCardSource.Practice">-</div>
+                <div popover-directive="referral.ReferralCardSource.Practice"></div>
+            </div>
+            <div class="w160px" ng-bind="referral.ReferralCardSource.Npi || '-'"></div>
+            <div class="w220px">
+                <div popover-directive="referral.Location.Address"></div>
+            </div>
+            <div class="w170px no-divider">
+                <div popover-directive="referral.Contacts" is-array-with-type="true"></div>
+            </div>
+            <div class="w170px" ng-bind="referral.ContactPerson || '-'"></div>
+            <div ng-bind="referral.SalesAgent || '-'"></div>
+            <div class="w200px"
+                 ng-bind="referral.PecosEnrollment ? 'Enrolled' : 'Not enrolled'"></div>
+            <div class="w80px no-divider">
+                <div class="flex-cont space-around">
+                    <md-icon md-svg-src="assets/images/default/monitor-list.svg"
+                             class="monitor-list-blue">
+                    </md-icon>
+                    <md-button class="delete-icon-btn"
+                               aria-label="..."
+                               confirm-ng-click="$parent.referrals.deleteReferral(referral.Id)"
+                               confirm-msg="'Are you sure you want to delete the {0} referral card?'.format(referral.Physician.Name.FullName)"
+                               confirm-title="Delete Referring provider">
+                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                    </md-button>
+                </div>
+            </div>
+        </infinity-table-row>
+
+        <infinity-table-no-items>
+            <no-records text="Referral Cards" is-fullpage="true"></no-records>
+        </infinity-table-no-items>
+    </infinity-table>
+
+</div>

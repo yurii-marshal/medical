@@ -1,0 +1,89 @@
+.patient-resupply-programs {
+    .flow-accordion-title {
+        .flow-accordion-title-icon {
+            background-color: $gray-color;
+        }
+    }
+
+    .resupply-program-details {
+        margin-bottom: 20px;
+
+        .info-block {
+            &:first-of-type {
+                padding-left: 0;
+            }
+
+            &.left-divider {
+                &:after {
+                    background-color: $gray-color-main;
+                }
+            }
+        }
+
+        .checked-delivery-icon {
+            width: 16px;
+            height: 10px;
+            margin: 0 13px 0 0;
+            color: $main-active-color;
+        }
+
+        .confirmation-required-checked {
+            padding-right: 0;
+        }
+    }
+
+    .order-items {
+        & > .active-text {
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .drowz-table tr.drowz-table-header {
+            background-color: $wizard-title-color;
+        }
+    }
+
+    .related-orders {
+        padding-left: 100px;
+
+        v-accordion {
+            position: relative;
+        }
+
+        .flow-accordion-title {
+            & > div {
+                justify-content: space-between;
+            }
+
+            .flow-accordion-title-icon {
+                background-color: transparent;
+                color: $main-active-color;
+                padding: 0;
+                margin: 0 15px 0 10px;
+            }
+
+            .grey-bordered-block {
+                margin-right: 10px;
+                height: 34px;
+                padding-left: 7px;
+                align-items: center;
+            }
+        }
+
+        .orders-list {
+            & > div:not(:last-of-type) {
+                border-bottom: 1px solid $lighter-gray-color;
+            }
+
+            .order-status {
+                display: flex;
+                justify-content: center;
+
+                .status-label {
+                    min-width: 80px;
+                }
+            }
+        }
+    }
+}

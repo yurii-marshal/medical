@@ -1,0 +1,35 @@
+.dashboard-outer {
+    padding: 50px;
+}
+
+.select-date-label {
+    margin-right: 20px;
+}
+
+.datetimepicker {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    margin: 20px;
+    padding: 20px;
+    border: 1px #cccccc solid;
+
+    .datetimepicker-options {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .opt-item {
+            display: flex;
+            align-items: center;
+            margin: 10px;
+
+            span.label {
+                margin-right: 10px;
+            }
+        }
+    }
+
+}

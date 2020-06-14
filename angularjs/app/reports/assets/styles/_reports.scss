@@ -1,0 +1,310 @@
+.reports-content {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    height: calc(100vh - #{$main-menu-height});
+    padding: 20px;
+
+    @include respond-to(appMinWidth) {
+        height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height} - 20px);
+    }
+
+    .small_padding_info {
+        padding-top: 20px;
+
+        .no-records {
+            padding-top: 36px;
+        }
+    }
+}
+
+.report-filter {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    min-height: 50px;
+    padding-bottom: 10px;
+
+    .report-filter-checkbox {
+        width: 265px;
+        min-width: 265px;
+        padding-right: 10px;
+        padding-top: 8px;
+
+        md-checkbox {
+            margin-bottom: 0;
+        }
+    }
+
+    .report-filter-select {
+        width: 165px;
+        min-width: 165px;
+        padding-right: 15px;
+
+        md-select {
+            margin: 0;
+        }
+    }
+
+    .report-filter-option {
+        flex-grow: 1;
+    }
+
+    .report-chips {
+        display: block;
+
+        .md-chips {
+            padding-bottom: 0;
+            min-height: 29px;
+            box-shadow: none;
+            border-bottom: 1px solid rgba(0,0,0,0.12);
+
+            &.md-focused {
+                box-shadow: none;
+                border-bottom-color: $main-active-color;
+            }
+        }
+
+        md-chip {
+            height: 26px;
+            max-width: 400px;
+            margin: 0 5px 4px 0;
+            padding: 0 20px 0 8px;
+            line-height: 26px;
+            color: $font-color;
+            font-size: 14px;
+            border-radius: 9px;
+            background-color: $calendar-gray-color;
+            overflow: hidden;
+
+            .md-chip-remove-container {
+                line-height: 26px;
+            }
+
+            .md-chip-remove {
+                width: 26px;
+                height: 26px;
+
+                &:hover {
+                    md-icon {
+                        color: #000;
+                    }
+                }
+                md-icon {
+                    width: 20px;
+                    height: 20px;
+                    color: $font-color;
+                    transition: .2s;
+                }
+            }
+        }
+
+        .md-chip-input-container {
+            margin: 0;
+            line-height: 26px;
+
+            md-autocomplete, md-autocomplete-wrap {
+                height: 26px;
+            }
+
+            md-autocomplete {
+                input {
+                    height: 26px;
+                    line-height: 26px;
+                    font-size: 14px;
+                }
+
+                md-progress-linear {
+                    height: 3px;
+
+                    .md-container {
+                        height: 2px;
+                    }
+                }
+            }
+        }
+    }
+
+    .report-select {
+        display: flex;
+        align-items: flex-end;
+
+        md-select {
+            min-width: 220px;
+            margin: 0;
+
+            .md-select-value {
+                > span {
+                    .md-container {
+                        display: none;
+                    }
+                }
+            }
+        }
+
+        .plus-btn {
+            position: relative;
+            min-width: 25px;
+            width: 25px;
+            min-height: 25px;
+            height: 25px;
+            margin: 0 0 0 10px;
+            padding: 0;
+
+            &::before, &::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translateY(-50%) translateX(-50%);
+                background-color: $font-color;
+            }
+
+            &::before {
+                width: 2px;
+                height: 50%;
+            }
+
+            &::after {
+                height: 2px;
+                width: 50%;
+            }
+        }
+    }
+
+    .datepicker-cell, .datetimepicker-cell {
+        display: flex;
+        align-items: flex-end;
+
+        .calendar_icon {
+            min-width: 120px;
+            width: 120px;
+            margin: 0 10px 0 0;
+            padding-left: 0;
+            padding-bottom: 0;
+
+            &::before {
+                margin-top: -10px;
+                left: auto;
+                right: 7px;
+                pointer-events: none;
+            }
+
+            input {
+                transition: .2s;
+            }
+        }
+    }
+
+    .datetimepicker-cell {
+        .calendar_icon {
+            width: 190px;
+        }
+    }
+
+    .default-option, .number-option {
+        margin: 0;
+        padding-bottom: 0;
+        min-width: 100%;
+    }
+
+    .number-option {
+        min-width: 100px;
+    }
+}
+
+report-filter-row-inner.clearfix {
+    display: block;
+}
+
+.filters-btns {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    .md-button {
+        //text-transform: none;
+        //font-size: 14px;
+    }
+}
+
+.dnld-report-block {
+    font-size: 13px;
+    color: $font-color;
+    text-transform: none;
+    font-weight: 400;
+
+    > md-icon {
+        width: 14px;
+        height: 18px;
+        margin-right: 7px;
+        color: $font-color;
+        cursor: default;
+    }
+
+    .get-file {
+        font-size: 15px;
+        text-decoration: none;
+        color: $font-color;
+        font-weight: 500;
+
+        &:hover {
+            text-decoration: underline;
+        }
+
+        &:first-of-type {
+            margin-left: 7px;
+        }
+    }
+}
+
+.report-border-row {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid $lighter-gray-color;
+}
+
+.reports-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: $lighter-gray-color;
+    height: 30px;
+    padding-right: 20px;
+
+    .view_all_btn {
+        margin-top: 2px;
+
+        button {
+            font-size: 12px;
+            text-transform: capitalize;
+            background: transparent !important;
+            padding: 0px 15px;
+            min-height: 26px;
+            line-height: 26px;
+            min-width: 70px;
+            color: $main-active-color;
+            font-weight: 400;
+            box-shadow: none !important;
+            margin: 0 -10px 0 0;
+
+            .md-ripple-container {
+                display: none;
+            }
+        }
+    }
+}
+
+.md-virtual-repeat-container.md-autocomplete-suggestions-container,
+.md-select-menu-container {
+    &.reports-dropdown {
+        z-index: 175;
+
+        &.m-size {
+            width: 300px;
+        }
+    }
+}
+
+.drowz-overlay.drowz-overlay-reports {
+    z-index: 80;
+}

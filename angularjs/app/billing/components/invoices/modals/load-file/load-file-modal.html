@@ -1,0 +1,52 @@
+<div class="modal-window batch-file-download-modal">
+
+    <a href="javascript:void(0);" ng-click="modal.close()" class="close-modal"></a>
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/documents.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2 ng-if="!modal.isLoading && !modal.isFailed">Documents were generated:</h2>
+            <h2 ng-if="!modal.isLoading && modal.isFailed">Documents were not generated</h2>
+            <h2 ng-if="modal.isLoading">Documents generation:</h2>
+        </div>
+
+        <p ng-if="modal.isLoading" class="text-center">
+            Documents generation can takes a few minutes. Please, wait.
+        </p>
+
+        <div class="row">
+            <div class="col-xs-12 info-block center-text"
+                 ng-if="!modal.isFailed"
+            >
+                <div class="md-button md-primary md-raised"
+                     ng-click="modal.downloadFile()"
+                     ng-disabled="modal.isLoading"
+                >
+                    {{ modal.isLoading ? '' : modal.buttonText; }}
+                    &nbsp;<icon-loading-white ng-if="modal.isLoading || modal.downloadingFile"></icon-loading-white>
+                    <md-icon ng-if="!modal.isLoading && !modal.downloadingFile"
+                             class="icon_download"
+                             md-svg-src="assets/images/default/download.svg"
+                    ></md-icon>
+                    <span ng-if="modal.isLoading">
+                        {{ modal.statusCounter.processedCount }}
+                        /
+                        {{ modal.statusCounter.totalCount }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-xs-12 info-block center-text"
+                 ng-if="modal.isFailed"
+            >
+                <div class="md-button md-raised"
+                     ng-click="modal.close()"
+                >
+                    Close
+                </div>
+            </div>
+
+        </div>
+    </md-dialog-content>
+</div>

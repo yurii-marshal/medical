@@ -1,0 +1,54 @@
+<div class="payer-details-tab full-height-with-footer"
+     ng-form="payerDetails.detailsForm">
+
+    <div class="payer-details-content">
+        <div class="flex-row">
+            <div class="info-block block-width-450">
+                <md-input-container>
+                    <label>Name:</label>
+                    <input type="text"
+                           ng-model="payerDetails.model.Name"
+                           ng-disabled="payerDetails.model.fieldRules.payerNameDisabled"
+                           ng-required="true"
+                           name="payerName">
+                    <div ng-messages="detailsForm.payerName.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div class="info-block block-width-200">
+                <md-input-container>
+                    <label>Payer ID:</label>
+                    <input type="text"
+                           ng-model="payerDetails.model.ClaimCode"
+                           ng-disabled="payerDetails.model.fieldRules.payerIdDisabled"
+                           ng-required="true"
+                           name="id">
+                    <div ng-messages="detailsForm.id.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div class="info-block grow-1 flex-cont align-end">
+                <md-button class="md-raised add-new-contact middle-btn"
+                           ng-click="payerDetails.addNewPlan()">
+                    <md-icon md-svg-src="assets/images/default/plus.svg"></md-icon>
+                    Add New Plan
+                </md-button>
+            </div>
+        </div>
+        <payer-plans plans="payerDetails.model.Plans"
+                     restrictions="payerDetails.model.Restrictions"
+        ></payer-plans>
+    </div>
+
+    <div class="flow-body-footer">
+        <md-button class="md-raised main-button" ng-click="payerDetails.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   scroll-to
+                   disabled-scroll="payerDetails.detailsForm.$invalid"
+                   ng-click="payerDetails.save()">
+            Save
+        </md-button>
+    </div>
+</div>

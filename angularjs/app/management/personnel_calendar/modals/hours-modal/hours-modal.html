@@ -1,0 +1,132 @@
+<div class="modal-window hours-modal"
+     ng-form="hours.editForm"
+     ng-class="{'no-address-hours': !hours.isScheduleAble}"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="hoursModal">
+
+    <a href="javascript:void(0);" ng-click="hours.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/clock.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2 ng-if="hours.workingHours">Schedule Working Hours:</h2>
+            <h2 ng-if="!hours.workingHours">Schedule On-Call Hours:</h2>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block calendar_icon icon-right">
+                <md-input-container>
+                    <label>Date:</label>
+                    <input datetimepicker
+                           min-date="today"
+                           format="MM/DD/YYYY"
+                           aria-label="startDate"
+                           name="startDateRange"
+                           ng-model="hours.constraint.date"
+                           ng-required="true"
+                           ng-if="hours.constraint.id == ''">
+                    <div ng-messages="hours.editForm.startDateRange.$error"
+                         ng-if="hours.constraint.id == ''"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                    <!-- can't change date if saved item -->
+                    <input min-date="today"
+                           format="MM/DD/YYYY"
+                           aria-label="startDate"
+                           name="startDateRange"
+                           ng-model="hours.constraint.date"
+                           ng-disabled="true"
+                           ng-if="hours.constraint.id != ''">
+                </md-input-container>
+            </div>
+            <div class="info-block time-block icon-right">
+                <md-input-container>
+                    <label>From:</label>
+                    <input type="text"
+                           datetimepicker
+                           format="hh:mm A"
+                           stepping="1"
+                           ng-model="hours.constraint.start"
+                           name="start"
+                           start-time-validator
+                           end-time="hours.constraint.end"
+                           ng-required="true">
+                    <div ng-messages="hours.editForm.start.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="startTime">Time "From" must be less than time "To"</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div class="info-block time-block icon-right">
+                <md-input-container>
+                    <label>To:</label>
+                    <input type="text"
+                           datetimepicker
+                           format="hh:mm A"
+                           stepping="1"
+                           ng-model="hours.constraint.end"
+                           name="end"
+                           end-time-validator
+                           start-time="hours.constraint.start"
+                           ng-required="true">
+                    <div ng-messages="hours.editForm.end.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="endTime">Time "To" must be greater than time "From"</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div ng-if="hours.isScheduleAble && !hours.workingHours"
+             ng-include="'profile/views/adresses.html'"></div>
+
+        <div ng-if="hours.isScheduleAble && hours.workingHours"
+             ng-include="'profile/views/requiredAdresses.html'"></div>
+
+        <div class="info-block">
+            <div class="active-title flow-body-active-title">Description:</div>
+            <md-input-container>
+                <label></label>
+                <textarea placeholder="Type Description here:" rows="1"
+                          ng-model="hours.constraintVm.Description"></textarea>
+            </md-input-container>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+
+        <md-button class="md-raised main-button"
+                   aria-label="..."
+                   ng-click="hours.cancel()">
+            Cancel
+        </md-button>
+        <md-button class="md-raised delete-btn main-button"
+                   aria-label="..."
+                   ng-if="hours.constraintVm.Id > 0 && !hours.workingHours"
+                   confirm-ng-click="hours.delete()"
+                   confirm-title="Delete On-Call Hours"
+                   confirm-msg="'Are you sure you want to delete selected On-Call Hours?'">
+            Delete
+        </md-button>
+        <md-button class="md-raised delete-btn main-button"
+                   aria-label="..."
+                   ng-if="hours.constraintVm.Id > 0 && hours.workingHours && !hours.isOnlyView"
+                   confirm-ng-click="hours.delete()"
+                   confirm-title="Delete Working Hours"
+                   confirm-msg="'Are you sure you want to delete selected Working Hours?'">
+            Delete
+        </md-button>
+        <md-button class="md-raised md-primary main-button"
+                   aria-label="..."
+                   ng-click="hours.save()"
+                   ng-show="!hours.isOnlyView">
+            <span ng-if="hours.constraint.id == ''">Add</span>
+            <span ng-if="hours.constraint.id != ''">Save</span>
+        </md-button>
+    </md-dialog-actions>
+
+</div>

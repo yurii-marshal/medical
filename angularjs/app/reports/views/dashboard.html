@@ -1,0 +1,18 @@
+<div class="h100 regular-sidebar">
+    <div id="row" class="sidebar-container"
+         drowz-sidebar
+         drowz-sidebar-name="reports">
+
+        <div class="sidebar reports-sidebar" ui-view="leftMenu"
+             bs-loading-overlay
+             bs-loading-overlay-reference-id="reportSidebar"></div>
+        <div class="main-content reports-content"
+             ui-view="mainContent"
+             bs-loading-overlay
+             bs-loading-overlay-reference-id="main_block">
+        </div>
+
+    </div>
+</div>
+<div class="drowz-overlay drowz-overlay-reports"
+     ng-if="vm.showSaveBlock" ui-view="overlay"></div>

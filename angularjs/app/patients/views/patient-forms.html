@@ -1,0 +1,135 @@
+<div class="patient-forms"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="patientForms">
+
+    <div class="patient-forms-header">
+        <div class="flex-row">
+            <div class="form-template">
+                <md-input-container>
+                    <label>Template:</label>
+                    <md-select ng-model="forms.template"
+                               ng-disabled="!forms.templates.length">
+                        <md-option ng-value="template"
+                                   ng-repeat="template in forms.templates">
+                            {{ template.Name }}
+                        </md-option>
+                        <md-option ng-if="!forms.templates.length"
+                                   ng-value="null"
+                                   ng-selected="!forms.templates.length">
+                            No Templates were found
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <md-button class="md-raised middle-btn edit-text-btn edit-form-btn"
+                       ng-if="forms.template && forms.template.Editable"
+                       ng-click="forms.goToEditForm()"
+            >
+                <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+            </md-button>
+            <div class="form-date">
+                <md-input-container>
+                    <label>Signed Date:</label>
+                    <input datetimepicker
+                           format="MM/DD/YYYY"
+                           ng-model="forms.date"/>
+                </md-input-container>
+            </div>
+            <md-button class="md-raised middle-btn pdf-btn"
+                       ng-click="forms.generate()"
+                       ng-disabled="!(forms.template && forms.date)"
+            >
+                <md-icon md-svg-src="assets/images/default/pdf.svg"></md-icon>
+                Generate
+            </md-button>
+            <md-button class="md-raised middle-btn pdf-btn"
+                   ng-disabled="!forms.template"
+                   ng-click="forms.goToFillSign()">
+                <md-icon md-svg-src="assets/images/default/pdf.svg"></md-icon>
+                Generate and Sign
+            </md-button>
+            <div class="grow-1 flex-cont align-end align-top">
+                <md-button class="md-raised edit-text-btn small-btn marg-0" ng-click="forms.goToAddForm()">
+                    <md-icon md-svg-src="assets/images/default/plus.svg"></md-icon>
+                    <span>Add Form</span>
+                </md-button>
+            </div>
+        </div>
+        <div class="flex-row">
+            <div class="form-order grow-1">
+                <md-input-container>
+                    <label>Order:</label>
+                    <md-select ng-model="forms.order"
+                               clear-on-click
+                               ng-disabled="!forms.orders.length">
+                        <md-option ng-value="order"
+                                   ng-repeat="order in forms.orders">{{order.Text}}</md-option>
+                        <md-option ng-if="!forms.orders.length"
+                                   ng-value="null"
+                                   ng-selected="!forms.orders.length">
+                            No Orders were found
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+        </div>
+    </div>
+    <v-accordion class="vAccordion--default flow-accordion" multiple>
+        <v-pane expanded="true">
+            <v-pane-header class="flow-accordion-title">
+                <md-icon md-svg-src="assets/images/default/chevron.svg" class="flow-accordion-title-icon"></md-icon>
+                <span>History:</span>
+                <div class="accordion-line"></div>
+            </v-pane-header>
+
+            <v-pane-content>
+                <div class="patient-forms-history">
+                    <no-records text="Forms"
+                                ng-if="!forms.forms.length"></no-records>
+                    <div class="form-history-item"
+                         ng-repeat="form in forms.forms | orderBy:'-CreatedDate' track by $index">
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">Template:</div>
+                            <div class="info-block-body">{{form.Name}}</div>
+                        </div>
+                        <div class="info-block block-width-200 left-divider">
+                            <div class="info-block-label">Created by:</div>
+                            <div class="info-block-body">{{form.CreatedBy.Name.FullName}}</div>
+                        </div>
+                        <div class="info-block block-width-200 left-divider">
+                            <div class="info-block-label">Created:</div>
+                            <div class="info-block-body">
+                                {{form.CreatedDate | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                                <span class="active-text">
+                        {{form.CreatedDate | amUtc | amDateFormat: "hh:mm A"}}
+                    </span>
+                            </div>
+                        </div>
+                        <div class="info-block block-width-230">
+                            <div class="form-history-btns flex-cont align-end">
+                                <md-button class="md-raised small-btn eye-details-btn"
+                                           aria-label="..."
+                                           ng-click="forms.openDocument(form, 1)"
+                                >
+                                    <icon-loading-white ng-if="form.isLoading"
+                                                        class="blue-loading"
+                                    ></icon-loading-white>
+
+                                    <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon>
+                                    Open
+                                </md-button>
+                                <md-button class="md-raised small-btn download"
+                                           aria-label="..."
+                                           ng-click="forms.getDocument(form.AccessToken, 2)"
+                                >
+                                    <md-icon md-svg-src="assets/images/default/download.svg"></md-icon>
+                                    Download
+                                </md-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+    </v-accordion>
+</div>

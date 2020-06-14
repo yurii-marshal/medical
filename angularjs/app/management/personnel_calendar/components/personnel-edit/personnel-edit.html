@@ -1,0 +1,199 @@
+<div class="infinite-scroll-bg management-personnel-edit full-height-with-footer"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="personnelEdit"
+     ng-form="$ctrl.personnelEditForm">
+
+    <div class="top-block">
+        <div class="breadcrumbs transparent-bg">
+            <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+            <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+            <a href="javascript:void(0)" ui-sref="root.management.personnel">Team</a>
+            <a href="javascript:void(0)" class="active">{{ !$ctrl.personnelId ? 'New Team Member' : 'Edit Team Member' }}</a>
+        </div>
+
+        <div class="drowz-wizard-body-flex">
+
+            <div class="grow-1">
+                <div class="flex-row">
+                    <div class="drowz-wizard-block no-float grow-1">
+                        <div class="drowz-wizard-block-title">
+                            <div class="wizard-title-text">Main info:</div>
+                        </div>
+                        <div class="drowz-wizard-block-body">
+                            <div class="drowz-wizard-block-row">
+                                <div class="col-xs-3 info-block">
+                                    <md-input-container>
+                                        <label>First Name:</label>
+                                        <input type="text"
+                                               ng-required="true"
+                                               name="firstName"
+                                               ng-model="$ctrl.personnel.Name.FirstName">
+                                        <div ng-messages="$ctrl.personnelEditForm.firstName.$error" class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                                <div class="col-xs-3 info-block">
+                                    <md-input-container>
+                                        <label>Last Name:</label>
+                                        <input type="text"
+                                               ng-required="true"
+                                               name="lastName"
+                                               ng-model="$ctrl.personnel.Name.LastName"
+                                        >
+                                        <div ng-messages="$ctrl.personnelEditForm.lastName.$error" class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                                <div class="col-xs-3 info-block">
+                                    <md-checkbox class="md-primary personnel-checkbox"
+                                                 ng-model="$ctrl.personnel.ScheduleAble">
+                                        Available for Scheduling
+                                    </md-checkbox>
+                                </div>
+                            </div>
+                            <div class="drowz-wizard-block-row">
+                                <div class="col-xs-3 info-block">
+                                    <md-input-container>
+                                        <label>Email:</label>
+                                        <input type="email"
+                                               ng-required="true"
+                                               name="email"
+                                               ng-model="$ctrl.personnel.Email">
+                                        <div ng-messages="$ctrl.personnelEditForm.email.$error" class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                            <div ng-message="email">Email is not valid</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                                <div class="col-xs-3 info-block">
+                                    <md-input-container>
+                                        <label>Login:</label>
+                                        <input type="text"
+                                               ng-required="true"
+                                               name="login"
+                                               ng-model="$ctrl.personnel.Login">
+                                        <div ng-messages="$ctrl.personnelEditForm.login.$error" class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-row">
+                    <div class="flex-50-percent flex-cont stretch flex-column">
+                        <div class="drowz-wizard-block">
+                            <div class="drowz-wizard-block-title">
+                                <div class="wizard-title-text">Roles:</div>
+                            </div>
+                            <div class="drowz-wizard-block-body">
+                                <div class="drowz-wizard-block-row">
+                                    <div class="col-xs-6 info-block">
+                                        <md-input-container>
+                                            <label>Credentials:</label>
+                                            <input type="text" ng-model="$ctrl.personnel.Credentials">
+                                        </md-input-container>
+                                    </div>
+                                    <div class="col-xs-6 info-block">
+                                        <md-input-container>
+                                            <label>Certifications:</label>
+                                            <input type="text" ng-model="$ctrl.personnel.Certifications">
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                                <div class="drowz-wizard-block-row">
+                                    <div class="col-xs-12 info-block add-autocomplete">
+                                        <md-autocomplete
+                                          id="autocompliteRolePersonnel"
+                                          class="autocomplete-with-addBtn"
+                                          md-no-cache="true"
+                                          md-selected-item="$ctrl.role"
+                                          md-search-text="$ctrl.searchTextRoles"
+                                          md-items="role in $ctrl.roles"
+                                          md-item-text="role.Name"
+                                          clear-on-click
+                                          md-min-length="0"
+                                          md-floating-label="Roles:"
+                                          ng-required="true"
+                                          md-input-name="role"
+                                        >
+                                            <md-item-template>
+                                                <div>{{role.Name}}</div>
+                                            </md-item-template>
+
+                                            <md-not-found>No roles were found.</md-not-found>
+
+                                            <div ng-messages="$ctrl.personnelEditForm.role.$error"
+                                                 class="md-input-messages-nice"
+                                            >
+                                                <div ng-message="required">This field is required</div>
+                                            </div>
+                                        </md-autocomplete>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-50-percent flex-cont stretch flex-column">
+                        <div class="drowz-wizard-block">
+                            <div class="drowz-wizard-block-title">
+                                <div class="wizard-title-text">Tags:</div>
+                            </div>
+                            <div class="drowz-wizard-block-body">
+                                <div class="drowz-wizard-block-row">
+                                    <div class="col-xs-12 info-block add-autocomplete">
+                                        <md-autocomplete class="autocomplete-with-addBtn"
+                                                         md-no-cache="true"
+                                                         md-selected-item="$ctrl.tag"
+                                                         md-search-text="$ctrl.searchTextTags"
+                                                         md-items="tag in $ctrl.getTags($ctrl.searchTextTags)"
+                                                         md-item-text="tag"
+                                                         md-min-length="0"
+                                                         md-floating-label="Tag:"
+                                                         md-selected-item-change="$ctrl.addTag($ctrl.tag)"
+                                                         md-input-id="personnel-autocomplete-tags-input"
+                                                         clear-on-click>
+                                            <md-item-template>
+                                                <span>{{tag}}</span>
+                                            </md-item-template>
+                                            <md-not-found>
+                                                <div ng-if="$ctrl.searchTextTags"
+                                                     ng-click="$ctrl.addTag($ctrl.searchTextTags)">
+                                                    Add new tag
+                                                    <span ng-if="$ctrl.searchTextTags">"{{$ctrl.searchTextTags}}"</span>
+                                                </div>
+                                                <div ng-if="!$ctrl.searchTextTags && !$ctrl.getTagss($ctrl.searchTextTags).length">No tags were found.</div>
+                                            </md-not-found>
+                                        </md-autocomplete>
+                                    </div>
+                                </div>
+                                <div class="drowz-wizard-block-row">
+                                    <div class="col-xs-12 info-block" ng-if="$ctrl.personnel.Tags.length > 0">
+                                        <div class="info-block-label">Tags:</div>
+                                        <div class="info-block-body">
+                                            <div ng-repeat="item in $ctrl.personnel.Tags" class="role-block tags-item">
+                                                <span simple-tooltip="{{ item }}">{{ item }}</span>
+                                                <div class="delete-role" ng-click="$ctrl.deleteTagsByIndex($index)"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="flow-body-footer">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button" ng-click="$ctrl.save()">Save</md-button>
+    </div>
+
+</div>

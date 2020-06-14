@@ -1,0 +1,458 @@
+﻿<div class="edit-insurance"
+     ng-form="$ctrl.addForm"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="editInsurance">
+
+    <div class="edit-insurance-header">
+        <md-button class="md-raised small-btn arrow-back-button"
+                   ng-click="$ctrl.goToInsurancesList()"
+        >
+            <md-icon md-svg-src="assets/images/default/arrow.svg"
+                     class="rotate-arrow"></md-icon>
+            Back to insurances
+        </md-button>
+    </div>
+
+    <div class="flow-title">
+        <span class="flow-title-text">Insurance</span>
+    </div>
+
+    <div class="flex-row">
+        <div class="col-xs-4">
+            <md-autocomplete class="ellipsis"
+                             md-no-cache="true"
+                             md-selected-item="$ctrl.insurance.Payer"
+                             md-selected-item-change="$ctrl.insuranceChanged()"
+                             md-search-text="$ctrl.insurance.searchPayer"
+                             md-items="payer in $ctrl.getPayers($ctrl.insurance.searchPayer)"
+                             md-item-text="payer.Name"
+                             md-min-length="2"
+                             md-floating-label="Name:"
+                             ng-required="true"
+                             md-input-name="payer"
+                             md-require-match="true">
+                <md-item-template>
+                    <span md-highlight-text="$ctrl.searchPayer" md-highlight-flags="^i" title="{{ payer.Name }}">{{ payer.Name }}</span>
+                </md-item-template>
+                <md-not-found>
+                    No matching payers were found
+                </md-not-found>
+                <div ng-messages="$ctrl.addForm.payer.$error" class="md-input-messages-nice">
+                    <div ng-message="required">This field is required</div>
+                    <div ng-message="md-require-match">Please select a payer</div>
+                </div>
+            </md-autocomplete>
+        </div>
+        <div class="col-xs-4">
+            <md-input-container>
+                <label>Payer ID:</label>
+                <input type="text"
+                       ng-model="$ctrl.insurance.ClaimCode"
+                       ng-disabled="$ctrl.insurance.Payer"
+                       name="claimCode"/>
+            </md-input-container>
+        </div>
+        <div class="col-xs-4">
+            <md-input-container>
+                <label>Status:</label>
+                <md-select ng-model="$ctrl.insurance.Status"
+                           ng-model-options="{ trackBy: '$value.Id' }"
+                           name="status">
+                    <md-option ng-value="status"
+                               ng-repeat="status in $ctrl.statuses">
+                        {{ status.Text }}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+    </div>
+
+    <div class="flex-row">
+        <div class="col-xs-8">
+            <md-input-container>
+                <label>Type Code:</label>
+
+                <md-select ng-model="$ctrl.insurance.InsuranceTypeCode"
+                           clear-on-click
+                >
+                    <md-option ng-value="item.Id"
+                               ng-repeat="item in $ctrl.insuranceTypeCodes track by $index"
+                    >
+                        {{ item.Id }} - {{ item.Text }}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+    </div>
+
+    <div class="flex-row">
+        <div class="col-xs-8">
+            <div class="flow-title">
+                <span class="flow-title-text">Insured</span>
+            </div>
+
+            <div class="flex-row">
+                <div class="col-xs-4">
+                    <md-input-container>
+                        <label>First Name:</label>
+                        <input type="text"
+                               ng-model="$ctrl.insurance.Holder.Name.First"
+                               ng-disabled="$ctrl.isSelf"
+                               ng-required="true"
+                               name="firstName"
+                        />
+                        <div ng-messages="$ctrl.addForm.firstName.$error" class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div class="col-xs-4">
+                    <md-input-container>
+                        <label>Middle Name:</label>
+                        <input type="text"
+                               ng-model="$ctrl.insurance.Holder.Name.Middle"
+                               ng-disabled="$ctrl.isSelf"
+                               ng-required="false"
+                               name="middleName"
+                        />
+                    </md-input-container>
+                </div>
+                <div class="col-xs-4">
+                    <md-input-container>
+                        <label>Last Name:</label>
+                        <input type="text"
+                               ng-model="$ctrl.insurance.Holder.Name.Last"
+                               ng-disabled="$ctrl.isSelf" ng-required="true" name="lastName"/>
+                        <div ng-messages="$ctrl.addForm.lastName.$error" class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div class="flex-row">
+                <div class="col-xs-4">
+                    <md-input-container>
+                        <label>Gender:</label>
+                        <md-select ng-model="$ctrl.insurance.Holder.Gender"
+                                   ng-disabled="$ctrl.isSelf"
+                                   ng-required="!$ctrl.isSelf"
+                                   name="gender">
+                            <md-option ng-value="gender.Id" ng-repeat="gender in $ctrl.genderList">
+                                {{gender.Text}}
+                            </md-option>
+                        </md-select>
+                        <div ng-messages="$ctrl.addForm.gender.$error" class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div class="col-xs-4">
+                    <md-input-container>
+                        <label>DOB:</label>
+                        <input datetimepicker
+                               format="MM/DD/YYYY"
+                               is-age-picker="true"
+                               min-date="false"
+                               max-date="today"
+                               use-current="false"
+                               ng-model="$ctrl.insurance.Holder.DateOfBirthday"
+                               ng-disabled="$ctrl.isSelf"
+                               ng-required="true"
+                               name="dob"/>
+                        <div ng-messages="$ctrl.addForm.dob.$error" class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div class="flex-row">
+                <div class="col-xs-4">
+                    <md-input-container>
+                        <label>SSN:</label>
+                        <input type="text"
+                               name="ssn"
+                               ng-model="$ctrl.insurance.Holder.Ssn"
+                               ng-disabled="$ctrl.isSelf"
+                               only-digits-with-length
+                               max-length="9"
+                               ng-minlength="9">
+                        <div ng-messages="$ctrl.addForm.ssn.$error" class="md-input-messages-nice">
+                            <div ng-message="minlength">SSN must contain min 9 digits</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div class="col-xs-4">
+                    <md-input-container>
+                        <label>Relationship to Patient:</label>
+                        <md-select ng-model="$ctrl.insurance.Holder.Relationship.Id"
+                                   md-on-close="$ctrl.relationshipChanged()"
+                                   ng-required="true"
+                                   name="relationship">
+                            <md-option ng-value="relationship.Id"
+                                       ng-repeat="relationship in $ctrl.relationships"
+                            >
+                                {{relationship.Text}}
+                            </md-option>
+                        </md-select>
+                        <div ng-messages="$ctrl.addForm.relationship.$error" class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div class="flex-row">
+                <div class="col-xs-4 sign-on-file-block">
+                    <div class="shared-label">Signature on File: *</div>
+                    <div class="flex-row marg-0">
+                        <md-input-container class="grow-1">
+                            <label></label>
+                            <md-select ng-model="$ctrl.insurance.SignatureOnFile.IsSigned"
+                                       md-on-close="$ctrl.signatureOnFileChanged()"
+                                       aria-label="...">
+                                <md-option ng-value="signature.Id"
+                                           ng-repeat="signature in $ctrl.signatureOnFileList">
+                                    {{ signature.Name }}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container class="calendar_icon gray-icon left-input-icon"
+                                            ng-if="$ctrl.insurance.SignatureOnFile.IsSigned === $ctrl.insuredSignatureOnFileConstants.YES_ID">
+                            <label></label>
+                            <input ng-model="$ctrl.insurance.SignatureOnFile.SignedDate"
+                                   name="dateOfSing"
+                                   datetimepicker
+                                   use-current="false"
+                                   format="MM/DD/YYYY"
+                                   ng-required="true"
+                                   clear-on-click>
+                            <div ng-messages="$ctrl.addForm.dateOfSing.$error" class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-xs-4 address-block">
+            <div class="flow-title">
+                <span class="flow-title-text">Address</span>
+            </div>
+            <div class="flex-row">
+                <div class="col-xs-12">
+                    <md-input-container>
+                        <label>Address (Line 1):</label>
+                        <input type="text"
+                               ng-model="$ctrl.insurance.Holder.Address.AddressLine"
+                               ng-disabled="$ctrl.isSelf"
+                               ng-required="true"
+                               name="addressLine"/>
+                        <div ng-messages="$ctrl.addForm.addressLine.$error" class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div class="flex-row">
+                <div class="col-xs-12">
+                    <md-input-container
+                            ng-hide="!$ctrl.insurance.Holder.Address.AddressLine2 && $ctrl.isSelf">
+                        <label>Address (Line 2)</label>
+                        <input type="text"
+                               ng-model="$ctrl.insurance.Holder.Address.AddressLine2"
+                               ng-disabled="$ctrl.isSelf"/>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div class="flex-row">
+                <div class="col-xs-6">
+                    <md-input-container>
+                        <label>City:</label>
+                        <input type="text"
+                               ng-model="$ctrl.insurance.Holder.Address.City"
+                               ng-disabled="$ctrl.isSelf"
+                               ng-required="true"
+                               name="city"/>
+                        <div ng-messages="$ctrl.addForm.city.$error" class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div class="col-xs-6">
+                    <input-state-string selected-item="$ctrl.insurance.Holder.Address.State"
+                                        form-name="$ctrl.addForm"
+                                        input-name="state"
+                                        ng-required="true"
+                                        ng-disabled="$ctrl.isSelf"
+                    ></input-state-string>
+                </div>
+            </div>
+
+            <div class="flex-row">
+                <div class="col-xs-6">
+                    <input-zip-string selected-item="$ctrl.insurance.Holder.Address.Zip"
+                                      form-name="$ctrl.addForm"
+                                      input-name="zip"
+                                      ng-required="true"
+                                      ng-disabled="$ctrl.isSelf"
+                    ></input-zip-string>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flow-title">
+        <span class="flow-title-text">Policy</span>
+    </div>
+
+    <div class="flex-row">
+        <div class="col-xs-4">
+            <md-input-container>
+                <label>Policy Number:</label>
+                <input type="text"
+                       ng-model="$ctrl.insurance.PolicyNumber"
+                       ng-required="true"
+                       name="policyNumber"/>
+                <div ng-messages="$ctrl.addForm.policyNumber.$error" class="md-input-messages-nice">
+                    <div ng-message="required">This field is required</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="col-xs-4">
+            <md-input-container>
+                <label>Group Number:</label>
+                <input type="text"
+                       ng-model="$ctrl.insurance.Holder.GroupNumber">
+            </md-input-container>
+        </div>
+        <div class="col-xs-4">
+            <md-input-container>
+                <label>Program/Plan Name:</label>
+                <md-select aria-label="..."
+                           ng-model="$ctrl.insurance.Holder.PayerPlan"
+                           ng-model-options="{ trackBy: '$value.Id' }"
+                           ng-disabled="!$ctrl.payerPlans.length"
+                           clear-on-click>
+                    <md-option ng-value="plan" ng-repeat="plan in $ctrl.payerPlans track by $index">
+                        {{ plan.Name }} ({{ plan.Type.Text }})
+                    </md-option>
+                    <md-option ng-if="!$ctrl.payerPlans.length"
+                               ng-value="null"
+                               ng-selected="!$ctrl.payerPlans.length">
+                        <span class="not-found-text-color">No Plans were found</span>
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+    </div>
+
+    <div class="flex-row">
+        <div class="col-xs-2">
+            <md-input-container>
+                <label>Effective Date:</label>
+                <input datetimepicker
+                       format="MM/DD/YYYY"
+                       use-current="false"
+                       ng-model="$ctrl.insurance.EffectiveDate"
+                       name="effectiveDate"/>
+            </md-input-container>
+        </div>
+
+        <div class="col-xs-2">
+            <md-input-container>
+                <label>Termination Date:</label>
+                <input datetimepicker
+                       format="MM/DD/YYYY"
+                       use-current="false"
+                       end-date-validator
+                       start-date="$ctrl.getMinTerminationDate($ctrl.insurance.EffectiveDate)"
+                       ng-model="$ctrl.insurance.TerminationDate"
+                       name="terminationDate"/>
+                <div ng-messages="$ctrl.addForm.terminationDate.$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="endDate">
+                        Termination Date should be greater than Effective Date
+                    </div>
+                </div>
+            </md-input-container>
+        </div>
+    </div>
+
+    <div class="flow-title">
+        <span class="flow-title-text">Responsibility</span>
+    </div>
+
+    <div class="flex-row">
+        <div class="col-xs-2">
+            <md-input-container class="currency-container">
+                <div class="currency-icon">$</div>
+                <label>Deductible</label>
+                <input type="number"
+                       min="0"
+                       step="0.01"
+                       ng-model="$ctrl.insurance.Deductible"
+                       name="deductible"
+                       price-validator
+                >
+                <div ng-messages="$ctrl.addForm.deductible.$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="min">Min price amount is 0</div>
+                    <div ng-message="price">Max 2 digits after point</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="col-xs-2">
+            <md-input-container class="currency-container">
+                <div class="currency-icon">%</div>
+                <label>Coinsurance</label>
+                <input type="number"
+                       min="0"
+                       max="100"
+                       step="1"
+                       ng-model="$ctrl.insurance.Coinsurance"
+                       name="coinsurance"
+                >
+                <div ng-messages="$ctrl.addForm.coinsurance.$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="min">Min coinsurance is 0</div>
+                    <div ng-message="max">Max coinsurance is 100</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="col-xs-2">
+            <md-input-container class="currency-container">
+                <div class="currency-icon">$</div>
+                <label>Co-pay</label>
+                <input type="number"
+                       min="0"
+                       step="0.01"
+                       ng-model="$ctrl.insurance.Copay"
+                       name="copay"
+                       price-validator
+                >
+                <div ng-messages="$ctrl.addForm.copay.$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="min">Min price amount is 0</div>
+                    <div ng-message="price">Max 2 digits after point</div>
+                </div>
+            </md-input-container>
+        </div>
+    </div>
+
+
+    <div class="flex-cont align-end">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button"
+                   ng-click="$ctrl.save()">{{ $ctrl.insuranceId ? 'Save' : 'Create' }}</md-button>
+    </div>
+
+</div>
+
+

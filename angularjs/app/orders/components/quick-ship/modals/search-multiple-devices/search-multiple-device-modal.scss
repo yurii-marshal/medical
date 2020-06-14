@@ -1,0 +1,79 @@
+.search-multiple-devices-modal {
+    width: 1190px;
+    thead, tbody { display: block; }
+
+    tbody {
+        height: 350px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    tbody td, thead th {
+        padding: 0px;
+    }
+
+    .modal-icon {
+        width: 34px;
+        height: 42px;
+        user-select: none;
+    }
+
+    .md-dialog-content {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .search-multiple-devices-table {
+        .input-col {
+            width: 100px;
+            max-width: 120px;
+            min-width: 120px;
+            padding: 5px 30px 5px 10px;
+        }
+    }
+
+    .block-items-selected {
+        border-radius: 5px;
+        border: 1px solid $main-active-color;
+        padding: 10px 15px;
+
+        &.items-selected-warn {
+            border-color: $red-error-color;
+        }
+
+        .items-counter-badge {
+            background-color: $main-active-color;
+            width: 27px;
+            height: 27px;
+            border-radius: 50%;
+            color: #fff;
+            line-height: 29px;
+            text-align: center;
+            display: inline-block;
+            margin: 0px 5px;
+        }
+
+        .reset-icon {
+            @include size(16px, 16px);
+            transform: scale(-1, 1);
+            color: $gray-disabled;
+            cursor: pointer;
+
+            &:hover {
+                color: $middle-gray-color;
+            }
+        }
+
+        .items-counter-text {
+            display: inline-block;
+        }
+    }
+
+    .table-cell-input-container {
+        margin: 0;
+    }
+
+    .table-cell-checkbox {
+        margin-bottom: 4px;
+    }
+}

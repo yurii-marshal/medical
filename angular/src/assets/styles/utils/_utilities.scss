@@ -1,0 +1,197 @@
+.clear {
+  clear: both;
+}
+
+.clearfix {
+  &::after {
+    content: "";
+    clear: both;
+    display: block;
+  }
+}
+
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
+.hide-this {
+  height: 0 !important;
+  width: 0 !important;
+  visibility: hidden !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+
+.hidden-container {
+  margin: 0 !important;
+}
+
+.show-not-found-block {
+  visibility: visible !important;
+
+  .not-found-block {
+    padding: 16px;
+  }
+}
+
+
+.dark-gray-bg {
+  background-color: $wizard-title-color;
+}
+
+.light-gray-bg {
+  background-color: $light-gray-color;
+}
+
+.border-top {
+  border: 1px solid rgba(204, 204, 204, 0.4);
+}
+
+.hidden-from-1400 {
+  @media all and (min-width: 1400px) {
+    display: none;
+  }
+}
+
+.w100 {
+  width: 100%;
+}
+
+.infinite-scroll-bg {
+  position: relative;
+  min-height: calc(100vh - #{$main-menu-height});
+  background-color: $lighter-gray-color;
+}
+
+.label-with-asterix {
+  &::after {
+    content: ' *';
+    font-size: 13px;
+    vertical-align: top;
+  }
+}
+
+.transparent-bordered-block {
+  @include bordered-block(transparent, 3px, $middle-gray-color, $font-color);
+}
+
+.grey-bordered-block {
+  @include bordered-block($light-gray-color, 3px, $calendar-gray-color, $font-color);
+}
+
+@each $w in $list-of-spaces {
+  .marg-#{$w} {
+    margin: #{$w}px;
+  }
+
+  .marg-v-#{$w} {
+    margin-top: #{$w}px;
+    margin-bottom: #{$w}px;
+  }
+
+  .marg-h-#{$w} {
+    margin-left: #{$w}px;
+    margin-right: #{$w}px;
+  }
+
+  .pad-#{$w} {
+    padding: #{$w}px;
+  }
+
+  .pad-v-#{$w} {
+    padding-top: #{$w}px;
+    padding-bottom: #{$w}px;
+  }
+
+  .pad-h-#{$w} {
+    padding-left: #{$w}px;
+    padding-right: #{$w}px;
+  }
+
+  .pad-top-#{$w} {
+    padding-top: #{$w}px;
+  }
+
+  .pad-bottom-#{$w} {
+    padding-bottom: #{$w}px;
+  }
+}
+
+// BLOCK WIDTH (for width 100px use this way class="w100px")
+@each $w in $list-of-width {
+  .w#{$w}px {
+    width: #{$w}px;
+    max-width: #{$w}px;
+    min-width: #{$w}px;
+  }
+}
+
+.sub-menu-container {
+  justify-content: center;
+  padding: 0 300px;
+  background-color: $lighter-gray-color;
+}
+
+// BLOCK WIDTH (for width 100px use this way class="min-w100px")
+@each $w in $list-of-width {
+  .min-w#{$w}px {
+    min-width: #{$w}px;
+  }
+}
+
+@each $w in $list-of-percent-width {
+  &.w#{round($w)}percent {
+    width: percentage($w/100);
+  }
+}
+
+.mat-chip {
+
+  &:not(.mat-basic-chip) {
+    padding: 5px 10px !important;
+    background-color: $lighter-gray-color;
+
+    &.no-focused:focus {
+      box-shadow: none;
+    }
+
+    .mat-chip-remove {
+      opacity: .8;
+    }
+  }
+
+  .mat-icon {
+    font-size: 18px;
+    height: 18px;
+    width: 18px;
+    margin-left: 10px;
+    color: $label-color;
+  }
+}
+
+.chips-add-input {
+
+  .mat-input-suffix {
+    color: $main-active-color;
+    position: relative;
+    top: 5px;
+  }
+}
+
+.mat-option {
+
+  &:hover,
+  &:focus {
+
+    &:not(.mat-option-disabled) {
+      background-color: $main-active-color;
+      color: #fff;
+    }
+  }
+
+  &.mat-active {
+    background-color: $main-active-color;
+    color: #fff;
+  }
+}

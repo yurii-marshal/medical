@@ -1,0 +1,140 @@
+.invoice-accordion, .transactions-accordeon {
+    margin-bottom: 10px;
+
+    &.no-expand {
+        > v-pane {
+            > v-pane-header {
+                cursor: default;
+
+                .invoice-accordion-header {
+                    .invoice-accordion-icon {
+                        opacity: 0;
+                        visibility: hidden;
+                    }
+                }
+            }
+
+            > v-pane-content {
+                display: none !important;
+            }
+        }
+    }
+
+    &:not(.no-expand) {
+        > v-pane {
+            .invoice-accordion-header {
+                border-radius: 3px 3px 0 0;
+            }
+
+            > v-pane-content {
+                border-top: none;
+                border: 1px solid $calendar-gray-color;
+                border-radius: 0 0 3px 3px;
+            }
+
+            &:not(.is-expanded) {
+                border-bottom: 1px solid $calendar-gray-color;
+                border-radius: 3px;
+            }
+        }
+    }
+
+    > v-pane {
+        .invoice-accordion-header {
+            transition: .2s;
+
+            .invoice-accordion-icon {
+                display: block;
+                margin: 0 15px 0 0;
+                min-width: 18px;
+                width: 18px;
+                height: 18px;
+                transform: rotate(180deg);
+                transition: .2s;
+            }
+        }
+
+        &.is-expanded {
+            .invoice-accordion-header {
+                margin-bottom: 10px;
+            }
+        }
+
+        .drowz-table.invoice-transactions-table {
+            margin: 0;
+            width: 100%;
+
+            tr.drowz-table-header {
+                background-color: $light-gray-color;
+                border-bottom: 1px solid $calendar-gray-color;
+
+                > th {
+                    padding-left: 10px;
+                    padding-right: 10px;
+                }
+            }
+
+            tr.drowz-table-row {
+                > td {
+                    font-size: 14px;
+                    padding: 8px 10px;
+                }
+
+                &.item-inactive {
+                    opacity: 0.5;
+                }
+            }
+
+            .type-cell {
+                .status-label {
+                    width: 90px;
+                    min-width: 90px;
+                    margin-right: 15px;
+                }
+            }
+
+            .date-cell, .source-cell, .type-cell {
+                width: 160px;
+                min-width: 160px;
+            }
+
+            .notes-cell {
+                width: 50px;
+                min-width: 50px;
+                text-align: center;
+
+                md-icon {
+                    @include size(16px, 16px);
+                    min-width: 16px;
+                    min-height: 16px;
+                    fill: $gray-color;
+
+                    &:hover {
+                        fill: $main-active-color;
+                    }
+                }
+            }
+
+            .amount-cell {
+                width: 150px;
+                min-width: 150px;
+            }
+
+            .ref-number-cell {
+                min-width: 130px;
+            }
+        }
+
+        &.is-expanded {
+            .invoice-accordion-icon {
+                transform: rotate(0deg);
+            }
+        }
+
+        &:not(.is-expanded) {
+            > v-pane-content {
+                border: none;
+            }
+        }
+    }
+}

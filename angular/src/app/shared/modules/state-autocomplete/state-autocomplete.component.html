@@ -1,0 +1,20 @@
+<mat-form-field>
+  <input type="text"
+         placeholder="State"
+         aria-label="State"
+         matInput
+         [formControl]="stateInputFormControl"
+         [matAutocomplete]="auto"
+         (blur)="onMatAutocompleteClosed()"
+         required
+  >
+  <mat-autocomplete #auto="matAutocomplete"
+                    [displayWith]="displayFn"
+                    (optionSelected)="onStateSelected($event)"
+  >
+    <mat-option *ngFor="let state of (statesDictionaries$ | async)" [value]="state">
+      {{ state.id }}
+    </mat-option>
+  </mat-autocomplete>
+  <mat-error>This field is required</mat-error>
+</mat-form-field>

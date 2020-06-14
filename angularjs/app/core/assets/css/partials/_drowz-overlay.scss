@@ -1,0 +1,10 @@
+.drowz-overlay {
+    background-color: rgba(#212121, .48);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    z-index: 112;
+    overflow: auto;
+}

@@ -1,0 +1,144 @@
+<div class="modal-window manufacturer-modal" 
+     ng-form="modal.form"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="newManufacturer">
+
+    <a href="javascript:void(0);" ng-click="modal.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/museum.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>
+                <span ng-if="!modal.manufacturerId">New</span>
+                <span ng-if="modal.manufacturerId">Edit</span>
+                manufacturer:
+            </h2>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-12 info-block">
+                <md-input-container>
+                    <label>Name:</label>
+                    <input type="text"
+                           ng-model="modal.model.Name"
+                           ng-required="true"
+                           name="name" />
+                    <div ng-messages="modal.form.name.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-12 info-block">
+                <md-input-container>
+                    <label>Address (line 1):</label>
+                    <input type="text"
+                           ng-model="modal.model.Address.AddressLine"
+                           name="addressLine1"
+                           ng-required="modal.isAddressRequired">
+                    <div ng-messages="modal.form.addressLine1.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-6 info-block">
+                <md-input-container>
+                    <label>Address (line 2):</label>
+                    <input type="text"
+                           ng-model="modal.model.Address.AddressLine2">
+                </md-input-container>
+            </div>
+            <div class="col-xs-6 info-block">
+                <md-input-container>
+                    <label>City:</label>
+                    <input type="text"
+                           name="city"
+                           ng-model="modal.model.Address.City"
+                           ng-required="modal.isAddressRequired">
+                    <div ng-messages="modal.form.city.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-6 info-block">
+                <input-state-string form-name="modal.form"
+                                    selected-item="modal.model.Address.State"
+                                    add-directives="clear-on-click"
+                                    ng-required="modal.isAddressRequired">
+                </input-state-string>
+            </div>
+            <div class="col-xs-6 info-block">
+                <input-zip-string form-name="modal.form"
+                                  input-name="zip"
+                                  selected-item="modal.model.Address.Zip"
+                                  add-directives="clear-on-click"
+                                  ng-required="modal.isAddressRequired">
+                </input-zip-string>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-6 info-block">
+                <input-phone-number class="small-label"
+                                    form-name="modal.form"
+                                    input-name="phone"
+                                    label="Phone:"
+                                    ng-required="false"
+                                    ng-model="modal.model.Phone"
+                                    add-directives="input-phone-mask">
+                </input-phone-number>
+            </div>
+            <div class="col-xs-6 info-block">
+                <input-phone-number class="small-label"
+                                    form-name="modal.form"
+                                    input-name="fax"
+                                    label="Fax:"
+                                    ng-required="false"
+                                    ng-model="modal.model.Fax"
+                                    add-directives="input-phone-mask">
+                </input-phone-number>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-6 info-block">
+                <md-input-container>
+                    <label>Website:</label>
+                    <input type="text"
+                           ng-model="modal.model.Website"
+                           name="website"
+                           ng-pattern="/(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/">
+                    <div ng-messages="modal.form.website.$error" class="md-input-messages-nice">
+                        <div ng-message="pattern"><b>Website</b> is not valid.</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div class="col-xs-6 info-block">
+                <input-email form-name="modal.form"
+                             input-name="email"
+                             label="Email:"
+                             ng-required="false"
+                             ng-model="modal.model.Email">
+                </input-email>
+            </div>
+        </div>
+
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" aria-label="..." ng-click="modal.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button" aria-label="..." ng-click="modal.save()">
+            <span ng-if="!modal.manufacturerId">Create</span>
+            <span ng-if="modal.manufacturerId">Save</span>
+        </md-button>
+    </md-dialog-actions>
+</div>

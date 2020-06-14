@@ -1,0 +1,37 @@
+<v-accordion class="sidebar-menu-accordion">
+    <v-pane expanded="category.active"
+            ng-repeat="category in $ctrl.items track by $index"
+    >
+        <v-pane-header>
+            <div class="sidebar-menu-title"
+                 simple-tooltip="{{category.name}}"
+                 tooltip-position="right"
+                 simple-tooltip-enable="$ctrl.showTooltip">
+                <md-icon class="sidebar-menu-title-icon"
+                         md-svg-src="{{category.icon}}"
+                         ng-style="{'width' : category.iconSize.width, 'height' : category.iconSize.height,
+                        'min-width' : category.iconSize.width}">
+                </md-icon>
+                <div class="sidebar-menu-title-text">{{category.name}}</div>
+                <md-icon class="sidebar-menu-status-icon"
+                         md-svg-src="assets/images/default/chevron.svg">
+                </md-icon>
+            </div>
+        </v-pane-header>
+        <v-pane-content>
+            <div class="sidebar-menu-link"
+               ng-repeat="link in category.items track by $index"
+               ng-class="{'active': $ctrl.isActive(link)}"
+               ng-click="$ctrl.goTo(link.state)"
+               simple-tooltip="{{category.name}} {{link.name}}"
+               tooltip-position="right"
+               simple-tooltip-enable="$ctrl.showTooltip">
+                <md-icon class="sidebar-menu-link-icon"
+                         md-svg-src="{{link.icon}}"
+                         ng-style="{'width' : link.iconSize.width, 'height' : link.iconSize.height,
+                        'min-width' : link.iconSize.width}"></md-icon>
+                <div class="sidebar-menu-link-text">{{link.name}}</div>
+            </div>
+        </v-pane-content>
+    </v-pane>
+</v-accordion>

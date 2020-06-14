@@ -1,0 +1,141 @@
+@import "~assets/styles/base/variables";
+@import "~assets/styles/utils/mixins";
+
+:host ::ng-deep {
+    .grid-header-container {
+        display: flex;
+        align-items: stretch;
+        margin: 7px 0;
+        padding-left: 20px;
+        background-color: transparent;
+
+        .grid-header-item {
+            padding: 2px 9px;
+
+            &:first-child {
+                padding-left: 0;
+            }
+
+            p.grid-header-title {
+                color: $dark-blue-color;
+                font-size: 12px;
+                line-height: 12px;
+                font-weight: 700;
+                padding-right: 16px;
+                text-transform: uppercase;
+                vertical-align: middle;
+                text-decoration: none;
+            }
+
+            .grid-header-icon {
+                cursor: default;
+                width: 18px;
+                height: 18px;
+                color: $dark-blue-color;
+                margin: 0 6px 0 0;
+            }
+
+            .item-wrapper {
+                display: inline-flex;
+                align-items: center;
+
+                &.sortable-item {
+                    cursor: pointer;
+                    position: relative;
+
+                    .chevron-icon {
+                        display: flex;
+                        width: 10px;
+                        height: 7px;
+                        margin-top: -4px;
+                        position: absolute;
+                        top: 50%;
+                        right: 2px;
+                        color: inherit;
+
+                        &.asc {
+                            transform: rotate(180deg);
+                        }
+
+                        &.desc {
+                            transform: rotate(0deg);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .grid-filter-container {
+        min-width: 100%;
+        display: flex;
+        background-color: $white-color;
+        box-shadow: $box-shadow;
+        border-radius: 3px;
+        padding-left: 20px;
+
+        .grid-filter-form {
+            display: inline-flex;
+            width: 100%;
+
+            mat-form-field.form-item {
+                height: 60px;
+                padding: 5px 9px 0px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .mat-input-wrapper {
+                    width: 100%;
+
+                    .mat-form-field-infix {
+                        padding: 5px 0;
+
+                        .mat-input-element {
+                            font-size: $font-size-base;
+                        }
+                    }
+
+                    .mat-input-placeholder {
+                        font-weight: 400;
+                        font-size: $font-size-base;
+                    }
+                }
+
+                &:first-child {
+                    padding-left: 0;
+                }
+
+                &:after {
+                    content: "";
+                    position: absolute;
+                    right: 0;
+                    top: 9px;
+                    bottom: 9px;
+                    width: 1px;
+                    background-color: $lighter-gray-color;
+                }
+            }
+        }
+
+        .grid-filter-reset-bttn {
+            width: 50px;
+            min-width: 50px;
+            text-align: center;
+            padding-left: 0;
+            padding-right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .filter-reset-icon {
+                cursor: pointer;
+                width: 16px;
+                height: 16px;
+                color: $main-active-color;
+                transform: scale(-1,1);
+            }
+        }
+
+    }
+}

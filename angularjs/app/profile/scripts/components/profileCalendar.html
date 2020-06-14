@@ -1,0 +1,33 @@
+<drwz-calendar-simple
+    drwz-ng-model="$ctrl.eventSource"
+    drwz-ui-calendar="$ctrl.uiConfig.calendar"
+    bs-loading-overlay
+    bs-loading-overlay-reference-id="profile_calendar"
+    drwz-options="btns-today, btns-agendaDay, btns-agendaWeek, showTitle"
+>
+    <drwz-calendar-left>
+        <ng-transclude></ng-transclude>
+    </drwz-calendar-left>
+    <drwz-calendar-right>
+        <!-- btns Clear Copy -->
+        <div class="button_container" ng-if="$ctrl.permissions.edit">
+            <md-button class="pf_copy_to setup_header_btn"
+                       calendar-popup="copy"
+                       split-inner-events="$ctrl.splitInnerEvents"
+                       action-type="personnel"
+                       action-id="$ctrl.personnelId">
+                Copy to
+            </md-button>
+        </div>
+        <div class="button_container" ng-if="$ctrl.permissions.edit">
+            <md-button class="pf_clear setup_header_btn"
+                       calendar-popup="clear"
+                       action-type="personnel"
+                       action-id="$ctrl.personnelId">
+                Clear
+            </md-button>
+        </div>
+        <!-- end btns  -->
+    </drwz-calendar-right>
+</drwz-calendar-simple>
+ <!--calendar end-->

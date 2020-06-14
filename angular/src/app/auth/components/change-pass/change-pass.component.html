@@ -1,0 +1,119 @@
+<div class="login">
+
+    <div class="changepass-block"
+         [formGroup]="changePassForm">
+        <div class="login-title">Please enter your temporary password
+            <br>then enter/repeat <span class="blue">your new password.</span>
+        </div>
+
+        <div class="login-row row-with-icon">
+            <mat-icon svgIcon="lock-circle"
+                      class="login-row-icon"></mat-icon>
+
+            <input style="display:none"
+                   type="password"
+                   name="fakepasswordremembered"/>
+
+            <mat-form-field>
+                <input matInput
+                       autocomplete="new-password"
+                       placeholder="Temporary Password:"
+                       type="password"
+                       tabindex="0"
+                       formControlName="oldPassword"
+                       (keyup)="submitForm($event)"
+                />
+
+                <mat-error *ngIf="changePassForm.controls.oldPassword.invalid">
+                    <b>Temporary Password</b> cannot be empty.
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="login-row row-with-icon"
+             [ngClass]="{ 'new-password-error': setNewPassErrorClass() }">
+            <mat-icon svgIcon="lock-circle"
+                      class="login-row-icon"></mat-icon>
+
+            <input style="display:none"
+                   type="password"
+                   name="fakepasswordremembered2"/>
+
+            <mat-form-field>
+                <input matInput
+                       autocomplete="new-password"
+                       placeholder="New password:"
+                       type="password"
+                       tabindex="1"
+                       formControlName="newPassword"
+                       (keyup)="submitForm($event)"
+                />
+
+                <mat-error *ngIf="changePassForm.controls.newPassword.invalid">
+                    <span *ngIf="changePassForm.controls.newPassword.errors?.required">
+                        <b>New password</b> cannot be empty.
+                    </span>
+                    <span *ngIf="changePassForm.controls.newPassword.errors?.pattern">
+                        <b>New password</b> is not valid.
+                        <br/>Must be at least 8 characters.
+                        <br/>Must have at least one digit ('0'-'9').
+                        <br/>Must have at least one lowercase ('a'-'z').
+                        <br/>Must have at least one uppercase ('A'-'Z').
+                        <br/>Must have at least one non alphanumeric character.
+                    </span>
+                </mat-error>
+
+            </mat-form-field>
+
+        </div>
+        <div class="login-row row-with-icon">
+            <mat-icon svgIcon="lock-circle"
+                      class="login-row-icon"></mat-icon>
+
+            <input style="display:none"
+                   type="password"
+                   name="fakepasswordremembered3"/>
+
+            <mat-form-field>
+                <input matInput
+                       autocomplete="new-password"
+                       placeholder="Repeat new password:"
+                       type="password"
+                       tabindex="2"
+                       formControlName="confirmPassword"
+                       (keyup)="submitForm($event)"
+                />
+                <mat-error *ngIf="changePassForm.controls.confirmPassword.invalid">
+                    <span *ngIf="changePassForm.controls.confirmPassword.errors?.required">
+                        <b>Repeat new password</b> cannot be empty.
+                    </span>
+                    <span *ngIf="changePassForm.controls.confirmPassword.errors?.MatchFields">
+                        <b>Repeat new password</b> must be equal to <b>New password</b>.
+                    </span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="login-row">
+            <button class="spinner-btn login-btn"
+                    tabindex="3"
+                    mat-raised-button
+                    color="primary"
+                    (click)="saveNewPass()"
+            >
+                <mat-progress-spinner *ngIf="isLoading"
+                                      mode="indeterminate"
+                                      [diameter]="27">
+                </mat-progress-spinner>
+                <span>Save</span>
+            </button>
+        </div>
+
+        <div class="login-row">
+            <a href="javascript:void(0);"
+               class="reset-login"
+               (click)="cancel()">Cancel</a>
+        </div>
+    </div>
+</div>
+

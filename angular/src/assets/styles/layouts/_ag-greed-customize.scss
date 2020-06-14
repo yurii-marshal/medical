@@ -1,0 +1,27 @@
+.ag-theme-material {
+  background-color: transparent;
+
+  .ag-header-row {
+    border-bottom: none;
+
+    .ag-header-cell-text {
+      text-transform: uppercase;
+    }
+  }
+
+  .ag-cell-focus {
+    border: 1px solid transparent;
+  }
+
+  .ag-layout-normal {
+    .ag-body {
+      background-color: white;
+      border-radius: 3px;
+      box-shadow: 10px 0 0 gray;
+    }
+
+    .ag-row-hover {
+      background-color: transparent;
+    }
+  }
+}

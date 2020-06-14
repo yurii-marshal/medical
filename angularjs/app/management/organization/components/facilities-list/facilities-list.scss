@@ -1,0 +1,42 @@
+.facilities-table {
+    .drowz-infinite-row-filter {
+        .filter-reset-btn {
+            justify-content: center;
+        }
+    }
+
+    .drowz-infinite-row {
+        .custom-table-body {
+            .facility-address {
+                max-width: 500px;
+
+                @include respond-to(appMinWidth) {
+                    max-width: 500px;
+                }
+            }
+
+            &.locations-list {
+                padding: 10px 110px 20px 30px;
+
+                table {
+                    table-layout: fixed;
+                }
+            }
+
+            .edit-btn {
+                @include size(20px, 20px);
+                padding: 2px;
+            }
+
+            .btn-block {
+                justify-content: space-between;
+
+                .delete-icon-btn,
+                .delete-icon-btn.md-button:not([disabled]) {
+                    margin: 0;
+                }
+            }
+        }
+    }
+
+}

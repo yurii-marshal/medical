@@ -1,0 +1,8 @@
+<div class="print-label-box"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="printLabels"
+>
+    <img ng-repeat="label in printLabels.labelArray track by $index"
+         ng-init="$last && printLabels.onFinishRepeatElements()"
+         data-ng-src="data:image/png;base64,{{ label }}" />
+</div>

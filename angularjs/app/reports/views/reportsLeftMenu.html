@@ -1,0 +1,66 @@
+<div class="sidebar-content"
+     scroll-bar
+     scroll-bar-above-element="true">
+
+    <v-accordion class="vAccordion--default sidebar-accordeon sidebar-padding-block hiding-block" multiple>
+        <v-pane expanded="true">
+            <md-icon md-svg-src="assets/images/default/chevron.svg" class="sidebar-accordeon-icon"></md-icon>
+            <v-pane-header class="sidebar-block-title flow-accordion-title">Available reports:</v-pane-header>
+            <v-pane-content>
+                <no-records ng-if="!vm.availableReports.length"
+                            text="Reports"
+                            class="no-records-small"></no-records>
+                <div ng-if="vm.availableReports.length">
+                    <div ng-repeat="item in vm.availableReports track by $index"
+                         class="filterrow readonly-filter"
+                         ui-sref="root.reports.index.detail({reportId:item.Id})">
+                        <div class="filter-name"
+                             ng-class="{'selected':vm.stateReportId == item.Id}">{{item.Name}}</div>
+                        <div class="filterrow-controls">
+                            <a href="javascript:void(0);"
+                               class="delete-filter"
+                               confirm-ng-click="vm.delete_report(item.Id)">
+                                <md-icon md-svg-src="assets/images/default/trash.svg"
+                                         class="delete-filter-icon"></md-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+    </v-accordion>
+
+    <v-accordion class="vAccordion--default sidebar-accordeon sidebar-padding-block hiding-block" multiple>
+        <v-pane expanded="true">
+            <md-icon md-svg-src="assets/images/default/chevron.svg"
+                     class="sidebar-accordeon-icon"></md-icon>
+            <v-pane-header class="sidebar-block-title flow-accordion-title">My reports:</v-pane-header>
+            <v-pane-content>
+                <no-records ng-if="!vm.myReports.length" text="Saved Reports" class="no-records-small"></no-records>
+                <div ng-if="vm.myReports.length">
+                    <div ng-repeat="item in vm.myReports track by $index"
+                         class="filterrow readonly-filter"
+                         ui-sref="root.reports.index.detail({reportId:item.Id})">
+                        <div class="filter-name"
+                             ng-class="{'selected':vm.stateReportId == item.Id}">{{item.Name}}</div>
+                        <div class="filterrow-controls">
+                            <a href="javascript:void(0);"
+                               class="delete-filter"
+                               confirm-ng-click="vm.delete_report(item.Id)"
+                               confirm-msg="'Are you sure you want to delete the {0} report?'.format(item.Name)"
+                               confirm-title="Delete filter">
+                                <md-icon md-svg-src="assets/images/default/trash.svg"
+                                         class="delete-filter-icon"></md-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+    </v-accordion>
+
+</div>
+
+<md-button class="toggle-menu-slide" aria-label="...">
+    <md-icon md-svg-src="assets/images/default/chevron.svg" class="toggle_menu_arrow"></md-icon>
+</md-button>

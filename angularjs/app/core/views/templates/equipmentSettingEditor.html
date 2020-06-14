@@ -1,0 +1,108 @@
+<script type="text/ng-template" id="groupTreeEditor">
+    <v-accordion class="vAccordion--default summary-tree with_check" multiple ng-hide="grSettingEditor.getGroupVisible(hideNotChosen, group)">
+        <v-pane expanded="true" inactive>
+            <v-pane-header class="clearfix summary-tree with_check" style="height:0px !important; padding: 0 !important;">
+
+            </v-pane-header>
+            <div style="margin-bottom: 5px;">
+                <span class="arrow summary-tree"><img src="assets/images/colored/chevron-gray.svg" alt="" class="" ng-click="group.isChosen = disableInputs ? true : !group.isChosen; grSettingEditor.setChecked(group.Id);"></span>
+                <md-checkbox aria-label="Checkbox"
+                             class="md-primary"
+                             ng-model="group.isChosen"
+                             ng-change="group.isChosen = disableInputs ? true : group.isChosen; grSettingEditor.setChecked(group.Id);"
+                             style="margin-top: -2px;margin-left: 10px;display: inline-block;"></md-checkbox>
+                <span style="margin-left:-10px; font-size:14px; cursor:pointer;"
+                      ng-click="group.isChosen = disableInputs ? true : !group.isChosen; grSettingEditor.setChecked(group.Id);">
+                    {{ group.Name }}
+                </span>
+            </div>
+            <v-pane-content class="summary-tree sample-show-hide" ng-hide="!group.isChosen">
+                <ul>
+                    <li ng-if="group.Groups" ng-repeat="group in group.Groups" ng-include="'groupTreeEditor'">
+                    </li>
+                </ul>
+                <div ng-if="group.Properties"
+                     ng-repeat="prop in group.Properties"
+                     ng-form="propForm"
+                     style="display:block; height:45px;margin-right:15px;margin-left:40px;">
+                    <div class="clearfix accordeon-align-center">
+                        <div class="col-xs-6" style="float:left">{{prop.Name}}&nbsp;&nbsp;&nbsp;</div>
+                        <div class="col-xs-1" ng-switch="prop.Type" style="height: 45px !important; padding-left: 0; margin-left: -15px;">
+
+                            <div class="overlay"
+                                 ng-if="disableInputs"
+                                 style="background-color: #ccc;opacity: 0.0;height: 45px !important;display: inline;width: 100% !important;position: absolute;z-index: 100 !important;">
+                            </div>
+
+                            <md-input-container class="no-top-bottom-margin no-top-padding no-bottom-padding" ng-switch-when="1">
+                                <md-switch class="md-primary no-top-bottom-margin"
+                                           ng-model="prop.Value"
+                                           aria-label="Value Switch">
+                                    <span ng-show="prop.Value">Yes</span>
+                                    <span ng-show="!prop.Value">No</span>
+                                </md-switch>
+                            </md-input-container>
+
+                            <md-input-container class="no-top-bottom-margin no-top-padding no-bottom-padding" ng-switch-when="2">
+                                <input type="number"
+                                       aria-label="Value Number"
+                                       name="numberField"
+                                       ng-model="prop.Value"
+                                       style="color: #333 !important;"
+                                       ng-required="prop.Required && group.isChosen">
+                                </input>
+                                <ng-messages style="margin-bottom: -20px; min-height: 20px !important;" for="propForm.numberField.$error">
+                                    <div ng-message="required" style="padding-top: 2px !important;">
+                                        <b>Field</b> is required.
+                                    </div>
+                                </ng-messages>
+                            </md-input-container>
+
+                            <md-input-container class="no-top-bottom-margin no-top-padding no-bottom-padding" ng-switch-when="3">
+                                <input type="text"
+                                       aria-label="Value Text"
+                                       ng-model="prop.Value"
+                                       name="textField"
+                                       style="color: #333 !important;"
+                                       ng-required="prop.Required && group.isChosen">
+                                </input>
+                                <ng-messages style="margin-bottom: -20px; min-height: 20px !important;" for="propForm.textField.$error">
+                                    <div ng-message="required" style="padding-top: 2px !important;">
+                                        <b>Field</b> is required.
+                                    </div>
+                                </ng-messages>
+                            </md-input-container>
+
+                            <h-number ng-switch-when="4"
+                                      value="prop.Value"
+                                      singular=""
+                                      plural=""
+                                      min="{{prop.Range.From}}"
+                                      max="{{prop.Range.To}}"
+                                      step="{{prop.Range.Increment}}">
+                            </h-number>
+
+                            <equipment-property-list ng-switch-when="5"
+                                                     is-required="prop.Required && group.isChosen"
+                                                     value="prop.Value"
+                                                     name="selectField"
+                                                     list="prop.List">
+                            </equipment-property-list>
+                            <ng-messages style="margin-bottom: -20px; min-height: 20px !important;" for="propForm.selectField.$error">
+                                <div ng-message="required" style="padding-top: 2px !important;">
+                                    <b>Field</b> is required.
+                                </div>
+                            </ng-messages>
+                        </div>
+                        <div class="col-xs-offset-3 col-xs-1">
+                            {{prop.Unit.Text}}
+                        </div>
+                    </div>
+                </div>
+            </v-pane-content>
+    </v-accordion>
+</script>
+
+<ul class="">
+    <li ng-repeat="group in groups" ng-include="'groupTreeEditor'"></li>
+</ul>

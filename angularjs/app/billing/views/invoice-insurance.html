@@ -1,0 +1,151 @@
+<div class="invoice-insurances"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="insuranceList">
+
+    <div class="insurances-buttons" ng-if="!insurance.model.isVoidInvoice">
+
+        <md-button class="md-raised md-primary small-btn update-insurances"
+                   aria-label="..."
+                   ng-click="insurance.updateInsurances()"
+                   ng-if="invoice.userPermissions.isAllow(invoice.permissionsCategoriesConstants.BILLING, invoice.billingPermissionsConstants.INVOICE_MODIFY)"
+        >
+            <md-icon md-svg-src="assets/images/default/refresh.svg"></md-icon>
+            Update All Insurance
+        </md-button>
+
+        <md-button class="md-raised small-btn change-priority-btn"
+                   ng-disabled="insurance.insurances.length < 2"
+                   ng-click="insurance.changePriority($event)"
+                   aria-label="..."
+                   ng-if="invoice.userPermissions.isAllow(invoice.permissionsCategoriesConstants.BILLING, invoice.billingPermissionsConstants.INVOICE_MODIFY)"
+        >
+            <md-icon md-svg-src="assets/images/default/list-v2.svg"></md-icon>
+            Change Priority
+        </md-button>
+
+    </div>
+
+    <div class="insurances-list" ng-if="insurance.insurancesCount > 0">
+        <div class="insurance-item active" ng-repeat="ins in insurance.insurances | orderBy:'PriorityOrder' track by $index">
+            <div class="insurance-body">
+                <div class="flex-row">
+                    <div class="grow-1 info-block">
+                        <div class="info-block-label">Name:</div>
+                        <div class="info-block-body insurance-name-block">
+                            <div class="font-semibold">
+                                {{ins.PayerName}}
+                            </div>
+                            <div class="insurance-actions"
+                                 ng-if="invoice.userPermissions.isAllow(invoice.permissionsCategoriesConstants.BILLING, invoice.billingPermissionsConstants.INVOICE_MODIFY)"
+                            >
+                                <md-button class="edit-icon-btn"
+                                           aria-label="..."
+                                           ng-click="insurance.editInsurance($event, ins.Id)">
+                                    <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                                </md-button>
+                                <md-button class="delete-icon-btn" aria-label="..."
+                                           ng-if="!insurance.model.isVoidInvoice"
+                                           confirm-ng-click="insurance.deleteInsurance(ins)"
+                                           confirm-msg="'Are you sure you want to delete the {0} insurance?'.format(ins.PayerName)"
+                                           confirm-title="Delete Insurance">
+                                    <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                </md-button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="block-width-230 info-block left-divider">
+                        <div class="info-block-label">Insurance Payer ID:</div>
+                        <div class="info-block-body">{{ins.PayerCode || '-'}}</div>
+                    </div>
+                    <div class="block-width-160 info-block left-divider">
+                        <div class="info-block-label">Policy Number:</div>
+                        <div class="info-block-body">{{ins.PolicyNumber || '-'}}</div>
+                    </div>
+                    <div class="block-width-180 info-block left-divider">
+                        <div class="info-block-label">Plan Name:</div>
+                        <div class="info-block-body">
+                            <div ng-if="!ins.PayerPlan">-</div>
+                            <div ng-if="ins.PayerPlan">
+                                {{ins.PayerPlan.Name}} ({{ins.PayerPlan.Type.Name}})
+                            </div>
+                        </div>
+                    </div>
+                    <div class="block-width-250 info-block left-divider">
+                        <div class="flex-row row space-between">
+                            <div class="info-block grow-1">
+                                <div class="info-block-label">Group Number:</div>
+                                <div class="info-block-body">{{ins.GroupNumber || '-'}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-block block-width-220">
+                        <md-button class="md-raised small-btn update-from-patient-btn"
+                                   aria-label="..."
+                                   ng-if="!insurance.model.isVoidInvoice && invoice.userPermissions.isAllow(invoice.permissionsCategoriesConstants.BILLING, invoice.billingPermissionsConstants.INVOICE_MODIFY)"
+                                   ng-click="insurance.updateInsuranceSingle(ins.Id, ins.PatientInsuranceId)">
+                            <md-icon md-svg-src="assets/images/default/refresh.svg"></md-icon>
+                            Update from Patient
+                        </md-button>
+                    </div>
+                </div>
+                <div class="flex-row">
+                    <div class="grow-1 info-block">
+                        <div class="info-block-label">Relationship to Patient:</div>
+                        <div class="info-block-body insurance-name-block">
+                            {{ins.Relationship.Name}}
+                        </div>
+                    </div>
+                    <div class="block-width-230 info-block left-divider">
+                        <div class="info-block-label">Name:</div>
+                        <div class="info-block-body">
+                            <div class="insurance-gender-block">
+                                <span>{{ins.Person.Name.LastName}}&nbsp;{{ins.Person.Name.MiddleName}}&nbsp;{{ins.Person.Name.FirstName}}</span>
+                                <md-icon md-svg-src="assets/images/colored/male.svg"
+                                         ng-if="ins.Person.Gender.Id === insurance.patientGenderConstants.MALE_GENDER_ID"></md-icon>
+                                <md-icon md-svg-src="assets/images/colored/female.svg"
+                                         ng-if="ins.Person.Gender.Id === insurance.patientGenderConstants.FEMALE_GENDER_ID"></md-icon>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="block-width-160 info-block left-divider">
+                        <div class="info-block-label">DOB:</div>
+                        <div class="info-block-body">
+                            {{ins.Person.DateOfBirth | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                        </div>
+                    </div>
+                    <div class="block-width-180 info-block left-divider">
+                        <div class="info-block-label">SSN:</div>
+                        <div class="info-block-body">{{ins.Person.Ssn || '-'}}</div>
+                    </div>
+                    <div class="block-width-250 info-block left-divider">
+                        <div class="info-block-label">Address:</div>
+                        <div class="info-block-body">{{ (ins.Person.Address | addressToString) || '-' }}</div>
+                    </div>
+                    <div class="block-width-220 info-block left-divider">
+                        <div class="info-block-label">Insured Signature on File:</div>
+                        <div class="info-block-body">
+                            <span ng-if="ins.SignatureOnFile.Type.Id === insurance.insuredSignatureOnFileConstants.NO_ID">No</span>
+                            <span ng-if="ins.SignatureOnFile.Type.Id === insurance.insuredSignatureOnFileConstants.YES_ID">Yes</span>
+                            <span ng-if="ins.SignatureOnFile.SignedDate">
+                                ({{ins.SignatureOnFile.SignedDate | amUtc | amDateFormat: "MM/DD/YYYY"}})
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-row">
+                    <div class="grow-1 info-block">
+                        <div class="info-block-label">Insurance Type Code:</div>
+                        <div class="info-block-body">
+                            <span ng-if="ins.InsuranceTypeCode">{{ ins.InsuranceTypeCode.Id + ' - ' + ins.InsuranceTypeCode.Text }}</span>
+                            <span ng-if="!ins.InsuranceTypeCode">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <no-records text="Insurance" is-fullpage="true"
+                ng-if="insurance.insurancesCount === 0"></no-records>
+
+</div>

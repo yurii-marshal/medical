@@ -1,0 +1,57 @@
+<div class="modal-window select-item-with-wizard-block-modal">
+    <md-dialog-content class="md-dialog-content">
+        <div class="drowz-wizard-block no-float">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Select Service Line:</div>
+            </div>
+            <div class="drowz-wizard-block-body"
+                 bs-loading-overlay
+                 bs-loading-overlay-reference-id="selectServiceLineList"
+            >
+                <div class="services-list"
+                     scroll-bar
+                     scroll-bar-above-element="true"
+                >
+
+                    <md-checkbox ng-if="$ctrl.controlType === $ctrl.selectServiceLineModalType.CHECKBOX"
+                                 class="md-primary invoices-list-item"
+                                 ng-model="serviceLine.isChecked"
+                                 ng-click="$ctrl.toggleItem(serviceLine)"
+                                 ng-disabled="serviceLine.isDisabled"
+                                 ng-repeat="serviceLine in $ctrl.serviceLines"
+                    >
+                        <select-service-line-item service-line="serviceLine"
+                        ></select-service-line-item>
+                    </md-checkbox>
+
+                    <md-radio-group ng-model="$ctrl.selectedServiceLine[0]"
+                                    ng-if="$ctrl.controlType === $ctrl.selectServiceLineModalType.RADIO"
+                    >
+                        <md-radio-button ng-value="serviceLine"
+                                         ng-repeat="serviceLine in $ctrl.serviceLines"
+                                         ng-disabled="$ctrl.isDisableItem(serviceLine.Id)"
+                        >
+                            <select-service-line-item service-line="serviceLine"
+                            ></select-service-line-item>
+
+                        </md-radio-button>
+                    </md-radio-group>
+                </div>
+            </div>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button"
+                   ng-click="$ctrl.onCancel()"
+        >
+            Cancel
+        </md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.onSelect()"
+                   ng-disabled="!$ctrl.selectedServiceLine"
+        >
+            Save
+        </md-button>
+    </md-dialog-actions>
+</div>

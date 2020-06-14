@@ -1,0 +1,194 @@
+<div class="report-filter-checkbox">
+    <md-checkbox class="md-primary"
+                 ng-model="block.isSelected">{{block.Name}}</md-checkbox>
+</div>
+<div class="report-filter-select"
+     ng-show="block.isSelected">
+    <md-select
+        md-container-class="reports-dropdown"
+        ng-model="vm.filtersBlock[$index].currentOption" aria-label="operations">
+        <md-option ng-repeat="option in block.Operations" ng-value="option">
+            {{option.Name + option.Code}}
+        </md-option>
+    </md-select>
+</div>
+<div class="report-filter-option"
+     ng-form="vm.reportFiltersForm"
+     ng-show="block.isSelected && vm.filtersBlock[$index].currentOption.OperationCode !== 'NONE'"
+     ng-switch="block.controllType">
+    <div ng-switch-when="select" class="report-select">
+        <md-select md-container-class="reports-dropdown"
+                   ng-model="vm.filtersBlock[$index].currentValue"
+                   aria-label="values"
+                   ng-show="!vm.filtersBlock[$index].isMupltiple">
+            <md-option ng-repeat="item in block.SimpleItems" ng-value="item">
+                {{item.Value}}
+            </md-option>
+        </md-select>
+        <md-select md-container-class="reports-dropdown"
+                   multiple="true"
+                   ng-model="vm.filtersBlock[$index].currentValues"
+                   aria-label="values"
+                   ng-show="vm.filtersBlock[$index].isMupltiple">
+            <md-option ng-repeat="item in block.SimpleItems" ng-value="item">
+                {{item.Value}}
+            </md-option>
+        </md-select>
+        <md-button class="md-raised plus-btn"
+                   ng-click="vm.changeMultiple(vm.filtersBlock[$index])"
+                   aria-label="button">&nbsp;</md-button>
+    </div>
+    <div ng-switch-when="DATE" class="datepicker-cell">
+        <md-input-container class="calendar_icon">
+            <input ng-model="vm.filtersBlock[$index].currentValue"
+                   datetimepicker
+                   name="dateCodeStart-{{$index}}"
+                   ng-required="(vm.filtersBlock[$index].currentOption.OperationCode === 'BETWEEN') && !!vm.filtersBlock[$index].endDate"
+                   format="MM/DD/YYYY"
+                   aria-label="startDate"/>
+            <div ng-messages="vm.reportFiltersForm['dateCodeStart-'+$index].$error"
+                 class="md-input-messages-nice">
+                <div ng-message="required">This field is required</div>
+            </div>
+        </md-input-container>
+        <md-input-container class="calendar_icon"
+                            ng-if="vm.filtersBlock[$index].currentOption.OperationCode === 'BETWEEN'">
+            <input ng-model="vm.filtersBlock[$index].endDate"
+                   datetimepicker
+                   name="dateCodeEnd-{{$index}}"
+                   ng-required="true"
+                   format="MM/DD/YYYY"
+                   aria-label="endDate" />
+            <div ng-messages="vm.reportFiltersForm['dateCodeEnd-'+$index].$error"
+                 class="md-input-messages-nice">
+                <div ng-message="required">This field is required</div>
+            </div>
+        </md-input-container>
+    </div>
+    <div ng-switch-when="DATETIME" class="datetimepicker-cell">
+        <md-input-container class="calendar_icon">
+            <input ng-model="vm.filtersBlock[$index].currentValue"
+                   datetimepicker
+                   format="MM/DD/YYYY"
+                   name="datetimeCodeStart-{{$index}}"
+                   ng-required="vm.filtersBlock[$index].currentOption.OperationCode === 'BETWEEN' && !!vm.filtersBlock[$index].endDate"
+                   aria-label="startDateTime" />
+            <div ng-messages="vm.reportFiltersForm['datetimeCodeStart-'+$index].$error"
+                 class="md-input-messages-nice">
+                <div ng-message="required">This field is required</div>
+            </div>
+        </md-input-container>
+
+        <md-input-container class="calendar_icon"
+                            ng-if="vm.filtersBlock[$index].currentOption.OperationCode === 'BETWEEN'">
+            <input ng-model="vm.filtersBlock[$index].endDate"
+                   datetimepicker
+                   format="MM/DD/YYYY"
+                   name="datetimeCodeEnd-{{$index}}"
+                   ng-required="true"
+                   aria-label="endDateTime" />
+            <div ng-messages="vm.reportFiltersForm['datetimeCodeEnd-'+$index].$error"
+                 class="md-input-messages-nice">
+                <div ng-message="required">This field is required</div>
+            </div>
+        </md-input-container>
+    </div>
+
+    <!-- Autocomplete with small width -->
+    <md-chips ng-switch-when="autocomplete"
+              ng-init="index2 = $index"
+              ng-if="!(vm.isAutocompleteMSizeClass(vm.filtersBlock[$index]))"
+              ng-model="vm.filtersBlock[index2].currentValues"
+              md-autocomplete-snap=""
+              md-require-match="true"
+              class="report-chips">
+
+        <md-autocomplete
+                md-menu-container-class="reports-dropdown autocomplete-chips-dropdown"
+                md-selected-item="vm.filtersBlock[index2].currentValue"
+                md-search-text="searchChip"
+                md-items="item in vm.getData(vm.filtersBlock[index2].FilterSourceId, searchChip)"
+                md-item-text="item.Value"
+                md-min-length="1">
+            <md-item-template>
+                <span md-highlight-text="searchChip"
+                      md-highlight-flags="i"
+                      class="item-title"
+                      title="{{item.Value}}">
+                    {{item.Value}}
+                </span>
+            </md-item-template>
+        </md-autocomplete>
+
+        <md-chip-template>
+            <span title="{{$chip.Value}}">{{$chip.Value}}</span>
+        </md-chip-template>
+    </md-chips>
+
+
+    <!-- Autocomplete with medium width -->
+    <md-chips ng-switch-when="autocomplete"
+              ng-if="vm.isAutocompleteMSizeClass(vm.filtersBlock[$index])"
+              ng-init="index2 = $index"
+              ng-model="vm.filtersBlock[index2].currentValues"
+              md-autocomplete-snap=""
+              md-require-match="true"
+              class="report-chips">
+
+        <md-autocomplete
+            md-menu-container-class="reports-dropdown autocomplete-chips-dropdown m-size"
+            md-selected-item="vm.filtersBlock[index2].currentValue"
+            md-search-text="searchChip"
+            md-items="item in vm.getData(vm.filtersBlock[index2].FilterSourceId, searchChip)"
+            md-item-text="item.Value"
+            md-min-length="1">
+            <md-item-template>
+                <span md-highlight-text="searchChip"
+                      md-highlight-flags="i"
+                      class="item-title"
+                      title="{{item.Value}}">
+                    {{item.Value}}
+                </span>
+            </md-item-template>
+        </md-autocomplete>
+
+        <md-chip-template>
+            <span title="{{$chip.Value}}">{{$chip.Value}}</span>
+        </md-chip-template>
+    </md-chips>
+
+    <md-input-container ng-switch-when="INT" class="number-option">
+        <input ng-model="vm.filtersBlock[$index].currentValue"
+               only-digits
+               aria-label="digits" />
+    </md-input-container>
+    <md-input-container ng-switch-when="DECIMAL" class="number-option">
+        <input ng-if="vm.filterCanBeNegative(vm.filtersBlock[$index].Name)"
+               ng-model="vm.filtersBlock[$index].currentValue"
+               ng-pattern="/^[-+]?[0-9]*\.?[0-9]*?$/"
+               name="filter-decimal-{{$index}}" />
+
+        <input ng-if="vm.filterCanBeFloat(vm.filtersBlock[$index].Name)"
+               ng-model="vm.filtersBlock[$index].currentValue"
+               ng-pattern="/^[0-9]*\.?[0-9]*?$/"
+               name="filter-decimal-{{$index}}"/>
+
+        <input ng-if="vm.filterCanBeOnlyDigit(vm.filtersBlock[$index].Name)"
+               ng-pattern="/^[0-9]*$/"
+               ng-model="vm.filtersBlock[$index].currentValue"
+               name="filter-decimal-{{$index}}"/>
+
+        <div ng-messages="vm.reportFiltersForm['filter-decimal-'+ $index].$error"
+             class="md-input-messages-nice">
+            <div ng-message="pattern">
+                {{vm.getFilterValidationMsg(vm.filtersBlock[$index].Name)}}
+            </div>
+        </div>
+
+    </md-input-container>
+    <md-input-container ng-switch-default class="default-option">
+        <input type="text"
+               ng-model="vm.filtersBlock[$index].currentValue"
+               aria-label="default" />
+    </md-input-container>
+</div>

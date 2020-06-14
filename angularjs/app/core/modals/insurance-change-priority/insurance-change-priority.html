@@ -1,0 +1,65 @@
+<div class="modal-window change-priority-modal">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon"
+                 md-svg-src="assets/images/default/list-v2.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Change Priority:</h2>
+        </div>
+
+        <div class="sortable-items-block sortable-row"
+             as-sortable="$ctrl.sortableOptions1"
+             ng-model="$ctrl.insurances">
+            <div ng-repeat="ins in $ctrl.insurances"
+                 as-sortable-item=""
+                 class="sortable-insurance">
+                <div as-sortable-item-handle="">
+                    <md-icon class="drag-icon" md-svg-src="assets/images/default/drag.svg"></md-icon>
+                    <div class="info-block block-width-120">
+                        <div class="info-block-label">Priority Number:</div>
+                        <div class="info-block-body">
+                            <!--TODO remove together with related css -->
+                            <!--<span class="priority-number">&lt;!&ndash; Do no fill (css counter) &ndash;&gt;</span>-->
+                            <span>{{ins.PositionIndex}}</span>
+                        </div>
+
+                    </div>
+                    <div class="info-block w350px left-divider">
+                        <div class="info-block-label">Name:</div>
+                        <div class="info-block-body">{{ins.PayerName || ins.Payer.Name}}</div>
+                    </div>
+                    <div class="info-block block-width-20-percent left-divider">
+                        <div class="info-block-label">Policy Number:</div>
+                        <div class="info-block-body">{{ins.PolicyNumber}}</div>
+                    </div>
+                    <div class="info-block block-width-25-percent left-divider">
+                        <div class="info-block-label">Name:</div>
+                        <div class="info-block-body">
+                            <div class="insurance-gender-block" ng-if="ins.Person">
+                                <span>{{ins.Person.Name.LastName}}&nbsp;{{ins.Person.Name.FirstName}}</span>
+                                <md-icon md-svg-src="assets/images/colored/male.svg" ng-if="ins.Person.Gender.Id.toString() === '1'"></md-icon>
+                                <md-icon md-svg-src="assets/images/colored/female.svg" ng-if="ins.Person.Gender.Id.toString() === '2'"></md-icon>
+                            </div>
+                            <div class="insurance-gender-block" ng-if="ins.Holder">
+                                <span>{{ins.Holder.Name.FullName}}</span>
+                                <md-icon md-svg-src="assets/images/colored/male.svg" ng-if="ins.Holder.Gender.Id.toString() === '1'"></md-icon>
+                                <md-icon md-svg-src="assets/images/colored/female.svg" ng-if="ins.Holder.Gender.Id.toString() === '2'"></md-icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button" ng-click="$ctrl.save()" ng-disabled="$ctrl.isSaveDisabled || $ctrl.reorderedInsurances.length===0">Save</md-button>
+    </md-dialog-actions>
+
+</div>

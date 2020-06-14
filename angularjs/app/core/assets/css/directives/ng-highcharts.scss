@@ -1,0 +1,53 @@
+.highcharts-legend-item {
+    font-size: 11px;
+    font-weight: 400;
+    color: $label-color;
+    font-family: 'Roboto', sans-serif;
+    line-height: 19px;
+}
+
+.highcharts-tooltip {
+    z-index: 100;
+    background: #ffffff;
+    padding: 6px 8px 6px 7px;
+    margin: 1px;
+
+    > span {
+        position: relative !important;
+        left: 0 !important;
+        top: 0 !important;
+    }
+}
+
+.dashboard {
+    .patient-volume-statistic {
+        .highcharts-legend {
+            .highcharts-legend-item {
+                > span {
+                    top: -3px !important;
+                }
+            }
+        }
+    }
+
+    .payers-statistic {
+        .highcharts-legend {
+            .highcharts-legend-item {
+                > span {
+                    top: 1px !important;
+                    padding-left: 5px;
+                }
+
+                .graphic-percents {
+                    position: absolute;
+                    left: -56px;
+                    width: 27px;
+                    text-align: right;
+                    color: #333;
+                    font-weight: 700;
+                    font-size: 11px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,120 @@
+<div class="payment-page-wrap"
+     ng-form="paymentCtrl.form"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="paymentOverlay"
+>
+    <div class="breadcrumbs transparent-bg">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.billing.invoices">Billing</a>
+        <a href="javascript:void(0)" ui-sref="root.billing.payments">Payments</a>
+
+        <a href="javascript:void(0)"
+           ng-if="paymentCtrl.isNewPayment"
+           class="active"
+        >Add Payment</a>
+
+        <a href="javascript:void(0)"
+           ng-if="!paymentCtrl.isNewPayment && !paymentCtrl.isEditPage"
+           class="active"
+        >Payment Details</a>
+
+        <a href="javascript:void(0)"
+           ng-if="!paymentCtrl.isNewPayment && paymentCtrl.isEditPage"
+           class="active"
+        >Edit Payment</a>
+    </div>
+
+    <div class="fub-btn-container"
+         ng-if="!paymentCtrl.isEditPage"
+    >
+        <a href="javascript:void(0);"
+           class="toolbar-single-action custom-action-icon"
+           ng-click="paymentCtrl.onEditPayment()"
+           simple-tooltip="Edit this payment"
+           tooltip-position="left"
+        >
+            <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+        </a>
+    </div>
+
+    <payment-info class="flex-row pad-top-15 flex-wrap"
+                  parent-form="paymentCtrl.form"
+                  payment-model="paymentCtrl.model"
+                  disable-edit-source="!paymentCtrl.isNewPayment"
+                  read-only="!paymentCtrl.isEditPage"
+                  on-reset-payment="paymentCtrl.onResetPaymentModel(assignObj)"
+    ></payment-info>
+
+    <div class="flex-row flex-end"
+         ng-if="paymentCtrl.isEditPage"
+    >
+        <div class="info-block">
+            <md-button class="md-raised md-primary"
+                       ng-click="paymentCtrl.openSelectInvoiceModal()"
+                       ng-disabled="paymentCtrl.isDisableAddInvoice()"
+            >
+                Add Invoice
+            </md-button>
+
+            <md-button class="md-raised green-btn"
+                       ng-click="paymentCtrl.onAutoApply()"
+            >
+                Auto Apply
+            </md-button>
+        </div>
+    </div>
+
+    <span id="paymentBlock">
+        <invoice-item class="flex-row marg-top-15"
+                  ng-repeat="invoice in paymentCtrl.model.Invoices| limitTo:paymentCtrl.paginationParams.pageSize:(paymentCtrl.getPageOffset())"
+                  parent-form="paymentCtrl.form"
+                  invoice-model="invoice"
+                  item-index="$index"
+                  read-only="!paymentCtrl.isEditPage"
+                  source="paymentCtrl.model.Source"
+                  on-connected="paymentCtrl.onConnected()"
+                  on-remove="paymentCtrl.onRemoveInvoice(itemIndex)"
+                  coverages-dictionary="paymentCtrl.coveragesDictionary"
+                  payment-model="paymentCtrl.model"
+        ></invoice-item>
+    </span>
+
+    <span scroll-to="#paymentBlock"
+          disabled-scroll="false"
+    >
+        <ul ng-if="paymentCtrl.model.Invoices.length > paymentCtrl.paginationParams.pageSize"
+            uib-pagination
+            set-error-to-page-num="paymentCtrl.paginationParams.pagesWithErrors"
+            boundary-link-numbers="true"
+            pages-with-errors="paymentCtrl.paginationParams.pagesWithErrors"
+            total-items="paymentCtrl.model.Invoices.length"
+            ng-model="paymentCtrl.paginationParams.pageIndex"
+            items-per-page="paymentCtrl.paginationParams.pageSize"
+            max-size="15"
+            class="pagination-sm payment-invoices-pagination tab-pagination"
+            ng-change="paymentCtrl.onPageChanged()"
+            boundary-link-numbers="false"
+            previous-text="&lsaquo;"
+            next-text="&rsaquo;"
+        >
+        </ul>
+    </span>
+
+    <div class="flex-row flex-end footer-btns"
+         ng-if="paymentCtrl.isEditPage"
+    >
+        <div class="info-block">
+            <md-button class="md-raised main-button"
+                       ng-click="paymentCtrl.onCancel()"
+            >
+                Cancel
+            </md-button>
+
+            <md-button class="md-raised md-primary main-button"
+                       ng-click="paymentCtrl.save();"
+            >
+                Save
+            </md-button>
+        </div>
+    </div>
+</div>

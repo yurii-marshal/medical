@@ -1,0 +1,17 @@
+<div class="infinite-scroll-bg inbox-main"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="inboxPage">
+
+    <toolbar
+            items="inbox.toolbarItems"
+            ng-if="inbox.selectedItemsArrCount()">
+    </toolbar>
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" class="active">Inbox</a>
+    </div>
+
+    <div ui-view></div>
+
+</div>

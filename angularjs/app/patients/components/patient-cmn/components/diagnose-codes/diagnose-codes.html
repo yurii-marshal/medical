@@ -1,0 +1,151 @@
+<div ng-form="$ctrl.codesForm"
+     class="diagnose-codes-container flex-row">
+
+    <div class="diagnose-block info-block block-width-110">
+        <md-autocomplete-with-infinite-scroll
+            class="diagnose-autocomplete-block"
+            md-no-cache="true"
+            md-selected-item="$ctrl.codes.Diagnosis1"
+            md-search-text="$ctrl['searchDiagnosis1']"
+            md-items="diagnose in $ctrl.getDiagnosis($ctrl['searchDiagnosis1'], pageIndex)"
+            md-item-text="diagnose.text"
+            md-input-name="Diagnosis1"
+            md-min-length="0"
+            md-delay="150"
+            md-menu-class="diagnosis-dropdown"
+            md-menu-container-class="md-autocomplete-suggestions-width-500"
+            md-floating-label="diagnosis"
+            ng-required="$ctrl.isDiagnoseRequired('Diagnosis1')"
+            md-autocomplete-required
+            clear-on-click>
+            <md-item-template>
+                <span title="{{diagnose.description}}">{{diagnose.description}}</span>
+            </md-item-template>
+            <md-not-found>Not found</md-not-found>
+            <div ng-messages="$ctrl.codesForm['Diagnosis1'].$error"
+                 class="md-input-messages-nice">
+                <div ng-message="required">Required</div>
+                <div ng-message="selected">Not valid</div>
+            </div>
+        </md-autocomplete-with-infinite-scroll>
+    </div>
+
+    <div class="diagnose-block info-block block-width-110">
+        <md-autocomplete-with-infinite-scroll
+            class="diagnose-autocomplete-block"
+            md-no-cache="true"
+            md-selected-item="$ctrl.codes.Diagnosis2"
+            md-search-text="$ctrl['searchDiagnosis2']"
+            md-items="diagnose in $ctrl.getDiagnosis($ctrl['searchDiagnosis2'], pageIndex)"
+            md-item-text="diagnose.text"
+            md-input-name="Diagnosis2"
+            md-min-length="0"
+            md-delay="150"
+            md-menu-class="diagnosis-dropdown"
+            md-menu-container-class="md-autocomplete-suggestions-width-500"
+            md-floating-label="diagnosis"
+            ng-required="$ctrl.isDiagnoseRequired('Diagnosis2')"
+            md-autocomplete-required
+            clear-on-click>
+            <md-item-template>
+                <span title="{{diagnose.description}}">{{diagnose.description}}</span>
+            </md-item-template>
+            <md-not-found>Not found</md-not-found>
+            <div ng-messages="$ctrl.codesForm['Diagnosis2'].$error"
+                 class="md-input-messages-nice">
+                <div ng-message="required">Required</div>
+                <div ng-message="selected">Not valid</div>
+            </div>
+        </md-autocomplete-with-infinite-scroll>
+    </div>
+
+    <div class="diagnose-block info-block block-width-110">
+        <md-autocomplete-with-infinite-scroll
+            class="diagnose-autocomplete-block"
+            md-no-cache="true"
+            md-selected-item="$ctrl.codes.Diagnosis3"
+            md-search-text="$ctrl['searchDiagnosis3']"
+            md-items="diagnose in $ctrl.getDiagnosis($ctrl['searchDiagnosis3'], pageIndex)"
+            md-item-text="diagnose.text"
+            md-input-name="Diagnosis3"
+            md-min-length="0"
+            md-delay="150"
+            md-menu-class="diagnosis-dropdown"
+            md-menu-container-class="md-autocomplete-suggestions-width-500"
+            md-floating-label="diagnosis"
+            ng-required="$ctrl.isDiagnoseRequired('Diagnosis3')"
+            md-autocomplete-required
+            clear-on-click>
+            <md-item-template>
+                <span title="{{diagnose.description}}">{{diagnose.description}}</span>
+            </md-item-template>
+            <md-not-found>Not found</md-not-found>
+            <div ng-messages="$ctrl.codesForm['Diagnosis3'].$error"
+                 class="md-input-messages-nice">
+                <div ng-message="required">Required</div>
+                <div ng-message="selected">Not valid</div>
+            </div>
+        </md-autocomplete-with-infinite-scroll>
+    </div>
+
+    <div class="diagnose-block info-block block-width-110">
+        <md-autocomplete-with-infinite-scroll
+            class="diagnose-autocomplete-block"
+            md-no-cache="true"
+            md-selected-item="$ctrl.codes.Diagnosis4"
+            md-search-text="$ctrl['searchDiagnosis4']"
+            md-items="diagnose in $ctrl.getDiagnosis($ctrl['searchDiagnosis4'], pageIndex)"
+            md-item-text="diagnose.text"
+            md-input-name="Diagnosis4"
+            md-min-length="0"
+            md-delay="150"
+            md-menu-class="diagnosis-dropdown"
+            md-menu-container-class="md-autocomplete-suggestions-width-500"
+            md-floating-label="diagnosis"
+            ng-required="$ctrl.isDiagnoseRequired('Diagnosis4')"
+            md-autocomplete-required
+            clear-on-click>
+            <md-item-template>
+                <span title="{{diagnose.description}}">{{diagnose.description}}</span>
+            </md-item-template>
+            <md-not-found>Not found</md-not-found>
+            <div ng-messages="$ctrl.codesForm['Diagnosis4'].$error"
+                 class="md-input-messages-nice">
+                <div ng-message="required">Required</div>
+                <div ng-message="selected">Not valid</div>
+            </div>
+        </md-autocomplete-with-infinite-scroll>
+    </div>
+
+    <!--TODO fix directive 'md-autocomplete-required' if possible-->
+    <!--<div class="diagnose-block info-block block-width-110"-->
+         <!--ng-repeat="(key, value) in $ctrl.codes">-->
+        <!--<md-autocomplete-with-infinite-scroll-->
+            <!--class="diagnose-autocomplete-block"-->
+            <!--md-no-cache="true"-->
+            <!--md-selected-item="$ctrl.codes[key]"-->
+            <!--md-search-text="$ctrl['search' + key]"-->
+            <!--md-items="diagnose in $ctrl.getDiagnosis($ctrl['search' + key], pageIndex)"-->
+            <!--md-item-text="diagnose.text"-->
+            <!--md-input-name="{{key}}"-->
+            <!--md-min-length="0"-->
+            <!--md-delay="350"-->
+            <!--md-menu-class="diagnosis-dropdown"-->
+            <!--md-menu-container-class="md-autocomplete-suggestions-width-500"-->
+            <!--md-floating-label="diagnose"-->
+            <!--ng-required="$ctrl.isDiagnoseRequired(key)"-->
+            <!--md-autocomplete-required-->
+            <!--clear-on-click>-->
+            <!--<md-item-template>-->
+                <!--<span title="{{diagnose.description}}">{{diagnose.description}}</span>-->
+            <!--</md-item-template>-->
+            <!--<md-not-found>Not found</md-not-found>-->
+            <!--<div ng-messages="$ctrl.codesForm[key].$error"-->
+                 <!--class="md-input-messages-nice">-->
+                <!--<div ng-message="required">Required</div>-->
+                <!--<div ng-message="selected">Not valid</div>-->
+            <!--</div>-->
+        <!--</md-autocomplete-with-infinite-scroll>-->
+    <!--</div>-->
+</div>
+

@@ -1,0 +1,70 @@
+<div class="tags-container" [ngStyle]="{
+                                        'width.px': inputWidth,
+                                        'min-width.px': inputWidth
+                                       }">
+
+    <mat-form-field [ngStyle]="{
+                              'width.px': inputWidth,
+                              'min-width.px': inputWidth
+                             }"
+    >
+
+        <input type="text"
+               placeholder="Tag:"
+               aria-label="State"
+               matInput
+               [formControl]="tagInput"
+               [matAutocomplete]="auto"
+               #tagInputField
+               appClearOnClick
+        >
+
+        <mat-progress-bar [mode]="'indeterminate'"
+                          *ngIf="isLoading"
+        ></mat-progress-bar>
+
+        <mat-autocomplete #auto="matAutocomplete"
+                          [displayWith]="displayFn"
+                          (optionSelected)="onTagSelected($event)"
+        >
+
+            <mat-option *ngFor="let tag of (tagsDictionary$ | async)"
+                        [value]="tag"
+            >
+                {{ tag.Name }}
+            </mat-option>
+
+        </mat-autocomplete>
+
+        <mat-error>This field is required</mat-error>
+
+    </mat-form-field>
+
+    <mat-chip-list>
+
+        <p class="tags-display-name"
+           *ngIf="tags.length > 0"
+        >
+            {{ tagsDisplayName }}:
+        </p>
+
+        <div class="attr-label {{ addClass(tag.Name) }}"
+             *ngFor="let tag of tags; let i = index;"
+        >
+
+            <mat-icon svgIcon="tagIcon" class="tag-icon"></mat-icon>
+
+            <div class="tag-text">
+                {{ tag.Name }}
+            </div>
+
+            <mat-icon svgIcon="deleteIcon"
+                      class="delete-icon"
+                      (click)="deleteTag(i)"
+            ></mat-icon>
+
+        </div>
+
+    </mat-chip-list>
+
+</div>

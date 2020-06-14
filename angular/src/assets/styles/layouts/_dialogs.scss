@@ -1,0 +1,90 @@
+@import "~assets/styles/utils/mixins";
+@import "~assets/styles/base/variables";
+
+.mat-dialog-container {
+    padding: 0!important;
+}
+
+.modal-window {
+    padding: 0;
+
+    .mat-dialog-content {
+        padding: 15px;
+        margin: 0;
+    }
+
+    .close-modal {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        display: block;
+        @include size(14px, 14px);
+
+        &::after, &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            background-color: #d6d6d6;
+            transform: rotate(45deg);
+            transition: .2s;
+        }
+
+        &::after {
+            @include size(18px, 2px);
+            margin-top: -1px;
+            margin-left: -9px;
+        }
+
+        &::before {
+            @include size(2px, 18px);
+            margin-top: -9px;
+            margin-left: -1px;
+        }
+
+        &:hover {
+            &::after, &::before {
+                background-color: $gray-color;
+            }
+        }
+    }
+
+    .modal-title {
+        min-height: 30px;
+        margin-bottom: 15px;
+        color: $dark-blue-color;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 24px;
+        text-align: center;
+        text-transform: uppercase;
+        margin-top: 20px;
+
+        h2 {
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 24px;
+            text-align: center;
+        }
+    }
+
+    .modal-icon {
+        display: block;
+        margin: 20px auto 15px;
+        color: $main-active-color;
+        max-width: 42px;
+        max-height: 42px;
+
+        &.modal-icon-red {
+            color: $red-color;
+        }
+    }
+
+    .mat-dialog-actions {
+        display: flex;
+        align-items: center;
+        padding: 0 20px 20px 24px;
+        margin: 0;
+    }
+    //}
+}

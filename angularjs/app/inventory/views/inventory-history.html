@@ -1,0 +1,33 @@
+<div class="inventory-history"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="historyPage">
+
+    <div class="item-changes" ng-repeat="item in history.historyList track by $index">
+        <div class="status-label {{item.className}}">
+            {{item.labelName}}
+        </div>
+        <div class="info-block"
+             ng-class="{'block-width-30-percent': item.LocationTo, 'grow-1': !item.LocationTo}">
+            <div class="info-block-label">Location:</div>
+            <div class="info-block-body">{{item.LocationFrom}}</div>
+        </div>
+        <div class="info-block block-width-30-percent left-divider" ng-if="item.LocationTo">
+            <div class="info-block-label">To:</div>
+            <div class="info-block-body">{{item.LocationTo}}</div>
+        </div>
+        <div class="info-block block-width-20-percent min-width-20-percent left-divider">
+            <div class="info-block-label">Date:</div>
+            <div class="info-block-body font-semibold">
+                <span class="dark-blue-text">{{item.Date | localDateTime: "MM/DD/YYYY"}}</span>&nbsp;
+                <span class="active-text">{{item.Date | localDateTime: "hh:mm A"}}</span>
+            </div>
+        </div>
+        <div class="info-block block-width-20-percent min-width-20-percent left-divider">
+            <div class="info-block-label">User:</div>
+            <div class="info-block-body">{{item.User | fullname}}</div>
+        </div>
+    </div>
+
+    <no-records text="Product History" is-fullpage="true" ng-if="history.historyListCount === 0"></no-records>
+
+</div>

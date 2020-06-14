@@ -1,0 +1,105 @@
+.cdk-overlay-pane {
+
+  .owl-dt-calendar-table {
+    width: calc(100% + 1px);
+
+    :not(.owl-dt-calendar-cell-disabled):hover > .owl-dt-calendar-cell-content:not(.owl-dt-calendar-cell-selected) {
+      background-color: transparent;
+      border: 1px solid $main-active-color;
+
+    }
+
+    .owl-dt-calendar-cell-content {
+      border: none;
+    }
+
+    .owl-dt-calendar-cell-today:not(.owl-dt-calendar-cell-selected) {
+      border: none;
+      background-color: $lighter-gray-color;
+    }
+
+    .owl-dt-calendar-cell-selected {
+      background-color: $main-active-color;
+      color: white;
+    }
+
+    .owl-dt-weekdays {
+      background-color: $calendar-gray-color;
+      color: black;
+    }
+
+    .owl-dt-calendar-header {
+      .owl-dt-calendar-table-divider:after {
+        left: 0;
+        right: 0;
+      }
+
+      .owl-dt-weekdays th {
+        font-size: 0.8em;
+        padding-top: 25px;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+    }
+  }
+
+  .owl-dt-calendar-main {
+    padding: 0;
+  }
+
+  .owl-dt-calendar-control {
+    background-color: $calendar-gray-color;
+  }
+
+  .owl-dt-popup-container {
+    .owl-dt-calendar {
+      height: 21.70em;
+    }
+  }
+
+  .owl-dt-container-control-button {
+    .owl-dt-control-button-content {
+      color: $font-color;
+    }
+  }
+}
+
+.calendar-image {
+
+  .mat-input-flex {
+
+    &:after,
+    &:before {
+      content: "";
+      position: relative;
+      top: 3px;
+      left: 0;
+      width: 16px;
+      height: 16px;
+      background-image: url('#{$image-path}/calendar_blue.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      pointer-events: none;
+      margin: 4px;
+    }
+
+    &:before {
+      display: none;
+    }
+  }
+
+  &-left {
+
+    .mat-input-flex {
+
+      &:before {
+        display: block;
+      }
+
+      &:after {
+        display: none;
+      }
+    }
+  }
+}

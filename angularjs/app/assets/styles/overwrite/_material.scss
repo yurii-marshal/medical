@@ -1,0 +1,823 @@
+html.md-default-theme, html, body.md-default-theme, body {
+    background-color: #fff;
+}
+
+.md-block, .db {
+    display: block;
+}
+
+md-icon {
+    min-width: 1px;
+    min-height: 1px;
+
+    &.progress-icon {
+        margin-right: 7px;
+        width: 21px;
+        height: 21px;
+        color: $main-active-color;
+    }
+
+    &.credit-card-icon {
+        width: 20px;
+        height: 16px;
+        color: $gray-color;
+        margin-left: 10px;
+        margin-top: -2px;
+    }
+
+    &.direct-delivery-icon {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin: 0;
+        color: $gray-color;
+    }
+
+    &.direct-shipment-icon {
+        display: inline-block;
+        width: 26px;
+        height: 20px;
+        margin: 0;
+        color: $gray-color;
+    }
+
+    &.action-required-icon {
+        display: block;
+        width: 20px;
+        height: 20px;
+        margin: 8px auto 0;
+        color: $orange-color;
+        cursor: pointer;
+    }
+
+    &.monitor-sign-icon {
+        color: $gray-color;
+        width: 28px;
+        height: 18px;
+
+        &.signed {
+            color: $main-active-color;
+        }
+    }
+
+    &.monitor-list-blue {
+        color: $main-active-color;
+        width: 22px;
+        height: 20px;
+        margin: 0;
+    }
+
+    &.hidden-icon {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    &.resupply-order-icon {
+        color: $gray-color;
+        width: 16px;
+        height: 22px;
+        margin: 0 0 0 3px;
+        transform: scale(-1, 1);
+    }
+
+    &.csm-document-icon {
+        width: 18px;
+        min-width: 18px;
+        height: 20px;
+        margin: 0 0 0 10px;
+        color: $gray-color;
+    }
+}
+
+// Button
+.md-button, .md-button:not([disabled="disabled"]), .md-button:not([disabled="true"]) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    min-height: 1px;
+    min-width: 1px;
+    padding: 0 15px;
+    text-align: center;
+    text-transform: none;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 40px;
+
+    &.main-button {
+        min-width: 125px;
+    }
+
+    &.middle-btn {
+        height: 36px;
+        line-height: 36px;
+        font-size: 14px;
+        color: #2a3f54;
+
+        md-icon {
+            margin-right: 10px;
+            color: $gray-color;
+        }
+
+        &.pdf-btn {
+            margin: 0 0 15px 15px;
+
+            md-icon {
+                width: 16px;
+                height: 16px;
+                color: $red-color;
+            }
+        }
+    }
+
+    &.small-btn {
+        height: 30px;
+        line-height: 30px;
+        font-size: 13px;
+        color: #2a3f54;
+    }
+
+    &.md-raised, &.md-raised:not([disabled]) {
+        color: $font-color;
+        background-color: $light-gray-color;
+        box-shadow: 0 1px 3px rgba(10, 10, 10, 0.15);
+
+        &:hover {
+            background-color: #fff;
+        }
+
+        &.md-primary {
+            background-color: $main-active-color !important;
+            color: #ffffff;
+
+            &:hover, &:focus {
+                background-color: $main-active-hover-color !important;
+            }
+
+            &[disabled] {
+                color: rgba(#fff, 0.5);
+
+                md-icon {
+                    color: currentColor;
+                }
+            }
+        }
+
+        &.md-warn {
+            background-color: $red-color;
+            color: #ffffff;
+
+            &:hover, &:focus {
+                background-color: lighten($red-color, 10%);
+            }
+        }
+
+        &[disabled] {
+            color: rgba($font-color, 0.4);
+            background-color: $light-gray-color;
+            cursor: no-drop;
+        }
+
+        &.delete-btn {
+            background-color: $red-color;
+            color: #ffffff;
+
+            &:hover {
+                background-color: lighten($red-color, 10%);
+            }
+        }
+
+        &.green-btn {
+            background-color: $green-color;
+            color: #ffffff;
+
+            &:hover {
+                background-color: lighten($green-color, 10%);
+            }
+        }
+
+        &.orange-btn {
+            background-color: $orange-color;
+            color: #ffffff;
+
+            &:hover {
+                background-color: lighten($orange-color, 10%);
+            }
+        }
+
+        &.npi-lookup-btn {
+            min-width: 100px;
+            margin: 0 0 0 15px;
+
+            &.no-margin {
+                margin: 0;
+            }
+        }
+
+        &.change-priority-btn {
+            margin: 0;
+
+            md-icon {
+                display: block;
+                width: 18px;
+                height: 10px;
+                margin: 0 7px 0 0;
+                color: $gray-color;
+            }
+        }
+    }
+
+    &.show-history, &.md-raised.show-history {
+        display: flex;
+        align-items: center;
+        height: 34px;
+        line-height: 34px;
+        font-size: 14px;
+
+        md-icon {
+            width: 18px;
+            height: 18px;
+            margin-right: 7px;
+            color: $gray-color;
+        }
+    }
+
+    &.round-btn {
+        height: 30px;
+        margin: 0 10px 0 0;
+        padding: 0 15px;
+        border-radius: 14px;
+        line-height: 30px;
+        font-size: 14px;
+        background-color: $lighter-gray-color;
+
+        &.active, &:hover, &:focus {
+            background-color: $main-active-color;
+            color: #fff;
+        }
+
+        &[disabled] {
+            cursor: no-drop;
+            color: rgba(0,0,0,0.38);
+
+            &:hover, &:focus {
+                background-color: transparent;
+                color: rgba(0,0,0,0.38);
+            }
+        }
+
+        &.white-btn {
+            background-color: #fff;
+
+            &.active, &:hover, &:focus {
+                background-color: $main-active-color;
+                color: #fff;
+            }
+
+            &[disabled] {
+                color: rgba(0,0,0,0.38);
+
+                &:hover, &:focus {
+                    background-color: #fff;
+                }
+            }
+        }
+    }
+
+    &.new-appointment-btn, &.saved-filters-btn {
+        height: 38px;
+        line-height: 38px;
+        font-size: 14px;
+        border-radius: 24px;
+        margin: 0 0 0 10px;
+    }
+
+    &.new-appointment-btn {
+        md-icon {
+            width: 16px;
+            height: 16px;
+            margin: 0 10px 0 0;
+        }
+    }
+
+    &.saved-filters-btn {
+        position: relative;
+        color: $main-active-color;
+        background-color: #fff;
+        box-shadow: $box-shadow;
+
+        &.opened, &:hover {
+            background-color: $light-gray-color;
+        }
+    }
+
+    &.apply-btn {
+        width: 100%;
+        margin: 0;
+    }
+
+    &.search-equipment-btn {
+        margin-right: 0;
+
+        md-icon {
+            width: 18px;
+            height: 17px;
+            margin-right: 7px;
+
+            &.gray-search-icon {
+                color: $gray-color;
+            }
+        }
+    }
+
+    &.arrow-back-button {
+        md-icon {
+            color: $gray-color;
+            width: 16px;
+            height: 16px;
+            margin-right: 10px;
+
+            &.rotate-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    }
+
+    &.prescribe-btn {
+        md-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 7px;
+        }
+    }
+
+    &.details-btn {
+        md-icon {
+            width: 16px;
+            height: 20px;
+            margin-right: 7px;
+        }
+    }
+
+    &.eye-details-btn {
+        margin: 0;
+
+        md-icon {
+            width: 18px;
+            height: 12px;
+            margin: 0 7px 0 0;
+            color: $gray-color;
+        }
+
+        &.no-text-btn {
+            padding: 0;
+            width: 20px;
+            height: 14px;
+
+            md-icon {
+                margin: 0;
+                width: 20px;
+                height: 14px;
+                color: $main-active-color;
+                transition: .2s;
+            }
+
+            &:hover {
+                background: none;
+
+                md-icon {
+                    color: $main-active-hover-color;
+                }
+            }
+        }
+
+        &.appointment-summary-btn {
+            margin-top: 13px;
+        }
+
+        + .md-button {
+            margin-left: 10px;
+        }
+
+        &.pricing-details-btn {
+            margin-top: 8px;
+
+        }
+    }
+
+    &.price-options-btn,
+    &.rental-options-btn {
+        md-icon {
+            width: 19px;
+            height: 18px;
+            margin: 0 7px 0 0;
+            color: currentColor;
+        }
+    }
+
+    &.upload-document-btn {
+        md-icon {
+            width: 11px;
+            height: 22px;
+            margin-right: 7px;
+        }
+    }
+
+    &.edit-text-btn{
+        md-icon {
+            @include size(16px, 15px);
+            margin-right: 7px;
+            color: $gray-color;
+        }
+    }
+
+    &.edit-step-btn {
+        width: 19px;
+        height: 18px;
+        margin: 0;
+        padding: 0;
+        color: $gray-color;
+
+        md-icon {
+            width: 19px;
+            height: 18px;
+            color: currentColor;
+            transition: .2s;
+        }
+
+        &:hover {
+            background: none;
+            color: $main-active-hover-color;
+        }
+    }
+
+    &.pdf-icon-btn {
+        md-icon {
+            margin-right: 7px;
+            width: 18px;
+            height: 18px;
+            color: $red-color;
+            transition: .2s;
+        }
+    }
+
+    &.edit-profile-btn {
+        margin-left: 0;
+        margin-top: 15px;
+    }
+
+    &.copy-to-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 28px;
+        margin: 0;
+        padding: 0;
+
+        md-icon {
+            display: block;
+            width: 16px;
+            height: 16px;
+            color: $dark-blue-color;
+        }
+
+        &.to-departure {
+            margin-right: 15px;
+
+            md-icon {
+                transform: rotate(90deg);
+            }
+        }
+
+        &.to-arrival {
+            md-icon {
+                transform: rotate(-90deg);
+            }
+        }
+    }
+
+    &.download {
+        margin: 0;
+
+        md-icon {
+            margin: 0 7px 0 0;
+            width: 14px;
+            height: 17px;
+            color: $gray-color;
+            transition: .2s;
+        }
+    }
+
+    &.preview {
+        min-width: 110px;
+        font-size: 14px;
+        text-transform: capitalize;
+        padding: 0 10px;
+        color: $main-active-color;
+
+        .eye-icon {
+            display: inline-block;
+            padding-left: 30px;
+            color: $label-color;
+            background: transparent url(../assets/images/eye.png) 0 8px no-repeat;
+        }
+
+        &[disabled] {
+            pointer-events: none;
+            opacity: .5;
+            background-color: rgba(158,158,158,0.05);
+        }
+
+        &.preview-no-text {
+            min-width: 10px;
+            min-height: 10px;
+            width: 22px;
+            height: 15px;
+            padding: 0;
+            margin: 0;
+            background: none;
+            border-radius: 0;
+
+            &:hover, &:focus {
+                background: none;
+
+                md-icon {
+                    opacity: .8;
+                }
+            }
+
+            md-icon {
+                margin: 0;
+                max-height: 100%;
+                max-width: 100%;
+                display: block;
+                color: $main-active-color;
+                transition: .2s;
+            }
+        }
+    }
+
+    &.add-new-contact,
+    &.add-new-location {
+        display: inline-block;
+        margin: 0;
+        padding: 0 13px;
+        height: 36px;
+        border-radius: 3px;
+        background-color: transparent;
+        text-transform: none;
+        line-height: 36px;
+        color: $main-active-color;
+        font-size: 14px;
+        font-weight: 400;
+
+        &:hover, &:focus {
+            background-color: $light-gray-color;
+        }
+
+        md-icon {
+            margin-right: 10px;
+            width: 14px;
+            height: 14px;
+        }
+
+        &.add-document {
+            position: relative;
+            padding-left: 38px;
+
+            &::before {
+                left: 13px;
+                margin-top: -1px;
+                width: 14px;
+                height: 2px;
+            }
+
+            &::after {
+                left: 19px;
+                margin-top: -7px;
+                width: 2px;
+                height: 14px;
+            }
+
+            &::after, &::before {
+                top: 50%;
+                content: "";
+                position: absolute;
+                background-color: $main-active-color;
+            }
+        }
+    }
+
+    &.green-btn {
+        margin: 0 0 0 15px;
+        background-color: $green-color;
+        color: #fff;
+        box-shadow: $box-shadow;
+
+        &:hover, &:focus {
+            background-color: darken($green-color, 10%);
+        }
+
+        &[disabled] {
+            color: rgba(#fff, 0.5);
+            cursor: no-drop;
+        }
+    }
+
+    &.document-icon-btn {
+        margin: 0;
+
+        md-icon {
+            width: 14px;
+            height: 18px;
+            margin-right: 7px;
+            color: $gray-color;
+        }
+    }
+
+    &.clear-icon-btn {
+        margin: 0 0 0 30px;
+
+        md-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 7px;
+            color: $gray-color;
+        }
+    }
+
+    &.dwo-btn {
+        height: 26px;
+        line-height: 26px;
+        font-size: 12px;
+        text-transform: uppercase;
+    }
+
+    &.add-items-btn {
+        margin-right: 40px;
+    }
+
+    &.print-btn {
+        > md-icon {
+            width: 17px;
+            height: 17px;
+            margin: 0 10px 0 0;
+            color: $gray-color;
+        }
+    }
+
+    &.email-btn {
+        > md-icon {
+            width: 18px;
+            height: 14px;
+            margin: 0 10px 0 0;
+            color: $gray-color;
+        }
+    }
+
+    &.chevron-toggle-btn {
+        width: 32px;
+        height: 30px;
+        margin: 0;
+        padding: 0;
+        background-color: $lighter-gray-color;
+        box-shadow: $box-shadow;
+
+        &.opened {
+            background-color: $main-active-color;
+
+            > md-icon {
+                transform: rotate(180deg);
+                color: #fff;
+            }
+        }
+
+        > md-icon {
+            width: 16px;
+            height: 8px;
+            color: $gray-color;
+            transition: .2s;
+        }
+    }
+
+    &.tracking-details-icon {
+        > md-icon {
+            margin-right: 7px;
+        }
+    }
+}
+
+.md-virtual-repeat-container.md-autocomplete-suggestions-container {
+    z-index: 103;
+    max-height: 240px !important;
+
+    @each $w in $list-of-width {
+        &.md-autocomplete-suggestions-width-#{$w} {
+            min-width: #{$w}px !important;
+        }
+    }
+}
+
+@media all and (-ms-high-contrast:none) {
+    .md-virtual-repeat-container.md-autocomplete-suggestions-container.autocomplete-chips-dropdown {
+        width: 220px; /* IE11 */
+    }
+}
+
+
+md-autocomplete, md-autocomplete-with-infinite-scroll {
+    md-autocomplete-wrap.md-menu-showing ~ a.clear-field {
+        z-index: 104;
+    }
+}
+
+// Dialog
+md-dialog.md-default-theme, md-dialog {
+    max-width: 96%;
+    max-height: 90%;
+    border-radius: 0px;
+    box-shadow: 0 0 2.9px 0.1px rgba(0, 0, 0, 0.19);
+    overflow-x: hidden;
+
+    md-dialog-content {
+        display: block;
+    }
+
+    &[role="alertdialog"] {
+        border-radius: 3px;
+
+        .md-title {
+            color: rgba(0, 0, 0, 0.870588);
+        }
+
+        md-dialog-actions {
+            padding-right: 22px;
+            padding-bottom: 15px;
+
+            .md-button:not([disabled]) {
+                min-width: 120px;
+                background-color: $main-active-color;
+                color: #FFF;
+                box-shadow: $box-shadow;
+
+                &:hover, &:focus {
+                    background-color: $main-active-hover-color;
+                }
+            }
+        }
+    }
+
+    &[aria-label="Confirm"] {
+        .md-title {
+            margin-bottom: 10px;
+            min-height: 30px;
+            color: $dark-blue-color;
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 24px;
+            text-align: center;
+            text-transform: uppercase;
+            background-color: transparent;
+        }
+
+        md-dialog-actions {
+            padding: 0 20px 14px 24px;
+
+            .md-button {
+                min-width: 100px;
+
+                &[aria-label="No"], &[ng-click="dialog.abort()"] {
+                    color: $font-color;
+                    background-color: $light-gray-color;
+                    box-shadow: 0 1px 3px rgba(10, 10, 10, 0.15);
+
+                    &:hover {
+                        background-color: #fff;
+                    }
+                }
+
+                &[aria-label="Yes"], &[ng-click="dialog.hide()"] {
+                    box-shadow: 0 1px 3px rgba(10, 10, 10, 0.15);
+                    background-color: $main-active-color !important;
+                    color: #ffffff;
+
+                    &:hover {
+                        background-color: $main-active-hover-color !important;
+                    }
+                }
+            }
+        }
+    }
+
+    > form {
+        overflow: visible;
+    }
+
+    &.md-content-overflow {
+        .md-actions, md-dialog-actions {
+            border-top: none;
+        }
+    }
+}
+

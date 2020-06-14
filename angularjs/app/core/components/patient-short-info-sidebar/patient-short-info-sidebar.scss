@@ -1,0 +1,23 @@
+.main-patient-block {
+    .name-status-block {
+        .status-and-gender {
+            position: relative;
+            line-height: 38px;
+
+            .edit-doc {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                @include size(38px, 38px);
+                padding: 0;
+                margin: 0;
+
+                md-icon {
+                    @include size(17px, 17px);
+                    color: $gray-color;
+                }
+            }
+        }
+    }
+}
+

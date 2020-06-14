@@ -1,0 +1,702 @@
+<div class="infinite-scroll-bg location-view pricing-page full-height-with-footer"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="pricingPage"
+     ng-form="pricing.form">
+
+    <div class="top-block">
+
+        <div class="breadcrumbs transparent-bg">
+            <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+            <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+            <a href="javascript:void(0)" ui-sref="root.management.billing">Billing</a>
+            <a href="javascript:void(0)" ui-sref="root.management.billing.pricing.list">Pricing</a>
+            <a href="javascript:void(0)" class="active">
+                <span ng-if="!pricing.pricingId">Add</span>
+                <span ng-if="pricing.pricingId">Edit</span>
+                Pricing
+            </a>
+        </div>
+
+        <div class="drowz-wizard-body-flex">
+
+            <div class="grow-1">
+
+                <div class="drowz-wizard-block no-float">
+                    <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">General Details:</div>
+                    </div>
+                    <div class="drowz-wizard-block-body">
+                        <div class="drowz-wizard-block-row" ng-if="!pricing.isDefaultType">
+                            <div class="info-block block-width-50-percent">
+                                <md-input-container>
+                                    <label>Name:</label>
+                                    <input type="text"
+                                           ng-model="pricing.model.Name"
+                                           name="pricingName"/>
+                                </md-input-container>
+                            </div>
+                            <div class="info-block block-width-50-percent">
+                                <md-autocomplete-with-infinite-scroll
+                                    md-no-cache="true"
+                                    md-selected-item="pricing.model.PricingConfiguration.HcpcsCode"
+                                    md-search-text="searchHcpcsCode"
+                                    md-items="item in pricing.getHcpcsCodes(searchHcpcsCode, pageIndex)"
+                                    md-item-text="item.Text"
+                                    md-min-length="2"
+                                    ng-required="true"
+                                    md-floating-label="HCPCS Code:"
+                                    md-menu-container-class="hcpcs-decorator"
+                                    clear-on-click
+                                    md-autocomplete-required
+                                    md-input-name="hcpsc">
+                                    <md-item-template>
+                                        <span md-highlight-flags="^i" title="{{item.Description}}">{{item.Text + ' ' + item.Description}}</span>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No hcpcs codes were found
+                                    </md-not-found>
+                                    <div ng-if="pricing.form.hcpsc" ng-messages="pricing.form.hcpsc.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                        <div ng-message="selected">HCPCS Code is not valid</div>
+                                    </div>
+                                </md-autocomplete-with-infinite-scroll>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row"
+                             ng-if="!pricing.model.PricingConfiguration.Common"
+                        >
+                            <div class="info-block block-width-50-percent">
+                                <md-autocomplete-with-infinite-scroll md-no-cache="true"
+                                                                      md-selected-item="pricing.model.PricingConfiguration.Payer"
+                                                                      md-search-text="searchPayer"
+                                                                      md-items="item in pricing.getPayers(searchPayer, pageIndex)"
+                                                                      md-item-text="item.Name"
+                                                                      md-selected-item-change="pricing.loadPayerPlans()"
+                                                                      md-min-length="0"
+                                                                      md-floating-label="Payer:"
+                                                                      md-input-name="payer"
+                                                                      ng-model-options="{debounce: 450}"
+                                                                      clear-on-click
+                                                                      md-autocomplete-required
+                                >
+                                    <md-item-template>
+                                        <span md-highlight-flags="^i" title="{{ item.Name }}">{{ item.Name }}</span>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No payers were found
+                                    </md-not-found>
+                                    <div ng-messages="pricing.form.payer.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="selected">Payer is not valid</div>
+                                    </div>
+                                </md-autocomplete-with-infinite-scroll>
+                            </div>
+                            <div class="info-block block-width-50-percent">
+                                <md-autocomplete-with-infinite-scroll
+                                    md-no-cache="true"
+                                    md-selected-item="pricing.model.PricingConfiguration.Location"
+                                    md-search-text="pricing.searchLocation"
+                                    md-items="location in pricing.getOrganizationLocations(pricing.searchLocation, pageIndex)"
+                                    md-item-text="location.Name"
+                                    md-min-length="0"
+                                    md-floating-label="Location:"
+                                    clear-on-click
+                                    md-input-name="location"
+                                >
+
+                                    <md-item-template>
+                                        <span md-highlight-flags="^i"
+                                              title="{{location.Name}}">
+                                            {{location.Name}}
+                                        </span>
+                                    </md-item-template>
+
+                                    <md-not-found>
+                                        No Locations were found
+                                    </md-not-found>
+
+                                </md-autocomplete-with-infinite-scroll>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row"
+                             ng-if="!pricing.model.PricingConfiguration.Common">
+                            <div class="info-block block-width-50-percent">
+                                <md-input-container>
+                                    <label>Payer Plan:</label>
+                                    <md-select ng-model="pricing.model.PricingConfiguration.PayerPlan"
+                                               ng-disabled="!pricing.payerPlans.length"
+                                               ng-model-options="{trackBy: '$value.Id'}"
+                                               name="type"
+                                               clear-on-click>
+                                        <md-option ng-value="item"
+                                                   ng-repeat="item in pricing.payerPlans">
+                                            {{item.Name}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <div class="info-block block-width-50-percent"
+                                 ng-if="!pricing.isDefaultType">
+                                <md-autocomplete-with-infinite-scroll
+                                    md-no-cache="true"
+                                    md-selected-item="pricing.model.PricingConfiguration.Product"
+                                    md-search-text="pricing.searchModel"
+                                    md-items="item in pricing.getModels(pricing.searchModel, pageIndex)"
+                                    md-item-text="item.Text"
+                                    md-min-length="0"
+                                    md-floating-label="Product:"
+                                    clear-on-click
+                                    md-autocomplete-required
+                                    md-input-name="product">
+                                    <md-item-template>
+                                        <span md-highlight-flags="^i" title="{{item.Text}}">{{item.Text}}</span>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No products were found
+                                    </md-not-found>
+                                    <div ng-if="pricing.form.product" ng-messages="pricing.form.product.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="selected">Product is not valid</div>
+                                    </div>
+                                </md-autocomplete-with-infinite-scroll>
+                            </div>
+                        </div>
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block block-width-50-percent">
+                                <div class="flex-row row">
+                                    <div class="info-block block-width-33-percent">
+                                        <md-input-container>
+                                            <label>Type:</label>
+                                            <md-select ng-model="pricing.model.PricingType"
+                                                       ng-required="true"
+                                                       ng-model-options="{trackBy: '$value.Id'}"
+                                                       name="type"
+                                                       ng-change="pricing.typeChanged()"
+                                                       ng-disabled="pricing.isDefaultType">
+                                                <md-option ng-value="item"
+                                                           ng-repeat="item in pricing.pricingTypes">
+                                                    {{item.Name}}
+                                                </md-option>
+                                            </md-select>
+                                            <div ng-messages="pricing.form.type.$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">This field is required</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                    <div class="info-block block-width-33-percent">
+                                        <md-input-container class="currency-container">
+                                            <div class="currency-icon">$</div>
+                                            <label>Charge:</label>
+                                            <input type="number"
+                                                   name="charge"
+                                                   ng-required="true"
+                                                   ng-model="pricing.model.Charge.Amount"
+                                                   min="0"
+                                                   step="0.01"
+                                                   price-validator
+                                            >
+                                            <div ng-messages="pricing.form.charge.$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">This field is required</div>
+                                                <div ng-message="min">Min Charge is 0</div>
+                                                <div ng-message="price">Max 2 digits after point</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                    <div class="info-block block-width-33-percent">
+                                        <md-input-container class="currency-container">
+                                            <div class="currency-icon">$</div>
+                                            <label>Allowed:</label>
+                                            <input type="number"
+                                                   name="allowed"
+                                                   ng-model="pricing.model.Allowed.Amount"
+                                                   min="0"
+                                                   step="0.01"
+                                                   price-validator
+                                            >
+                                            <div ng-messages="pricing.form.allowed.$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="price">Max 2 digits after point</div>
+                                                <div ng-message="min">Allowed cannot be less than 0</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-block block-width-50-percent modifier-info-block">
+                                <div class="info-block-label">Modifiers:</div>
+                                <div class="info-block-body">
+                                    <modifiers data="pricing.model.PricingConfiguration.Modifiers"></modifiers>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block"
+                                 ng-class="pricing.isDefaultType ? 'block-width-17-percent' : 'block-width-50-percent'">
+                                <div class="flex-row row">
+                                    <div class="info-block block-width-33-percent" ng-if="!pricing.isDefaultType">
+                                        <md-input-container>
+                                            <label>Effective from:</label>
+                                            <input type="text"
+                                                   datetimepicker
+                                                   format="MM/DD/YYYY"
+                                                   name="effectiveFrom"
+                                                   ng-required="true"
+                                                   start-date-validator
+                                                   end-date="pricing.model.PricingConfiguration.EffectivePeriod.To"
+                                                   ng-model="pricing.model.PricingConfiguration.EffectivePeriod.From">
+                                            <div ng-messages="pricing.form.effectiveFrom.$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">This field is required</div>
+                                                <div ng-message="startDate">From date has to be equal or less than To
+                                                    date
+                                                </div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                    <div class="info-block block-width-33-percent" ng-if="!pricing.isDefaultType">
+                                        <md-input-container>
+                                            <label>Effective to:</label>
+                                            <input type="text"
+                                                   datetimepicker
+                                                   format="MM/DD/YYYY"
+                                                   name="effectiveTo"
+                                                   end-date-validator
+                                                   start-date="pricing.model.PricingConfiguration.EffectivePeriod.From"
+                                                   ng-required="false"
+                                                   ng-model="pricing.model.PricingConfiguration.EffectivePeriod.To">
+                                            <div ng-messages="pricing.form.effectiveTo.$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="endDate">To date has to be bigger than From date</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                    <div class="info-block"
+                                         ng-class="pricing.isDefaultType ? 'block-width-100-percent' : 'block-width-33-percent'">
+                                        <md-input-container>
+                                            <label>Units:</label>
+                                            <input type="number"
+                                                   ng-model="pricing.model.Units"
+                                                   ng-required="true"
+                                                   name="unit"
+                                                   min="1"
+                                                   step="1">
+                                            <div ng-messages="pricing.form.unit.$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">This field is required</div>
+                                                <div ng-message="min">Unit cannot be less than 1</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-block"
+                                 ng-class="pricing.isDefaultType ? 'block-width-17-percent' : 'block-width-50-percent'">
+                                <div class="info-block"
+                                     ng-class="pricing.isDefaultType ? 'block-width-100-percent' : 'block-width-33-percent'">
+                                    <md-input-container>
+                                        <label>Default:</label>
+                                        <md-select ng-model="pricing.model.PricingConfiguration.Default"
+                                                   ng-required="true"
+                                                   name="default">
+                                            <md-option ng-value="item" ng-repeat="item in ['Yes', 'No']">
+                                                {{item}}
+                                            </md-option>
+                                        </md-select>
+                                        <div ng-messages="pricing.form.default.$error"
+                                             class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block block-width-50-percent">
+                                <div class="flex-row row">
+                                    <div class="info-block block-width-33-percent">
+                                        <md-input-container>
+                                            <label>Hold:</label>
+                                            <md-select ng-model="pricing.model.isHold"
+                                                       ng-change="pricing.isHoldChanged()">
+                                                <md-option ng-value="item" ng-repeat="item in ['Yes', 'No']">
+                                                    {{item}}
+                                                </md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                    </div>
+                                    <div class="info-block grow-1"
+                                         ng-if="pricing.model.isHold === 'Yes'">
+                                        <md-input-container>
+                                            <label>Hold Reason:</label>
+                                            <md-select ng-model="pricing.model.HoldReason"
+                                                       ng-change="pricing.holdReasonChanged()"
+                                                       ng-model-options="{trackBy: '$value.Id'}"
+                                                       ng-required="true"
+                                                       name="holdReason">
+                                                <md-option ng-value="item"
+                                                           ng-repeat="item in pricing.holdReasons">
+                                                    {{item.Name}}
+                                                </md-option>
+                                            </md-select>
+                                            <div ng-messages="pricing.form.holdReason.$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">This field is required</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-block block-width-50-percent">
+                                <div class="flex-row">
+                                    <div class="grow-1">
+                                        <md-input-container ng-if="(pricing.model.HoldReason.Id === pricing.holdReasonConstants.OTHER_ID)">
+                                            <label>Other Hold Reason:</label>
+                                            <input type="text"
+                                                   ng-required="true"
+                                                   ng-model="pricing.model.OtherHoldReason"
+                                                   name="otherHoldReason">
+                                            <div ng-messages="pricing.form.otherHoldReason.$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">This field is required</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                    <div class="w120px">
+                                        <md-input-container>
+                                            <md-checkbox class="md-primary"
+                                                         ng-model="pricing.model.SalesTax"
+                                            >
+                                                Sales Tax
+                                            </md-checkbox>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="drowz-wizard-block flex-50-percent capped-rentals-block"
+                     ng-if="pricing.isTypeRental()">
+                    <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">Capped Rentals:</div>
+                        <div class="info-block">
+                            <md-switch class="md-primary"
+                                       aria-label="..."
+                                       ng-model="pricing.hasCappedRentals"
+                                       ng-change="pricing.onChangeCappedRentals()"
+                                       ng-disabled="pricing.model.RentalConfigurationModel.PurchaseAfter"
+                            >
+                            </md-switch>
+                            <md-tooltip ng-if="pricing.model.RentalConfigurationModel.PurchaseAfter"
+                            >Purchase After and Capped Rentals cannot be used at the same time
+                            </md-tooltip>
+                        </div>
+                    </div>
+                    <div class="drowz-wizard-block-body">
+                        <div class="flex-row row">
+                            <div class="info-block grow-1">
+                                <md-input-container>
+                                    <label>Interval:</label>
+                                    <input type="number"
+                                           ng-model="pricing.model.RentalConfigurationModel.CappedInterval"
+                                           ng-disabled="!pricing.hasCappedRentals"
+                                           ng-required="pricing.hasCappedRentals"
+                                           name="cappedInterval"
+                                           end-range-validator
+                                           start-range="pricing.model.RentalConfigurationModel.Interval.To"
+                                           disable-equal="true"
+                                           min="1"
+                                           max="99">
+                                    <div ng-messages="pricing.form.cappedInterval.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                        <div ng-message="min, max">Value must be in range from 1 to 99</div>
+                                        <div ng-message="endRange">Capped interval should be greater than rental to
+                                            interval
+                                        </div>
+                                    </div>
+                                    <div class="info-tooltip has-tooltip">
+                                        <md-tooltip class="multiline" md-direction="top">
+                                            If capped rental is selected, NikoHealth will continue to generate
+                                            the billing period(s) without creating new invoices after this rental price
+                                            option period is met. This would be used for items such as oxygen where you
+                                            would want to see the current billing period interval. (i.e. If you set
+                                            a rental price option to expire at 36 months, select the capped rental
+                                            option and put an interval of 60, NikoHealth will continue to generate
+                                            billing period(s) until period 60
+                                        </md-tooltip>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-min-400 flex-30-percent">
+                <div class="drowz-wizard-block no-float"
+                     ng-if="pricing.isTypeRental()">
+                    <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">Rental:</div>
+                    </div>
+                    <div class="drowz-wizard-block-body">
+                        <div class="flex-row row">
+                            <div class="info-block col-xs-6">
+                                <md-input-container>
+                                    <label>Interval from:</label>
+                                    <input type="number"
+                                           ng-model="pricing.model.RentalConfigurationModel.Interval.From"
+                                           ng-required="!pricing.isPurchase"
+                                           name="intervalFrom"
+                                           start-range-validator
+                                           end-range="pricing.model.RentalConfigurationModel.Interval.To"
+                                           min="1"
+                                           max="98">
+                                    <div ng-messages="pricing.form.intervalFrom.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                        <div ng-message="min, max">Value must be in range from 1 to 98</div>
+                                        <div ng-message="startRange">From interval has to be less than To interval</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="info-block col-xs-6">
+                                <md-input-container>
+                                    <label>Interval to:</label>
+                                    <input type="number"
+                                           ng-model="pricing.model.RentalConfigurationModel.Interval.To"
+                                           ng-change="pricing.intervalToChanged()"
+                                           ng-required="!pricing.isPurchase"
+                                           name="intervalTo"
+                                           end-range-validator
+                                           start-range="pricing.model.RentalConfigurationModel.Interval.From"
+                                           min="1"
+                                           max="99">
+                                    <div ng-messages="pricing.form.intervalTo.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                        <div ng-message="min, max">Value must be in range from 1 to 99</div>
+                                        <div ng-message="endRange">To interval has to be bigger than From interval</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div class="flex-row row">
+                            <div class="info-block grow-1">
+                                <md-input-container>
+                                    <label>Cycle:</label>
+                                    <md-select ng-model="pricing.model.RentalConfigurationModel.Cycle"
+                                               ng-model-options="{trackBy: '$value.Id'}"
+                                               ng-change="pricing.onRentalCycleChange()"
+                                               ng-required="!pricing.isPurchase"
+                                               name="cycle">
+                                        <md-option ng-value="item"
+                                                   ng-repeat="item in pricing.pricingCycles">
+                                            {{item.Name}}
+                                        </md-option>
+                                    </md-select>
+                                    <div ng-messages="pricing.form.cycle.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <md-checkbox class="md-primary"
+                                         ng-if="!pricing.isCycleDaily()"
+                                         ng-model="pricing.model.RentalConfigurationModel.SpanDate">
+                                Span Date
+                            </md-checkbox>
+                        </div>
+                        <div class="flex-row">
+                            <md-checkbox class="md-primary"
+                                         ng-disabled="pricing.isPurchaseAfterDisabled()"
+                                         ng-model="pricing.model.RentalConfigurationModel.PurchaseAfter"
+                                         ng-change="pricing.onChangePurchaseAfter()"
+                            >
+                                Purchase After
+                                <md-tooltip ng-if="pricing.hasCappedRentals"
+                                >Purchase After and Capped Rentals cannot be used at the same time
+                                </md-tooltip>
+                            </md-checkbox>
+                        </div>
+                        <div class="flex-row">
+                            <md-checkbox class="md-primary"
+                                         ng-change="pricing.updateInvoiceOptions()"
+                                         ng-disabled="!pricing.model.RentalConfigurationModel.PurchaseAfter"
+                                         ng-model="pricing.model.RentalConfigurationModel.GeneratePurchaseInvoice">
+                                Generate Purchase Invoice
+                            </md-checkbox>
+                        </div>
+                        <div class="flex-row row"
+                             ng-if="pricing.model.RentalConfigurationModel.PurchaseAfter && pricing.model.RentalConfigurationModel.Interval.To!==99">
+                            <div class="info-block grow-1 modifier-info-block">
+                                <div class="info-block-label">Modifiers:</div>
+                                <div class="info-block-body">
+                                    <modifiers data="pricing.model.RentalConfigurationModel.Modifiers"
+                                               is-all-disabled="!pricing.model.RentalConfigurationModel.GeneratePurchaseInvoice"
+                                    ></modifiers>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-row row"
+                             ng-if="pricing.model.RentalConfigurationModel.PurchaseAfter">
+                            <div class="col-xs-6">
+                                <md-input-container class="currency-container">
+                                    <div class="currency-icon">$</div>
+                                    <label>Charge:</label>
+                                    <input type="number"
+                                           name="chargePurchase"
+                                           ng-model="pricing.model.RentalConfigurationModel.Charge.Amount"
+                                           ng-required="pricing.isRentalChargeRequired()"
+                                           ng-disabled="!pricing.model.RentalConfigurationModel.GeneratePurchaseInvoice"
+                                           min="0"
+                                           step="0.01">
+                                    <div ng-messages="pricing.form.chargePurchase.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                        <div ng-message="min">Charge cannot be less than 0</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="col-xs-6">
+                                <md-input-container class="currency-container">
+                                    <div class="currency-icon">$</div>
+                                    <label>Allowed:</label>
+                                    <input type="number"
+                                           ng-model="pricing.model.RentalConfigurationModel.Allowed.Amount"
+                                           min="0"
+                                           name="rentalAllowed"
+                                           ng-disabled="!pricing.model.RentalConfigurationModel.GeneratePurchaseInvoice"
+                                           step="0.01">
+                                    <div ng-messages="pricing.form.rentalAllowed.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="min">Allowed cannot be less than 0</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <md-checkbox class="md-primary"
+                                         ng-model="pricing.model.RentalConfigurationModel.BillInArrears"
+                            >Bill in Arrears
+                            </md-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="drowz-wizard-block no-float daily-billing-block"
+                     ng-if="pricing.isTypeRental() && pricing.isCycleDaily()">
+                    <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">Daily Billing:</div>
+                    </div>
+                    <div class="drowz-wizard-block-body">
+                        <div class="flex-row row">
+                            <div class="info-block grow-1">
+                                <md-input-container>
+                                    <label>Generate Invoice:</label>
+                                    <md-select ng-model="pricing.model.RentalConfigurationModel.DailyBilling.Cycle"
+                                               ng-model-options="{trackBy: '$value.Id'}"
+                                               ng-required="!pricing.isPurchase"
+                                               ng-change="pricing.onDailyBillingCycleChange()"
+                                               name="cycle">
+                                        <md-option ng-value="item"
+                                                   ng-repeat="item in pricing.dailyBillingCycles">
+                                            {{ item.Name }}
+                                        </md-option>
+                                    </md-select>
+                                    <div ng-messages="pricing.form.cycle.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div class="flex-row" ng-if="pricing.model.RentalConfigurationModel.DailyBilling.Cycle.Id === pricing.pricingCyclesConstants.DAY_ID">
+                            <div class="flex-cont w160px">
+                                <span>Every</span>
+                                <md-input-container class="marg-h-10">
+                                    <input type="number"
+                                           aria-label="..."
+                                           ng-model="pricing.model.RentalConfigurationModel.DailyBilling.EveryDays"
+                                           min="1"
+                                           max="99"
+                                           name="dailyBillingEveryDays"
+                                           ng-required="true"
+                                    >
+                                    <div ng-messages="pricing.form.dailyBillingEveryDays.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                                <span>day(s)</span>
+                            </div>
+                        </div>
+                        <div ng-if="pricing.model.RentalConfigurationModel.DailyBilling.Cycle.Id === pricing.pricingCyclesConstants.WEEK_ID">
+                            <md-checkbox class="md-primary w70px"
+                                         ng-model="item.checked"
+                                         ng-model-options="{trackBy: '$value.Id'}"
+                                         ng-repeat="item in pricing.dailyBillingWeekDays"
+                                         ng-change="pricing.onDailyBillingWeekDayChange(item)"
+                            >
+                                {{ item.Name }}
+                            </md-checkbox>
+                            <md-input-container class="hidden-container">
+                                <input type="text"
+                                       aria-label="..."
+                                       class="hide-this"
+                                       name="dailyBillingWeekDays"
+                                       ng-required="!(pricing.model.RentalConfigurationModel.DailyBilling.WeekDays && pricing.model.RentalConfigurationModel.DailyBilling.WeekDays.length)"
+                                       ng-model="pricing.dailyBillingWeekDaysValidation"
+                                >
+                                <div ng-messages="pricing.form.dailyBillingWeekDays.$error" class="md-input-messages-nice">
+                                    <div ng-message="required">At least one day is required.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="flex-row" ng-if="pricing.model.RentalConfigurationModel.DailyBilling.Cycle.Id === pricing.pricingCyclesConstants.MONTH_ID">
+                            <div class="flex-cont w190px">
+                                <span class="nowrap">On Day</span>
+                                <md-input-container class="marg-h-10">
+                                    <input type="number"
+                                           aria-label="..."
+                                           ng-model="pricing.model.RentalConfigurationModel.DailyBilling.MonthDay"
+                                           min="1"
+                                           max="31"
+                                           name="dailyBillingMonthDay"
+                                           ng-required="true"
+                                    >
+                                    <div ng-messages="pricing.form.dailyBillingMonthDay.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                        <div ng-message="max">The number of day couldn't be greater than 31</div>
+                                        <div ng-message="min">The number of day should be greater or equal 1</div>
+                                    </div>
+                                </md-input-container>
+                                <span class="nowrap">of month</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="flow-body-footer">
+        <md-button class="md-raised main-button" ui-sref="root.management.billing.pricing.list">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="pricing.save()">
+            Save
+        </md-button>
+    </div>
+
+</div>

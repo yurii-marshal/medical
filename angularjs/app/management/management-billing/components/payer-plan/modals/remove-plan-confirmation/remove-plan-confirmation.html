@@ -1,0 +1,21 @@
+<div class="modal-window w400px">
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/documents.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>PAYER PLAN REMOVAL:</h2>
+        </div>
+
+        <div class="center-text">
+            Payer plan '{{:: $ctrl.planName }}' is used in Payer's rules, this plan will be automatically removed from the following rules: {{:: $ctrl.tabs }}
+        </div>
+
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button" ng-click="$ctrl.remove()">Remove</md-button>
+    </md-dialog-actions>
+</div>

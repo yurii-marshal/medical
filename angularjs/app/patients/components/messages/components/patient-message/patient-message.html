@@ -1,0 +1,48 @@
+<md-checkbox
+    ng-class="{'alert-item': $ctrl.msg.Type === 'alert', 'message-item': $ctrl.msg.Type === 'message'}"
+    class="md-primary msg-item"
+    ng-model="$ctrl.msg.selected"
+    ng-click="$ctrl.toggleMsg()"
+>
+    <div class="msg-item-header">
+        <div class="left-item-header">
+            <div class="status-label" ng-if="$ctrl.msg.isNew">New</div>
+            <div class="msg-item-user">{{$ctrl.msg.CreatedBy.First}} {{$ctrl.msg.CreatedBy.Last}}</div>
+            <div class="msg-item-theme">
+                {{$ctrl.msg.Subject.Text}}
+            </div>
+        </div>
+        <div class="right-item-header">
+
+            <div class="alert-icon" ng-if="$ctrl.msg.Type === 'alert'">
+                <md-icon md-svg-src="assets/images/default/alert.svg"></md-icon>
+                <span>Alert</span>
+            </div>
+
+            <div class="message-icon" ng-if="$ctrl.msg.Type === 'message'">
+                <md-icon md-svg-src="assets/images/default/email.svg"></md-icon>
+                <span>Message</span>
+            </div>
+
+            <div class="msg-item-date">{{$ctrl.msg.CreatedDate | localDateTime: "MM/DD/YYYY, hh:mm:ss A" }}</div>
+        </div>
+    </div>
+    <div class="msg-item-content">
+        <div class="msg-item-details">
+            <div class="msg-item-details-item">
+                <span class="msg-item-details-label">Order ID:</span> {{$ctrl.msg.Order.DisplayId}}
+            </div>
+            <div class="msg-item-details-item">
+                <span class="msg-item-details-label">Date:</span> {{$ctrl.msg.Order.Date| localDateTime: "MM/DD/YYYY hh:mm A" }}
+            </div>
+            <div class="msg-item-details-item">
+                <span class="msg-item-details-label">Physician:</span> {{$ctrl.msg.Order.Physician}}
+            </div>
+        </div>
+        <div class="msg-item-text">
+            <div>
+                <expandable-text-btn text="$ctrl.msg.Text" max-length="350"></expandable-text-btn>
+            </div>
+        </div>
+    </div>
+</md-checkbox>

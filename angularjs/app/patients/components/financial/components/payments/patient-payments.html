@@ -1,0 +1,7 @@
+<payment-items-list items="financial.itemsList" ng-if="financial.itemsList.length"></payment-items-list>
+
+<no-records
+        text="Payments"
+        is-fullpage="true"
+        ng-if="financial.itemsLoaded && financial.itemsCount === 0">
+</no-records>

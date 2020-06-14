@@ -1,0 +1,114 @@
+<div class="modal-window schedule-modal" ng-form="$ctrl.newScheduleForm">
+
+    <md-dialog-content class="md-dialog-content">
+
+        <div class="row" ng-if="$ctrl.vm.showDate">
+            <div class="col-xs-8 info-block">
+                <md-input-container class="calendar_icon left_icon">
+                    <label>Select day:</label>
+                    <input datetimepicker
+                           min-date="today"
+                           format="MM/DD/YYYY"
+                           aria-label="startDate"
+                           ng-model="$ctrl.vm.date"
+                           ng-required="true"
+                           name="date">
+                    <div ng-messages="$ctrl.newScheduleForm.date.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-6 info-block time-block icon-right">
+                <md-input-container>
+                    <label>Work Start:</label>
+                    <input type="text"
+                           datetimepicker
+                           format="LT"
+                           stepping="1"
+                           ng-model="$ctrl.vm.start"
+                           ng-required="true"
+                           name="start"
+                           start-time-validator
+                           end-time="$ctrl.vm.end">
+                    <div ng-messages="$ctrl.newScheduleForm.start.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="startTime">Time <b>"From"</b> must be less than time <b>"To"</b></div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div class="col-xs-6 info-block time-block icon-right">
+                <md-input-container>
+                    <label>Work End:</label>
+                    <input type="text"
+                           datetimepicker
+                           format="LT"
+                           stepping="1"
+                           ng-model="$ctrl.vm.end"
+                           ng-required="true"
+                           name="end"
+                           end-time-validator
+                           start-time="$ctrl.vm.start">
+                    <div ng-messages="$ctrl.newScheduleForm.end.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="endTime">Time <b>"To"</b> must be greater than time <b>"From"</b></div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <md-radio-group ng-model="$ctrl.vm.repeatTypeValue"
+                        ng-if="!isEditMode"
+                        ng-change="$ctrl.changedRepeatType($ctrl.vm.repeatTypeValue)"
+                        class="content-radio-btns">
+            <md-radio-button ng-value="1" class="md-primary">
+                Repeat next day
+            </md-radio-button>
+            <md-radio-button ng-value="2" class="md-primary">
+                Repeat this week
+            </md-radio-button>
+            <md-radio-button ng-value="3" class="md-primary">
+                <div>Repeat specific days</div>
+                <md-input-container class="pf_modal_datetime"
+                                    ng-repeat="spDate in $ctrl.vm.specificDates track by $index">
+                    <input datetimepicker
+                           min-date="today"
+                           format="MM/DD/YYYY"
+                           ng-model="$ctrl.vm.specificDates[$index]"
+                           aria-label="appoitmentDate"
+                           default-date="{{spDate}}"
+                           ng-required="$ctrl.vm.repeatTypeValue === 3"
+                           name="{{'specialDate_'+$index}}">
+                    <button class="remove_input"
+                            ng-click="$ctrl.removeSpecificDate($index)"></button>
+                    <button class="add_input"
+                            ng-click="$ctrl.addSpecificDate()"></button>
+                    <div ng-messages="$ctrl.newScheduleForm['specialDate_'+$index].$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="notUnique"><b>Date</b> must be unique.</div>
+                    </div>
+                </md-input-container>
+            </md-radio-button>
+        </md-radio-group>
+
+    </md-dialog-content>
+
+    <div class="modalFooter">
+        <md-button class="md-raised" ng-click="$ctrl.cancelDialog()">Cancel</md-button>
+        <md-button class="md-raised delete-btn"
+                   confirm-ng-click="$ctrl.delete()"
+                   confirm-title="Delete Working Hours"
+                   confirm-msg="'Are you sure you want to delete selected Working Hours?'"
+                   ng-if="$ctrl.vm.id >= 0">
+            Delete
+        </md-button>
+        <md-button class="md-raised md-primary" ng-click="$ctrl.closeDialog()">Apply</md-button>
+    </div>
+
+</div>

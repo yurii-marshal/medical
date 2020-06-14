@@ -1,0 +1,22 @@
+// Common styles for page with fixed {blue} menu like tabs and/or other controls
+.sub-menu-page {
+    position: relative;
+    min-height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height});
+
+    profile-calendar, drwz-calendar-simple {
+        height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height});
+    }
+
+    .drwz_calendar_header {
+        padding: 8px 20px 0;
+        height: 65px;
+
+        md-autocomplete md-input-container {
+            &.md-input-has-value, &.md-input-focused {
+                label:not(.md-no-float) {
+                    transform: translate3d(0, 15px, 0) scale(0.75);
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,84 @@
+<div class="infinite-scroll-bg">
+
+    <a href="javascript:void(0);"
+       class="toolbar-single-action"
+       simple-tooltip="Add new service center"
+       tooltip-position="left"
+       ng-click="serviceCenters.openModal()"
+    ></a>
+
+    <div class="breadcrumbs transparent-bg">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+        <a href="javascript:void(0)" ui-sref="root.management.service_centers">Patient Service Centers</a>
+        <a href="javascript:void(0)" class="active">Service</a>
+    </div>
+
+
+    <infinity-table
+        load-items-promise="serviceCenters.getServiceCentersPromise"
+        page-size="24"
+        item-alias="center"
+        filters-obj="serviceCenters.filter"
+        sort-obj="serviceCenters.sortExpr"
+        default-sort-field="'Name'"
+        cache-filters-key="serviceCenters.cacheFiltersKey"
+    >
+
+        <infinity-table-sort>
+            <div>
+                <md-icon md-svg-src="assets/images/default/user-square.svg"
+                         class="main-sort-icon user-icon"></md-icon>
+                <inftbl-sort-list param-name="Name">Center Name:</inftbl-sort-list>
+            </div>
+            <div>
+                <md-icon md-svg-src="assets/images/default/location2.svg"
+                         class="main-sort-icon location-icon"></md-icon>
+                Address:
+            </div>
+            <div class="cell-50px"></div>
+        </infinity-table-sort>
+
+        <infinity-table-filters class="drowz-infinite-row-filter">
+            <div>
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>type name</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.name"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click>
+                </md-input-container>
+            </div>
+
+            <div class="no-divider">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>type address</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.fullAddress"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click>
+                </md-input-container>
+            </div>
+            <div class="cell-50px filter-reset-btn">
+                <inftbl-filter-reset-btn></inftbl-filter-reset-btn>
+            </div>
+        </infinity-table-filters>
+
+        <infinity-table-row class="drowz-infinite-row hide-btns-row"
+                            ng-click="$parent.serviceCenters.openModal(center)">
+            <div ng-bind="center.Name"></div>
+            <div class="no-divider" ng-bind="center.Address | addressToString"></div>
+            <div class="no-divider cell-50px">
+                <div class="flex-cont space-around">
+                    <a href="javascript:void(0);" class="delete-icon-btn" confirm-ng-click="$parent.serviceCenters.delete(center)">
+                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                    </a>
+                </div>
+            </div>
+        </infinity-table-row>
+
+        <infinity-table-no-items>
+            <no-records text="Service Centers" is-fullpage="true"></no-records>
+        </infinity-table-no-items>
+    </infinity-table>
+</div>

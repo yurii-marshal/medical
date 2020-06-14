@@ -1,0 +1,219 @@
+<div class="order-resupply-program"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="resupplyProgram"
+>
+    <div class="order-resupply-header flex-row">
+
+        <div class="info-block block-width-220 flex-cont"
+             ng-if="resupply.resupplyProgram.DeliveryGroupingDays"
+        >
+            <md-icon md-svg-src="assets/images/default/check.svg" class="checked-delivery-icon"></md-icon>
+            <span>Group Items for Delivery</span>
+        </div>
+
+        <div class="info-block block-width-300 flex-cont left-divider"
+             ng-if="resupply.resupplyProgram.ResupplyReplaceBundleItems"
+        >
+            <md-icon md-svg-src="assets/images/default/check.svg" class="checked-delivery-icon"></md-icon>
+            <span>Replace items with bundle if available</span>
+        </div>
+
+        <div class="info-block block-width-240 left-divider flex-cont center"
+             ng-if="resupply.resupplyProgram.DeliveryGroupingDays"
+        >
+            Delivery date within: <span class="delivery-date-days">
+                {{resupply.resupplyProgram.DeliveryGroupingDays}}
+            </span> day(s)
+        </div>
+
+        <div class="info-block block-width-200 flex-cont"
+             ng-class="{'left-divider center': resupply.resupplyProgram.DeliveryGroupingDays}"
+             ng-if="resupply.resupplyProgram.ConfirmationRequired && resupply.resupplyProgram.Items.length"
+        >
+            <md-icon md-svg-src="assets/images/default/check.svg" class="checked-delivery-icon"></md-icon>
+            Order Confirmation
+        </div>
+
+        <div class="info-block align-end grow-1 flex-cont">
+            <md-button class="md-raised edit-text-btn small-btn"
+                       aria-label="..."
+                       ng-click="resupply.editResupplyProgram()">
+                <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                <span ng-if="resupply.resupplyProgram.Items.length > 0">Edit Resupply Program</span>
+                <span ng-if="resupply.resupplyProgram.Items.length === 0">Add Resupply Program</span>
+            </md-button>
+        </div>
+    </div>
+
+    <v-accordion class="vAccordion--default flow-accordion" multiple>
+
+        <!-- ITEMS -->
+        <v-pane expanded="true">
+            <v-pane-header class="flow-accordion-title">
+                <div class="resupply-main-col">
+                    <md-icon md-svg-src="assets/images/default/chevron.svg" class="flow-accordion-title-icon"></md-icon>
+                    <span>Items:</span>
+                    <div class="accordion-line"></div>
+                </div>
+                <div class="resupply-frequency-col">
+                    <span>Frequency:</span>
+                    <div class="accordion-line"></div>
+                </div>
+                <div class="resupply-delivery-col">
+                    <span>Delivery/Shipment:</span>
+                    <div class="accordion-line"></div>
+                </div>
+            </v-pane-header>
+
+            <v-pane-content>
+
+                <no-records text="Items" is-fullpage="true" ng-if="resupply.resupplyProgram.Items.length === 0"></no-records>
+
+                <div class="resupply-item-container" ng-repeat="item in resupply.resupplyProgram.Items track by $index">
+                    <div class="resupply-main-col">
+                        <div class="info-block grow-1 block-width-170">
+                            <div class="info-block-label">Name:</div>
+                            <div class="info-block-body">{{item.Product.Name}}</div>
+                        </div>
+                        <div class="info-block block-width-120 left-divider">
+                            <div class="info-block-label">Manufacturer:</div>
+                            <div class="info-block-body">{{item.Product.Manufacturer}}</div>
+                        </div>
+                        <div class="info-block block-width-100 left-divider">
+                            <div class="info-block-label">Part #:</div>
+                            <div class="info-block-body">{{item.Product.PartNumber}}</div>
+                        </div>
+                        <div class="info-block block-width-100 left-divider">
+                            <div class="info-block-label">HCPCS:</div>
+                            <div class="info-block-body">
+                                <div popover-directive="item.allHcpcsCodes"
+                                     hide-first-item="true"
+                                     min-width="50"></div>
+                            </div>
+                        </div>
+                        <div class="info-block block-width-60 left-divider">
+                            <div class="info-block-label">Qty:</div>
+                            <div class="info-block-body">{{item.Frequency.Quantity}}</div>
+                        </div>
+                    </div>
+
+                    <div class="resupply-frequency-col">
+                        <div class="info-block block-width-100">
+                            <div class="info-block-label">Frequency:</div>
+                            <div class="info-block-body">{{item.Frequency.Frequency}}</div>
+                        </div>
+                        <div class="info-block grow-1 left-divider">
+                            <div class="info-block-label">Resupply Period:</div>
+                            <div class="info-block-body">
+                                {{ item.ResupplyPeriod }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="resupply-delivery-col">
+                        <div class="info-block block-width-120">
+                            <div class="info-block-label">Recent:</div>
+                            <div class="info-block-body">
+                                {{item.RecentDeliveryDate ? (item.RecentDeliveryDate | amUtc | amDateFormat: "MM/DD/YYYY") : '-'}}
+                            </div>
+                        </div>
+                        <div class="info-block block-width-120 left-divider">
+                            <div class="info-block-label">Next Eligible:</div>
+                            <div class="info-block-body">
+                                {{item.NextEligibleDate | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                            </div>
+                        </div>
+
+                        <div class="info-block block-width-120 left-divider">
+                            <div class="info-block-label">Next Scheduled:</div>
+                            <div class="info-block-body">
+                                {{item.NextScheduledDate | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                            </div>
+                        </div>
+
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">&nbsp;</div>
+                            <div class="info-block-body flex-cont align-end">
+                                <div class="status-label orange" ng-if="item.Hold">Hold</div>
+
+                                <md-icon md-svg-src="assets/images/default/alert.svg"
+                                         class="action-required-icon"
+                                         ng-class="{'hidden-icon' : !item.Expired}"
+                                         simple-tooltip="Prescription is expired">
+                                </md-icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-cont stretch">
+                    <v-accordion class="vAccordion--default flow-accordion" ng-if="item.Components.length">
+                        <v-pane expanded="true">
+                            <v-pane-header class="flow-accordion-title">
+                                <md-icon md-svg-src="assets/images/default/chevron.svg" class="flow-accordion-title-icon"></md-icon>
+                                <span>Included Items:</span>
+                            </v-pane-header>
+                            <v-pane-content>
+                                <table class="drowz-table">
+                                    <tr class="drowz-table-header">
+                                        <th width="30" class="number-cell">#</th>
+                                        <th>Name:</th>
+                                        <th width="180">Manufacturer:</th>
+                                        <th width="100">Part #:</th>
+                                        <th width="100">HCPCS:</th>
+                                        <th width="80">Qty:</th>
+                                    </tr>
+                                    <tr class="drowz-table-row valign-top" ng-repeat="component in item.Components track by $index">
+                                        <td class="number-cell">{{$index + 1}}.</td>
+                                        <td>{{component.Name}}</td>
+                                        <td>{{component.Manufacturer}}</td>
+                                        <td>{{component.PartNumber}}</td>
+                                        <td><div min-width="50">{{component.HcpcsCodes.Primary || '-'}}</div></td>
+                                        <td>{{component.Count}}</td>
+                                    </tr>
+                                </table>
+                            </v-pane-content>
+                        </v-pane>
+                    </v-accordion>
+                </div>
+            </v-pane-content>
+        </v-pane>
+
+        <v-pane expanded="true" class="pending-orders-section">
+            <v-pane-header class="flow-accordion-title">
+                <md-icon md-svg-src="assets/images/default/chevron.svg" class="flow-accordion-title-icon"></md-icon>
+                <span>Pending Orders:</span>
+                <div class="accordion-line"></div>
+                <md-button class="md-raised show-history"
+                           aria-label="..."
+                           ng-click="resupply.toOrdersHistory()">
+                    <md-icon md-svg-src="assets/images/default/history.svg"></md-icon>
+                    History
+                </md-button>
+            </v-pane-header>
+
+            <v-pane-content>
+                <resupply-history-orders
+                        order-id="resupply.orderId"
+                        items="resupply.resupplyOrders">
+                </resupply-history-orders>
+
+                <no-records text="Orders" is-fullpage="true" ng-if="resupply.resupplyOrdersCount === 0"></no-records>
+
+                <ul uib-pagination
+                    ng-if="resupply.resupplyOrdersCount > resupply.paginationParams.pageSize"
+                    total-items="resupply.resupplyOrdersCount"
+                    ng-model="resupply.paginationParams.pageIndex"
+                    items-per-page="resupply.paginationParams.pageSize"
+                    ng-change="resupply.getResupplyProgramOrders(resupply.patientId, (resupply.paginationParams.pageIndex - 1))"
+                    max-size="resupply.paginationParams.pageSize"
+                    class="pagination-sm"
+                    boundary-link-numbers="false"
+                    previous-text="&lsaquo;"
+                    next-text="&rsaquo;"></ul>
+            </v-pane-content>
+        </v-pane>
+
+    </v-accordion>
+
+</div>

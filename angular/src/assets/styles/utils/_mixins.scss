@@ -1,0 +1,47 @@
+@mixin respond-to($media) {
+  @if $media == hugeScreens {
+    @media only screen and (min-width: 1920px) {
+      @content;
+    }
+  }
+  @if $media == bigScreens {
+    @media only screen and (max-width: 1750px) {
+      @content;
+    }
+  } @else if $media == appMinWidth {
+    @media only screen and (max-width: 1600px) {
+      @content;
+    }
+  } @else if $media == normScreens {
+    @media only screen and (max-width: 1550px) {
+      @content;
+    }
+  } @else if $media == smallScreens {
+    @media only screen and (max-width: 1400px) {
+      @content;
+    }
+  }
+}
+
+/*
+	@include respond-to(hugeScreens) {}
+	@include respond-to(bigScreens) {}
+	@include respond-to(appMinWidth) {}
+	@include respond-to(normScreens) {}
+	@include respond-to(smallScreens) {}
+*/
+
+@mixin size($w, $h) {
+  width: $w;
+  height: $h;
+}
+
+@mixin bordered-block($bg, $bdr-radius, $bdr-color, $color) {
+  border: 1px solid $bdr-color;
+  border-radius: $bdr-radius;
+  color: $color;
+  background-color: $bg;
+}
+
+
+

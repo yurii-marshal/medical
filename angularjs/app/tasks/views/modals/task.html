@@ -1,0 +1,133 @@
+<div class="modal-window task-modal"
+     ng-form="$ctrl.TaskForm"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+        <md-icon class="modal-icon"
+                 md-svg-src="assets/images/default/check-square.svg"
+        ></md-icon>
+
+        <div class="modal-title">
+            <span ng-if="$ctrl.taskId">Edit</span>
+            <span ng-if="!$ctrl.taskId">Add</span>
+             new task:
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1 custom-searchbar">
+                <md-input-container>
+                    <label>Title:</label>
+
+                    <input type="text"
+                           ng-model="$ctrl.model.Title"
+                           custom-search-autocomplete="$ctrl.model.Title"
+                           custom-autocomplete-options="$ctrl.autocompleteOptions"
+                           name="task-title"
+                           ng-required="true"
+                           ng-maxlength="250"
+                    >
+
+                    <div ng-messages="$ctrl.TaskForm['task-title'].$error"
+                         class="md-input-messages-nice"
+                    >
+                        <div ng-message="maxlength">Title is too long, max length is 250 symbols</div>
+                        <div ng-message="required">This field is required</div>
+                    </div>
+
+                </md-input-container>
+            </div>
+        </div>
+        <div class="flex-row autocomplete-chips-container">
+            <div class="info-block grow-1">
+                <md-chips ng-model="$ctrl.model.AssignTo"
+                          md-require-match="true"
+                          chips-autocomplete-required
+                          class="full-width-chips autocomplete-chips-block">
+                    <md-autocomplete md-selected-item="user"
+                                     md-search-text="searchUser"
+                                     md-items="user in $ctrl.getUsersDictionary(searchUser, $ctrl.model.AssignTo)"
+                                     md-item-text="user.Name.FirstName + ' ' + user.Name.LastName"
+                                     placeholder="+ Users"
+                                     md-min-length="1"
+                                     ng-required="true"
+                                     md-input-name="assignee"
+                    >
+                        <md-item-template>
+                                    <span md-highlight-text="searchUser"
+                                          md-highlight-flags="i"
+                                          title="{{user.Name.FirstName}} + ' ' + {{user.Name.LastName}}"
+                                    >
+                                        {{user.Name.FirstName}} {{user.Name.LastName}}
+                                    </span>
+                        </md-item-template>
+                    </md-autocomplete>
+                    <md-chip-template>
+                                <span md-highlight-flags="i"
+                                      title="{{$chip.Name.FirstName}} + ' ' + {{$chip.Name.LastName}}">
+                                    {{$chip.Name.FirstName}} {{$chip.Name.LastName}}
+                                </span>
+                    </md-chip-template>
+                </md-chips>
+                <div ng-messages="$ctrl.TaskForm['assignee'].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="chipsAutocompleteRequired">This field is required</div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <md-input-container>
+                    <label>Priority:</label>
+                    <md-select name="task-priority"
+                               ng-model="$ctrl.model.Priority">
+                        <md-option ng-value="item"
+                                   ng-repeat="item in $ctrl.taskPriorities">
+                            {{item.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div class="info-block col-xs-4">
+                <md-input-container>
+                    <label>Due:</label>
+                    <input datetimepicker
+                           ng-model="$ctrl.model.DueDate"
+                           name="due-date"
+                           format="MM/DD/YYYY hh:mm A">
+                    <div ng-messages="$ctrl.TaskForm['due-date'].$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+        <div class="flex-row">
+            <div class="info-block grow-1 custom-searchbar top-position">
+                <md-input-container>
+                    <label>Description:</label>
+                    <textarea placeholder="Type task description here..."
+                              name="task-desc"
+                              custom-search-autocomplete="$ctrl.model.Description"
+                              custom-autocomplete-options="$ctrl.autocompleteOptions"
+                              cols="1"
+                              rows="1"
+                              ng-model="$ctrl.model.Description"></textarea>
+                    <div ng-messages="$ctrl.TaskForm['task-desc'].$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button" ng-click="$ctrl.save()">Save</md-button>
+    </md-dialog-actions>
+</div>
+

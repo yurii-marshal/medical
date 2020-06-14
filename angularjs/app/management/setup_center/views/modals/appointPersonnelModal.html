@@ -1,0 +1,416 @@
+<div class="modal-window appoint-personnel-modal"
+     ng-form="newAppointmentForm"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="appointPersonnel">
+
+    <a href="javascript:void(0);" ng-click="appointPersonnel.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/clock.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Appoint Team Member:</h2>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-5">
+                <md-autocomplete
+                        ng-required="true"
+                        md-input-name="personnel"
+                        md-floating-label="Team member:"
+                        md-no-cache="true"
+                        md-selected-item="appointPersonnel.selectedPersonnel"
+                        md-search-text="appointPersonnel.searchTextPersonnel"
+                        md-items="item in appointPersonnel.getPersonnelByName(appointPersonnel.searchTextPersonnel)"
+                        md-item-text="item.Text"
+                        md-min-length="3"
+                        md-require-match="true">
+                    <md-item-template>
+                        <span md-highlight-text="appointPersonnel.searchTextPersonnel" md-highlight-flags="i" class="item-title">
+                            {{item.Text}}
+                        </span>
+                    </md-item-template>
+                    <div ng-messages="newAppointmentForm.personnel.$error" class="md-input-messages-nice">
+                        <div ng-message="required"><b>Team member</b> cannot be empty.</div>
+                        <div ng-message="md-require-match"><b>Team member</b> must be selected.</div>
+                    </div>
+                    <md-not-found>
+                        No Personnel was found
+                    </md-not-found>
+                </md-autocomplete>
+            </div>
+            <div class="col-xs-7">
+                <md-input-container>
+                    <label>Description:</label>
+                    <input type="text"
+                           ng-model="appointPersonnel.description"
+                           ng-maxlength="250"
+                           name="description"
+                    />
+                    <div ng-messages="newAppointmentForm.description.$error">
+                        <div ng-message="maxlength">Description is too long, max length is 250 symbols</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="info-block">
+            <div class="active-title flow-body-active-title">Time:</div>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block calendar_icon icon-right">
+                <md-input-container>
+                    <label>Date:</label>
+                    <input type="text"
+                           datetimepicker
+                           min-date="today"
+                           ng-model="appointPersonnel.startRangeOfRepetitionStart"
+                           format="MM/DD/YYYY"
+                           name="startDateRange"
+                           ng-required="true">
+                    <div ng-messages="newAppointmentForm.startDateRange.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div class="info-block time-block icon-right">
+                <md-input-container>
+                    <label>Start Time:</label>
+                    <input type="text"
+                           datetimepicker
+                           format="hh:mm A"
+                           stepping="1"
+                           ng-model="appointPersonnel.start"
+                           name="start"
+                           start-time-validator
+                           end-time="appointPersonnel.end"
+                           ng-required="true">
+                    <div ng-messages="newAppointmentForm.start.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="startTime">Time <b>From</b> must be less than time <b>To</b></div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div class="info-block time-block icon-right">
+                <md-input-container>
+                    <label>End Time:</label>
+                    <input type="text"
+                           datetimepicker
+                           format="hh:mm A"
+                           stepping="1"
+                           ng-model="appointPersonnel.end"
+                           name="end"
+                           end-time-validator
+                           start-time="appointPersonnel.start"
+                           ng-required="true">
+                    <div ng-messages="newAppointmentForm.end.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="endTime">Time <b>To</b> must be greater than time <b>From</b></div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row repeat-block">
+            <div class="col-xs-7">
+                <div class="active-title flow-body-active-title">
+                    <div class="flex-cont">
+                        Repeat:
+                        <md-switch ng-model="appointPersonnel.toggleRepeat" class="md-primary no-text new-appointment-switch" aria-label="..."></md-switch>
+                    </div>
+                </div>
+                <md-radio-group class="flex-cont radio-with-content repeat-block-header"
+                                ng-model="appointPersonnel.repeatOption"
+                                ng-disabled="!appointPersonnel.toggleRepeat">
+                    <md-radio-button value="1" class="md-primary" ng-disabled="!appointPersonnel.toggleRepeat" aria-label="...">Daily</md-radio-button>
+                    <md-radio-button value="2" class="md-primary" ng-disabled="!appointPersonnel.toggleRepeat" aria-label="...">Weekly</md-radio-button>
+                    <md-radio-button value="3" class="md-primary" ng-disabled="!appointPersonnel.toggleRepeat" aria-label="...">Monthly</md-radio-button>
+                </md-radio-group>
+                <div class="radio-with-content" ng-class="{'disabled': !appointPersonnel.toggleRepeat}">
+                    <md-radio-group ng-model="appointPersonnel.dailyRepeat"
+                                    ng-disabled="!appointPersonnel.toggleRepeat"
+                                    ng-show="appointPersonnel.repeatOption == 1">
+                        <div class="radio-row"
+                             ng-class="{'disabled': appointPersonnel.dailyRepeat != 1}">
+                            <md-radio-button value="1" class="md-primary" ng-disabled="!appointPersonnel.toggleRepeat" aria-label="...">
+                                <div class="flex-cont">
+                                    <span>Every</span>
+                                    <md-input-container class="every_day_container">
+                                        <input type="text"
+                                               ng-model="appointPersonnel.dailyRepeat_EveryDay"
+                                               min="1"
+                                               max="99"
+                                               only-digits-with-length
+                                               ng-disabled="!appointPersonnel.toggleRepeat || appointPersonnel.dailyRepeat != 1"
+                                               aria-label="..."
+                                               name="dailyRepeat_EveryDay"
+                                               ng-required="appointPersonnel.toggleRepeat && appointPersonnel.repeatOption==1 && appointPersonnel.dailyRepeat==1">
+                                        <div ng-messages="newAppointmentForm.dailyRepeat_EveryDay.$error"
+                                             class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </md-input-container>
+                                    <span>day(s)</span>
+                                </div>
+                            </md-radio-button>
+                        </div>
+                        <div class="radio-row"
+                             ng-class="{'disabled': appointPersonnel.dailyRepeat != 2}">
+                            <md-radio-button value="2" class="md-primary" ng-disabled="!appointPersonnel.toggleRepeat" aria-label="...">Every weekday (Monday - Friday)</md-radio-button>
+                        </div>
+                        <div class="radio-row specific-dates"
+                             ng-class="{'disabled': appointPersonnel.dailyRepeat != 3}">
+                            <md-radio-button value="3" class="md-primary" ng-disabled="!appointPersonnel.toggleRepeat" aria-label="...">
+                                <div>Specific Dates</div>
+                                <md-input-container class="pf_modal_datetime" id="datepicker_{{$index}}" ng-repeat="specialDate in appointPersonnel.specialDates track by $index">
+                                    <input datetimepicker
+                                           min-date="today"
+                                           aria-label="..."
+                                           ng-model="appointPersonnel.specialDates[$index]"
+                                           format="MM/DD/YYYY"
+                                           class="updateThisDatepicker"
+                                           default-date="{{specialDate}}"
+                                           ng-disabled="!appointPersonnel.toggleRepeat || appointPersonnel.dailyRepeat != 3"
+                                           name="{{'specialDate_'+$index}}"
+                                           ng-required="appointPersonnel.toggleRepeat && appointPersonnel.repeatOption==1 && appointPersonnel.dailyRepeat==3">
+                                    <button class="remove_input" ng-click="appointPersonnel.removeSpecialDate($index)"></button>
+                                    <button class="add_input" ng-click="appointPersonnel.addSpecialDate()"></button>
+                                    <div ng-messages="newAppointmentForm['specialDate_'+$index].$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </md-radio-button>
+                        </div>
+                    </md-radio-group>
+                    <div ng-show="appointPersonnel.repeatOption == 2">
+                        <div class="radio-row">
+                            <span>Every</span>
+                            <md-input-container class="weekly-container">
+                                <input type="text"
+                                       ng-model="appointPersonnel.weeklyRepeat_EveryWeek"
+                                       min="1"
+                                       max="99"
+                                       only-digits-with-length
+                                       ng-disabled="!appointPersonnel.toggleRepeat"
+                                       aria-label="..."
+                                       name="weeklyRepeat_EveryWeek"
+                                       ng-required="appointPersonnel.toggleRepeat && appointPersonnel.repeatOption==2">
+                                <div ng-messages="newAppointmentForm.weeklyRepeat_EveryWeek.$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </md-input-container>
+                            <span>week(s) on:</span>
+                        </div>
+                        <div class="radio-row weeks-checkboxes-container">
+                            <md-checkbox ng-model="dayItem.isChecked"
+                                         ng-repeat="dayItem in appointPersonnel.weekDaysDictionary | weekdaysOrder"
+                                         class="md-primary"
+                                         ng-disabled="!appointPersonnel.toggleRepeat">
+                                {{dayItem.Text}}
+                            </md-checkbox>
+                        </div>
+                    </div>
+                    <md-radio-group ng-model="appointPersonnel.monthlyRepeat"
+                                    ng-disabled="!appointPersonnel.toggleRepeat"
+                                    ng-show="appointPersonnel.repeatOption == 3">
+                        <div class="radio-row"
+                             ng-class="{'disabled': appointPersonnel.monthlyRepeat != 1}">
+                            <md-radio-button value="1" class="md-primary" ng-disabled="!appointPersonnel.toggleRepeat" aria-label="...">
+                                <div class="flex-cont">
+                                    <span>Day</span>
+                                    <md-input-container class="center-text-select">
+                                        <label></label>
+                                        <md-select ng-model="appointPersonnel.monthlyRepeat_EveryDay_MonthsDay"
+                                                   ng-disabled="!appointPersonnel.toggleRepeat || appointPersonnel.monthlyRepeat != 1"
+                                                   aria-label="..."
+                                                   name="monthlyRepeat_EveryDay_MonthsDay"
+                                                   ng-required="appointPersonnel.toggleRepeat && appointPersonnel.repeatOption==3 && appointPersonnel.monthlyRepeat==1">
+                                            <md-option ng-value="dayOfTheMonth" ng-repeat="dayOfTheMonth in appointPersonnel.daysNumberList">{{dayOfTheMonth}}</md-option>
+                                        </md-select>
+                                        <div ng-messages="newAppointmentForm.monthlyRepeat_EveryDay_MonthsDay.$error"
+                                             class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </md-input-container>
+                                    <span>of every</span>
+                                    <md-input-container class="center-text-select months-input-container">
+                                        <input type="text"
+                                               ng-model="appointPersonnel.monthlyRepeat_EveryDay_Months"
+                                               min="1"
+                                               max="99"
+                                               only-digits-with-length
+                                               ng-disabled="!appointPersonnel.toggleRepeat || appointPersonnel.monthlyRepeat != 1"
+                                               aria-label="..."
+                                               name="monthlyRepeat_EveryDay_Months"
+                                               ng-required="appointPersonnel.toggleRepeat && appointPersonnel.repeatOption==3 && appointPersonnel.monthlyRepeat==1">
+                                        <div ng-messages="newAppointmentForm.monthlyRepeat_EveryDay_Months.$error"
+                                             class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                            <div ng-message="max">Maximum 99 months</div>
+                                            <div ng-message="min">Minimum 1 month</div>
+                                        </div>
+                                    </md-input-container>
+                                    <span>month(s)</span>
+                                </div>
+                            </md-radio-button>
+                        </div>
+                        <div class="radio-row"
+                             ng-class="{'disabled': appointPersonnel.monthlyRepeat != 2}">
+                            <md-radio-button value="2" class="md-primary" ng-disabled="!appointPersonnel.toggleRepeat" aria-label="...">
+                                <div class="flex-cont">
+                                    <span>The</span>
+                                    <md-input-container class="specific-day-select center-text-select">
+                                        <label></label>
+                                        <md-select ng-model="appointPersonnel.monthlyRepeat_SpecificDay_DayStart"
+                                                   ng-disabled="!appointPersonnel.toggleRepeat || appointPersonnel.monthlyRepeat != 2"
+                                                   aria-label="..."
+                                                   ng-required="appointPersonnel.toggleRepeat && appointPersonnel.repeatOption==3 && appointPersonnel.monthlyRepeat==2"
+                                                   name="monthlyRepeat_SpecificDay_DayStart">
+                                            <md-option ng-value="1">First</md-option>
+                                            <md-option ng-value="2">Second</md-option>
+                                            <md-option ng-value="3">Third</md-option>
+                                            <md-option ng-value="4">Fourth</md-option>
+                                            <md-option ng-value="5">Last</md-option>
+                                        </md-select>
+                                        <div ng-messages="newAppointmentForm.monthlyRepeat_SpecificDay_DayStart.$error"
+                                             class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container class="day-container center-text-select">
+                                        <md-select ng-model="appointPersonnel.monthlyRepeat_SpecificDay_DayOption"
+                                                   ng-disabled="!appointPersonnel.toggleRepeat || appointPersonnel.monthlyRepeat != 2"
+                                                   aria-label="..."
+                                                   ng-required="appointPersonnel.toggleRepeat && appointPersonnel.repeatOption==3 && appointPersonnel.monthlyRepeat==2"
+                                                   name="monthlyRepeat_SpecificDay_DayOption">
+                                            <md-option ng-value="dayItem.Id"
+                                                       ng-repeat="dayItem in appointPersonnel.weekDaysDictionary | weekdaysOrder">
+                                                {{dayItem.Text}}
+                                            </md-option>
+                                        </md-select>
+                                        <div ng-messages="newAppointmentForm.monthlyRepeat_SpecificDay_DayOption.$error"
+                                             class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </md-input-container>
+                                    <span>of every</span>
+                                    <md-input-container class="center-text-select short-input-container">
+                                        <input type="text"
+                                               ng-model="appointPersonnel.monthlyRepeat_SpecificDay_Months"
+                                               min="1"
+                                               max="99"
+                                               only-digits-with-length
+                                               ng-disabled="!appointPersonnel.toggleRepeat || appointPersonnel.monthlyRepeat != 2"
+                                               aria-label="..."
+                                               name="monthlyRepeat_SpecificDay_Months"
+                                               ng-required="appointPersonnel.toggleRepeat && appointPersonnel.repeatOption==3 && appointPersonnel.monthlyRepeat==2">
+                                        <div ng-messages="newAppointmentForm.monthlyRepeat_SpecificDay_Months.$error"
+                                             class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </md-input-container>
+                                    <span>month(s)</span>
+                                </div>
+                            </md-radio-button>
+                        </div>
+                    </md-radio-group>
+                </div>
+            </div>
+            <div class="col-xs-5 repetition-range">
+                <div class="active-title flow-body-active-title">Range of Repetition:</div>
+                <md-radio-group ng-model="appointPersonnel.startRangeOfRepetition"
+                                ng-class="{'disabled': !appointPersonnel.toggleRepeat || appointPersonnel.dailyRepeat == 3}"
+                                ng-disabled="!appointPersonnel.toggleRepeat || appointPersonnel.dailyRepeat == 3">
+                    <md-radio-button value="1"
+                                     class="md-primary"
+                                     aria-label="..."
+                                     ng-disabled="!appointPersonnel.toggleRepeat || appointPersonnel.dailyRepeat == 3">
+                        <div class="flex-cont">
+                            <md-input-container class="end-after-container"
+                                                ng-class="{'disabled': !appointPersonnel.toggleRepeat || appointPersonnel.startRangeOfRepetition != 1 || appointPersonnel.dailyRepeat == 3}">
+                                <label>End After:</label>
+                                <input type="text"
+                                       ng-model="appointPersonnel.endRangeOfRepetitionOccurances"
+                                       min="1"
+                                       max="99"
+                                       aria-label="..."
+                                       only-digits-with-length
+                                       name="endRangeOfRepetitionOccurances"
+                                       ng-required="appointPersonnel.startRangeOfRepetition==1"
+                                       ng-disabled="!appointPersonnel.toggleRepeat || appointPersonnel.startRangeOfRepetition != 1 || appointPersonnel.dailyRepeat == 3">
+                                <div ng-messages="newAppointmentForm.endRangeOfRepetitionOccurances.$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </md-input-container>
+                            <span>occurrences</span>
+                        </div>
+                    </md-radio-button>
+                    <md-radio-button value="2"
+                                     class="md-primary"
+                                     aria-label="..."
+                                     ng-disabled="!appointPersonnel.toggleRepeat || appointPersonnel.dailyRepeat == 3">
+                        <md-input-container class="pf_modal_datetime calendar_icon"
+                                            ng-class="{'disabled': !appointPersonnel.toggleRepeat || appointPersonnel.startRangeOfRepetition != 2 || appointPersonnel.dailyRepeat == 3}">
+                            <label>End by:</label>
+                            <input type="text"
+                                   datetimepicker
+                                   format="MM/DD/YYYY"
+                                   min-date="today"
+                                   ng-model="appointPersonnel.startRangeOfRepetitionEnd"
+                                   name="endDateRange"
+                                   ng-required="appointPersonnel.startRangeOfRepetition==2"
+                                   ng-disabled="!appointPersonnel.toggleRepeat || appointPersonnel.startRangeOfRepetition != 2 || appointPersonnel.dailyRepeat == 3">
+                            <div ng-messages="newAppointmentForm.endDateRange.$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </md-input-container>
+                    </md-radio-button>
+                </md-radio-group>
+            </div>
+        </div>
+
+
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+
+        <md-button class="md-raised main-button"
+                   aria-label="..."
+                   ng-click="appointPersonnel.cancel()">
+            Cancel
+        </md-button>
+        <md-button class="md-raised delete-btn main-button"
+                   aria-label="..."
+                   ng-if="appointPersonnel.isEditMode"
+                   confirm-ng-click="appointPersonnel.deleteEvent()"
+                   confirm-title="Delete Appointment"
+                   confirm-msg="'Are you sure you want to delete this appointment?'">
+            Delete
+        </md-button>
+        <md-button class="md-raised delete-btn main-button"
+                   aria-label="..."
+                   ng-if="appointPersonnel.isEditMode"
+                   confirm-ng-click="appointPersonnel.deleteEventAll()"
+                   confirm-title="Delete Appointment"
+                   confirm-msg="'Are you sure you want to delete all occurrences of the recurring appointment?'">
+            Delete All
+        </md-button>
+        <md-button class="md-raised md-primary main-button"
+                   aria-label="..."
+                   ng-click="appointPersonnel.save()">
+            <span ng-if="appointPersonnel.isEditMode">Save</span>
+            <span ng-if="!appointPersonnel.isEditMode">Add</span>
+        </md-button>
+    </md-dialog-actions>
+
+</div>

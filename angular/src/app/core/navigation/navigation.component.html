@@ -1,0 +1,45 @@
+<nav class="main-navigation-container">
+
+    <mat-icon class="main-logo"
+              svgIcon="main-logo"
+              (click)="goToMainPage()"
+    ></mat-icon>
+
+    <a [attr.href]="'#' + item.route"
+       class="main-link"
+       [ngClass]="{ 'active': item.active, 'hide': item.isHide }"
+       appBlurAfterClick
+       *ngFor="let item of items"
+    >
+        <mat-icon class="main-link-icon"
+                  svgIcon="{{item.name}}"
+        ></mat-icon>
+        <span class="main-link-text">
+            {{ item.name }}
+        </span>
+    </a>
+</nav>
+
+<div class="main-menu-info">
+
+    <app-helpdesc></app-helpdesc>
+
+    <app-niko-bot [profileInfo]="profileInfo"></app-niko-bot>
+
+    <app-user-notifications></app-user-notifications>
+
+    <app-user-avatar [profileInfo]="profileInfo"></app-user-avatar>
+
+    <a href="javascript:void(0);"
+       class="logout-link"
+       (click)="logout()">
+        <mat-icon class="logout-link-icon"
+                  svgIcon="logout"
+        ></mat-icon>
+    </a>
+</div>
+
+
+
+
+

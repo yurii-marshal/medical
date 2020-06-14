@@ -1,0 +1,80 @@
+.invoice-page, .invoice-payment-tab, .invoice-modify-content {
+    service-lines {
+        .flow-title-text {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+
+            .status-label {
+                margin: 0 0 0 10px;
+                height: 17px;
+                line-height: 17px;
+            }
+
+            .rental-label {
+                margin: 0 10px 0 10px;
+            }
+
+            .rental-dates {
+                margin: 0 10px 0 0;
+                display: flex;
+                justify-content: flex-start;
+                font-size: 14px;
+                color: $dark-black-color;
+            }
+
+            .attr-label {
+                margin: 0 0 0 10px;
+            }
+        }
+    }
+}
+
+.payment-details {
+    service-lines {
+        .payment-details-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            .payment-block, .balance-block, .charge-block {
+                min-width: 250px;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+
+                .block-label {
+                    color: $label-color;
+                    font-size: 12px;
+                }
+
+                .price-number {
+                    margin-left: 12px;
+                    font-weight: $font-weight-bold;
+                    font-size: 18px;
+
+                }
+
+                &.left-divider {
+                    position: relative;
+                    padding-left: 10px;
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        bottom: 0;
+                        width: 1px;
+                        background-color: $lighter-gray-color;
+                    }
+                }
+            }
+        }
+        .connect-btn {
+            display: none;
+            &.visible {
+                display: inline-block;
+            }
+        }
+    }
+}

@@ -1,0 +1,53 @@
+<div class="notifications-bell"
+     ng-click="ctrl.toggleNotifications()"
+     ng-class="{'opened': ctrl.openedNotifications}">
+    <md-icon md-svg-src="assets/images/default/bell.svg"
+             ng-class="{'have-notifications': ctrl.haveNotifications}">
+    </md-icon>
+</div>
+
+<div class="notifications-overflow-wrap">
+    <div class="notifications-container"
+     ng-class="{
+        'opened': ctrl.openedNotifications,
+        'hidden-menu': ctrl.openedNotifications === false
+     }"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="notifications"
+>
+    <div class="notifications-header">
+        <div class="notifications-header-text">Notifications:</div>
+    </div>
+    <div class="no-notifications"
+         ng-if="!ctrl.notificationsList.length">
+        No new notifications.
+    </div>
+    <div class="notifications-list"
+         ng-if="ctrl.notificationsList.length"
+         scroll-bar
+         scroll-bar-above-element="true"
+    >
+        <div class="notification-item"
+             ng-repeat="item in ctrl.notificationsList track by $index">
+            <md-icon md-svg-src="assets/images/default/documents.svg"
+                     class="notification-item-icon documents-icon"
+                     ng-if="item.Type.Id == 3">
+            </md-icon>
+            <md-icon md-svg-src="assets/images/default/messages.svg"
+                     class="notification-item-icon messages-icon"
+                     ng-if="item.Type.Id == 2">
+            </md-icon>
+            <div class="notification-item-title">{{item.displayText}}</div>
+            <div class="notification-item-date">{{item.Date | localDateTime: "D MMM YYYY, h:mm A"}}</div>
+            <div class="close-notification" ng-click="ctrl.clearNotification(item.Id, $index)"></div>
+        </div>
+    </div>
+    <div class="clear-all-notifications"
+         ng-click="ctrl.clearAllNotifications()"
+         ng-if="ctrl.notificationsList.length">
+        <md-button class="clear-all-btn">
+            Clear all notifications
+        </md-button>
+    </div>
+</div>
+</div>

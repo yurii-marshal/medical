@@ -1,0 +1,22 @@
+<div ng-if="$ctrl.uploaderDone">
+    <input type="file"
+           id="fileUploader"
+           class="file-uploader-input"
+           nv-file-select
+           uploader="$ctrl.uploader"
+           options="$ctrl.uploadOptions"
+           ng-if="$ctrl.maxCount <= 1">
+    <input type="file"
+           id="fileUploader"
+           class="file-uploader-input"
+           multiple
+           nv-file-select
+           uploader="$ctrl.uploader"
+           options="$ctrl.uploadOptions"
+           ng-if="$ctrl.maxCount > 1">
+</div>
+<md-button class="md-primary md-raised"
+           ng-class="{'small-btn' : $ctrl.smallButton}"
+           ng-click="$ctrl.runFileUpload()">
+    {{$ctrl.buttonText}}
+</md-button>

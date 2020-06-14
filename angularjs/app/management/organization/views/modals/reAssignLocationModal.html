@@ -1,0 +1,66 @@
+<div class="modal-window re-assign-location-modal"
+     ng-form="$ctrl.modalForm"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/alert_rect_icon.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Attention!</h2>
+        </div>
+
+        <div class="modal-body">
+            <div class="marg-v-20 flex-cont">
+                <md-icon class="attention-icon" md-svg-src="assets/images/default/alert.svg"></md-icon>
+                <span>The <span class="red-color">{{$ctrl.locationName}}</span> is used as a default location for some active patients.</span>
+            </div>
+            <div class="marg-v-20 flex-cont">
+                <md-icon class="attention-icon" md-svg-src="assets/images/default/alert.svg"></md-icon>
+                <span>Please choose the  location for replacement before deletion.</span>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <md-autocomplete-with-infinite-scroll
+                        md-no-cache="true"
+                        md-selected-item="$ctrl.reAssignedLocation"
+                        md-search-text="searchText"
+                        md-items="item in $ctrl.getLocations(searchText, pageIndex)"
+                        md-item-text="item.Text"
+                        md-min-length="0"
+                        md-floating-label="Location:"
+                        md-input-name="location"
+                        clear-on-click
+                        ng-required="true"
+                        md-autocomplete-required>
+                    <md-item-template>
+                        <span md-highlight-flags="^i" title="{{item.Text}}">{{item.Text}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                        No Locations were found
+                    </md-not-found>
+                    <div ng-messages="$ctrl.modalForm.location.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="selected">Selected Location is not valid</div>
+                    </div>
+                </md-autocomplete-with-infinite-scroll>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.confirm()">
+            Confirm
+        </md-button>
+    </md-dialog-actions>
+
+</div>

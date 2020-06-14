@@ -1,0 +1,51 @@
+<div class="financial-tab order-financial-tab bs-loading-overlay-fullscreen"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="financialTab"
+     ng-class="{'no-records': financial.itemsCount === 0}">
+
+    <financial-data amounts="financial.amountObject" class="financial-header"></financial-data>
+
+    <div class="financial-header-tabs">
+        <content-tabs tabs="financial.contentTabs"></content-tabs>
+        <md-button class="md-raised show-history"
+                   aria-label="..."
+                   ng-class="{'arrow-back-button': financial.isShowingHistory}"
+                   ng-click="financial.showHistory()">
+            <md-icon md-svg-src="assets/images/default/history.svg"
+                     ng-if="!financial.isShowingHistory">
+            </md-icon>
+            <md-icon md-svg-src="assets/images/default/arrow.svg"
+                     ng-if="financial.isShowingHistory"
+                     class="rotate-arrow">
+            </md-icon>
+            <span ng-if="!financial.isShowingHistory">History</span>
+            <span ng-if="financial.isShowingHistory">Active</span>
+        </md-button>
+    </div>
+
+    <div class="financial-list">
+        <invoice-items-list invoices="financial.itemsList"
+                            ng-if="financial.itemsList.length"
+        ></invoice-items-list>
+
+        <ul ng-if="financial.itemsCount > financial.paginationParams.pageSize"
+            uib-pagination
+            total-items="financial.itemsCount"
+            ng-model="financial.paginationParams.pageIndex"
+            items-per-page="financial.paginationParams.pageSize"
+            ng-change="financial.loadInvoices(financial.paginationParams.pageIndex - 1)"
+            max-size="financial.paginationParams.pageSize"
+            class="pagination-sm tab-pagination"
+            boundary-link-numbers="false"
+            previous-text="&lsaquo;"
+            next-text="&rsaquo;">
+        </ul>
+
+        <no-records
+                text="Invoices"
+                is-fullpage="true"
+                ng-if="financial.itemsLoaded && financial.itemsCount === 0">
+        </no-records>
+    </div>
+
+</div>

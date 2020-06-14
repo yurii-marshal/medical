@@ -1,0 +1,201 @@
+<div class="infinite-scroll-bg patient-list-page">
+    <a href="javascript:void(0);"
+       class="toolbar-single-action custom-action-icon"
+       simple-tooltip="Add new patient"
+       tooltip-position="left"
+       ui-sref="root.patients.add.step1">
+        <md-icon md-svg-src="assets/images/default/user-with-plus.svg"></md-icon>
+    </a>
+
+    <div class="breadcrumbs transparent-bg">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" class="active">Patients</a>
+    </div>
+
+    <advanced-filters
+            cache-filters-key="patients.cacheFiltersKey"
+            rewrite-cache-filters="patients.rewriteCacheFilters"
+            init-filters="patients.initFilters"
+            update-filters="patients.updateFilters">
+    </advanced-filters>
+
+    <infinity-table class="custom-table double-row-table"
+                    load-items-promise="patients.getPatientPromise"
+                    page-size="24"
+                    ignore-total-count="'true'"
+                    item-alias="patient"
+                    filters-obj="patients.filterObj"
+                    sort-obj="patients.sortExpr"
+                    cache-filters-key="patients.cacheFiltersKey"
+                    rewrite-cache-filters="patients.rewriteCacheFilters"
+                    default-sort-field="'Name'">
+        <infinity-table-sort>
+            <div class="w250px">
+                <md-icon md-svg-src="assets/images/default/user-square.svg"
+                         class="main-sort-icon user-icon"></md-icon>
+                <inftbl-sort-list param-name="Name">Patient:</inftbl-sort-list>
+            </div>
+            <div class="w155px">
+                <md-icon md-svg-src="assets/images/default/plus-circle.svg"
+                         class="main-sort-icon practice-icon"></md-icon>
+                <inftbl-sort-list param-name="DisplayId">Patient ID:</inftbl-sort-list>
+            </div>
+            <div class="w125px">
+                <md-icon md-svg-src="assets/images/default/calendar-new.svg"
+                         class="main-sort-icon date-icon"></md-icon>
+                <inftbl-sort-list param-name="DateOfBirth">DOB:</inftbl-sort-list>
+            </div>
+            <div class="w200px">
+                <md-icon md-svg-src="assets/images/default/phone-default.svg"
+                         class="main-sort-icon phone-icon"></md-icon>
+                Phone:
+            </div>
+            <div class="w400px">
+                <md-icon md-svg-src="assets/images/default/location2.svg"
+                         class="main-sort-icon location-icon"></md-icon>
+                Address:
+            </div>
+            <div class="grow-1">
+                <md-icon md-svg-src="assets/images/default/location2.svg"
+                         class="main-sort-icon location-icon"></md-icon>
+                Location:
+            </div>
+            <div class="w110px">
+                <md-icon md-svg-src="assets/images/default/star-half.svg"
+                         class="main-sort-icon status-icon"></md-icon>
+                Status:
+            </div>
+            <div class="number-td">&nbsp;</div>
+        </infinity-table-sort>
+
+        <infinity-table-filters class="drowz-infinite-row-filter">
+            <div class="w250px">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>type name</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj['filter.fullName']"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click>
+                </md-input-container>
+            </div>
+            <div class="w155px">
+                <md-autocomplete-with-infinite-scroll class="drowz-infinite-autocomplete in-grid-filter-pos"
+                                                      md-no-cache="true"
+                                                      md-selected-item="$ctrl.filtersObj['filter.displayId']"
+                                                      md-search-text="searchPatient"
+                                                      md-items="item in $parent.patients.getPatientIds(searchPatient, pageIndex)"
+                                                      md-item-text="item.DisplayId"
+                                                      md-min-length="0"
+                                                      md-floating-label="search"
+                                                      ng-model-options="{debounce: 450}"
+                                                      clear-on-click
+                                                      drowz-clear-value
+                >
+                    <md-item-template>
+                        <span md-highlight-text="searchPatient" md-highlight-flags="^i">
+                            {{:: item.DisplayId }}
+                         </span>
+                    </md-item-template>
+                    <md-not-found>
+                        No patient was found
+                    </md-not-found>
+                </md-autocomplete-with-infinite-scroll>
+            </div>
+            <div class="w125px">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>date</label>
+                    <input ng-model="$ctrl.filtersObj['filter.dateOfBirthday']"
+                           datetimepicker
+                           use-current="false"
+                           format="MM/DD/YYYY"
+                           min-date="false"
+                           max-date="today"
+                           clear-on-click>
+                </md-input-container>
+            </div>
+            <div class="w200px">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>phone</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj['filter.phoneNumber']"
+                           ng-model-options="{debounce: 350}"
+                           clear-on-click>
+                </md-input-container>
+            </div>
+            <div class="w400px">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>type address</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj['filter.fullAddress']"
+                           ng-model-options="{debounce: 350}"
+                           clear-on-click>
+                </md-input-container>
+            </div>
+            <div class="grow-1">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>type location</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj['filter.locationName']"
+                           ng-model-options="{debounce: 350}"
+                           clear-on-click>
+                </md-input-container>
+            </div>
+            <div class="w110px no-divider">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>select</label>
+                    <md-select ng-model="$ctrl.filtersObj['filter.Status']"
+                               clear-on-click
+                    >
+                        <md-option ng-value="status.Id" ng-repeat="status in $parent.patients.statuses">
+                            {{::status.Text}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div class="number-td filter-reset-btn">
+                <inftbl-filter-reset-btn></inftbl-filter-reset-btn>
+            </div>
+        </infinity-table-filters>
+
+        <infinity-table-row
+            class="drowz-infinite-row"
+            ng-click="$parent.patients.chosePatient(patient.Id)">
+            <div class="custom-table-body auto-height no-divider">
+                <div ng-bind="patient.Name.FullName" class="w250px"></div>
+                <div ng-bind="patient.DisplayId" class="w155px"></div>
+                <div class="w125px"
+                     ng-bind='patient.DateOfBirthday | amUtc | amDateFormat: "MM/DD/YYYY"'></div>
+                <div class="w200px">
+                    <div popover-directive="patient.Phones"></div>
+                </div>
+                <div class="w400px">
+                    <div popover-directive="patient.Address.FullAddress" min-width="250"></div>
+                </div>
+                <div class="grow-1">
+                    <div ng-bind="patient.Location"></div>
+                </div>
+                <div class="w110px no-divider">
+                    <span class="status-label center-text {{patient.statusClass}}"
+                          ng-bind="patient.Status.Text"></span>
+                </div>
+                <div class="number-td">&nbsp;</div>
+            </div>
+            <div class="custom-table-body attributes no-divider"
+                 ng-if="patient.Tags.length">
+                <div class="grow-1 no-divider">
+                    <span class="attr-label {{tag.attrClass}}"
+                          ng-repeat="tag in patient.Tags">
+                        <md-icon md-svg-src="assets/images/default/tag.svg"></md-icon>
+                        <span ng-bind="tag.Name"></span>
+                    </span>
+                </div>
+                <div class="w110px no-divider">&nbsp;</div>
+                <div class="number-td">&nbsp;</div>
+            </div>
+        </infinity-table-row>
+
+        <infinity-table-no-items>
+            <no-records text="Patients" is-fullpage="true"></no-records>
+        </infinity-table-no-items>
+    </infinity-table>
+</div>

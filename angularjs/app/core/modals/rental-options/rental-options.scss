@@ -1,0 +1,116 @@
+.modal-window {
+    &.rental-options-modal {
+        width: 1200px;
+
+        .modal-icon {
+            @include size(37px, 37px);
+        }
+
+        &.stop-rental {
+            width: 400px;
+
+            .modal-icon {
+                color: $red-color;
+            }
+        }
+
+        .start-new-rental-switch {
+            display: flex;
+            justify-content: center;
+
+            md-switch {
+                width: 130px;
+            }
+        }
+
+        .active-title.flow-body-active-title {
+            justify-content: center;
+        }
+
+        .price-option-item {
+            margin: 0;
+            padding: 20px 0;
+
+            &:not(:last-of-type) {
+                border-bottom: 1px solid $lighter-gray-color;
+            }
+
+            .md-container {
+                top: 20px;
+                transform: none;
+            }
+
+            price-option-content {
+                display: flex;
+                align-items: flex-start;
+                justify-content: flex-start;
+            }
+
+            .two-line-status {
+                padding-left: 10px;
+                display: flex;
+                align-items: flex-start;
+                justify-content: flex-start;
+                flex-direction: column;
+                width: 110px;
+                min-width: 110px;
+                min-height: 40px;
+            }
+
+            .checked-icon {
+                @include size(16px, 10px);
+                margin: 0 13px 0 0;
+                color: $main-active-color;
+            }
+        }
+
+        .price-options-filters {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            padding: 20px 0;
+
+            md-input-container {
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+
+            .dos-filter {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+
+                md-input-container.calendar_icon {
+                    width: 125px;
+                    margin: 0 15px;
+
+                    &.calendar-to-date {
+                        margin-right: 5px;
+                    }
+                }
+            }
+
+            .period-filter {
+                width: 140px;
+                padding: 0 10px;
+                display: flex;
+
+                md-input-container {
+                    margin-right: 5px;
+                }
+            }
+
+            .payer-filter {
+                width: 350px;
+                padding: 0 10px;
+            }
+
+            .rent-object-block{
+                width: 150px;
+                padding: 0 10px;
+            }
+        }
+    }
+}
+
+

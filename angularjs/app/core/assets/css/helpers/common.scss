@@ -1,0 +1,98 @@
+
+// MARGINS & PADDINGS (vertical, horizontal and both)
+// (for margin top & bottom in 10px use this way class="marg-v-10")
+@each $w in $list-of-spaces {
+    .marg-#{$w} {
+        margin: #{$w}px;
+    }
+
+    .marg-v-#{$w} {
+        margin-top: #{$w}px;
+        margin-bottom: #{$w}px;
+    }
+
+    .marg-h-#{$w} {
+        margin-left: #{$w}px;
+        margin-right: #{$w}px;
+    }
+
+    .marg-right-#{$w} {
+        margin-right: #{$w}px;
+    }
+
+    .marg-left-#{$w} {
+        margin-left: #{$w}px;
+    }
+
+    .marg-bottom-#{$w} {
+        margin-bottom: #{$w}px;
+    }
+
+    .marg-top-#{$w} {
+        margin-top: #{$w}px;
+    }
+
+    .pad-#{$w} {
+        padding: #{$w}px;
+    }
+
+    .pad-v-#{$w} {
+        padding-top: #{$w}px;
+        padding-bottom: #{$w}px;
+    }
+
+    .pad-h-#{$w} {
+        padding-left: #{$w}px;
+        padding-right: #{$w}px;
+    }
+
+    .pad-top-#{$w} {
+        padding-top: #{$w}px;
+    }
+
+    .pad-bottom-#{$w} {
+        padding-bottom: #{$w}px;
+    }
+
+    .pad-right-#{$w} {
+        padding-right: #{$w}px;
+    }
+
+    .pad-left-#{$w} {
+        padding-left: #{$w}px;
+    }
+
+    .pad-left-#{$w} {
+        padding-left: #{$w}px;
+    }
+}
+
+
+// BLOCK WIDTH (for width 100px use this way class="w100px")
+@each $w in $list-of-width {
+    .w#{$w}px {
+        width: #{$w}px;
+        max-width: #{$w}px;
+        min-width: #{$w}px;
+    }
+}
+
+// BLOCK WIDTH (for width 100px use this way class="min-w100px")
+@each $w in $list-of-width {
+    .min-w#{$w}px {
+        min-width: #{$w}px;
+    }
+}
+
+.word-break-link {
+    word-break: break-all;
+}
+
+.margin-auto {
+    margin: auto;
+}
+
+.visible-hidden {
+    visibility: hidden;
+    pointer-events: none!important;
+}

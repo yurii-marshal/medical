@@ -1,0 +1,111 @@
+// row for grid content
+.flex-row {
+  display: flex;
+  flex-direction: row;
+
+  > .info-block {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  &.space-between {
+    justify-content: space-between;
+  }
+
+  &.center {
+    justify-content: center;
+  }
+
+  &.flex-end {
+    justify-content: flex-end;
+  }
+
+  &.align-center {
+    align-items: center;
+  }
+
+  &.align-stretch {
+    align-items: stretch;
+  }
+
+  &.align-start {
+    align-items: flex-start;
+  }
+
+  + .flex-row {
+    padding-top: 5px;
+  }
+}
+
+@each $w in $list-of-percent-width {
+  .col-w-#{round($w)} {
+    width: percentage($w/100);
+  }
+}
+
+@for $i from 1 through 12 {
+  .grow-#{ $i } {
+    flex-grow: $i;
+  }
+}
+
+// container for internal small layout actions
+.flex-cont {
+  display: flex;
+  align-items: center;
+
+  &.inline {
+    display: inline-flex;
+  }
+
+  &:not(.info-block) {
+    &::before, &::after {
+      display: none;
+    }
+  }
+
+  &.stretch {
+    align-items: stretch;
+  }
+
+  &.center {
+    justify-content: center;
+  }
+
+  &.space-between {
+    justify-content: space-between;
+  }
+
+  &.space-around {
+    justify-content: space-around;
+  }
+
+  &.align-end {
+    justify-content: flex-end;
+  }
+
+  &.align-top {
+    align-items: flex-start;
+  }
+
+  &.align-bottom {
+    align-items: flex-end;
+  }
+}
+
+.flex-cont-inline {
+  display: inline-flex;
+  justify-content: center;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+
+
+

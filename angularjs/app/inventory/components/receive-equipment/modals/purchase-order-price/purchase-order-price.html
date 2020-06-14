@@ -1,0 +1,74 @@
+<div class="modal-window search-products-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="selectPurchaseOrderItem"
+>
+    <a href="javascript:void(0);" ng-click="modal.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/inventory.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Select Purchase Order Item:</h2>
+        </div>
+
+        <div class="search-products-table">
+
+            <div class="search-products-header">
+                <div class="select-col">Select:</div>
+                <div class="w350px">Name:</div>
+                <div class="w150px">Mfg:</div>
+                <div class="w100px">ID/Part #:</div>
+                <div class="w70px">Qty</div>
+                <div class="w70px">Discount:</div>
+                <div class="w70px">Price:</div>
+            </div>
+
+            <div class="products-container"
+                 scroll-bar
+                 scroll-bar-above-element="true">
+
+                <no-records text="Items" ng-if="!modal.Items.length"></no-records>
+
+                <md-radio-group ng-model="modal.selectedItem">
+                    <md-radio-button ng-value="item"
+                                     class="md-primary search-product-row"
+                                     ng-repeat="item in modal.Items track by $index"
+                    >
+                        <div class="grow-1 flex-row">
+                            <div class="search-products-row w350px">
+                                <div>{{:: item.Name }}</div>
+                            </div>
+
+                            <div class="search-products-row w150px">
+                                <div>{{:: item.Manufacturer }}</div>
+                            </div>
+
+                            <div class="search-products-row w100px">
+                                <div>{{:: item.PartNumber }}</div>
+                            </div>
+
+                            <div class="search-products-row w70px">
+                                <div class="w300px">{{:: item.Qty }}</div>
+                            </div>
+
+                            <div class="search-products-row w70px">
+                                %&nbsp<div class="w300px"> {{:: item.Discount || '-' }} </div>
+                            </div>
+
+                            <div class="search-products-row w70px">
+                                $&nbsp<div class="w300px"> {{:: item.Price }} </div>
+                            </div>
+                        </div>
+                    </md-radio-button>
+                </md-radio-group>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="modal.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button" ng-click="modal.save()">OK</md-button>
+    </md-dialog-actions>
+</div>

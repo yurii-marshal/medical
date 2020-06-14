@@ -1,0 +1,143 @@
+.prescription-details {
+    position: relative;
+    padding: 30px 25px 30px 30px;
+
+    > .flex-row {
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+
+    > .flow-title {
+        margin-bottom: 15px;
+    }
+
+    .prescription-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        height: 40px;
+
+        .arrow-back-button {
+            margin:0 0 10px;
+        }
+
+        .person-signed-info {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-start;
+            height: 40px;
+            padding: 2px 12px;
+            font-size: $font-size-sm;
+            background-color: $lighter-gray-color;
+            box-shadow: $box-shadow;
+            border-radius: 3px;
+
+            .monitor-sign-icon {
+                width: 33px;
+                height: 20px;
+                margin: 0 8px 0 0;
+                color: $gray-color;
+            }
+        }
+    }
+
+    .prescription-item-status {
+        padding-left: 15px;
+        padding-right: 5px;
+        max-width: 130px;
+    }
+
+    .prescription-items {
+        counter-reset: prItem;
+    }
+}
+
+.prescription-details-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 24px 0 15px 40px;
+
+    &::before {
+        content: counter(prItem) '.';
+        counter-increment: prItem;
+        position: absolute;
+        top: 44px;
+        left: 0;
+        width: 30px;
+        text-align: center;
+        font-size: $font-size-md;
+    }
+
+    &:first-of-type {
+        padding-top: 5px;
+
+        &::before {
+            top: 25px;
+        }
+    }
+
+    &:not(:last-of-type) {
+        border-bottom: 1px solid $lighter-gray-color;
+    }
+
+    .product-img {
+        max-width: 86px;
+        margin-right: 10px;
+
+        img {
+            @include size(100%, auto);
+        }
+    }
+
+    .prescription-item-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+
+        .any-device-block {
+            margin-right: 10px;
+        }
+    }
+
+    .prescription-item-bundle {
+        .flow-title {
+            margin-bottom: 7px;
+
+            &::after {
+                display: none;
+            }
+        }
+
+        .drowz-table {
+            td {
+                box-shadow: none;
+            }
+        }
+    }
+}
+
+.details-sidebar {
+    position: relative;
+    width: 280px;
+    min-width: 280px;
+    padding-left: 30px;
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background-color: $lighter-gray-color;
+    }
+
+    > .flex-row {
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+}
+

@@ -1,0 +1,89 @@
+<div class="modal-window service-center-modal" 
+     ng-form="$ctrl.serviceCenterForm"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/organization.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2 ng-if="!$ctrl.setupCenter.Id">New Service Center:</h2>
+            <h2 ng-if="$ctrl.setupCenter.Id">Edit Service Center:</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 info-block">
+                <md-input-container>
+                    <label>Service Center Name:</label>
+                    <input type="text"
+                           name="name"
+                           ng-model="$ctrl.setupCenter.Name"
+                           ng-required="true">
+                    <div ng-messages="$ctrl.serviceCenterForm.name.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required.</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div class="col-xs-12 info-block">
+                <md-input-container>
+                    <label>Address (line 1):</label>
+                    <input type="text"
+                           name="address1"
+                           ng-model="$ctrl.setupCenter.Address.AddressLine"
+                           ng-required="true">
+                    <div ng-messages="$ctrl.serviceCenterForm.address1.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required.</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6 info-block">
+                <md-input-container>
+                    <label>Address (line 2):</label>
+                    <input type="text" ng-model="$ctrl.setupCenter.Address.AddressLine2">
+                </md-input-container>
+            </div>
+            <div class="col-xs-6 info-block">
+                <md-input-container>
+                    <label>City:</label>
+                    <input type="text"
+                           name="city"
+                           ng-model="$ctrl.setupCenter.Address.City"
+                           ng-required="true">
+                    <div ng-messages="$ctrl.serviceCenterForm.city.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required.</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6 info-block">
+                <input-state-string
+                        form-name="$ctrl.serviceCenterForm"
+                        input-name="patientState"
+                        selected-item="$ctrl.setupCenter.Address.State"
+                        ng-required="true">
+                </input-state-string>
+            </div>
+            <div class="col-xs-6 info-block">
+                <input-zip-string
+                        form-name="$ctrl.serviceCenterForm"
+                        input-name="zip"
+                        selected-item="$ctrl.setupCenter.Address.Zip"
+                        ng-required="true">
+                </input-zip-string>
+            </div>
+        </div>
+
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button" ng-click="$ctrl.save()">Save</md-button>
+    </md-dialog-actions>
+</div>

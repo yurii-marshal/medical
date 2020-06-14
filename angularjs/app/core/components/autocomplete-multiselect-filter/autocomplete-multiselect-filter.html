@@ -1,0 +1,31 @@
+<div class="autocomplete-multiselect-field-wrapper"
+     clear-autocomplete-search-text-on-blur-directive
+     search-text="$ctrl.searchText">
+    <md-autocomplete md-no-cache="true"
+                     md-selected-item="$ctrl.selectedItem"
+                     md-search-text="$ctrl.searchText"
+                     md-items="item in $ctrl.getItems()"
+                     md-min-length="($ctrl.workWithStaticItems ? 0 : 1)"
+                     md-delay="350"
+                     md-floating-label="{{ $ctrl.getInputText() }}"
+                     md-input-name="$ctrl.inputName"
+                     md-menu-container-class="md-autocomplete-suggestions-width-300"
+                     md-menu-class="autocomplete-checkbox-menu">
+        <md-item-template>
+            <md-checkbox class="md-primary"
+                         ng-checked="!!$ctrl.selectedItems[item[$ctrl.idField]]"
+                         ng-click="$event.stopPropagation();$ctrl.onItemSelect(item)">
+                <span md-highlight-flags="^i" title="{{ $ctrl.getItemText(item) }}">{{ $ctrl.getItemText(item) }}</span>
+            </md-checkbox>
+        </md-item-template>
+        <md-not-found>No data found</md-not-found>
+    </md-autocomplete>
+
+    <div class="autocomplete-multiselect-popover" ng-if="$ctrl.getSelectedItemsCount()">
+        <div autocomplete-multiselect-filter-popover-directive="$ctrl.selectedItems" on-delete-item="$ctrl.onItemsChange()">
+            {{ $ctrl.getSelectedItemsCount() }}
+        </div>
+    </div>
+</div>
+
+<div class="clear-field" ng-if="$ctrl.getSelectedItemsCount()" ng-click="$ctrl.resetFilter()"></div>

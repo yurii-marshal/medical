@@ -1,0 +1,152 @@
+.management-page {
+    .toolbar-single-action {
+        position: fixed;
+        top: calc(#{$main-menu-height} + #{$breadscrumbs-height} - 19px);
+    }
+}
+
+.drp_root_location-labels-print {
+    main-menu, .sidebar {
+        display:none;
+    }
+
+    .main-app-container {
+        padding-top: 0;
+    }
+
+    .sidebar-container {
+        padding-left: 0 !important;
+    }
+}
+
+.drp_root_product-labels-print {
+    main-menu, .sidebar {
+        display:none;
+    }
+
+    .main-app-container {
+        padding-top: 0;
+    }
+
+    .sidebar-container {
+        padding-left:0 !important;
+    }
+}
+
+.role-block {
+    position: relative;
+    display: inline-block;
+    padding: 2px 30px 2px 13px;
+    margin: 5px 10px 5px 0;
+    line-height: 22px;
+    background-color: $lighter-gray-color;
+    border-radius: 9px;
+    font-size: 14px;
+    transition: .2s;
+
+    .delete-role {
+        position: absolute;
+        top: 7px;
+        right: 7px;
+        display: block;
+        width: 14px;
+        height: 14px;
+
+        &::after, &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            background-color: #d6d6d6;
+            transform: rotate(45deg);
+            transition: .2s;
+        }
+
+        &::after {
+            height: 2px;
+            width: 18px;
+            margin-top: -1px;
+            margin-left: -9px;
+        }
+
+        &::before {
+            width: 2px;
+            height: 18px;
+            margin-top: -9px;
+            margin-left: -1px;
+        }
+
+        &:hover {
+            &::after, &::before {
+                background-color: $gray-color;
+            }
+        }
+    }
+}
+
+.tag-rectangle {
+    display: inline-block;
+    padding: 0 4px;
+    margin-right: 10px;
+    line-height: 19px;
+    border-radius: 2px;
+    color: #fff;
+    font-size: 12px;
+    background-color: $dark-blue-color;
+
+    &.hidden-tag {
+        visibility: hidden;
+    }
+}
+
+.personnel-table {
+    .ellipsis-line {
+        height: 19px;
+        overflow: hidden;
+
+        .tag-rectangle {
+            display: block;
+            float: left;
+            max-width: calc(100% - 10px);
+            overflow: hidden;
+            -ms-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+        }
+    }
+}
+
+.tooltip-tag {
+    height: 19px;
+    padding: 0 4px;
+    margin-bottom: 5px;
+    line-height: 19px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 12px;
+    text-align: left;
+}
+
+.personnel-checkbox {
+    .md-label {
+        margin-left: 37px;
+    }
+}
+
+.pricing-list {
+    //here we calculate sum of all cols in pricings infinite table except of .pricing-name-td & .pricing-payer-td
+    //to make .pricing-name-td & .pricing-payer-td responsive and avoid overflow table width <=1600px
+    $list-cols-width: 120px*4 + 110px*2 + 150px + 105px + 50px +130px;
+    .pricing-name-td, .pricing-payer-td {
+        width: calc((100% - #{$list-cols-width})/2);
+        min-width: calc((100% - #{$list-cols-width})/2);
+    }
+
+    .assign-td {
+        .delete-icon-btn {
+            &.hidden {
+                display: none;
+            }
+        }
+    }
+}

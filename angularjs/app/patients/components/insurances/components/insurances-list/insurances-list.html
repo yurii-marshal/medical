@@ -1,0 +1,462 @@
+<div>
+    <div class="flex-row flex-end">
+        <md-button class="md-raised small-btn show-history arrow-back-button"
+                   ng-click="insurancesList.changeStatus()"
+                   aria-label="..."
+        >
+            <md-icon md-svg-src="assets/images/default/history.svg"
+                     ng-if="insurancesList.isActiveItems">
+            </md-icon>
+
+            <md-icon md-svg-src="assets/images/default/arrow.svg"
+                     ng-if="!insurancesList.isActiveItems"
+                     class="rotate-arrow"
+            >
+            </md-icon>
+
+            {{ insurancesList.isActiveItems ? 'History' : 'Active' }}
+        </md-button>
+
+        <md-button class="md-raised small-btn show-history"
+                   ng-disabled="(insurances.model.activeInsurances.length < 2) || (!insurancesList.isActiveItems)"
+                   ng-if="insurances.isChangePriorityVisible()"
+                   ng-click="insurances.changePriority()"
+                   aria-label="..."
+        >
+            <md-icon md-svg-src="assets/images/default/list-v2.svg"></md-icon>
+
+            Change Priority
+        </md-button>
+    </div>
+
+    <div class="flex-row marg-top-20"
+         ng-if="insurancesList.insurances.length && !insurancesList.loadingItems"
+    >
+        <div class="insurances-list"
+             ng-class="{'no-insurances': !insurancesList.insurances.length}"
+             ng-if="insurancesList.isActiveItems"
+        >
+            <div class="insurance-item active"
+                 ng-repeat="insurance in insurancesList.insurances | orderBy:'PositionIndex'"
+            >
+                <div class="insurance-labels">
+                    <div class="status-label primary"
+                         ng-show="insurance.IsPrimary">Primary
+                    </div>
+                    <div class="status-label primary"
+                         ng-show="insurance.PositionIndex == 2">Secondary
+                    </div>
+                    <div class="status-label primary"
+                         ng-show="insurance.PositionIndex == 3">Tertiary
+                    </div>
+                    <div class="status-label {{insurance.statusClass}}">{{insurance.Status.Text}}</div>
+                </div>
+                <div class="insurance-body">
+                    <div class="flex-row">
+                        <div class="info-block col-xs-12">
+                            <div class="info-block-label">Name:</div>
+                            <div class="info-block-body insurance-name-block">
+                                <a href="javascript:void(0);"
+                                   ui-sref="root.management.payer.details({ id: insurance.Payer.Id })"
+                                   ng-if="!insurance.Payer.Archived"
+                                >
+                                    {{ insurance.Payer.Name }}
+                                </a>
+                                <span ng-if="insurance.Payer.Archived">{{ insurance.Payer.Name }}</span>
+                                <div class="insurance-actions">
+                                    <md-button class="edit-icon-btn"
+                                               aria-label="..."
+                                               ng-click="insurancesList.editInsurance(insurance.Id)">
+                                        <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                                    </md-button>
+                                    <md-button class="delete-icon-btn" aria-label="..."
+                                               ng-click="insurancesList.deleteInsurance($event, insurance.Id)">
+                                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                    </md-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex-row">
+                        <div class="info-block col-xs-3">
+                            <div class="info-block-label">Payer ID:</div>
+                            <div class="info-block-body">
+                                {{ insurance.Payer.ClaimCode }}
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-9 left-divider">
+                            <div class="info-block-label">Type Code:</div>
+                            <div class="info-block-body">
+                                <span ng-if="insurance.InsuranceTypeCode">{{ insurance.InsuranceTypeCode.Id + ' - ' + insurance.InsuranceTypeCode.Text }}</span>
+                                <span ng-if="!insurance.InsuranceTypeCode">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flow-title">
+                        <span class="flow-title-text">Insured</span>
+                    </div>
+
+                    <div class="flex-row">
+                        <div class="info-block col-xs-3">
+                            <div class="info-block-label">Name:</div>
+                            <div class="info-block-body">
+                                <div class="insurance-gender-block">
+                                    <span>
+                                        {{ insurance.Holder.Name.First }}
+                                        {{ insurance.Holder.Name.Middle }}
+                                        {{ insurance.Holder.Name.Last }}
+                                    </span>
+                                    <md-icon md-svg-src="assets/images/colored/male.svg"
+                                             ng-if="insurance.Holder.Gender.Id == 1"></md-icon>
+                                    <md-icon md-svg-src="assets/images/colored/female.svg"
+                                             ng-if="insurance.Holder.Gender.Id == 2"></md-icon>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-3 left-divider">
+                            <div class="info-block-label">DOB:</div>
+                            <div class="info-block-body">
+                                {{ insurance.Holder.DateOfBirthday | amUtc | amDateFormat: 'MM/DD/YYYY' }}
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-3 left-divider">
+                            <div class="info-block-label">Relationship to Patient:</div>
+                            <div class="info-block-body">
+                                {{ insurance.Holder.Relationship.Text }}
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-3 left-divider">
+                            <div class="info-block-label">Signature on File:</div>
+                            <div class="info-block-body">
+                                <span>{{ insurance.SignatureOnFile.IsSigned ? 'Yes' : 'No' }}</span>
+                                <span ng-if="insurance.SignatureOnFile.SignedDate">
+                                    ({{ insurance.SignatureOnFile.SignedDate | amUtc | amDateFormat: 'MM/DD/YYYY' }})
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex-row">
+                        <div class="info-block col-xs-3">
+                            <div class="info-block-label">SSN:</div>
+                            <div class="info-block-body">{{ insurance.Holder.Ssn || '-' }}</div>
+                        </div>
+
+                        <div class="info-block col-xs-9 left-divider">
+                            <div class="info-block-label">Address:</div>
+                            <div class="info-block-body">{{ insurance.Holder.Address.FullAddress }}</div>
+                        </div>
+                    </div>
+
+                    <div class="flow-title">
+                        <span class="flow-title-text">Policy</span>
+                    </div>
+
+                    <div class="flex-row">
+                        <div class="info-block col-xs-3">
+                            <div class="info-block-label">Policy Number:</div>
+                            <div class="info-block-body">
+                                {{ insurance.PolicyNumber }}
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-2 left-divider">
+                            <div class="info-block-label">Group Number:</div>
+                            <div class="info-block-body">{{ insurance.Holder.GroupNumber || '-' }}</div>
+                        </div>
+                        <div class="info-block col-xs-3 left-divider">
+                            <div class="info-block-label">Program/Plan Name:</div>
+                            <div class="info-block-body">
+                                {{ insurance.Holder.PayerPlan ? insurance.Holder.PayerPlan.Name + ' (' + insurance.Holder.PayerPlan.Type.Text + ')' : '-' }}
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-2 left-divider">
+                            <div class="info-block-label">Effective Date:</div>
+                            <div class="info-block-body">
+                                {{ insurance.EffectiveDate
+                                ? (insurance.EffectiveDate | amUtc | amDateFormat: 'MM/DD/YYYY')
+                                : '-' }}
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-2 left-divider">
+                            <div class="info-block-label">Termination Date:</div>
+                            <div class="info-block-body">
+                                {{ insurance.TerminationDate
+                                ? (insurance.TerminationDate | amUtc | amDateFormat: 'MM/DD/YYYY')
+                                : '-' }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flow-title">
+                        <span class="flow-title-text">Responsibility</span>
+                    </div>
+
+                    <div class="flex-row">
+                        <div class="info-block col-xs-3">
+                            <div class="info-block-label">Deductible:</div>
+                            <div class="info-block-body">
+                                $ {{ insurance.Deductible ? (insurance.Deductible | absNumber:2) : '-' }}
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-2 left-divider">
+                            <div class="info-block-label">Coinsurance:</div>
+                            <div class="info-block-body">
+                                {{ insurance.Coinsurance ? insurance.Coinsurance + '%' : '-' }}
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-7 left-divider">
+                            <div class="info-block-label">Co-pay:</div>
+                            <div class="info-block-body">
+                                $ {{ insurance.Copay ? (insurance.Copay | absNumber:2) : '-' }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="insurance-sidebar">
+                    <div class="insurance-sidebar-block">
+                        <div class="info-block">
+                            <div class="info-block-label">Verified:</div>
+                            <div class="info-block-body">
+                                <span ng-if="!insurance.VerificationInfo.VerifiedDate">-</span>
+                                <div ng-show="insurance.VerificationInfo.VerifiedDate">
+                                    {{ insurance.VerificationInfo.VerifiedDate | localDateTime: 'MM/DD/YYYY' }}
+                                </div>
+                                <div class="active-text" ng-show="insurance.VerificationInfo.VerifiedDate">
+                                    {{ insurance.VerificationInfo.VerifiedDate | localDateTime: 'hh:mm A' }}
+                                </div>
+                            </div>
+                        </div>
+                        <md-button class="md-raised md-primary insurance-btns"
+                                   ng-click="insurancesList.insuranceVerification($event, insurance)">
+                            Verify
+                        </md-button>
+                    </div>
+                    <div class="insurance-sidebar-block">
+                        <div class="info-block">
+                            <div class="info-block-label">Verified By:</div>
+                            <div class="info-block-body">
+                                <span ng-if="!insurance.VerificationInfo.VerifiedBy">-</span>
+                                <span ng-if="insurance.VerificationInfo.VerifiedBy">
+                                                    <span ng-if="insurance.VerificationInfo.NeedManuallyVerification">
+                                                        {{insurance.VerificationInfo.VerifiedBy.FullName}}
+                                                    </span>
+                                                    <span ng-if="!insurance.VerificationInfo.NeedManuallyVerification">
+                                                        {{insurance.VerificationInfo.VerifiedBy.FullName}}
+                                                    </span>
+                                                </span>
+                            </div>
+                        </div>
+                        <md-button class="md-raised insurance-btns benefits-btn"
+                                   ng-if="insurance.VerificationInfo.TransactionId"
+                                   ui-sref="root.benefits({transactionId: insurance.VerificationInfo.TransactionId,
+                                                        insuranceId: insurance.Id, patientId: insurancesList.patientId,
+                                                        insuranceName: insurance.Payer.Name})">
+                            Benefits
+                        </md-button>
+                    </div>
+                    <div class="insurance-sidebar-block" ng-if="insurance.FailureInfo">
+                        <div class="info-block">
+                            <div class="info-block-label failure-label">Verification failed!</div>
+                            <div class="info-block-body">
+                                <div>{{ insurance.FailureInfo.FailedDate | localDateTime: 'MM/DD/YYYY' }}</div>
+                                <div class="active-text">{{ insurance.FailureInfo.FailedDate | localDateTime: 'hh:mm A' }}</div>
+                            </div>
+                        </div>
+                        <md-button class="md-raised insurance-btns"
+                                   ng-if="insurance.FailureInfo.TransactionId"
+                                   ng-click="insurancesList.showFailureDetails(insurance.FailureInfo)">
+                            Details
+                        </md-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="insurances-list"
+             ng-if="!insurancesList.isActiveItems"
+        >
+            <div class="insurance-item history"
+                 ng-repeat="insurance in insurancesList.insurances"
+            >
+                <div class="insurance-body">
+                    <div class="flex-row">
+                        <div class="info-block col-xs-3">
+                            <div class="info-block-label">Name:</div>
+                            <div class="info-block-body">
+                                <a href="javascript:void(0);"
+                                   class="underline-after-link"
+                                   ui-sref="root.management.payer.details({ id: insurance.Payer.Id })">
+                                    {{ insurance.Payer.Name }}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-3 left-divider">
+                            <div class="info-block-label">Created:</div>
+                            <div class="info-block-body">
+                                <div class="dark-blue-text">
+                                    {{ insurance.CreatedDate | localDateTime: 'MM/DD/YYYY' }}
+                                    <span class="active-text">
+                                        {{ insurance.CreatedDate | localDateTime: 'hh:mm A' }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-6 left-divider">
+                            <div class="info-block-label">Deleted:</div>
+                            <div class="info-block-body">
+                                <div class="dark-blue-text">
+                                    {{ insurance.DeletedDate | localDateTime: 'MM/DD/YYYY' }}
+                                    <span class="active-text">
+                                        {{ insurance.DeletedDate | localDateTime: 'hh:mm A' }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-row">
+                        <div class="info-block col-xs-3">
+                            <div class="info-block-label">Payer ID:</div>
+                            <div class="info-block-body">
+                                {{ insurance.Payer.ClaimCode }}
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-9 left-divider">
+                            <div class="info-block-label">Type Code:</div>
+                            <div class="info-block-body">
+                                {{ insurance.InsuranceTypeCode ? insurance.InsuranceTypeCode.Id + ' - ' + insurance.InsuranceTypeCode.Text : '-' }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flow-title">
+                        <span class="flow-title-text">Insured</span>
+                    </div>
+
+                    <div class="flex-row">
+                        <div class="info-block col-xs-3">
+                            <div class="info-block-label">Name:</div>
+                            <div class="info-block-body">
+                                <div class="insurance-gender-block">
+                                    <span>
+                                        {{ insurance.Holder.Name.First }}
+                                        {{ insurance.Holder.Name.Middle }}
+                                        {{ insurance.Holder.Name.Last }}
+                                    </span>
+                                    <md-icon md-svg-src="assets/images/colored/male.svg"
+                                             ng-if="insurance.Holder.Gender.Id == 1"></md-icon>
+                                    <md-icon md-svg-src="assets/images/colored/female.svg"
+                                             ng-if="insurance.Holder.Gender.Id == 2"></md-icon>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-3 left-divider">
+                            <div class="info-block-label">DOB:</div>
+                            <div class="info-block-body">
+                                {{ insurance.Holder.DateOfBirthday | amUtc | amDateFormat: 'MM/DD/YYYY' }}
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-3 left-divider">
+                            <div class="info-block-label">Relationship to Patient:</div>
+                            <div class="info-block-body">
+                                {{ insurance.Holder.Relationship.Text }}
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-3 left-divider">
+                            <div class="info-block-label">Signature on File:</div>
+                            <div class="info-block-body">
+                                <span>{{ insurance.SignatureOnFile.IsSigned ? 'Yes' : 'No' }}</span>
+                                <span ng-if="insurance.SignatureOnFile.SignedDate">
+                                    ({{ insurance.SignatureOnFile.SignedDate | amUtc | amDateFormat: 'MM/DD/YYYY' }})
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex-row">
+                        <div class="info-block col-xs-3">
+                            <div class="info-block-label">SSN:</div>
+                            <div class="info-block-body">{{ insurance.Holder.Ssn || '-' }}</div>
+                        </div>
+                        <div class="info-block col-xs-9 left-divider">
+                            <div class="info-block-label">Address:</div>
+                            <div class="info-block-body">{{ insurance.Holder.Address.FullAddress }}</div>
+                        </div>
+                    </div>
+
+                    <div class="flow-title">
+                        <span class="flow-title-text">Policy</span>
+                    </div>
+
+                    <div class="flex-row">
+                        <div class="info-block col-xs-3">
+                            <div class="info-block-label">Policy Number:</div>
+                            <div class="info-block-body">
+                                {{ insurance.PolicyNumber }}
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-2 left-divider">
+                            <div class="info-block-label">Group Number:</div>
+                            <div class="info-block-body">{{ insurance.Holder.GroupNumber || '-' }}</div>
+                        </div>
+                        <div class="info-block col-xs-3 left-divider">
+                            <div class="info-block-label">Program/Plan Name:</div>
+                            <div class="info-block-body">
+                                {{ insurance.Holder.PayerPlan ? insurance.Holder.PayerPlan.Name + ' (' + insurance.Holder.PayerPlan.Type.Text + ')' : '-' }}
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-2 left-divider">
+                            <div class="info-block-label">Effective Date:</div>
+                            <div class="info-block-body">
+                                {{ insurance.EffectiveDate
+                                ? (insurance.EffectiveDate | amUtc | amDateFormat: 'MM/DD/YYYY')
+                                : '-' }}
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-2 left-divider">
+                            <div class="info-block-label">Termination Date:</div>
+                            <div class="info-block-body">
+                                {{ insurance.TerminationDate
+                                ? (insurance.TerminationDate | amUtc | amDateFormat: 'MM/DD/YYYY')
+                                : '-' }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flow-title">
+                        <span class="flow-title-text">Responsibility</span>
+                    </div>
+
+                    <div class="flex-row">
+                        <div class="info-block col-xs-3">
+                            <div class="info-block-label">Deductible:</div>
+                            <div class="info-block-body">
+                                $ {{ insurance.Deductible ? (insurance.Deductible | absNumber:2) : '-' }}
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-2 left-divider">
+                            <div class="info-block-label">Coinsurance:</div>
+                            <div class="info-block-body">
+                                {{ insurance.Coinsurance ? insurance.Coinsurance + '%' : '-' }}
+                            </div>
+                        </div>
+                        <div class="info-block col-xs-7 left-divider">
+                            <div class="info-block-label">Co-pay:</div>
+                            <div class="info-block-body">
+                                $ {{ insurance.Copay ? (insurance.Copay | absNumber:2) : '-' }}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="insurance-sidebar">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+
+    <no-records text="Insurances"
+                is-fullpage="true"
+                ng-if="insurancesList.insurances.length === 0"
+    ></no-records>
+</div>

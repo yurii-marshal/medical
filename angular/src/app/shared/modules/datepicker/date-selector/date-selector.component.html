@@ -1,0 +1,34 @@
+<div class="date-selector">
+    <app-day-selector [hidden]="mode !== 'day'"
+                  [(date)]="displayDate"
+                  [mode]="mode"
+                  [showTodayButton]="showTodayButton"
+                  (dateSelected)="onDaySelected($event)"
+                  [minRange]="minRange"
+                  [maxRange]="maxRange"
+                  (modeChanged)="mode='month'">
+    </app-day-selector>
+    <app-month-selector [hidden]="mode !== 'month'"
+                    [(date)]="displayDate"
+                    [mode]="mode"
+                    [minRange]="minRange"
+                    [maxRange]="maxRange"
+                    (dateSelected)="onMonthSelected($event)"
+                    (modeChanged)="mode='year'">
+    </app-month-selector>
+    <app-year-selector [hidden]="mode !== 'year'"
+                   [(date)]="displayDate"
+                   [mode]="mode"
+                   [minRange]="minRange"
+                   [maxRange]="maxRange"
+                   (dateSelected)="onYearSelected($event)"
+                   (modeChanged)=" mode='decade' ">
+    </app-year-selector>
+    <app-decade-selector [hidden]="mode !== 'decade'"
+                     [(date)]="displayDate"
+                     [mode]="mode"
+                     [minRange]="minRange"
+                     [maxRange]="maxRange"
+                     (dateSelected)="onDecadeSelected($event)">
+    </app-decade-selector>
+</div>

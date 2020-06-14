@@ -1,0 +1,43 @@
+<div class="modal-window cms-type-modal">
+
+    <a href="javascript:void(0);"
+       ng-click="$ctrl.cancel()"
+       class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/custom-document.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Select printing options:</h2>
+        </div>
+
+        <div class="grow-1">
+            <md-radio-group ng-model="$ctrl.selectedOption">
+                <md-radio-button class="md-primary"
+                                 ng-repeat="item in $ctrl.options track by $index"
+                                 ng-value="item.Id"
+                                 aria-label="{{item.Name}}"
+                >
+                    <span ng-bind="item.Name"></span>
+                </md-radio-button>
+            </md-radio-group>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button"
+                   ng-click="$ctrl.cancel()"
+        >
+            Cancel
+        </md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.print($ctrl.selectedOption)"
+        >
+            Ок
+        </md-button>
+    </md-dialog-actions>
+
+</div>
+

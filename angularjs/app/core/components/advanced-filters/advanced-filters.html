@@ -1,0 +1,45 @@
+<div class="advanced-filters-container">
+
+        <md-button class="md-fab open-filters-modal"
+                   aria-label="..."
+                   ng-click="$ctrl.openFilters()"
+        >
+            <md-icon class="open-filters-icon"
+                     md-svg-src="assets/images/default/open-filters-list.svg">
+            </md-icon>
+        </md-button>
+
+        <div class="reset-filters-btn"
+             ng-class="{'visible': $ctrl.isHiddenChips === false}"
+             ng-show="$ctrl.selectedFilters.length">
+            <md-button class="reset-filters"
+                       aria-label="..."
+                       ng-click="$ctrl.resetFilters($ctrl.options)">
+                <md-icon class="reset-filters-icon"
+                         md-svg-src="assets/images/default/clear-filters.svg">
+                </md-icon>
+            </md-button>
+        </div>
+
+        <div class="selected-filters"
+             ng-class="{'visible': $ctrl.isHiddenChips === false, 'has-items': $ctrl.selectedFilters.length}">
+             <div class="round-chip-block"
+                  title="{{item.filterName}}"
+                 ng-repeat="item in $ctrl.selectedFilters">
+
+                <span ng-bind="item.filterName"></span>
+
+                <div ng-show="!item.isInProgressRequired"
+                     class="delete-chip"
+                     ng-click="$ctrl.deleteSelectedFilter(item)"></div>
+
+                <div ng-show="item.isInProgressRequired"
+                     class="delete-chip"
+                     confirm-ng-click="$ctrl.deleteInProgressRequiredFilters(item)"
+                     confirm-msg="$ctrl.getInProgressRequiredMsg(item)"
+                     confirm-btn-ok="Ok"
+                     confirm-btn-cancel="Cancel"></div>
+            </div>
+        </div>
+
+</div>

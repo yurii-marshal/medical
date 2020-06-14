@@ -1,0 +1,14 @@
+<notes  has-subject="false"
+        get-notes="notes.getNotes"
+        add-note="notes.addNote"
+        get-users="notes.getUsers"
+        filter-names="notes.filterNames"
+        note-text-filter="Note"
+        created-by-filter="CreateById"
+        start-date-filter="From"
+        end-date-filter="To"
+        default-sort="CreatedOn DESC"
+        is-users-autocomplete="true"
+        is-disable-create="!invoice.userPermissions.isAllow(invoice.permissionsCategoriesConstants.BILLING, invoice.billingPermissionsConstants.INVOICE_MODIFY)"
+        is-void-invoice="invoice.model.isVoidInvoice">
+</notes>

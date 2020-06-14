@@ -1,0 +1,133 @@
+<div class="modal-window adjust-modal"
+     ng-form="$ctrl.modalForm"
+     ng-class="{'edit-adjust-modal': $ctrl.isEdit}"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/list.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Adjust:</h2>
+        </div>
+
+        <div class="adjustment-list">
+            <div class="adjustment-item"
+                 ng-repeat="item in $ctrl.adjustments track by $index"
+                 ng-init="parentIndex = $index"
+            >
+                <div class="item-counter" ng-if="!$ctrl.isEdit">{{parentIndex + 1}}.</div>
+                <md-button class="delete-icon-btn"
+                           aria-label="..."
+                           ng-if="$ctrl.adjustments.length && !$ctrl.isEdit"
+                           ng-click="$ctrl.removeAdjustment(parentIndex)">
+                    <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                </md-button>
+                <div class="flex-row row">
+                    <div class="col-xs-3">
+                        <md-input-container class="currency-container">
+                            <div class="currency-icon">{{item.Currency}}</div>
+                            <label>Amount:</label>
+                            <input type="number"
+                                   step="0.01"
+                                   name="amount-{{parentIndex}}"
+                                   ng-required="true"
+                                   ng-model="item.Amount">
+                            <div ng-messages="$ctrl.modalForm['amount-' + parentIndex].$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div class="col-xs-9"
+                         ng-if="!$ctrl.isSourcePatient"
+                    >
+                        <md-autocomplete md-no-cache="true"
+                                         md-selected-item="item.Group"
+                                         md-search-text="searchGroup"
+                                         md-items="item in $ctrl.groups | filter: searchGroup"
+                                         md-item-text="item.Code + ' (' + item.Name + ')'"
+                                         md-min-length="0"
+                                         ng-required="true"
+                                         md-floating-label="Group:"
+                                         md-input-name="group-{{parentIndex}}"
+                                         clear-on-click
+                                         md-require-match="true">
+                            <md-item-template>
+                                <span md-highlight-flags="^i" title="{{item.Code + ' (' + item.Name + ')'}}">{{item.Code + ' (' + item.Name + ')'}}</span>
+                            </md-item-template>
+                            <md-not-found>
+                                No Groups were found
+                            </md-not-found>
+                            <div ng-messages="$ctrl.modalForm['group-' + parentIndex].$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                                <div ng-message="md-require-match">Group is not valid</div>
+                            </div>
+                        </md-autocomplete>
+                    </div>
+                </div>
+                <div class="flex-row row">
+
+                    <div class="col-xs-12"
+                         ng-if="$ctrl.isSourcePatient"
+                    >
+                        <md-input-container>
+                            <label></label>
+                            <textarea type="text"
+                                      ng-model="item.Note"
+                                      placeholder="Note:"
+                            ></textarea>
+                        </md-input-container>
+                    </div>
+
+                    <div class="col-xs-12"
+                         ng-if="!$ctrl.isSourcePatient"
+                    >
+                        <md-autocomplete md-no-cache="true"
+                                         md-selected-item="item.Reason"
+                                         md-search-text="searchReason"
+                                         md-items="item in $ctrl.getReasons(searchReason)"
+                                         md-item-text="item.Code + ' - ' + item.Description"
+                                         md-min-length="0"
+                                         ng-required="true"
+                                         md-floating-label="Reason:"
+                                         md-input-name="reason-{{parentIndex}}"
+                                         clear-on-click
+                                         md-require-match="true">
+                            <md-item-template>
+                                <span md-highlight-flags="^i" title="{{item.Code + ' - ' + item.Description}}">{{item.Code + ' - ' + item.Description}}</span>
+                            </md-item-template>
+                            <md-not-found>
+                                No Reasons were found
+                            </md-not-found>
+                            <div ng-messages="$ctrl.modalForm['reason-' + parentIndex].$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                                <div ng-message="md-require-match">Reason is not valid</div>
+                            </div>
+                        </md-autocomplete>
+                    </div>
+                </div>
+            </div>
+            <md-button class="md-raised middle-btn add-new-contact"
+                       ng-click="$ctrl.addAdjustment()"
+                       ng-if="!$ctrl.isEdit">
+                <md-icon md-svg-src="assets/images/default/plus.svg"></md-icon>Add Adjustment
+            </md-button>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.save()">
+            Save
+        </md-button>
+    </md-dialog-actions>
+
+</div>

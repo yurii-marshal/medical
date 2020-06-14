@@ -1,0 +1,179 @@
+.toolbar-single-action {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: $drowz-toolbar-height;
+    height: $drowz-toolbar-height;
+    z-index: 3;
+    background-color: $main-active-color;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &::before, &::after {
+        content: '';
+        position: absolute;
+        z-index: 3;
+        top: 50%;
+        left: 50%;
+        background-color: #FFF;
+        transition: .2s;
+    }
+
+    &::after {
+        margin-top: -1px;
+        margin-left: -7px;
+        height: 2px;
+        width: 14px;
+    }
+
+    &::before {
+        margin-top: -7px;
+        margin-left: -1px;
+        width: 2px;
+        height: 14px;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &.custom-action-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &::before, &::after {
+            display: none;
+        }
+
+        > md-icon {
+            display: block;
+            width: 22px;
+            height: 16px;
+            margin: 0 2px 0 0;
+            color: #fff;
+        }
+    }
+}
+
+md-fab-speed-dial.action-toolbar {
+    position: fixed;
+    top: calc(#{$main-menu-height} + #{$drowz-tabs-height} - #{$drowz-toolbar-height} / 2);
+    right: 17px;
+    z-index: 40;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-start;
+
+    &.md-is-open {
+        .action-toolbar-trigger {
+            .md-button.md-fab {
+                &::before, &::after {
+                    transform: rotate(45deg);
+                }
+            }
+        }
+    }
+
+    .action-toolbar-trigger,
+    .action-btn-list {
+        .md-button.md-fab {
+            margin: 0;
+            padding: 0;
+            line-height: $drowz-toolbar-height;
+            background-color: $main-active-color;
+            box-shadow: none;
+            margin-bottom: 3px;
+
+            &:hover {
+                background-color: $main-active-hover-color;
+            }
+
+            &:focus {
+                background-color: $main-active-color;
+
+                &:hover {
+                    background-color: $main-active-hover-color;
+                }
+            }
+        }
+    }
+
+    .action-toolbar-trigger {
+        z-index: 24;
+        overflow: hidden;
+        order: 2;
+        @include size($drowz-toolbar-height, $drowz-toolbar-height);
+
+        .md-button.md-fab {
+            @include size($drowz-toolbar-height, $drowz-toolbar-height);
+
+            &::before, &::after {
+                content: "";
+                position: absolute;
+                z-index: 3;
+                top: 50%;
+                left: 50%;
+                background-color: #FFF;
+                transition: .2s;
+            }
+
+            &::after {
+                margin-top: -1px;
+                margin-left: -7px;
+                @include size(14px, 2px);
+            }
+
+            &::before {
+                margin-top: -7px;
+                margin-left: -1px;
+                @include size(2px, 14px);
+            }
+        }
+    }
+
+    .action-btn-list {
+        visibility: hidden;
+        margin-top: -2000px;
+        padding: 0 3px;
+        flex-direction: column;
+        order: 1;
+        transition: .25s;
+
+        &.visible-action-btns {
+            visibility: visible;
+            margin-top: 0px;
+        }
+
+        .action-btn.md-fab {
+            @include size($drowz-toolbar-width, $drowz-toolbar-height);
+            border-radius: 35px;
+            display: flex;
+            justify-content: flex-start;
+            transition: .2s;
+
+            .action-btn-icon {
+                display: inline-block;
+                width: 50px;
+
+                md-icon {
+                    max-width: 20px;
+                    max-height: 20px;
+                    margin: 0 0 0 15px;
+
+                    &.refresh-rotate-icon,
+                    &.action-feature-icon{
+                        transform: scale(-1, 1);
+                    }
+                }
+            }
+
+            .action-btn-label {
+                text-align: left;
+                color: #fff;
+                font-size: $font-size-sm;
+                white-space: nowrap;
+            }
+        }
+    }
+}

@@ -1,0 +1,61 @@
+<div class="modal-window advanced-filters-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/setup.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Advanced filters</h2>
+        </div>
+
+        <div ng-form="$ctrl.advancedFiltersForm" class="modal-body">
+            <div class="advanced-filters-row marg-v-20" ng-repeat="(key, value) in $ctrl.options">
+                <radio-button-filter ng-if="value.type === 'radio-button-filter'"
+                                     options="value"></radio-button-filter>
+                <checkbox-filter ng-if="value.type === 'checkbox-filter'"
+                                     options="value"></checkbox-filter>
+                <select-date-range-filter ng-if="value.type === 'select-date-range-filter'"
+                                          options="value"></select-date-range-filter>
+                <select-input-range-filter ng-if="value.type === 'select-input-range-filter'"
+                                          options="value"></select-input-range-filter>
+                <autocomplete-chips-filter ng-if="value.type === 'autocomplete-chips-filter'"
+                                           options="value"></autocomplete-chips-filter>
+                <autocomplete-filter ng-if="value.type === 'autocomplete-filter'"
+                                           options="value"></autocomplete-filter>
+                <date-range-filter ng-if="value.type === 'date-range-filter'"
+                                           options="value"></date-range-filter>
+            </div>
+            <div class="advanced-filters-row marg-v-20">
+                <save-filter-as ng-if="$ctrl.isSaveFilter"
+                                options="$ctrl.options"
+                                need-to-save="$ctrl.needToSave"
+                                new-filter-name="$ctrl.newFilterName">
+                </save-filter-as>
+            </div>
+
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+
+        <md-button class="md-raised main-button reset-all-btn"
+                   ng-click="$ctrl.resetAll($ctrl.options)">
+            <md-icon class="reset-filters-icon"
+                     md-svg-src="assets/images/default/clear-filters.svg">
+            </md-icon>
+            Reset all
+        </md-button>
+        <md-button class="md-raised main-button"
+                   ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.applyFilters()">Apply</md-button>
+
+    </md-dialog-actions>
+
+</div>
+

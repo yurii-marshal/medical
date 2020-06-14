@@ -1,0 +1,43 @@
+.patient-financial-invoices-wrap {
+
+    .info-block.pad-right-10 {
+        padding-right: 10px;
+    }
+
+    .patient-service-item {
+        border-bottom: 1px solid $lighter-gray-color;
+        padding: 5px 0px;
+        margin-top: 10px;
+    }
+
+    .filters-wrap {
+        padding: 0 10px;
+
+        @include clear-filters-btn(20px, true, $main-active-color, false);
+    }
+
+    .filter-field {
+        padding: 0 10px;
+
+        &.filter-field-autocomplete {
+            height: 62px;
+        }
+    }
+
+    .block-item-name {
+        min-width: 200px;
+    }
+
+    .pagination.patient-invoices-pagination {
+        border-top: 0;
+        margin-top: 25px;
+    }
+
+    .correct-grow-item {
+        padding-right: 0;
+    }
+}
+
+.autocomplete-scroll-min-width-500 {
+    min-width: 500px!important;
+}

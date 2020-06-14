@@ -1,0 +1,225 @@
+<div class="infinite-scroll-bg organization-setup full-height-with-footer"
+     ng-form="orgSetup.Form"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="organizationSetup">
+
+    <div class="top-block">
+        <div class="breadcrumbs transparent-bg">
+            <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+            <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+            <a href="javascript:void(0)" ui-sref="root.management.organization">Organization</a>
+            <a href="javascript:void(0)" class="active">Setup</a>
+        </div>
+
+        <div class="drowz-wizard-body-flex">
+
+            <div class="grow-1">
+                <div class="flex-row">
+                    <div class="drowz-wizard-block no-float grow-1">
+                        <div class="drowz-wizard-block-title">
+                            <div class="wizard-title-text">Details:</div>
+                        </div>
+                        <div class="drowz-wizard-block-body">
+                            <div class="drowz-wizard-block-row">
+                                <div class="col-xs-12">
+                                    <md-input-container>
+                                        <label>Name:</label>
+                                        <input type="text"
+                                               ng-model="orgSetup.model.Name"
+                                               ng-required="true"
+                                               name="name" />
+                                        <div ng-messages="orgSetup.Form.name.$error" class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                            </div>
+                            <div class="drowz-wizard-block-row">
+                                <div class="col-xs-12">
+                                    <md-input-container>
+                                        <label>Address (line 1):</label>
+                                        <input type="text"
+                                               ng-model="orgSetup.model.Address.AddressLine"
+                                               name="addressLine1"
+                                               ng-required="true">
+                                        <div ng-messages="orgSetup.Form.addressLine1.$error"
+                                             class="md-input-messages-nice">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                            </div>
+                            <div class="drowz-wizard-block-row">
+                                <div class="col-xs-12">
+                                    <md-input-container>
+                                        <label>Address (line 2):</label>
+                                        <input type="text"
+                                               ng-model="orgSetup.model.Address.AddressLine2">
+                                    </md-input-container>
+                                </div>
+                            </div>
+                            <div class="drowz-wizard-block-row">
+                                <div class="col-xs-6">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <md-input-container>
+                                                <label>City:</label>
+                                                <input type="text"
+                                                       name="city"
+                                                       ng-model="orgSetup.model.Address.City"
+                                                       ng-required="true">
+                                                <div ng-messages="orgSetup.Form.city.$error" class="md-input-messages-nice">
+                                                    <div ng-message="required">This field is required</div>
+                                                </div>
+                                            </md-input-container>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <input-state-string form-name="orgSetup.Form"
+                                                                selected-item="orgSetup.model.Address.State"
+                                                                add-directives="clear-on-click"
+                                                                ng-required="true">
+                                            </input-state-string>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <input-zip-string form-name="orgSetup.Form"
+                                                      input-name="zip"
+                                                      selected-item="orgSetup.model.Address.Zip"
+                                                      add-directives="clear-on-click"
+                                                      ng-required="true">
+                                    </input-zip-string>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="drowz-wizard-block no-float flex-300 organization-logo-block">
+                        <div class="drowz-wizard-block-title">
+                            <div class="wizard-title-text">Organization Logo:</div>
+                            <md-button class="delete-icon-btn"
+                                       aria-label="..."
+                                       ng-click="orgSetup.removePicture()">
+                                <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                            </md-button>
+                        </div>
+                        <div class="drowz-wizard-block-body organization-logo-container"
+                             bs-loading-overlay
+                             bs-loading-overlay-reference-id="organizationLogo"
+                         >
+                            <div class="organization-logo"
+                                 ng-style="{'background-image':'url(' + orgSetup.orgLogoSrc + ')'}">
+                            </div>
+                            <file-upload files="orgSetup.uploadedFile"
+                                         max-count="1"
+                                         max-size="5"
+                                         extensions="orgSetup.uploadExtensions"
+                                         button-text="Upload Image"></file-upload>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-row">
+                    <div class="drowz-wizard-block no-float grow-1">
+                        <div class="drowz-wizard-block-title">
+                            <div class="wizard-title-text">Resupply Settings:</div>
+                        </div>
+                        <div class="drowz-wizard-block-body organization-resupply-block">
+                            <div class="flex-row">
+                                <div class="info-block block-width-250 flex-cont">
+                                    <md-switch class="md-primary"
+                                               ng-model="orgSetup.model.OrganizationSettings.GroupItemsForDelivery"
+                                               ng-change="orgSetup.isDisabledChanged()"
+                                    >
+                                        Group Items for Delivery
+                                    </md-switch>
+                                </div>
+                                <div class="info-block flex-cont center block-width-320">
+                                    <div class="flex-cont">
+                                        Eligible shipping date within:
+                                        <md-input-container class="eligible-days-container">
+                                            <label></label>
+                                            <input type="text"
+                                                   name="ShippingDateWithin"
+                                                   min="1"
+                                                   only-digits-with-length
+                                                   ng-disabled="!orgSetup.model.OrganizationSettings.GroupItemsForDelivery"
+                                                   ng-required="orgSetup.model.OrganizationSettings.GroupItemsForDelivery"
+                                                   ng-model="orgSetup.model.OrganizationSettings.ShippingDateWithin">
+                                            <div ng-messages="orgSetup.Form.ShippingDateWithin.$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">Required</div>
+                                            </div>
+                                        </md-input-container>
+                                        day(s)
+                                    </div>
+                                </div>
+                                <div class="info-block grow-1 left-divider flex-cont">
+                                    <div class="flex-cont">
+                                        Generate resupply orders:
+                                        <md-input-container class="eligible-days-container">
+                                            <label></label>
+                                            <input type="text"
+                                                   name="ResupplyOrdersUpfront"
+                                                   min="1"
+                                                   only-digits-with-length
+                                                   ng-model="orgSetup.model.OrganizationSettings.ResupplyOrdersUpfront"
+                                                   ng-required="true"
+                                            >
+                                            <div ng-messages="orgSetup.Form.ResupplyOrdersUpfront.$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">Required</div>
+                                            </div>
+                                        </md-input-container>
+                                        day(s) prior eligibility
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex-row">
+                                <div class="info-block">
+                                    <md-switch class="md-primary"
+                                               ng-model="orgSetup.model.OrganizationSettings.ResupplyReplaceBundleItems"
+                                               ng-change="orgSetup.isDisabledChanged()"
+                                               ng-disabled="!orgSetup.model.OrganizationSettings.GroupItemsForDelivery"
+                                    >
+                                        Replace items with bundle if available
+                                    </md-switch>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="flex-360">
+                <div class="drowz-wizard-block no-float">
+                    <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">Contacts:</div>
+                    </div>
+                    <div class="drowz-wizard-block-body">
+                        <div class="contacts-container">
+                            <organization-contacts ng-if="orgSetup.isModelLoaded"
+                                    selected-contacts="orgSetup.model.Contacts"
+                                    min-required="1"
+                                    allow-not-unique-types="false">
+                            </organization-contacts>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="flow-body-footer">
+        <md-button class="md-raised main-button"
+                   ng-click="orgSetup.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="orgSetup.save()"
+                   ng-disabled="orgSetup.modelNotChanged()">
+            Save
+        </md-button>
+    </div>
+
+</div>

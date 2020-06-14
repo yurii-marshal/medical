@@ -1,0 +1,180 @@
+*, *::before, *::after {
+  outline: none;
+  box-sizing: border-box;
+}
+
+html, body {
+  min-height: 100%;
+  min-width: $max-content-width;
+  position: relative;
+}
+
+body {
+  @include size(100%, 100%);
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  color: $font-color;
+  //overflow-x: visible !important;
+  //-ms-overflow-style: scrollbar;
+  // Tooltipster script adding inline style "overflow-x: hidden",
+  // i overwrite it with toimportant prevent white backdrop for select and other material dropdowns
+
+  &.hidescrollbar::-webkit-scrollbar {
+    visibility: hidden;
+  }
+}
+
+input::-ms-clear {
+  display: none !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.mat-expansion-panel-body {
+    padding: 10px 0 14px!important;
+}
+
+.mat-form-field-subscript-wrapper {
+  margin-top: 0.1em;
+}
+
+.datepicker-input-block {
+    .mat-form-field-infix {
+        width: 100% !important;
+    }
+
+    .mat-form-field-underline {
+        bottom: 1.2em !important;
+    }
+}
+
+.calendar-image .mat-input-flex:after {
+    width: 18px !important;
+}
+
+a {
+  color: $main-active-color;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover, &:focus {
+    color: $main-active-hover-color;
+    text-decoration: underline;
+  }
+
+  &:active, &:hover {
+    outline: none;
+  }
+
+  &.underline-after-link {
+    position: relative;
+    display: inline-block;
+    color: $main-active-color;
+    text-decoration: none;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background-color: currentColor;
+      transition: opacity .2s;
+    }
+
+    &:hover, &:focus {
+      &::after {
+        opacity: 0;
+      }
+    }
+  }
+}
+
+.custom-errors-wrap mat-error {
+  position: absolute;
+  font-size: 12px;
+  margin-top: 10px;
+  animation-name: show-error-message;
+  animation-duration: 0.5s;
+}
+
+.cdk-global-scrollblock {
+    position: static;
+    overflow: hidden !important;
+}
+
+/* The animation code */
+@keyframes show-error-message {
+  0% {
+    opacity: 0;
+    transform: translateY(-70%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
+// MARGINS & PADDINGS (vertical, horizontal and both)
+// (for margin top & bottom in 10px use this way class="marg-v-10")
+@each $w in $list-of-spaces {
+  .marg-#{$w} {
+    margin: #{$w}px;
+  }
+
+  .marg-v-#{$w} {
+    margin-top: #{$w}px;
+    margin-bottom: #{$w}px;
+  }
+
+  .marg-top-#{$w} {
+    margin-top: #{$w}px;
+  }
+
+  .marg-h-#{$w} {
+    margin-left: #{$w}px;
+    margin-right: #{$w}px;
+  }
+
+  .pad-#{$w} {
+    padding: #{$w}px;
+  }
+
+  .pad-v-#{$w} {
+    padding-top: #{$w}px;
+    padding-bottom: #{$w}px;
+  }
+
+  .pad-h-#{$w} {
+    padding-left: #{$w}px;
+    padding-right: #{$w}px;
+  }
+
+  .pad-top-#{$w} {
+    padding-top: #{$w}px;
+  }
+
+  .pad-bottom-#{$w} {
+    padding-bottom: #{$w}px;
+  }
+
+  .pad-right-#{$w} {
+    padding-right: #{$w}px;
+  }
+
+  .pad-left-#{$w} {
+    padding-left: #{$w}px;
+  }
+}
+.modal-window-wrap {
+  .modal-icon {
+    margin-top: 0px;
+    @include size(48px, 48px);
+  }
+}

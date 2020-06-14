@@ -1,0 +1,21 @@
+<div class="pdf-form-review">
+
+    <div class="canvas-block">
+
+        <ng-container *ngFor="let page of pages">
+
+            <canvas
+                class="canvas-pdf"
+                #canvasPdf
+                [width]="page.Size.Width"
+                [height]="page.Size.Height"
+            >
+            </canvas>
+
+            <canvas #canvasDraws class="canvas-highlight"></canvas>
+
+        </ng-container>
+
+    </div>
+
+</div>

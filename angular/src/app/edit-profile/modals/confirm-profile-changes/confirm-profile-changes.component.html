@@ -1,0 +1,49 @@
+﻿﻿<div class="modal-window-wrap confirm-profile-changes-modal">
+    <a href="javascript:void(0);"
+        (click)="cancel()"
+        class="close-modal"></a>
+    <mat-dialog-content class="modal-body"
+                        [formGroup]="confirmProfileChangesForm">
+        <mat-icon svgIcon="lock"
+                  class="modal-icon lock-icon"></mat-icon>
+
+        <h2 mat-dialog-title class="modal-title">
+            Confirm Changes:
+        </h2>
+
+        <div class="flex-row">
+            <div class="info-block pad-h-0">
+                Before saving changes, please type your current password here:
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1 pad-h-0">
+                <mat-form-field class="col-w-100">
+                    <input matInput
+                           placeholder="Current password:"
+                           type="password"
+                           formControlName="password"
+                           (keyup)="submitForm($event)"
+                           required
+                    />
+                    <mat-error *ngIf="confirmProfileChangesForm.controls.password.invalid">
+                        <b>Current password</b> cannot be empty.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="center">
+        <button class="niko-mat-button"
+                mat-raised-button
+                color="primary"
+                [disabled]="!confirmProfileChangesForm.valid"
+                (click)="save()">
+            Save Changes
+        </button>
+    </mat-dialog-actions>
+
+</div>

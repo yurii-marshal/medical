@@ -1,0 +1,26 @@
+.patient-info-tag-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: $main-active-color;
+}
+
+.patient-edit-pref-block {
+    margin-top: -20px;
+}
+
+.add-edit-patient {
+    .delivery-address-panel {
+        .drowz-wizard-block-title {
+            md-checkbox {
+                display: flex;
+                align-items: center;
+                margin: 0;
+            }
+
+            md-select-value {
+               background-color: inherit;
+            }
+        }
+    }
+}
+

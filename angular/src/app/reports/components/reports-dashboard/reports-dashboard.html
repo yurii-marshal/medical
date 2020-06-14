@@ -1,0 +1,340 @@
+<div class="reports-dashboard">
+    <div class="breadcrumbs">
+        <a href="#">
+            Dashboard
+        </a>
+        <a href="#" class="active">
+            Reports
+        </a>
+    </div>
+    <div class="flex-row pad-top-15 flex-wrap">
+        <div class="info-block col-w-75">
+            <div class="white-block">
+                <div class="white-block-title">
+                    <span> available reports </span>
+
+                    <a class="title-icon-btn"
+                       href="javascript:void(0);"
+                    >
+                        <mat-icon svgIcon="chevron"
+                                  class="chevron"
+                        ></mat-icon>
+                    </a>
+                </div>
+
+                <div class="white-block-body">
+                    <div class="flex-row">
+                        <div class="col-w-33 block-border-right pad-bottom-25">
+                            <div class="report-section-title">
+                                accounts receivable
+                            </div>
+
+                            <div class="report-section-item">
+                                <div class="report-section-item-title">
+                                    <a href="javascript:void(0);"
+                                       routerLink="/reports/table/aging_summary"
+                                    >
+                                        A/R Aging Summary
+                                    </a>
+                                </div>
+                                <div class="report-section-item-body">
+                                    Provides a summary breakdown of all outstanding amounts owed to your organization
+                                    by insurance and patients grouped by aging buckets.
+                                </div>
+                            </div>
+                            <div class="report-section-item">
+                                <div class="report-section-item-title">
+                                    <a href="javascript:void(0);"
+                                       routerLink="/reports/reports-table"
+                                    >
+                                        A/R Aging by Insurance
+                                    </a>
+                                </div>
+                                <div class="report-section-item-body">
+                                    Provides a summary breakdown of all outstanding amounts owed to your
+                                    organization by insurance grouped by aging buckets.
+                                </div>
+                            </div>
+                            <div class="report-section-item">
+                                <div class="report-section-item-title">
+                                    <a href="javascript:void(0);">A/R Aging by Patient</a>
+                                </div>
+                                <div class="report-section-item-body">
+                                    Provides a summary breakdown of all outstanding amounts owed to your organization
+                                    by patient grouped by aging buckets.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-w-67 pad-bottom-25">
+                            <div class="report-section-title">
+                                payments activity
+                            </div>
+                            <div class="flex-row flex-wrap">
+                                <div class="report-section-item col-w-50">
+                                    <div class="report-section-item-title">
+                                        <a href="javascript:void(0);"
+                                           (click)="goToV1Reports('reportSourceId=6&filters=339:15:81 Pike Dr,336:17:06/13/2018')"
+                                        >
+                                            Payments Summary
+                                        </a>
+                                    </div>
+                                    <div class="report-section-item-body">
+                                        Provides a summary of all payments, summed by payment type.
+                                    </div>
+                                </div>
+                                <div class="report-section-item col-w-50">
+                                    <div class="report-section-item-title">
+                                        <a href="javascript:void(0);">
+                                            Adjastments Detail
+                                        </a>
+                                    </div>
+                                    <div class="report-section-item-body">
+                                        Providers a list of adjustments.
+                                    </div>
+                                </div>
+                                <div class="report-section-item col-w-50">
+                                    <div class="report-section-item-title">
+                                        <a href="javascript:void(0);">
+                                            Payments Detail
+                                        </a>
+                                    </div>
+                                    <div class="report-section-item-body">
+                                        Provides a detailed list of payments, grouped by payment type.
+                                    </div>
+                                </div>
+                                <div class="report-section-item col-w-50">
+                                    <div class="report-section-item-title">
+                                        <a href="javascript:void(0);">
+                                            Denials Summary
+                                        </a>
+                                    </div>
+                                    <div class="report-section-item-body">
+                                        Provides a summary of adjustments.
+                                    </div>
+                                </div>
+                                <div class="report-section-item col-w-50">
+                                    <div class="report-section-item-title">
+                                        <a href="javascript:void(0);">
+                                            Unapplied Analysis
+                                        </a>
+                                    </div>
+                                    <div class="report-section-item-body">
+                                        Provides an analysis of the unapplied balance on payments.
+                                    </div>
+                                </div>
+                                <div class="report-section-item col-w-50">
+                                    <div class="report-section-item-title">
+                                        <a href="javascript:void(0);">
+                                            Denials Detail
+                                        </a>
+                                    </div>
+                                    <div class="report-section-item-body">
+                                        Provides a list of denials.
+                                    </div>
+                                </div>
+                                <div class="report-section-item col-w-50">
+                                    <div class="report-section-item-title">
+                                        <a href="javascript:void(0);">
+                                            Adjustments  Summary
+                                        </a>
+                                    </div>
+                                    <div class="report-section-item-body">
+                                        Provides a summary of adjustments.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-row remove-padding">
+                        <div class="col-w-33 block-border-right block-border-top pad-bottom-25">
+                            <div class="report-section-title">
+                                inventory
+                            </div>
+                            <div class="report-section-item">
+                                <div class="report-section-item-title">
+                                    <a href="javascript:void(0);">
+                                        Inventory Audit
+                                    </a>
+                                </div>
+                                <div class="report-section-item-body">
+                                    This report is used to track inventory changes to item or location inventory,
+                                    inventory changes done by a user, or a combination of these.
+                                </div>
+                            </div>
+                            <div class="report-section-item">
+                                <div class="report-section-item-title">
+                                    <a href="javascript:void(0);">
+                                        Inventory Summary
+                                    </a>
+                                </div>
+                                <div class="report-section-item-body">
+                                    This report is used to track the inventory of items in the warehouse, on team
+                                    members or on patients.
+                                </div>
+                            </div>
+                            <div class="report-section-item">
+                                <div class="report-section-item-title">
+                                    <a href="javascript:void(0);">
+                                        Costs of Good Sold
+                                    </a>
+                                </div>
+                                <div class="report-section-item-body">
+                                    This report is used to track the costs of goods sold (COGS) over a period of
+                                    time in accordance with generally accepted accounting principles.
+                                </div>
+                            </div>
+
+                            <div class="report-section-item">
+                                <div class="report-section-item-title">
+                                    <a href="javascript:void(0);">
+                                        Depreciation
+                                    </a>
+                                </div>
+                                <div class="report-section-item-body">
+                                    This report is used to track depreciation of assets over a period of time in
+                                    accordance with generally accepted accounting principles.
+                                </div>
+                            </div>
+
+                            <div class="report-section-item">
+                                <div class="report-section-item-title">
+                                    <a href="javascript:void(0);">
+                                        Purchase Orders
+                                    </a>
+                                </div>
+                                <div class="report-section-item-body">
+                                    This report is used to track purchase orders to vendors including fulfilment status.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-w-33 block-border-right block-border-top pad-bottom-25">
+                            <div class="report-section-title">
+                                patients
+                            </div>
+                            <div class="report-section-item">
+                                <div class="report-section-item-title">
+                                    <a href="javascript:void(0);">
+                                        Patient Summary
+                                    </a>
+                                </div>
+                                <div class="report-section-item-body">
+                                    This report shows a summary of patients over a period of time.
+                                </div>
+                            </div>
+                            <div class="report-section-item">
+                                <div class="report-section-item-title">
+                                    <a href="javascript:void(0);">
+                                        Patient detail
+                                    </a>
+                                </div>
+                                <div class="report-section-item-body">
+                                    This report provides a patient's details, including demographics,
+                                    insurance, referring provider information.
+                                </div>
+                            </div>
+                            <div class="report-section-item">
+                                <div class="report-section-item-title">
+                                    <a href="javascript:void(0);">
+                                        Patient Referral Summary
+                                    </a>
+                                </div>
+                                <div class="report-section-item-body">
+                                    This report lists the referring providers, the number of patients
+                                    referred, and the total charges generated by those patients for a period of time.
+                                </div>
+                            </div>
+                            <div class="report-section-item">
+                                <div class="report-section-item-title">
+                                    <a href="javascript:void(0);">
+                                        Patient Referral Detail
+                                    </a>
+                                </div>
+                                <div class="report-section-item-body">
+                                    This report lists the patients referred by the referring providers and
+                                    the total charges generated by those patients.
+                                </div>
+                            </div>
+                            <div class="report-section-item">
+                                <div class="report-section-item-title">
+                                    <a href="javascript:void(0);">
+                                        Patient Referral Detail
+                                    </a>
+                                </div>
+                                <div class="report-section-item-body">
+                                    This report lists the patients referred by the referring providers and
+                                    the total charges generated by those patients.
+                                </div>
+                            </div>
+                            <div class="report-section-item">
+                                <div class="report-section-item-title">
+                                    <a href="javascript:void(0);">
+                                        Active Rental Report
+                                    </a>
+                                </div>
+                                <div class="report-section-item-body">
+                                    This report lists the patients with active rentals including product details
+                                    including HCPCS.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-w-33 block-border-top pad-bottom-25">
+                            <div class="report-section-title">
+                                audit
+                            </div>
+                            <div class="report-section-item">
+                                <div class="report-section-item-title">
+                                    <a href="javascript:void(0);">Audit Log</a>
+                                </div>
+                                <div class="report-section-item-body">
+                                    -
+                                </div>
+                            </div>
+                            <div class="report-section-item">
+                                <div class="report-section-item-title">
+                                    <a href="javascript:void(0);">
+                                        Third Party Integrations
+                                    </a>
+                                </div>
+                                <div class="report-section-item-body">
+                                    -
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="info-block col-w-25">
+            <div class="white-block pad-bottom-25">
+                <div class="white-block-title">
+                    <span> custom reports </span>
+
+                    <a class="title-icon-btn"
+                       href="javascript:void(0);"
+                    >
+                        <mat-icon svgIcon="chevron"
+                                  class="chevron"
+                        ></mat-icon>
+                    </a>
+                </div>
+                <div class="white-block-body">
+                    <div class="report-section-item">
+                        <div class="report-section-item-title">
+                            <a href="javascript:void(0);">A/R Aging Summary</a>
+                            <a class="title-icon-btn"
+                               href="javascript:void(0);"
+                            >
+                                <mat-icon svgIcon="edit"
+                                          class="edit-icon"
+                                ></mat-icon>
+                            </a>
+                        </div>
+                        <div class="report-section-item-body">
+                            Provider test description Provider
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

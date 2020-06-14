@@ -1,0 +1,25 @@
+<div bs-loading-overlay
+     bs-loading-overlay-reference-id="quickShipAddModel"
+>
+
+    <div class="drowz-wizard-body clearfix">
+        <search-items items="shipAddModel.items"
+                      type="products"
+                      is-hide-select-any-device-btn="true"
+        ></search-items>
+    </div>
+
+    <div class="drowz-wizard-footer">
+        <md-button class="md-raised main-button drowz-wizard-footer-btn"
+                   ng-click="shipAddModel.cancel()"
+        >
+            Cancel
+        </md-button>
+        <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                   ng-click="shipAddModel.save()"
+        >
+            Save
+        </md-button>
+    </div>
+
+</div>

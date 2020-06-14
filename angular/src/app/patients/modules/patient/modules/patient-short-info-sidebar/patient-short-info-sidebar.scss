@@ -1,0 +1,206 @@
+@import "../../../../../../assets/styles/base/variables";
+@import "../../../../../../assets/styles/utils/mixins";
+
+.sidebar {
+
+    .sidebar-padding-block {
+        position: relative;
+        justify-content: start;
+        padding: 15px 10px 5px 20px;
+
+        .edit-info-icon {
+            position: absolute;
+            top: 18px;
+            right: 16px;
+        }
+
+        .photo-block {
+            min-width: 90px;
+            width: 90px;
+            height: 90px;
+            margin-right: 20px;
+            overflow: hidden;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            transition: .2s;
+
+        }
+
+        .male {
+            background-image: url('../../../../../../assets/images/avatar.jpg');
+        }
+
+        .female {
+            background-image: url('../../../../../../assets/images/female-avatar.png');
+        }
+
+        .name-status-block {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: .2s;
+
+            &.with-avatar {
+                max-width: calc(100% - 110px);
+            }
+
+            &.with-link {
+                .sidebar-title {
+                    padding-right: 35px;
+                }
+            }
+
+            .sidebar-title {
+                color: $main-active-color;
+                font-size: 22px;
+                line-height: 26px;
+                transition: .2s;
+                word-break: break-word;
+            }
+
+            .status-and-gender {
+                display: flex;
+                width: 100%;
+                justify-content: space-between;
+
+                .status-label {
+                    transition: .2s;
+                }
+
+                .gender-icon {
+                    transition: .2s;
+
+                    mat-icon {
+                        width: 14px;
+                        height: 14px;
+                        margin-left: 7px;
+                        margin-top: 5px;
+                    }
+                }
+
+                .edit-doc {
+                    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1);
+
+                    @include size(38px, 38px);
+
+                    min-width: 38px;
+                    padding: 0;
+                    margin: 0;
+
+                    mat-icon {
+                        @include size(18px, 24px);
+                        color: $gray-color;
+                    }
+                }
+
+            }
+
+        }
+
+        .info-block {
+            color: $label-color;
+            line-height: 19px;
+
+            .info-block-body {
+                font-size: 14px;
+            }
+        }
+
+        &.accordions {
+            padding-top: 0;
+        }
+
+    }
+
+    .patient-tags {
+
+        .attr-label {
+            color: $label-color;
+
+            .tag-icon {
+                color: $light-gray-label;
+            }
+
+        }
+
+    }
+
+    /deep/ app-no-content {
+
+        .no-records {
+            justify-content: start !important;
+        }
+
+    }
+
+    .insurance-status-label {
+        min-width: 60px;
+        margin-top: 22px;
+    }
+
+    .insurance-block-title {
+        width: 168px;
+    }
+
+    &.closed-sidebar {
+
+        .sidebar-padding-block.main-patient-block {
+            flex-direction: column;
+            padding: 5px;
+
+            .photo-block {
+                min-width: 42px;
+                width: 42px;
+                height: 42px;
+                margin: 0 0 10px;
+            }
+
+            .view-info-icon {
+                visibility: hidden;
+                opacity: 0;
+                z-index: -1000;
+            }
+
+            .sidebar-title {
+                display: none;
+            }
+
+            .status-and-gender {
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+
+                .status-label {
+                    font-size: 11px;
+                    padding-left: 3px;
+                    padding-right: 3px;
+                    margin-bottom: 5px;
+                    margin-left: 12px;
+                }
+
+                .gender-icon {
+                    visibility: hidden;
+                    mat-icon {
+                        margin: 0;
+                    }
+                }
+            }
+        }
+
+        .hiding-block {
+            width: 300px;
+            height: 100px;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateX(-600px);
+        }
+
+        app-v-accordion {
+            display: none;
+        }
+
+    }
+
+}

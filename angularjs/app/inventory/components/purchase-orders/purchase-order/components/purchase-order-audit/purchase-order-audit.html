@@ -1,0 +1,42 @@
+<div class="audit-tab"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="purchaseOrderAudit">
+
+    <div class="audit-tab-list"
+         infinite-scroll="purchaseOrderAudit.getPurchaseOrderAudit()"
+         infinite-scroll-immediate-check="true"
+         infinite-scroll-disabled="purchaseOrderAudit.auditListParams.stopLoading"
+         ng-show="purchaseOrderAudit.auditList.length">
+        <div class="audit-tab-item" ng-repeat="item in purchaseOrderAudit.auditList">
+            <div class="info-block long-date-block">
+                <div class="info-block-label">Date:</div>
+                <div class="info-block-body">
+                    <span class="dark-blue-text">{{ item.Date | localDateTime: 'MM/DD/YYYY' }}</span>
+                    <span class="active-text">{{ item.Date | localDateTime: 'hh:mm:ss A' }}</span>
+                </div>
+            </div>
+            <div class="info-block w300px left-divider">
+                <div class="info-block-label">Operation:</div>
+                <div class="info-block-body">{{ item.Operation.Name }}</div>
+            </div>
+            <div class="info-block block-width-200 left-divider">
+                <div class="info-block-label">Source:</div>
+                <div class="info-block-body">{{ item.Source }}</div>
+            </div>
+            <div class="info-block block-width-190 details-btn flex-row flex-end">
+
+                <span class="pad-left-10" ng-if="item.HasDetails">
+                    <md-button class="md-raised small-btn document-icon-btn"
+                               ui-sref="root.purchase-order.audit-details({ purchaseOrderAuditId: item.Id})">
+                        <md-icon md-svg-src="assets/images/default/documents.svg"></md-icon> Details
+                    </md-button>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <no-records text="Audit Records" is-fullpage="true"
+                ng-show="!purchaseOrderAudit.auditList.length && purchaseOrderAudit.auditListLoaded"
+    ></no-records>
+
+</div>

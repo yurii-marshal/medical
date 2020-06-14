@@ -1,0 +1,113 @@
+<div class="modal-window search-products-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="searchProduct">
+
+    <a href="javascript:void(0);" ng-click="modal.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/inventory.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Search Products:</h2>
+        </div>
+
+        <div class="search-modal-filters">
+            <div class="select-col">
+                <md-button class="clear-filters"
+                           ng-click="modal.clearFilters()"
+                           aria-label="...">
+                    <md-icon md-svg-src="assets/images/default/clear-filters.svg"></md-icon>
+                </md-button>
+            </div>
+            <div class="name-col">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>Search name</label>
+                    <input type="text"
+                           ng-model="modal.filtersObj.Name"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click />
+                </md-input-container>
+            </div>
+            <div class="productPartNum-col">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>Part#</label>
+                    <input type="text"
+                           ng-model="modal.filtersObj.PartNumber"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click
+                    />
+                </md-input-container>
+            </div>
+            <div class="manufacturer-col">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>Search Manufacturer</label>
+                    <input type="text"
+                           ng-model="modal.filtersObj.Manufacturer"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click />
+                </md-input-container>
+            </div>
+            <div class="hcpcs-col">
+
+                <md-autocomplete class="drowz-infinite-autocomplete"
+                                 md-no-cache="true"
+                                 md-selected-item="modal.filtersObj.HcpcsCode"
+                                 md-search-text="searchHcpcsCode"
+                                 md-items="code in modal.getHcpcsCodes(searchHcpcsCode)"
+                                 md-item-text="code.Text"
+                                 md-min-length="1"
+                                 md-floating-label="Search"
+                                 ng-model-options="{debounce: 450}"
+                                 clear-on-click
+                                 drowz-clear-value>
+                    <md-item-template>
+                        <div title="{{code.Description}}">{{code.Text}}</div>
+                    </md-item-template>
+                    <md-not-found>Not found</md-not-found>
+                </md-autocomplete>
+            </div>
+        </div>
+
+        <div class="search-products-table">
+            <div class="search-products-header">
+                <div class="select-col">Select:</div>
+                <div class="name-col">Name:</div>
+                <div class="productPartNum-col">Part#:</div>
+                <div class="manufacturer-col">Manufacturer:</div>
+                <div class="hcpcs-col">HCPCS:</div>
+            </div>
+            <div class="products-container"
+                 scroll-bar
+                 scroll-bar-above-element="true">
+                <no-records text="Products" ng-if="!modal.productsList.length"></no-records>
+                <md-radio-group ng-model="modal.selectedProduct">
+                    <md-radio-button ng-value="item"
+                                     class="md-primary search-product-row"
+                                     ng-repeat="item in modal.productsList track by $index">
+                        <div class="search-products-row">
+                            <div class="name-col">{{item.Name}}</div>
+                            <div class="productPartNum-col">{{item.PartNumber}}</div>
+                            <div class="manufacturer-col">{{item.ManufacturerName}}</div>
+                            <div class="hcpcs-col">
+                                <div popover-directive="item.allHcpcsCodes"
+                                     hide-first-item="true"
+                                     min-width="50"></div>
+                            </div>
+                        </div>
+                    </md-radio-button>
+                </md-radio-group>
+                <div class="flex-cont center" ng-show="modal.showMoreButton">
+                    <div ng-click="modal.showMore()" class="show-more-btn"> show more </div>
+                </div>
+            </div>
+        </div>
+
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" aria-label="..." ng-click="modal.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button" aria-label="..." ng-click="modal.save()" ng-disabled="!modal.selectedProduct">
+            OK
+        </md-button>
+    </md-dialog-actions>
+</div>

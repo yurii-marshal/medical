@@ -1,0 +1,101 @@
+.md-virtual-repeat-container:not(.md-not-found) {
+    .autocomplete-checkbox-menu {
+        li {
+            padding: 0;
+            line-height: inherit;
+            height: auto;
+
+            md-checkbox {
+                margin: 0;
+                padding: 10px 15px;
+                width: 100%;
+
+                .md-container {
+                    margin-left: 15px;
+                }
+            }
+        }
+    }
+}
+autocomplete-multiselect-filter {
+    position: relative;
+    display: block;
+    width: 100%;
+
+    .autocomplete-multiselect-field-wrapper {
+        position: relative;
+        width: calc(100% - 20px);
+        display: inline-block;
+
+        md-autocomplete {
+            width: 100%;
+
+            md-input-container {
+                .md-input {
+                    padding-right: 35px;
+                    text-overflow: ellipsis;
+                }
+                &.md-input-focused, &.md-input-has-value {
+                    label {
+                        display: none;
+                    }
+                }
+                label:not(.md-no-float):not(.md-container-ignore) {
+                    padding: 7px 35px 0 0;
+                    margin: 0;
+                    height: 30px;
+                    line-height: 28px;
+                    font-size: 16px;
+                    color: $font-color;
+                }
+            }
+        }
+
+        .autocomplete-multiselect-popover {
+            display: inline-block;
+            width: 26px;
+            position: absolute;
+            bottom: 23px;
+            right: 5px;
+
+            .tooltipstered {
+                width: 26px;
+                height: 26px;
+                line-height: 26px;
+                text-align: center;
+                border-radius: 50%;
+                background-color: $main-active-color;
+                color: $white-color;
+            }
+        }
+    }
+    .clear-field {
+        top: 20px;
+        right: 0;
+    }
+}
+
+.tooltipster-autocomplete-multiselect-filter {
+    max-height: 300px;
+
+    .tooltipster-box {
+        .tooltipster-content {
+            padding: 15px;
+
+            .autocomplete-multiselect-filter-popover-item {
+                position: relative;
+                padding-right: 22px;
+                margin-bottom: 8px;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                .clear-field {
+                    top: 4px;
+                    right: 2px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,41 @@
+.tasks-list {
+    .toolbar-single-action {
+        display: flex;
+
+        &:before, &:after {
+            content: none;
+        }
+
+        md-icon {
+            fill: #ffffff;
+        }
+    }
+
+    .breadcrumbs {
+        position: relative;
+        background-color: rgba($dark-gray-color, 0.1);
+
+        drowz-tabs {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%);
+            background-color: transparent;
+
+            .drowz-tabs-link {
+                &:hover, &:focus {
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+
+    .delete-icon-btn:disabled {
+        &:hover {
+            md-icon {
+                min-width: 14px;
+            }
+        }
+    }
+}

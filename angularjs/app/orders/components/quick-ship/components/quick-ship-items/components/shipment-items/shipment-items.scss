@@ -1,0 +1,79 @@
+.shipment-items {
+    .control-block {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        .reset-methods {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            @include size(32px, 32px);
+            min-width: 32px;
+            padding: 0;
+            color: $gray-color;
+            border-radius: 50%;
+            background-color: transparent;
+
+            .reset-methods-icon {
+                display: block;
+                @include size(16px, 16px);
+                margin: 0;
+                color: currentColor;
+            }
+
+            &:hover {
+                color: $main-active-hover-color;
+                background-color: lighten($gray-color, 15%);
+            }
+        }
+
+        .main-delivery-method {
+            align-items: center;
+
+            .method-label {
+                min-width: 130px;
+                font-weight: 500;
+            }
+
+            .method-select {
+                min-width: 150px;
+                margin: 0 10px 0 0;
+
+                md-select {
+                    .md-select-value {
+                        background-color: transparent;
+                    }
+
+                    &:not([disabled]):focus {
+                        .md-select-value {
+                            border-bottom-color: $gray-color-main;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    .warning-msg {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        background-color: $light-gray-color;
+        border-radius: 7px;
+        padding: 8px;
+        margin: 10px 0;
+
+        .counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 7px;
+            @include size(25px, 25px);
+            color: #ffffff;
+            border-radius: 50%;
+            background-color: $red-error-color;
+        }
+    }
+}

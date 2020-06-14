@@ -1,0 +1,11 @@
+price-option {
+    display: flex;
+
+    .purchase-after {
+        .checked-icon {
+            @include size(16px, 10px);
+            margin: 0 13px 0 0;
+            color: $main-active-color;
+        }
+    }
+}

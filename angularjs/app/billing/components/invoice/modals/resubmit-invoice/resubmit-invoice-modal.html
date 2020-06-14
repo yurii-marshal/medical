@@ -1,0 +1,50 @@
+<div class="modal-window submit-invoice-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="resubmit"
+>
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content" ng-form="$ctrl.resubmitionForm">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/shield.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Resubmit:</h2>
+        </div>
+        <md-input-container>
+            <label>Resubmission Code:</label>
+            <md-select ng-model="$ctrl.ResubmissionCode"
+                       ng-required="true"
+                       name="resubmissionCode">
+                <md-option ng-value="item.Code"
+                           ng-repeat="item in $ctrl.resubmitionCodes track by $index"
+                           ng-selected="item.Code == $ctrl.ResubmissionCode">
+                    <span title="{{item.Name}}">{{item.Name}}</span>
+                </md-option>
+            </md-select>
+            <div ng-messages="$ctrl.resubmitionForm.resubmissionCode.$error" class="md-input-messages-nice">
+                <div ng-message="required">This field is required</div>
+            </div>
+        </md-input-container>
+        <md-input-container>
+            <label>Original Ref. #:</label>
+            <input type="text"
+                   name="refNumber"
+                   ng-required="$ctrl.ResubmissionCode !== $ctrl.ResubmissionCodes.originalClaim"
+                   ng-model="$ctrl.payerOriginalClaimNumber"
+                   clear-on-click
+            >
+            <div ng-messages="$ctrl.resubmitionForm.refNumber.$error"
+                 class="md-input-messages-nice">
+                <div ng-message="required">This field is required</div>
+            </div>
+        </md-input-container>
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button" ng-click="$ctrl.save()">Resubmit</md-button>
+    </md-dialog-actions>
+
+</div>

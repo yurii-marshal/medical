@@ -1,0 +1,201 @@
+.billing-main {
+    position: relative;
+
+    .breadcrumbs {
+        position: relative;
+        background-color: rgba($dark-gray-color, 0.1);
+
+        drowz-tabs {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 650px;
+            background-color: transparent;
+
+            @include respond-to(bigScreens) {
+                left: 420px;
+            }
+
+            .drowz-tabs-link {
+                &:hover, &:focus {
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}
+
+infinity-table.double-row-table {
+    .denial-td {
+        width: 85px;
+        min-width: 85px;
+    }
+
+    .charge-td {
+        width: 110px;
+        min-width: 110px;
+    }
+
+    .hcpcs-td {
+        width: 105px;
+        min-width: 105px;
+    }
+
+    .created-td {
+        width: 130px;
+        min-width: 130px;
+    }
+
+    //.order-id-td {
+    //    width: 130px;
+    //    min-width: 130px;
+    //}
+
+    .invoice-td {
+        width: 145px;
+        min-width: 145px;
+    }
+
+    .patient-td {
+        flex-grow: 1;
+    }
+
+    .insurance-td, .expire-date-td {
+        width: 200px;
+        min-width: 200px;
+    }
+
+    .primary-short-td {
+        width: 190px;
+        min-width: 190px;
+    }
+
+    .primary-insurance-td {
+        width: 300px;
+        min-width: 300px;
+    }
+
+    .primary-insurance-long-td {
+        width: 400px;
+        min-width: 400px;
+    }
+
+    .modifiers-td {
+        width: 130px;
+        min-width: 130px;
+    }
+
+    .status-td {
+        width: 150px;
+        min-width: 150px;
+        flex-wrap: wrap;
+    }
+
+    .physician-td {
+        width: 200px;
+        min-width: 200px;
+    }
+
+    .created-date {
+        width: 160px;
+        min-width: 160px;
+    }
+
+    .in-progress-section {
+        min-width: 600px;
+    }
+
+    infinity-table-row {
+        .code-with-slash {
+            &::after {
+                right: -1px;
+            }
+        }
+
+        .custom-table-body.denial-reason {
+            align-items: center;
+            padding: 0 0 8px;
+            box-shadow: none;
+        }
+    }
+
+    &.denails-table {
+        .created-td {
+            width: 125px;
+            min-width: 125px;
+
+            @include respond-to(bigScreens) {
+                width: 115px;
+                min-width: 115px;
+            }
+        }
+
+        .invoice-td {
+            width: 140px;
+            min-width: 140px;
+
+            @include respond-to(bigScreens) {
+                width: 130px;
+                min-width: 130px;
+            }
+        }
+
+        .dos-td {
+            width: 200px;
+            min-width: 200px;
+
+            @include respond-to(bigScreens) {
+                width: 180px;
+                min-width: 180px;
+            }
+        }
+    }
+}
+
+.eob-era-list {
+    .connect-icon-btn,
+    .connect-icon-btn.md-button,
+    .connect-icon-btn.md-button:not([disabled]) {
+        display: none;
+        &.visible {
+            display: inline-block;
+        }
+    }
+}
+
+.invoices-list, .invoices-list.double-row-table {
+    .name-td {
+        width: 265px;
+        min-width: 265px;
+    }
+
+    .order-id-td {
+        width: 150px;
+        min-width: 150px;
+    }
+
+    .datetime-td {
+        width: 190px;
+        min-width: 190px;
+    }
+
+    .custom-table-body {
+        &.attributes {
+            padding: 10px;
+            min-height: auto;
+            height: auto;
+
+             .attributes-wrapper {
+                 flex-wrap: wrap;
+
+                 .attr-label {
+                     display: inline-block;
+                 }
+             }
+        }
+    }
+
+    .allowable-label {
+        margin: 0 10px 5px 0;
+    }
+}

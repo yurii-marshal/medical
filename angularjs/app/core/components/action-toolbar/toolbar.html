@@ -1,0 +1,59 @@
+<md-fab-speed-dial md-open="$ctrl.isOpenToolbar"
+                   count="0"
+                   md-direction="down"
+                   class="action-toolbar md-fling">
+    <md-fab-trigger  id="action-toolbar-trigger" class="action-toolbar-trigger">
+        <md-button aria-label="menu" class="md-fab">&nbsp;</md-button>
+    </md-fab-trigger>
+
+    <md-fab-actions class="action-btn-list"
+                    ng-class="{'visible-action-btns': $ctrl.isOpenToolbar}">
+        <span ng-repeat="link in $ctrl.items track by $index"
+              ng-hide="link.isHidden"
+              simple-tooltip="{{ link.text }}"
+              tooltip-position="bottom"
+              simple-tooltip-enable="$ctrl.isLongToolbar"
+              simple-tooltip-breakpoint="1550"
+        >
+            <md-button ng-if="!link.hasConfirmation"
+                       class="action-btn md-fab md-raised md-primary"
+                       ng-click="link.clickFunction($event)"
+                >
+                <span class="action-btn-icon">
+                    <md-icon md-svg-src="{{ link.icon.url }}"
+                             class="{{ link.icon.className }}"
+                             ng-style="{
+                                     'width': link.icon.w + 'px',
+                                     'height': link.icon.h + 'px',
+                                     'min-width': link.icon.w + 'px',
+                                     'min-height': link.icon.h + 'px'
+                              }">
+                    </md-icon>
+                </span>
+                <span class="grow-1 action-btn-label">{{ link.text }}</span>
+            </md-button>
+            <md-button ng-if="link.hasConfirmation"
+                       class="action-btn md-fab md-raised md-primary"
+                       confirm-ng-click="link.clickFunction($event)"
+                       confirm-title="{{ link.confirmTitle }}"
+                       confirm-msg="link.confirmMsg"
+                       confirm-btn-ok="{{ link.confirmBtnOk }}"
+                       confirm-btn-cancel="{{ link.confirmBtnCancel }}"
+                        >
+                <span class="action-btn-icon">
+                    <md-icon md-svg-src="{{ link.icon.url }}"
+                             class="{{ link.icon.className }}"
+                             ng-style="{
+                                     'width': link.icon.w + 'px',
+                                     'height': link.icon.h + 'px',
+                                     'min-width': link.icon.w + 'px',
+                                     'min-height': link.icon.h + 'px'
+                              }">
+                    </md-icon>
+                </span>
+                <span class="grow-1 action-btn-label">{{ link.text }}</span>
+            </md-button>
+        </span>
+    </md-fab-actions>
+
+</md-fab-speed-dial>

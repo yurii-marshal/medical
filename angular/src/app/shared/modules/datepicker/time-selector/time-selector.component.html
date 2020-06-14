@@ -1,0 +1,14 @@
+<app-time-component-selector [hidden]=" mode !== 'time' "
+                         [isMeridiem]="isMeridiem"
+                         [(date)]="selectedDate"
+                         (selectHour)=" mode = 'hour' "
+                         (selectMinute)=" mode= 'minute' "
+                         [interval]="interval">
+</app-time-component-selector>
+<app-hour-selector [hidden]=" mode !== 'hour' "
+               [isMeridiem]="isMeridiem"
+               [(date)]="selectedDate">
+</app-hour-selector>
+<app-minute-selector [hidden]=" mode !== 'minute' "
+                 [(date)]="selectedDate">
+</app-minute-selector>

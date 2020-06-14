@@ -1,0 +1,17 @@
+<div class="modal-window confirm-modal">
+    <md-toolbar class="modal-title">
+        <div class="md-toolbar-tools">
+            <h2>{{ctrl.title}}</h2>
+            <a href="javascript:void(0);" ng-click="ctrl.close()" class="close-modal"></a>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="modal-padding" style="text-align: center;">
+            {{ ctrl.msg }}
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter confirm-footer" layout="row" layout-align="space-between center">
+        <md-button class="md-raised" ng-click="ctrl.close()">{{ctrl.btnCancelText}}</md-button>
+        <md-button class="md-primary md-raised" ng-click="ctrl.btnOkFunc()">{{ctrl.btnOkText}}</md-button>
+    </md-dialog-actions>
+</div>

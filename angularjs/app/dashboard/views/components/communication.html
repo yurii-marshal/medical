@@ -1,0 +1,111 @@
+<div class="dashboard-block-title">
+    <span>Communication:</span>
+    <md-button class="refresh-messages-btn"
+               aria-label="..."
+               ng-click="$ctrl.reload()">
+        <md-icon md-svg-src="assets/images/default/clear-filters.svg"></md-icon>
+    </md-button>
+</div>
+<div class="dashboard-block-body">
+    <div class="communication-sidebar" ng-if="!$ctrl.isShowNoRecords"
+         bs-loading-overlay
+         bs-loading-overlay-reference-id="msgContacts">
+        <md-input-container class="search-field">
+            <label>Find User:</label>
+            <input type="text" ng-model="$ctrl.filterStr"/>
+            <md-icon class="search-icon" md-svg-src="assets/images/default/search.svg"></md-icon>
+        </md-input-container>
+        <div class="communication-sidebar-users"
+             scroll-bar
+             scroll-bar-above-element="true"
+        >
+            <div class="communication-sidebar-user"
+                 ng-repeat="item in $ctrl.users | filter:{User:{Name:{FullName:$ctrl.filterStr}}} track by $index"
+                 ng-class="{'active': ($ctrl.selectedUser.User.Id === item.User.Id)}"
+                 ng-click="$ctrl.selectUser(item)">
+                <div class="sidebar-user-avatar"
+                     ng-style="{'background-image': 'url(' + item.User.ProfilePicture + ')'}">
+                </div>
+                <!--<div class="sidebar-user-status inactive"></div>-->
+                <div class="sidebar-user-name">{{item.User.Name.FullName}}</div>
+                <div class="sidebar-user-unread drowz-round-label" ng-if="item.UnreadMessages">
+                    {{item.UnreadMessages}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="communication-content" ng-show="$ctrl.users.length"
+         style="position:relative;"
+         bs-loading-overlay
+         bs-loading-overlay-reference-id="msgList">
+
+        <div class="communication-messages"
+             ng-show="$ctrl.messages.length"
+             scroll-bar
+             scroll-bar-above-element="true"
+             on-total-scroll-back="$ctrl.onMessageScrollTopPoint"
+             on-total-scroll-back-offset="200">
+
+            <div style="position:relative; height: 60px;"
+                 bs-loading-overlay
+                 bs-loading-overlay-reference-id="msgLoading">
+            </div>
+            <div class="communication-message"
+                 ng-repeat="msg in $ctrl.messages.getAll() track by msg.Id"
+                 ng-class="{'my-message': $ctrl.getMsgType(msg), 'new-message': !msg.Read}"
+                 ng-attr-id="{{msg.Id}}">
+
+                <div class="communication-msg-info">
+                    <div class="communication-msg-avatar"
+                         ng-if="$ctrl.getAvatar(msg)"
+                         ng-style="{'background-image': 'url('+$ctrl.getAvatar(msg)+')'}"></div>
+                    <div class="communication-msg-avatar" ng-if="!$ctrl.getAvatar(msg)"></div>
+                    <div class="communication-msg-user">{{$ctrl.getUserName(msg)}}</div>
+                </div>
+                <div class="communication-msg-body">
+                    <div class="msg-body-text">
+                        <format-string-by-paragraphs text="msg.Text"></format-string-by-paragraphs>
+                    </div>
+                    <div class="msg-body-date">{{msg.Date | localDateTime: "MM/DD/YYYY, hh:mm:ss A" }}</div>
+                </div>
+            </div>
+        </div>
+        <no-records text="Messages"
+                    is-fullpage="true"
+                    ng-if="!$ctrl.messages.getAll().length && $ctrl.selectedUser">
+        </no-records>
+        <div class="communication-footer" ng-show="$ctrl.selectedUser">
+            <md-input-container class="communication-textarea">
+                <label></label>
+                <textarea placeholder="Type your message here..."
+                          cols="1" rows="1"
+                          id="communicationSendMsg"
+                          ng-model="$ctrl.msg"></textarea>
+            </md-input-container>
+            <md-button class="send-message" aria-label="..."
+                       ng-click="$ctrl.sendMsg()"
+                       simple-tooltip="{{$ctrl.sendMsgTooltip}}"
+                       tooltip-position="bottom">
+                <md-icon md-svg-src="assets/images/default/send.svg" class="wave"></md-icon>
+            </md-button>
+        </div>
+    </div>
+
+    <div class="custom-no-records horizontal" ng-if="$ctrl.isShowNoRecords">
+        <div class="custom-no-records-icon">
+            <md-icon md-svg-src="assets/images/default/email-big.svg"></md-icon>
+        </div>
+        <div class="custom-no-records-content">
+            <div class="custom-no-records-title">You do not have any Messages yet.</div>
+            <div class="custom-no-records-text">
+                Please create users for enabling communication. After that, you can send <br>
+                messages to any of them through Dashboard.
+            </div>
+            <md-button class="md-raised md-primary middle-btn custom-no-records-btn"
+                       ui-sref="root.management.personnel_add">
+                <md-icon md-svg-src="assets/images/default/user-square.svg" class="user-square-icon"></md-icon>
+                <span>New User</span>
+            </md-button>
+        </div>
+    </div>
+</div>

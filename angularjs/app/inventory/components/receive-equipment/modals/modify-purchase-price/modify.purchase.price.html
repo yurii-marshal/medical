@@ -1,0 +1,42 @@
+<div class="modal-window change-qty-modal"
+     ng-form="$ctrl.purchasePriceForm">
+    <a href="javascript:void(0);"
+       ng-click="$ctrl.cancel()"
+       class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon"
+                 md-svg-src="assets/images/default/inventory.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Purchase PRICE:</h2>
+        </div>
+
+        <div class="flex-row flex-center">
+            <div class="info-block w220px">
+                <md-input-container>
+                    <label>Price:</label>
+                    <input type="number"
+                           min="0"
+                           name="purchasePrice"
+                           ng-model="$ctrl.purchasePrice"
+                           price-validator
+                    >
+                    <div ng-messages="$ctrl.purchasePriceForm.purchasePrice.$error"
+                         class="md-input-messages-nice"
+                    >
+                        <div ng-message="min">Min purchase price amount is 0</div>
+                        <div ng-message="price">Max 2 digits after point</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button" ng-click="$ctrl.save()">Save</md-button>
+    </md-dialog-actions>
+</div>

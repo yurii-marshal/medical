@@ -1,0 +1,153 @@
+<div class="modal-window select-patient-orders-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay"
+     ng-form="$ctrl.modalForm">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/barcode.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Search order:</h2>
+        </div>
+
+        <div class="orders-radio-filters">
+            <div class="info-block">
+                <div class="info-block-label">Type:</div>
+                <div class="info-block-body">
+                    <md-radio-group ng-model="$ctrl.filters.orderTypes"
+                                    ng-change="$ctrl.onChangeOrderType()">
+                        <md-radio-button class="md-primary"
+                                         ng-repeat="item in $ctrl.dictionaries.orderTypes"
+                                         ng-value="item.filterValue"
+                                         aria-label="...">
+                            {{item.displayText}}
+                        </md-radio-button>
+                    </md-radio-group>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-modal-filters">
+            <div class="select-col">
+                <md-button class="clear-filters"
+                           ng-click="$ctrl.clearFilters()"
+                           aria-label="...">
+                    <md-icon md-svg-src="assets/images/default/clear-filters.svg"></md-icon>
+                </md-button>
+            </div>
+            <div class="from-to-filters">
+                <md-input-container>
+                    <label>From:</label>
+                    <input datetimepicker
+                           ng-model="$ctrl.filters.createdFrom"
+                           ng-change="$ctrl.searchOrders()"
+                           name="startDate"
+                           format="MM/DD/YYYY"
+                           start-date-validator
+                           end-date="$ctrl.filters.createdTo"
+                           clear-on-click>
+                    <div ng-messages="$ctrl.modalForm.startDate.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="startDate">Date <b>"From"</b> must be less than date <b>"To"</b></div>
+                    </div>
+                </md-input-container>
+                <span>&#8212;</span>
+                <md-input-container>
+                    <label>To:</label>
+                    <input name="toDate"
+                           datetimepicker
+                           format="MM/DD/YYYY"
+                           use-current="false"
+                           ng-model="$ctrl.filters.createdTo"
+                           ng-change="$ctrl.searchOrders()"
+                           end-date-validator
+                           start-date="$ctrl.filters.createdFrom"
+                           clear-on-click>
+                    <div ng-messages="$ctrl.modalForm.toDate.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="endDate">Date <b>"To"</b> must be greater than date <b>"From"</b></div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div class="search-phys-col">
+                <md-autocomplete
+                        md-no-cache="true"
+                        md-selected-item-change="$ctrl.searchOrders()"
+                        md-selected-item="$ctrl.filters.referralCard"
+                        md-search-text="searchText"
+                        md-items="item in $ctrl.searchReferral(searchText)"
+                        md-item-text="item.displayName"
+                        md-min-length="0"
+                        md-floating-label="Search Referring Provider:"
+                        clear-on-click>
+                    <md-item-template>
+                        <div md-highlight-text="searchText" md-highlight-flags="^i">
+                            {{item.searchName}}
+                        </div>
+                    </md-item-template>
+                    <md-not-found>No Referring Providers found</md-not-found>
+                </md-autocomplete>
+            </div>
+        </div>
+
+        <div class="search-products-table">
+            <div class="search-products-header">
+                <div class="select-col">Select:</div>
+                <div class="order-id">Order:</div>
+                <div class="order-created-on">Created:</div>
+                <div class="order-physician grow-1">Referring Provider:</div>
+                <div class="order-statuses">Status:</div>
+            </div>
+            <div class="products-container"
+                 scroll-bar
+                 scroll-bar-above-element="true">
+                <no-records text="Orders"
+                            ng-if="$ctrl.patientOrdersTotalCount !== undefined && $ctrl.patientOrders.length === 0"></no-records>
+                <md-radio-group ng-model="$ctrl.selectedPatientOrder">
+                    <md-radio-button ng-value="item"
+                                     ng-disabled="$ctrl.isAnyLocation"
+                                     class="md-primary search-product-row"
+                                     ng-repeat="item in $ctrl.patientOrders track by $index">
+                        <div class="search-products-row">
+                            <div class="order-id" ng-bind="item.DisplayId"></div>
+                            <div class="order-created-on flex-cont" ng-bind="item.CreatedDate | localDateTime:'MM/DD/YYYY hh:mm A'">
+                                <div></div>
+                            </div>
+                            <div class="order-physician grow-1">
+                                {{item.referralDisplayName}}
+                            </div>
+                            <div class="order-statuses">
+                                <div class="status-label {{item.statusClass}}">
+                                    {{item.State.Status.Text}}
+                                </div>
+                                <div class="status-label blue"
+                                     ng-if="item.Type.Id.toString() === '2'">
+                                    Resupply
+                                </div>
+                            </div>
+                        </div>
+                    </md-radio-button>
+                </md-radio-group>
+                <div class="flex-cont center" ng-show="$ctrl.showMoreButton">
+                    <div ng-click="$ctrl.showMore()" class="show-more-btn">
+                        <span>&nbsp;show more&nbsp;</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Close</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.save()"
+                   ng-disabled="!$ctrl.selectedPatientOrder">
+            Ok
+        </md-button>
+    </md-dialog-actions>
+
+</div>

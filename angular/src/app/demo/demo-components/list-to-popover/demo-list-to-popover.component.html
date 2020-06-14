@@ -1,0 +1,27 @@
+<app-grid>
+	<div class="title-wrapper">
+		<div class="title w250px">regular</div>
+		<div class="title w250px">only icon</div>
+		<div class="title w250px">hide first item</div>
+		<div class="title w250px">ellipsis mode</div>
+	</div>
+	
+	<app-grid-item [isAllItemsLoaded]="true">
+		<div class="grid-item">
+			<div class="grid-item-data">
+				<div class="item-property w250px">
+					<app-list-to-popover [popoverItems]="popoverData"></app-list-to-popover>
+				</div>
+				<div class="item-property w250px">
+					<app-list-to-popover [popoverItems]="popoverData" [showOnlyIcon]="true"></app-list-to-popover>
+				</div>
+				<div class="item-property w250px">
+					<app-list-to-popover [popoverItems]="popoverData" [hideFirstItem]="true"></app-list-to-popover>
+				</div>
+				<div class="item-property w250px">
+					<app-list-to-popover [popoverItems]="popoverEllipsisData" [isEllipsisMode]="true"></app-list-to-popover>
+				</div>
+			</div>
+		</div>
+	</app-grid-item>
+</app-grid>

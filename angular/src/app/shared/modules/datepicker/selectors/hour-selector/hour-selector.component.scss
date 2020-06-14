@@ -1,0 +1,62 @@
+@import "~assets/styles/base/variables";
+@import "~assets/styles/utils/mixins";
+
+.date-set {
+    line-height: 2em;
+    text-align: center;
+    vertical-align: middle
+}
+
+.date-set.hidden {
+    display: none
+}
+
+.date-set__dates {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 20px;
+    list-style-type: none;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: stretch;
+
+    li {
+        padding: 0;
+        font-size: 14px;
+        line-height: 38px;
+        position: relative;
+        background: transparent !important;
+        border-radius: 50% !important;
+        box-sizing: border-box;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent !important;
+        z-index: 3;
+        width: 48px;
+        height: 45px;
+
+        &:hover:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 211;
+            display: block;
+            height: 100%;
+            width: 100%;
+            background: transparent;
+            border: 1px solid $main-active-color !important;
+        }
+    }
+}
+
+.date-set__date {
+    cursor: pointer;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+
+.date-set__date.selected {
+    background: #eee
+}

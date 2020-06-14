@@ -1,0 +1,98 @@
+<div class="purchase-order-page order small-sidebar"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="purchaseOrderPage">
+
+    <div class="sidebar-container"
+         drowz-sidebar
+         drowz-sidebar-name="purchase-order">
+
+        <div class="sidebar">
+
+            <div class="sidebar-content"
+                 scroll-bar
+                 scroll-bar-above-element="true">
+
+                <div class="sidebar-padding-block flex-cont stretch hiding-block">
+                    <div class="name-status-block">
+                        <div class="sidebar-title">{{ purchaseOrder.model.DisplayId }}</div>
+
+                        <div>
+                            <div class="status-label {{ purchaseOrder.model.Status.statusClass }}"
+                                 ng-bind="purchaseOrder.model.Status.Name"></div>
+                        </div>
+
+                        <md-button class="md-raised small-btn edit-doc"
+                                   aria-label="..."
+                                   ng-click="purchaseOrder.editPurchaseOrderStatus()"
+                        >
+                            <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                        </md-button>
+
+                    </div>
+                </div>
+
+                <div class="sidebar-padding-block hiding-block">
+
+                    <div class="sidebar-block-title active-text">Short Details:</div>
+
+                    <div class="icon-block">
+                        <md-icon md-svg-src="assets/images/default/museum-circle.svg" class="icon-block-icon"></md-icon>
+                        <div class="info-block">
+                            <div class="info-block-label">Vendor:</div>
+                            <div class="info-block-body">{{ purchaseOrder.model.Vendor.Name }}</div>
+                        </div>
+                    </div>
+
+                    <div class="icon-block">
+                        <md-icon md-svg-src="assets/images/default/calendar.svg" class="icon-block-icon"></md-icon>
+                        <div class="info-block">
+                            <div class="info-block-label">Created:</div>
+                            <div class="info-block-body">{{ purchaseOrder.model.CreatedOn | localDateTime: 'MM/DD/YYYY' }}</div>
+                        </div>
+                    </div>
+
+                    <div class="icon-block">
+                        <md-icon md-svg-src="assets/images/default/user-circle-new.svg" class="icon-block-icon"></md-icon>
+                        <div class="info-block">
+                            <div class="info-block-label">Created By:</div>
+                            <div class="info-block-body">{{ purchaseOrder.model.CreatedBy.FullName }}</div>
+                        </div>
+                    </div>
+
+                    <div class="icon-block">
+                        <md-icon md-svg-src="assets/images/main-menu/billing.svg" class="icon-block-icon"></md-icon>
+                        <div class="info-block">
+                            <div class="info-block-label">Total:</div>
+                            <div class="info-block-body font-bold">$ {{ purchaseOrder.model.TotalPrice | absNumber:2 }}</div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <md-button class="toggle-menu-slide" aria-label="...">
+                <md-icon md-svg-src="assets/images/default/chevron.svg" class="toggle_menu_arrow"></md-icon>
+            </md-button>
+
+        </div>
+
+        <div class="main-content">
+
+            <drowz-tabs items="purchaseOrder.tabs"></drowz-tabs>
+
+            <toolbar items="purchaseOrder.toolbarItems"></toolbar>
+
+            <div class="breadcrumbs">
+                <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+                <a href="javascript:void(0)" ui-sref="root.inventory.list">Inventory</a>
+                <a href="javascript:void(0)" ui-sref="root.inventory.purchase-orders">Purchase Orders</a>
+                <a href="javascript:void(0)" class="active">Purchase Order Details</a>
+            </div>
+
+            <div ui-view></div>
+
+        </div>
+    </div>
+</div>
+

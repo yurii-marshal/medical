@@ -1,0 +1,83 @@
+<div class="modal-window search-products-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="searchLocation">
+    <a href="javascript:void(0);" ng-click="modal.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/inventory.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Search Location:</h2>
+        </div>
+
+        <div class="search-modal-filters">
+            <div class="select-col">
+                <md-button class="clear-filters"
+                           ng-click="modal.clearFilters()"
+                           ng-disabled="modal.isAnyLocation"
+                           aria-label="...">
+                    <md-icon md-svg-src="assets/images/default/clear-filters.svg"></md-icon>
+                </md-button>
+            </div>
+            <div class="name-col">
+                <div class="flex-cont">
+                    <md-input-container class="drowz-infinite-input-container grow-1">
+                        <label>Search name</label>
+                        <input type="text"
+                               ng-disabled="modal.isAnyLocation"
+                               ng-model="modal.filtersObj.Name"
+                               ng-model-options="{debounce: 450}"
+                               clear-on-click
+                        />
+                    </md-input-container>
+                    <md-checkbox class="md-primary any-location-checkbox"
+                                 ng-if="modal.isAnyLocationAvailable"
+                                 ng-change="modal.locationChanged()"
+                                 ng-model="modal.isAnyLocation">
+                        Any location
+                    </md-checkbox>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-products-table">
+            <div class="search-products-header">
+                <div class="select-col">Select:</div>
+                <div class="name-col">Name:</div>
+            </div>
+            <div class="products-container"
+                 scroll-bar
+                 scroll-bar-above-element="true">
+                <no-records text="Locations" ng-if="!modal.locationsList.length"></no-records>
+                <md-radio-group ng-model="modal.selectedLocation"
+                                ng-change="modal.locationChanged()">
+                    <md-radio-button ng-value="item"
+                                     ng-disabled="modal.isAnyLocation"
+                                     class="md-primary search-product-row"
+                                     ng-repeat="item in modal.locationsList track by $index">
+                        <div class="search-products-row">
+                            <div class="name-col">{{item.DisplayName}}</div>
+                        </div>
+                    </md-radio-button>
+                </md-radio-group>
+                <div class="flex-cont center" ng-show="modal.showMoreButton">
+                    <div ng-click="modal.showMore()"
+                         class="show-more-btn"
+                         ng-disabled="modal.isAnyLocation">
+                        <span>&nbsp;show more&nbsp;</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="modal.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="modal.save()"
+                   ng-disabled="!modal.selectedLocation && !modal.isAnyLocation"
+        >OK</md-button>
+    </md-dialog-actions>
+</div>

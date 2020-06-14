@@ -1,0 +1,26 @@
+<div class="resupply-program">
+    <div class="resupply-program-switch"
+         ng-if="resupply.model.FirstResupplyProgramInit"
+    >
+        <md-switch class="md-primary"
+                   ng-model="resupply.model.ResupplyProgramAvailable"
+                   ng-change="resupply.toggleResupplyProgram()"
+        >
+            Do you want to start Resupply Program for this patient
+            <a href="javascript:void(0)"
+               ui-sref="root.orders.order.details({ orderId: resupply.orderId })">
+                (Patient ID: <span ng-bind="resupply.model.patientId"></span>) ?
+            </a>
+        </md-switch>
+    </div>
+
+    <resupply-program ng-if="resupply.model.ResupplyProgramAvailable"
+                      model="resupply.model.ResupplyProgram"
+                      add-items-root="resupply.searchItemsRoot"
+                      current-selected-items="resupply.currentSelectedItems"
+                      is-filters-bottom-position="true"
+                      is-delivery-date-by-default="true"
+    >
+    </resupply-program>
+
+</div>

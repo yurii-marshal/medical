@@ -1,0 +1,29 @@
+.block-prescription-diagnosis {
+    label {
+        display: none;
+    }
+
+    md-input-container {
+        margin: 0;
+    }
+
+    .clear-field {
+        top: 11px;
+    }
+}
+
+.prescription-items-header {
+    .block-prescription-diagnosis {
+        padding-top: 15px;
+    }
+}
+
+.bundle-components-table {
+    .block-prescription-diagnosis {
+        margin-top: 15px;
+    }
+}
+
+.autocomplete-item-width-300 {
+    min-width: 300px !important;
+}

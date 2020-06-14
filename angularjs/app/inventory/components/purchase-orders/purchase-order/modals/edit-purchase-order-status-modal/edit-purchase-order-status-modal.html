@@ -1,0 +1,39 @@
+<div class="modal-window order-status-edit-modal"
+     ng-form="$ctrl.Form"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="editPurchaseOrderStatusModal">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.close()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/setup-rect.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Change Order Status:</h2>
+        </div>
+
+        <div class="sidebar-order-status {{ $ctrl.model.Status.statusClass }}">
+            <div class="flex-row">
+                <md-input-container class="grow-1">
+                    <label>Status:</label>
+                    <md-select ng-model="$ctrl.model.Status"
+                               class="status-select"
+                               ng-model-options="{trackBy: '$value.Id'}">
+                        <md-option ng-value="status"
+                                   ng-repeat="status in $ctrl.statuses track by $index">
+                            <span ng-bind="status.Name"></span>
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter" layout="row" layout-align="end center">
+        <md-button class="md-raised main-button" ng-click="$ctrl.close()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button" ng-click="$ctrl.save()">Save</md-button>
+    </md-dialog-actions>
+
+</div>

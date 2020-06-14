@@ -1,0 +1,662 @@
+<div class="drowz-wizard-body-flex align-stretch"
+     ng-form="patient.step1Form"
+>
+    <div class="flex-50-percent flex-cont stretch flex-column">
+        <div class="drowz-wizard-block">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Patient Details:</div>
+            </div>
+            <div class="drowz-wizard-block-body">
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block block-width-100">
+                        <md-input-container>
+                            <label>Prefix:</label>
+                            <md-select ng-model="patient.patientInfo.Prefix"
+                                       ng-model-options="{trackBy: '$value.Id'}"
+                                       clear-on-click
+                            >
+                                <md-option ng-value="prefix"
+                                           ng-repeat="prefix in patient.dictionary.namePrefixes">
+                                    {{prefix.Text}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <div class="info-block grow-1">
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block flex-25-percent">
+                                <md-input-container>
+                                    <label>First Name:</label>
+                                    <input type="text"
+                                           name="firstName"
+                                           ng-model="patient.patientInfo.Name.First"
+                                           ng-required="true">
+                                    <div ng-messages="patient.step1Form.firstName.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+
+                            <div class="info-block flex-25-percent">
+                                <md-input-container>
+                                    <label>Middle Name:</label>
+                                    <input type="text"
+                                           name="middleName"
+                                           ng-model="patient.patientInfo.Name.Middle"
+                                    >
+                                </md-input-container>
+                            </div>
+
+                            <div class="info-block flex-25-percent">
+                                <md-input-container>
+                                    <label>Last Name:</label>
+                                    <input type="text"
+                                           name="lastName"
+                                           ng-model="patient.patientInfo.Name.Last"
+                                           ng-required="true">
+
+                                    <div ng-messages="patient.step1Form.lastName.$error" class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+
+                            <div class="info-block flex-25-percent">
+                                <md-input-container>
+                                    <label>Nickname:</label>
+                                    <input type="text"
+                                           name="Nickname"
+                                           ng-model="patient.patientInfo.NickName"
+                                    >
+                                </md-input-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block flex-50-percent">
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1">
+                                <md-input-container>
+                                    <label class="required-label">Gender:</label>
+                                    <md-select name="gender"
+                                               ng-model="patient.patientInfo.Gender"
+                                               ng-model-options="{trackBy: '$value.Id'}"
+                                               ng-required="true"
+                                    >
+                                        <md-option ng-value="gender"
+                                                   ng-repeat="gender in patient.dictionary.genders">
+                                            {{gender.Text}}
+                                        </md-option>
+                                    </md-select>
+                                    <div ng-messages="patient.step1Form.gender.$error" class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="info-block grow-1">
+                                <md-input-container class="calendar_icon">
+                                    <label>DOB:</label>
+                                    <input datetimepicker
+                                           format="MM/DD/YYYY"
+                                           min-date="false"
+                                           max-date="{{patient.maxDOB}}"
+                                           is-age-picker="true"
+                                           show-today-button="false"
+                                           name="dob"
+                                           ng-change="patient.setPatientAge()"
+                                           ng-model="patient.patientInfo.DateOfBirthday"
+                                           ng-required="true">
+                                    <div ng-messages="patient.step1Form.dob.$error" class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="info-block block-width-70">
+                                <div class="info-block-label">Age:</div>
+                                <div class="info-block-body">{{ patient.patientInfo.patientAge.toString() || '-' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-block flex-50-percent">
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1">
+                                <md-input-container>
+                                    <label>Weight (lb):</label>
+                                    <input type="number"
+                                           step="0.1"
+                                           min="0"
+                                           name="patientWeight"
+                                           ng-model="patient.patientInfo.Weight"
+                                    >
+                                    <div ng-messages="patient.step1Form.patientWeight.$error"
+                                         class="md-input-messages-nice"
+                                    >
+                                        <div ng-message="min">The value couldn't be less than 0</div>
+                                        <div ng-message="number">Value is not valid</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="info-block grow-1">
+                                <md-input-container>
+                                    <label>Height (in):</label>
+                                    <input type="number"
+                                           step="0.1"
+                                           min="0"
+                                           name="patientHeight"
+                                           ng-model="patient.patientInfo.Height"
+                                    >
+                                    <div ng-messages="patient.step1Form.patientHeight.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="min">The value couldn't be less than 0</div>
+                                        <div ng-message="number">Value is not valid</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block flex-50-percent">
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1">
+                                <md-input-container>
+                                    <label>Marital Status:</label>
+                                    <md-select name="maritalStatus"
+                                               ng-model-options="{trackBy: '$value.Id'}"
+                                               ng-model="patient.patientInfo.MaritalStatus"
+                                               clear-on-click>
+                                        <md-option ng-value="maritalStatus"
+                                                   ng-repeat="maritalStatus in patient.dictionary.maritalStatuses">
+                                            {{maritalStatus.Text}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <div class="info-block grow-1">
+                                <md-input-container>
+                                    <label>SSN:</label>
+                                    <input type="text"
+                                           name="ssnField"
+                                           ng-model="patient.patientInfo.Ssn"
+                                           only-digits-with-length
+                                           max-length="9"
+                                           ng-minlength="9">
+                                    <div ng-messages="patient.step1Form.ssnField.$error" class="md-input-messages-nice">
+                                        <div ng-message="minlength"><b>SS#</b> must contain min 9 digits.</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-block flex-50-percent">
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1 sign-on-file-block">
+                                <div class="shared-label">Patient Signature on File: *</div>
+                                <div class="flex-row space-between">
+                                    <div class="info-block flex-50-percent">
+                                        <md-input-container class="">
+                                            <label></label>
+                                            <md-select ng-model="patient.patientInfo.SignatureOnFile.IsSigned"
+                                                       ng-required="true"
+                                                       ng-change="patient.signatureOnFileChanged(patient.patientInfo.SignatureOnFile)"
+                                                       name="signature"
+                                                       aria-label="...">
+                                                <md-option ng-value="signature.Id"
+                                                           ng-repeat="signature in patient.signatureOnFileList"
+                                                >
+                                                    {{signature.Name}}
+                                                </md-option>
+                                            </md-select>
+                                            <div ng-messages="patient.step1Form.signature.$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">This field is required</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                    <div class="info-block flex-50-percent">
+                                        <md-input-container class="calendar_icon gray-icon left-input-icon"
+                                                            ng-if="patient.patientInfo.SignatureOnFile.IsSigned === patient.patientSignatureOnFileConstants.YES_ID"
+                                        >
+                                            <label></label>
+                                            <input ng-model="patient.patientInfo.SignatureOnFile.SignedDate"
+                                                   name="dateOfSing"
+                                                   datetimepicker
+                                                   use-current="false"
+                                                   format="MM/DD/YYYY"
+                                                   clear-on-click
+                                                   ng-required="true"
+                                            >
+                                            <div ng-messages="patient.step1Form.dateOfSing.$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">This field is required</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block">
+                        <div class="patient-info-tag-title padding-top-15">Tags:</div>
+                    </div>
+                    <div class="info-block grow-1">
+                        <attrs-tags class="grow-1"
+                                    tags="patient.patientInfo.Tags"
+                                    tags-parent="patient"
+                        ></attrs-tags>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="drowz-wizard-block">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Patient Status:</div>
+            </div>
+            <div class="drowz-wizard-block-body">
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block block-width-150">
+                        <div class="info-block-label">Patient ID:</div>
+                        <div class="info-block-body font-semibold">{{ patient.patientInfo.DisplayId || '—' }}</div>
+                    </div>
+
+                    <div class="info-block block-width-300">
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block flex-50-percent">
+                                <md-input-container>
+                                    <label>Status:</label>
+                                    <md-select ng-model="patient.patientInfo.Status"
+                                               name="patientStatus"
+                                               ng-change="patient.patientStatusChanged(patient.patientInfo.Status.Id)"
+                                               ng-required="true"
+                                    >
+                                        <md-option ng-value="status"
+                                                   ng-repeat="status in patient.dictionary.patientStatuses">
+                                            {{ status.Text }}
+                                        </md-option>
+                                    </md-select>
+                                    <div ng-messages="patient.step1Form.patientStatus.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="info-block flex-50-percent calendar_icon icon-right">
+                                <div class="info-block-label">Created Date:</div>
+                                <div class="info-block-body">{{ patient.patientInfo.StatusDate | amUtc | amDateFormat:
+                                    'MM/DD/YYYY' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-block grow-1">
+                        <div class="drowz-wizard-block-row"
+                             ng-if="patient.patientInfo.Status.Id === patient.patientStatusesConstants.INACTIVE_ID"
+                        >
+                            <div class="info-block flex-50-percent">
+                                <div class="drowz-wizard-block-row">
+                                    <div class="info-block grow-1">
+                                        <md-input-container>
+                                            <label>Reason of Inactive:</label>
+                                            <md-select ng-model="patient.patientInfo.InactiveStatus"
+                                                       ng-model-options="{trackBy: '$value.Id'}"
+                                                       name="patientInactiveStatus"
+                                            >
+                                                <md-option ng-value="inactiveStatus"
+                                                           ng-repeat="inactiveStatus in patient.dictionary.patientInactiveStatuses">
+                                                    {{inactiveStatus.Text}}
+                                                </md-option>
+                                            </md-select>
+                                            <div ng-messages="patient.step1Form.patientInactiveStatus.$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">This field is required</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-block flex-50-percent">
+                                <div class="drowz-wizard-block-row">
+                                    <div class="info-block grow-1">
+                                        <md-input-container>
+                                            <label>DC Date:</label>
+                                            <input datetimepicker
+                                                   format="MM/DD/YYYY"
+                                                   use-current="false"
+                                                   ng-model="patient.patientInfo.DcDate">
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block flex-50-percent">
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1">
+                                <md-autocomplete-with-infinite-scroll
+                                    md-no-cache="true"
+                                    md-selected-item="patient.patientInfo.Location"
+                                    md-search-text="patient.searchLocation"
+                                    md-items="location in patient.getOrganizationLocations(patient.searchLocation, pageIndex)"
+                                    md-item-text="location.FullName"
+                                    md-min-length="0"
+                                    ng-required="true"
+                                    md-floating-label="Location:"
+                                    clear-on-click
+                                    md-autocomplete-required
+                                    md-input-name="location">
+
+                                    <md-item-template>
+                                        <span md-highlight-flags="^i"
+                                              title="{{location.FullName}}">
+                                            {{location.FullName}}
+                                        </span>
+                                    </md-item-template>
+
+                                    <md-not-found>
+                                        No Locations were found
+                                    </md-not-found>
+                                    <div ng-messages="patient.step1Form.location.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                        <div ng-message="selected">Selected Location is not valid</div>
+                                    </div>
+                                </md-autocomplete-with-infinite-scroll>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--FACILITY-->
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block flex-50-percent">
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1">
+                                <md-autocomplete-with-infinite-scroll
+                                    md-no-cache="true"
+                                    md-selected-item="patient.patientInfo.Facility"
+                                    md-search-text="patient.searchFacility"
+                                    md-items="facility in patient.getFacilities(patient.searchFacility, pageIndex)"
+                                    md-item-text="facility.Name"
+                                    md-min-length="0"
+                                    md-selected-item-change="patient.onFacilityChange(patient.patientInfo.Facility.Id)"
+                                    md-floating-label="Facility:"
+                                    clear-on-click
+                                    md-autocomplete-required
+                                    md-input-name="facility">
+
+                                    <md-item-template>
+                                        <span md-highlight-flags="^i"
+                                              title="{{facility.Name}}">
+                                            {{facility.Name}}
+                                        </span>
+                                    </md-item-template>
+
+                                    <md-not-found>
+                                        No Locations were found
+                                    </md-not-found>
+                                    <div ng-messages="patient.step1Form.facility.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                        <div ng-message="selected">Selected Facility is not valid</div>
+                                    </div>
+                                </md-autocomplete-with-infinite-scroll>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-block flex-50-percent">
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1">
+                                <md-input-container>
+                                    <label>Facility Location:</label>
+                                    <md-select ng-model="patient.patientInfo.FacilityLocation"
+                                               ng-model-options="{trackBy: '$value.Id'}"
+                                               name="facilityLocation"
+                                               ng-disabled="!patient.patientInfo.Facility"
+                                               ng-required="patient.patientInfo.Facility"
+                                    >
+                                        <md-option ng-value="loc"
+                                                   ng-repeat="loc in patient.dictionary.facilityLocations"
+                                                   ng-disabled="!loc.Id"
+                                        >
+                                            {{loc.FullAddress}}
+                                        </md-option>
+                                    </md-select>
+                                    <div ng-messages="patient.step1Form.facilityLocation.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-50-percent flex-cont stretch flex-column">
+        <div class="drowz-wizard-block">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Contacts:</div>
+                <div class="flex-row">
+                    <div class="info-block padding-top-10">
+                        <md-button class="md-primary md-raised small-btn"
+                                   ng-click="patient.addNewContact(patient.patientInfo.PatientContacts)"
+                                   ng-disabled="patient.isPatientAddContactDisabled()"
+                        >
+                            Add New
+                        </md-button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="drowz-wizard-block-body">
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block grow-1">
+                        <patient-contacts contacts="patient.patientInfo.PatientContacts"
+                                          add-btn-hide="true"
+                        ></patient-contacts>
+                    </div>
+                </div>
+                <div class="drowz-wizard-block-row patient-edit-pref-block">
+                    <div class="info-block flex-50-percent">
+                        <md-input-container>
+                            <label>Preferred:</label>
+                            <md-select ng-model="patient.patientInfo.PreferredPatientPhoneType"
+                                       ng-model-options="{trackBy: '$value.Id'}"
+                                       ng-disabled="patient.preferredContactTypes.length === 0"
+                                       clear-on-click
+                            >
+                                <md-option ng-value="contact.Type"
+                                           ng-repeat="contact in patient.preferredContactTypes track by contact.Type.Id"
+                                >
+                                    {{contact.Type.Text}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <div class="info-block flex-50-percent">
+                        <md-input-container>
+                            <label>Time:</label>
+                            <md-select ng-model="patient.patientInfo.PreferredCallTime"
+                                       clear-on-click
+                            >
+                                <md-option ng-value="prefferedCallTime"
+                                           ng-model-options="{trackBy: '$value.Id'}"
+                                           ng-repeat="prefferedCallTime in patient.dictionary.preferredCallTimes"
+                                >
+                                    {{prefferedCallTime.Text}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="drowz-wizard-block">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Patient Address:</div>
+            </div>
+            <div class="drowz-wizard-block-body">
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block grow-1">
+                        <md-input-container>
+                            <label>Address (line 1):</label>
+                            <input type="text"
+                                   name="patientAddressLine1"
+                                   ng-model="patient.patientInfo.Address.AddressLine"
+                                   ng-required="true">
+                            <div ng-messages="patient.step1Form.patientAddressLine1.$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div class="info-block grow-1">
+                        <md-input-container>
+                            <label>Address (line 2):</label>
+                            <input type="text"
+                                   ng-model="patient.patientInfo.Address.AddressLine2"
+                            >
+                        </md-input-container>
+                    </div>
+                </div>
+
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block grow-1">
+                        <md-input-container>
+                            <label>City:</label>
+                            <input type="text"
+                                   name="patientCity"
+                                   ng-model="patient.patientInfo.Address.City"
+                                   ng-required="true"
+                            >
+                            <div ng-messages="patient.step1Form.patientCity.$error" class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div class="info-block grow-1">
+                        <input-state-string
+                            form-name="patient.step1Form"
+                            input-name="patientState"
+                            selected-item="patient.patientInfo.Address.State"
+                            ng-required="true">
+                        </input-state-string>
+                    </div>
+                    <div class="info-block grow-1">
+                        <input-zip-string
+                            form-name="patient.step1Form"
+                            input-name="patientZip"
+                            selected-item="patient.patientInfo.Address.Zip"
+                            ng-required="true"
+                        >
+                        </input-zip-string>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="drowz-wizard-block delivery-address-panel">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Delivery Address:</div>
+
+                <div class="flex-row align-center">
+                    <div class="marg-right-5">Copy Delivery Address from:</div>
+
+                    <md-input-container class="w130px marg-right-5">
+                        <md-select ng-model="patient.copyToDeliveryFrom"
+                                   clear-on-click
+                        >
+                            <md-option ng-value="source"
+                                       ng-repeat="source in patient.deliveryAddresSources"
+                            >
+                                {{source.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-button class="md-primary md-raised small-btn"
+                               ng-click="patient.copyAddress(patient.copyToDeliveryFrom, patient.patientInfo.DeliveryAddress)">
+                        Apply
+                    </md-button>
+                </div>
+            </div>
+            <div class="drowz-wizard-block-body">
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block grow-1">
+                        <md-input-container>
+                            <label>Address (line 1):</label>
+                            <input type="text"
+                                   name="patientDeliveryAddressLine1"
+                                   ng-model="patient.patientInfo.DeliveryAddress.AddressLine"
+                                   ng-required="true"
+                            >
+                            <div ng-messages="patient.step1Form.patientDeliveryAddressLine1.$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div class="info-block grow-1">
+                        <md-input-container>
+                            <label>Address (line 2):</label>
+                            <input type="text"
+                                   ng-model="patient.patientInfo.DeliveryAddress.AddressLine2">
+                        </md-input-container>
+                    </div>
+                </div>
+
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block grow-1">
+                        <md-input-container>
+                            <label>City:</label>
+                            <input type="text"
+                                   name="patientDeliveryCity"
+                                   ng-model="patient.patientInfo.DeliveryAddress.City"
+                                   ng-required="true">
+                            <div ng-messages="patient.step1Form.patientDeliveryCity.$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div class="info-block grow-1">
+                        <input-state-string
+                            form-name="patient.step1Form"
+                            input-name="patientDeliveryAddressState"
+                            selected-item="patient.patientInfo.DeliveryAddress.State"
+                            ng-required="true">
+                        </input-state-string>
+                    </div>
+                    <div class="info-block grow-1">
+                        <input-zip-string
+                            form-name="patient.step1Form"
+                            input-name="patientDeliveryZip"
+                            selected-item="patient.patientInfo.DeliveryAddress.Zip"
+                            ng-required="true"
+                        >
+                        </input-zip-string>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

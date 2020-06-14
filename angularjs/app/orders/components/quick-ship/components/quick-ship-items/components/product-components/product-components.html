@@ -1,0 +1,103 @@
+<div class="item-components" ng-form="$ctrl['componentForm-' + $ctrl.hash]">
+    <v-accordion class="flow-accordion grow-1">
+        <v-pane expanded="true">
+
+            <v-pane-header class="flow-accordion-title">
+                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                         class="flow-accordion-title-icon"
+                ></md-icon>
+                <span>Included Items:</span>
+            </v-pane-header>
+
+            <v-pane-content>
+                <table class="drowz-table regular-table">
+                    <tr class="drowz-table-header">
+                        <th class="number-cell" width="45">#</th>
+                        <th width="110">Photo:</th>
+                        <th>Name:</th>
+                        <th>Manufacturer:</th>
+                        <th>ID/Part #:</th>
+                        <th>HCPCS:</th>
+                        <th width="220">Serial Number:</th>
+                        <th width="220">Lot Number:</th>
+                        <th width="80">Qty</th>
+                    </tr>
+                    <tr class="drowz-table-row"
+                        ng-repeat="hash in $ctrl.product.componentsHashes track by $index">
+                        <td class="number-cell"
+                            ng-bind="($index + 1) + '.'"></td>
+                        <td class="item-img-cell">
+                            <div class="item-img-container">
+                                <img src=""
+                                     ng-src="{{$ctrl.components.byHash[hash].pictureUrl
+                                                    ? ($ctrl.WEB_API_INVENTORY_SERVICE_URI + $ctrl.components.byHash[hash].pictureUrl)
+                                                    : $ctrl.noImage
+                                                }}"
+                                     alt=""
+                                     class="item-img">
+                            </div>
+                        </td>
+                        <td ng-bind="$ctrl.components.byHash[hash].name"></td>
+                        <td ng-bind="$ctrl.components.byHash[hash].manufacturer"></td>
+                        <td ng-bind="$ctrl.components.byHash[hash].partNumber"></td>
+                        <td>
+                            <div class="flex-cont">
+                                <div popover-directive="$ctrl.components.byHash[hash].hcpcsCodes"
+                                     hide-first-item="true"
+                                     min-width="50"></div>
+                            </div>
+                        </td>
+                        <td>
+                            <md-input-container>
+                                <label></label>
+                                <input type="text"
+                                       name="component-serial-number-{{hash}}"
+                                       ng-model="$ctrl.components.byHash[hash].serialNumber"
+                                       ng-disabled="!$ctrl.product.deliveryMethod ||
+                                                    ($ctrl.product.deliveryMethod !== $ctrl.deliveryMethodsIds.MANUALLY_ID) ||
+                                                    !$ctrl.components.byHash[hash].isSerialized"
+                                       ng-required="!!$ctrl.product.deliveryMethod &&
+                                                    $ctrl.product.deliveryMethod === $ctrl.deliveryMethodsIds.MANUALLY_ID &&
+                                                    $ctrl.components.byHash[hash].isSerialized"
+                                       ng-blur="$ctrl.onChangeComponent({
+                                            serialNumber: $ctrl.components.byHash[hash].serialNumber
+                                       }, $ctrl.components.byHash[hash].hash)"
+                                       clear-on-click
+                                >
+                                    <div ng-messages="$ctrl['componentForm-' + $ctrl.hash]['component-serial-number-' + hash].$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                </div>
+                            </md-input-container>
+                        </td>
+                        <td>
+                            <md-input-container>
+                                <label></label>
+                                <input type="text"
+                                       name="component-lot-number-{{hash}}"
+                                       ng-model="$ctrl.components.byHash[hash].lotNumber"
+                                       ng-disabled="!$ctrl.product.deliveryMethod ||
+                                                    ($ctrl.product.deliveryMethod !== $ctrl.deliveryMethodsIds.MANUALLY_ID) ||
+                                                    !$ctrl.components.byHash[hash].isLotted"
+                                       ng-required="!!$ctrl.product.deliveryMethod &&
+                                                    $ctrl.product.deliveryMethod === $ctrl.deliveryMethodsIds.MANUALLY_ID &&
+                                                    $ctrl.components.byHash[hash].isLotted"
+                                       ng-blur="$ctrl.onChangeComponent({
+                                            lotNumber: $ctrl.components.byHash[hash].lotNumber
+                                       }, $ctrl.components.byHash[hash].hash)"
+                                       clear-on-click>
+                                <div ng-messages="$ctrl['componentForm-' + $ctrl.hash]['component-lot-number-' + hash].$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </md-input-container>
+                        </td>
+                        <td>
+                            <span ng-bind="$ctrl.components.byHash[hash].count"></span>
+                        </td>
+                    </tr>
+                </table>
+            </v-pane-content>
+        </v-pane>
+    </v-accordion>
+</div>

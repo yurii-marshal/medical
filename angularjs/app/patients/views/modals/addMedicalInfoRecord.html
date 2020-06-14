@@ -1,0 +1,89 @@
+<div class="modal-window medical-info-record">
+
+    <a href="javascript:void(0);" ng-click="modal.cancel()" class="close-modal"></a>
+
+        <md-icon md-svg-src="assets/images/default/note-warning.svg" class="modal-icon"></md-icon>
+
+        <div class="modal-title">
+            <h2>{{modal.titleText}}</h2>
+        </div>
+
+        <div class="modal-padding">
+            <div ng-form="modal.medicalInfoRecord" class="modal-body">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <md-input-container>
+                            <label>First Name:</label>
+                            <input type="text"
+                                   name="firstName"
+                                   ng-required="true"
+                                   ng-model="modal.medicalInfo.Name.First">
+                            <div ng-messages="modal.medicalInfoRecord.firstName.$error" class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div class="col-xs-6">
+                        <md-input-container>
+                            <label>Last Name:</label>
+                            <input type="text"
+                                   name="lastName"
+                                   ng-required="true"
+                                   ng-model="modal.medicalInfo.Name.Last">
+                            <div ng-messages="modal.medicalInfoRecord.lastName.$error" class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <md-input-container>
+                            <label class="required-label">Relation Type:</label>
+                            <md-select name="relationType"
+                                       ng-model="modal.medicalInfo.RelationType"
+                                       ng-required="true"
+                                       ng-model-options="{trackBy: '$value.Id'}">
+                                <md-option ng-value="relationType"
+                                           ng-repeat="relationType in modal.relationTypes">
+                                    {{relationType.Text}}
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="modal.medicalInfoRecord.relationType.$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div class="col-xs-4">
+                        <md-input-container>
+                            <label>Phone:</label>
+                            <input type="text"
+                                   name="recordPhone"
+                                   ng-model="modal.medicalInfo.Phone"
+                                   input-phone-mask>
+                            <div ng-messages="modal.medicalInfoRecord.recordPhone.$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="phone-pattern">
+                                    <b>Phone number</b> must contain min 10 digits.
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div class="col-xs-4">
+                        <input-email form-name="modal.medicalInfoRecord"
+                                     input-name="recordEmail"
+                                     label="Email:"
+                                     ng-required="false"
+                                     ng-model="modal.medicalInfo.Email">
+                        </input-email>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="modal.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button" ng-click="modal.save()">{{modal.saveText}}</md-button>
+    </md-dialog-actions>
+</div>

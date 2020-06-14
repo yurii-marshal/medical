@@ -1,0 +1,239 @@
+<infinity-table load-items-promise="tasks.getTaskList"
+                page-size="24"
+                item-alias="item"
+                filters-obj="tasks.filterObj"
+                sort-obj="tasks.sortExpr"
+                default-sort-field="'CreatedOn'"
+>
+    <infinity-table-sort>
+        <div class="number-td">&nbsp;</div>
+        <div class="task-name-td">
+            <md-icon md-svg-src="assets/images/default/documents.svg"
+                     class="main-sort-icon insurance-icon"></md-icon>
+            Title:
+        </div>
+        <div class="description-td">
+            <md-icon md-svg-src="assets/images/default/insurance.svg"
+                     class="main-sort-icon insurance-icon"></md-icon>
+            Description:
+        </div>
+        <div class="created-by-td"
+             ng-if="!$parent.tasks.createdByHidden">
+            <md-icon md-svg-src="assets/images/default/user-square.svg"
+                     class="main-sort-icon user-icon"></md-icon>
+            Created by:
+        </div>
+        <div class="created-date-td">
+            <md-icon md-svg-src="assets/images/default/calendar-new.svg"
+                     class="main-sort-icon date-icon"></md-icon>
+            <inftbl-sort-list param-name="CreatedOn">Created:</inftbl-sort-list>
+        </div>
+        <div class="assigned-to-td"
+             ng-if="!$parent.tasks.assignedToHidden">
+            <md-icon md-svg-src="assets/images/default/user-square.svg"
+                     class="main-sort-icon user-icon"></md-icon>
+            Assigned to:
+        </div>
+        <div class="due-date-td">
+            <md-icon md-svg-src="assets/images/default/calendar-new.svg"
+                     class="main-sort-icon date-icon"></md-icon>
+            Due:
+        </div>
+        <div class="status-td">
+            <md-icon md-svg-src="assets/images/default/insurance.svg"
+                     class="main-sort-icon insurance-icon"></md-icon>
+            Status:
+        </div>
+        <div class="priority-td">
+            <md-icon md-svg-src="assets/images/default/star-half.svg"
+                     class="main-sort-icon status-icon"></md-icon>
+            Priority:
+        </div>
+        <div class="number-td">&nbsp;</div>
+    </infinity-table-sort>
+
+    <infinity-table-filters class="drowz-infinite-row-filter">
+        <div class="number-td">
+            <md-checkbox class="md-primary"
+                         aria-label="..."
+                         ng-click="$ctrl.selectAllFn()"
+                         ng-checked="$ctrl.isSelectAll">
+            </md-checkbox>
+        </div>
+        <div class="task-name-td">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search</label>
+                <input type="text"
+                       ng-model="$ctrl.filtersObj.Title"
+                       ng-model-options="{debounce: 450}"
+                       clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="description-td">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search</label>
+                <input type="text"
+                       ng-model="$ctrl.filtersObj.Description"
+                       ng-model-options="{debounce: 450}"
+                       clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="created-by-td"
+             ng-show="!$parent.tasks.createdByHidden">
+            <md-autocomplete class="drowz-infinite-autocomplete"
+                             md-no-cache="true"
+                             md-selected-item="$ctrl.filtersObj.CreatedById"
+                             md-search-text="searchCreatedBy"
+                             md-items="item in $parent.tasks.getUsers(searchCreatedBy)"
+                             md-item-text="item.Name.FirstName + ' ' + item.Name.LastName"
+                             md-min-length="0"
+                             md-floating-label="search user"
+                             ng-model-options="{debounce: 450}"
+                             clear-on-click
+                             drowz-clear-value>
+                <md-item-template>
+                    <span md-highlight-text="searchCreatedBy"
+                          md-highlight-flags="^i">
+                        {{item.Name.FirstName + ' ' + item.Name.LastName}}
+                     </span>
+                </md-item-template>
+                <md-not-found>
+                    No user was found
+                </md-not-found>
+            </md-autocomplete>
+        </div>
+        <div class="created-date-td">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>date</label>
+                <input ng-model="$ctrl.filtersObj.CreatedOn"
+                       datetimepicker
+                       use-current="false"
+                       format="MM/DD/YYYY"
+                       clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="assigned-to-td"
+             ng-show="!$parent.tasks.assignedToHidden">
+            <md-autocomplete class="drowz-infinite-autocomplete"
+                             md-no-cache="true"
+                             md-selected-item="$ctrl.filtersObj.AssigneeId"
+                             md-search-text="searchAssignee"
+                             md-items="item in $parent.tasks.getUsers(searchAssignee)"
+                             md-item-text="item.Name.FirstName + ' ' + item.Name.LastName"
+                             md-min-length="0"
+                             md-floating-label="search assignee"
+                             ng-model-options="{debounce: 450}"
+                             clear-on-click
+                             drowz-clear-value>
+                <md-item-template>
+                    <span md-highlight-text="searchAssignee"
+                          md-highlight-flags="^i">
+                        {{item.Name.FirstName + ' ' + item.Name.LastName}}
+                     </span>
+                </md-item-template>
+                <md-not-found>
+                    No user was found
+                </md-not-found>
+            </md-autocomplete>
+        </div>
+        <div class="due-date-td">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>date</label>
+                <input ng-model="$ctrl.filtersObj.DueDate"
+                       datetimepicker
+                       use-current="false"
+                       format="MM/DD/YYYY"
+                       clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="status-td">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>select</label>
+                <md-select ng-model="$ctrl.filtersObj.Statuses"
+                           clear-on-click>
+                    <md-option ng-value="status.id"
+                               ng-repeat="status in $parent.tasks.taskStatuses">
+                        {{::status.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div class="priority-td no-divider">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>select</label>
+                <md-select ng-model="$ctrl.filtersObj.Priority"
+                           clear-on-click>
+                    <md-option ng-value="priority.id"
+                               ng-repeat="priority in $parent.tasks.taskPriorities">
+                        {{::priority.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div class="number-td filter-reset-btn align-right">
+            <inftbl-filter-reset-btn
+                permanent-filters="$parent.tasks.permanentFilters">
+            </inftbl-filter-reset-btn>
+        </div>
+    </infinity-table-filters>
+
+    <infinity-table-row class="drowz-infinite-row hide-btns-row"
+                        ng-click="$parent.tasks.openTaskModal(item.Id, item.Status)">
+        <div class="number-td">
+            <md-checkbox class="md-primary"
+                         aria-label="..."
+                         ng-click="$parent.tasks.toggleItem($event, item)"
+                         ng-checked="item.isSelected">
+            </md-checkbox>
+        </div>
+        <div class="task-name-td"
+             bind-html-compile="item.Title"
+        ></div>
+        <div class="description-td"
+             bind-html-compile="item.Description"></div>
+        <div class="created-by-td"
+             ng-if="!$parent.tasks.createdByHidden"
+             ng-bind="item.CreatedBy"></div>
+        <div class="created-date-td">
+            <span class="dark-blue-text"
+                  ng-bind="item.CreatedOn | localDateTime: 'MM/DD/YYYY'"></span>&nbsp;
+            <span class="active-text"
+                  ng-bind="item.CreatedOn | localDateTime:'hh:mm A'"></span>
+        </div>
+        <div class="assigned-to-td"
+             ng-if="!$parent.tasks.assignedToHidden">
+                <span ng-repeat="user in item.AssignTo">
+                    {{user.AssignTo}} {{$index < (item.AssignTo.length - 1)? ', ' : ''}}
+                </span>
+        </div>
+        <div class="due-date-td">
+            <span class="dark-blue-text"
+                  ng-bind="item.DueDate | localDateTime: 'MM/DD/YYYY'"></span>&nbsp;
+            <span class="active-text"
+                  ng-bind="item.DueDate | localDateTime:'hh:mm A'"></span>
+        </div>
+        <div class="status-td">
+            <span ng-bind="item.Status"></span>
+        </div>
+        <div class="priority-td no-divider">
+                <span class="status-label center-text {{item.PriorityClass}}"
+                      ng-bind="item.Priority"></span>
+        </div>
+
+        <div class="number-td center-cell">
+            <md-button class="delete-icon-btn"
+                       aria-label="..."
+                       ng-disabled="item.Status.toLowerCase() === 'archived'"
+                       confirm-ng-click="$parent.tasks.deleteTask(item)"
+                       confirm-title="Delete Task"
+                       confirm-msg="'Are you sure you want to delete this task?'">
+                <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+            </md-button>
+        </div>
+    </infinity-table-row>
+
+    <infinity-table-no-items>
+        <no-records text="Issues" is-fullpage="true"></no-records>
+    </infinity-table-no-items>
+</infinity-table>
+

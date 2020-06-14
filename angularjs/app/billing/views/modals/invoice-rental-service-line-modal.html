@@ -1,0 +1,34 @@
+<div class="modal-window invoice-validate-modal invoice-rental-service-line-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/alert_rect_icon.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Invoice <span class="active-text">{{$ctrl.invoiceId}}</span> has a rental service line where a rental has not been initiated.</h2>
+        </div>
+
+        <div class="modal-body">
+            <div class="marg-v-20" ng-repeat="line in $ctrl.lines" ng-if="$ctrl.isNotInitiated(line)">
+                <md-icon class="" md-svg-src="assets/images/default/alert.svg"></md-icon>
+                <span>
+                    <span class="active-text">"Service Line {{ $index + 1 }}"</span> a rental has not been initiated.
+                </span>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button"
+                   ng-click="$ctrl.cancel()">Modify the Invoice</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.saveInvoice()">Save and continue</md-button>
+    </md-dialog-actions>
+
+</div>
+

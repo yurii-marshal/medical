@@ -1,0 +1,32 @@
+.inventory-pick-view {
+    .limit-message {
+        justify-content: flex-start;
+        font-weight: 500;
+        line-height: 24px;
+
+        .alert-icon {
+            @include size(24px, 24px);
+            color: $red-label;
+            margin: 0 10px;
+        }
+    }
+    .processing-product {
+        .red-block {
+            color: $red-color;
+
+            &.left-divider {
+                &::after {
+                    background-color: $red-color;
+                }
+            }
+
+            .info-block-label {
+                color: $red-color;
+            }
+        }
+    }
+
+    .picked-items-container {
+        padding-bottom: 20px;
+    }
+}

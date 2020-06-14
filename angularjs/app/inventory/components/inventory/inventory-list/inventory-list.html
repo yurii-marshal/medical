@@ -1,0 +1,267 @@
+<div class="infinite-scroll-bg inventory-main">
+
+    <toolbar items="invList.toolbarItems"></toolbar>
+
+    <load-products-status ng-if="invList.importedItemsType"
+                          is-loading="invList.isLoading"
+                          is-management="false"
+                          items-type="invList.importedItemsType"
+    ></load-products-status>
+
+    <div class="inventory-list"
+        bs-loading-overlay
+        bs-loading-overlay-reference-id="inventoryList">
+
+        <advanced-filters
+            cache-filters-key="invList.cacheFiltersKey"
+            init-filters="invList.initFilters"
+            update-filters="invList.updateFilters">
+        </advanced-filters>
+
+        <!--After backend fix perfomance add attr default-sort-field="'Name'" -->
+
+        <infinity-table load-items-promise="invList.getInventoryList"
+                        ignore-total-count="'true'"
+                        page-size="24"
+                        item-alias="item"
+                        filters-obj="invList.filtersObj"
+                        sort-obj="invList.sortExpr"
+                        cache-filters-key="invList.cacheFiltersKey"
+        >
+            <infinity-table-sort>
+                <div>
+                    <md-icon md-svg-src="assets/images/default/inventory.svg"
+                             class="main-sort-icon inventory-icon"></md-icon>
+                    <inftbl-sort-list param-name="Name">Name:</inftbl-sort-list>
+                </div>
+                <div class="w160px">
+                    <md-icon md-svg-src="assets/images/default/museum.svg" class="main-sort-icon museum-icon"></md-icon>
+                    <inftbl-sort-list param-name="Manufacturer">Manufacturer:</inftbl-sort-list>
+                </div>
+                <div class="w120px">
+                    <md-icon md-svg-src="assets/images/default/documents.svg"
+                             class="main-sort-icon document-icon"></md-icon>
+                    ID/Part #:
+                </div>
+                <div class="w120px">
+                    <md-icon md-svg-src="assets/images/default/location2.svg"
+                             class="main-sort-icon location-icon"></md-icon>
+                    Location:
+                </div>
+                <div class="w220px">
+                    <md-icon md-svg-src="assets/images/default/organization.svg"
+                             class="main-sort-icon organization-icon"></md-icon>
+                    <inftbl-sort-list param-name="LocationName">Location Name:</inftbl-sort-list>
+                </div>
+                <div class="w150px">
+                    <md-icon md-svg-src="assets/images/default/documents.svg"
+                             class="main-sort-icon document-icon"></md-icon>
+                    Serial Number:
+                </div>
+                <div class="w120px">
+                    <md-icon md-svg-src="assets/images/default/documents.svg"
+                             class="main-sort-icon document-icon"></md-icon>
+                    Lot Number:
+                </div>
+                <div class="w110px">
+                    <md-icon md-svg-src="assets/images/default/documents.svg"
+                             class="main-sort-icon document-icon"></md-icon>
+                    HCPCS:
+                </div>
+                <div class="w80px">
+                    <md-icon md-svg-src="assets/images/default/documents.svg"
+                             class="main-sort-icon document-icon"></md-icon>
+                    Qty:
+                </div>
+                <div class="w120px">
+                    <md-icon md-svg-src="assets/images/default/star-half.svg" class="main-sort-icon status-icon"></md-icon>
+                    Status:
+                </div>
+                <div class="w100px">&nbsp;</div>
+                <div class="assign-td">&nbsp;</div>
+            </infinity-table-sort>
+
+            <infinity-table-filters class="drowz-infinite-row-filter">
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search name</label>
+                        <input type="text"
+                               ng-model="$ctrl.filtersObj.Name"
+                               ng-model-options="{debounce: 450}"
+                               clear-on-click/>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search</label>
+                        <input type="text"
+                               ng-model="$ctrl.filtersObj.Manufacturer"
+                               ng-model-options="{debounce: 450}"
+                               clear-on-click/>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search</label>
+                        <input type="text"
+                               ng-model="$ctrl.filtersObj.PartNumber"
+                               ng-model-options="{debounce: 450}"
+                               clear-on-click/>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>select</label>
+                        <md-select ng-model="$ctrl.filtersObj.Location"
+                                   clear-on-click>
+                            <md-option ng-value="item.Id" ng-repeat="item in $parent.invList.locationsDic">
+                                {{::item.Name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search</label>
+                        <input type="text"
+                               ng-model="$ctrl.filtersObj.LocationName"
+                               ng-model-options="{debounce: 450}"
+                               clear-on-click/>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search</label>
+                        <input type="text"
+                               ng-model="$ctrl.filtersObj.SerialNumbers"
+                               ng-model-options="{debounce: 450}"
+                               clear-on-click/>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search</label>
+                        <input type="text"
+                               ng-model="$ctrl.filtersObj.LotNumbers"
+                               ng-model-options="{debounce: 450}"
+                               clear-on-click/>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-autocomplete-with-infinite-scroll class="drowz-infinite-autocomplete in-grid-filter-pos"
+                                     md-no-cache="true"
+                                     md-selected-item="$ctrl.filtersObj.HcpcsCode"
+                                     md-search-text="searchHcpcsCode"
+                                     md-items="code in $parent.invList.getHcpcsCodes(searchHcpcsCode, pageIndex)"
+                                     md-item-text="code.Text"
+                                     md-min-length="1"
+                                     md-floating-label="search"
+                                     ng-model-options="{debounce: 450}"
+                                     md-menu-container-class="hcpcs-decorator"
+                                     clear-on-click
+                                     drowz-clear-value>
+                        <md-item-template>
+                            <div title="{{code.Description}}">{{code.Text + ' ' + code.Description}}</div>
+                        </md-item-template>
+                        <md-not-found>Not found</md-not-found>
+                    </md-autocomplete-with-infinite-scroll>
+                </div>
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search</label>
+                        <input type="text"
+                               ng-model="$ctrl.filtersObj.Count"
+                               ng-model-options="{debounce: 450}"
+                               clear-on-click/>
+                    </md-input-container>
+                </div>
+                <div class="no-divider">
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>select</label>
+                        <md-select ng-model="$ctrl.filtersObj.Status"
+                                   clear-on-click>
+                            <md-option ng-value="status.Id" ng-repeat="status in $parent.invList.statusesDic">
+                                {{::status.Name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div class="no-divider">&nbsp;</div>
+                <div class="assign-td filter-reset-btn">
+                    <inftbl-filter-reset-btn></inftbl-filter-reset-btn>
+                </div>
+            </infinity-table-filters>
+
+            <infinity-table-row class="drowz-infinite-row hide-btns-row"
+                                ng-click="$parent.invList.goToInventoryItem(item.Id)">
+                <div ng-bind="item.Name"></div>
+                <div ng-bind="item.Manufacturer"></div>
+                <div ng-bind="item.PartNumber"></div>
+                <div ng-bind="item.Location"></div>
+                <div>
+                    <div popover-directive="item.LocationName"></div>
+                </div>
+                <div>
+                    <div popover-directive="item.SerialNumbers" min-width="50"></div>
+                </div>
+                <div>
+                    <div popover-directive="item.LotNumbers" min-width="50"></div>
+                </div>
+                <div>
+                    <div popover-directive="item.allHcpcsCodes"
+                         hide-first-item="true"
+                         min-width="50"></div>
+                </div>
+                <div ng-bind="item.Count"></div>
+                <div class="no-divider">
+                    <div class="inventory-list-statuses"
+                         ng-class="{'two-line-status': item.InactiveReason}">
+                        <div class="status-label"
+                             ng-class="$parent.invList.getStatusLabelClass(item.Status)"
+                             ng-bind="item.Status.Name"></div>
+                        <div class="status-label gray ellipsis"
+                             title="{{item.InactiveReason}}"
+                             ng-if="item.InactiveReason"
+                             ng-bind="item.InactiveReason"></div>
+                    </div>
+                </div>
+                <div class="no-divider">
+                    <div class="flex-cont align-end">
+                        <md-icon class="drowz-infinite-row-icon service-required-icon"
+                                 ng-if="item.ServiceRequired"
+                                 md-svg-src="assets/images/default/wrench-settings.svg"
+                                 simple-tooltip="Service Required"
+                                 tooltip-position="right">
+                        </md-icon>
+                        <md-icon class="drowz-infinite-row-icon refurbished-icon"
+                                 ng-if="item.Refurbished"
+                                 md-svg-src="assets/images/default/refresh.svg"
+                                 simple-tooltip="Refurbished"
+                                 tooltip-position="right">
+                        </md-icon>
+                        <md-icon class="drowz-infinite-row-icon bundle-icon"
+                                 ng-if="item.Bundle"
+                                 md-svg-src="assets/images/default/bundle-icon.svg"
+                                 simple-tooltip="Bundle"
+                                 tooltip-position="right">
+                        </md-icon>
+                    </div>
+                </div>
+                <div class="assign-td center-cell no-divider">
+                    <md-button class="delete-icon-btn"
+                               aria-label="..."
+                               ng-show="item.Deletable"
+                               confirm-ng-click="$parent.invList.deleteEquipment(item.Id)"
+                               confirm-msg="'Are you sure you want to delete the {0} equipment?'.format(item.Name)"
+                               confirm-title="Delete equipment">
+                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                    </md-button>
+                </div>
+            </infinity-table-row>
+
+            <infinity-table-no-items>
+                <no-records text="Inventory Items" is-fullpage="true"></no-records>
+            </infinity-table-no-items>
+        </infinity-table>
+    </div>
+</div>

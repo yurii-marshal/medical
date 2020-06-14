@@ -1,0 +1,243 @@
+<advanced-filters
+    cache-filters-key="prescriptions.cacheFiltersKey"
+    init-filters="prescriptions.initFilters"
+    update-filters="prescriptions.updateFilters"
+    default-filtered-list="prescriptions.defaultFilteredList"
+    is-reset-expiration-date="prescriptions.resetExpiryDateListFilters()">
+</advanced-filters>
+
+<toolbar
+        items="prescriptions.toolbarItems"
+        ng-if="prescriptions.selectedItemsArrCount()">
+</toolbar>
+
+<infinity-table load-items-promise="prescriptions.getPrescriptions"
+                page-size="24"
+                item-alias="item"
+                filters-obj="prescriptions.filterObj"
+                sort-obj="prescriptions.sortExpr"
+                cache-filters-key="prescriptions.cacheFiltersKey"
+                default-sort-field="'ExpiryDate'"
+                class="custom-table double-row-table prescription-list">
+
+    <infinity-table-sort>
+        <div class="number-td">&nbsp;</div>
+        <div class="patient-td">
+            <md-icon md-svg-src="assets/images/default/user-square.svg" class="main-sort-icon user-icon"></md-icon>
+            Patient:
+        </div>
+        <div class="primary-short-td">
+            <md-icon md-svg-src="assets/images/default/insurance-v2.svg" class="main-sort-icon insurance-icon"></md-icon>
+            Primary insurance:
+        </div>
+        <div class="w160px">
+            <md-icon md-svg-src="assets/images/default/calendar-new.svg" class="main-sort-icon date-icon"></md-icon>
+            <inftbl-sort-list param-name="EffectiveDate">Effective Date:</inftbl-sort-list>
+        </div>
+        <div class="w110px">
+            <md-icon md-svg-src="assets/images/default/insurance.svg" class="main-sort-icon insurance-icon"></md-icon>
+            HCPCS:
+        </div>
+        <div class="created-date">
+            <md-icon md-svg-src="assets/images/default/calendar-new.svg" class="main-sort-icon date-icon"></md-icon>
+            <inftbl-sort-list param-name="ExpiryDate">Expiration Date:</inftbl-sort-list>
+        </div>
+        <div class="physician-td">
+            <md-icon md-svg-src="assets/images/default/user-square.svg" class="main-sort-icon user-icon"></md-icon>
+            Referring Provider:
+        </div>
+        <div class="status-td no-divider">
+            <md-icon md-svg-src="assets/images/default/star-half.svg" class="main-sort-icon status-icon"></md-icon>
+            Status:
+        </div>
+        <div class="number-td">&nbsp;</div>
+    </infinity-table-sort>
+
+    <infinity-table-filters class="drowz-infinite-row-filter">
+        <div class="number-td">
+            <md-checkbox class="md-primary"
+                         aria-label="..."
+                         ng-click="$ctrl.selectAllFn()"
+                         ng-checked="$ctrl.isSelectAll">
+            </md-checkbox>
+        </div>
+        <div class="patient-td">
+            <md-autocomplete class="drowz-infinite-autocomplete"
+                             md-no-cache="true"
+                             md-selected-item="$ctrl.filtersObj.Patient"
+                             md-search-text="searchPatient"
+                             md-items="item in $parent.prescriptions.getPatients(searchPatient)"
+                             md-item-text="item.Name.FullName"
+                             md-min-length="0"
+                             md-floating-label="search patient"
+                             ng-model-options="{debounce: 450}"
+                             clear-on-click
+                             drowz-clear-value>
+                <md-item-template>
+                    <span md-highlight-text="searchPatient" md-highlight-flags="^i">
+                        {{::item.Name.FullName}}
+                     </span>
+                </md-item-template>
+                <md-not-found>
+                    No patient was found
+                </md-not-found>
+            </md-autocomplete>
+        </div>
+        <div class="primary-short-td">
+            <md-autocomplete class="drowz-infinite-autocomplete"
+                             md-no-cache="true"
+                             md-selected-item="$ctrl.filtersObj.PrimaryInsurance"
+                             md-search-text="searchPayer"
+                             md-items="item in $parent.prescriptions.getInsurancePayers(searchPayer)"
+                             md-item-text="item.Name"
+                             md-min-length="0"
+                             md-floating-label="search payer"
+                             ng-model-options="{debounce: 450}"
+                             clear-on-click
+                             drowz-clear-value>
+                <md-item-template>
+                    <span md-highlight-text="searchPayer" md-highlight-flags="^i">
+                        {{item.Name}}
+                     </span>
+                </md-item-template>
+                <md-not-found>
+                    No payer was found
+                </md-not-found>
+            </md-autocomplete>
+        </div>
+        <div class="w160px">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>date</label>
+                <input ng-model="$ctrl.filtersObj.EffectiveDate"
+                       datetimepicker
+                       use-current="false"
+                       format="MM/DD/YYYY"
+                       clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="w110px">
+            <md-autocomplete class="drowz-infinite-autocomplete"
+                             md-no-cache="true"
+                             md-selected-item="$ctrl.filtersObj.HcpcsCode"
+                             md-search-text="searchHcpcsCode"
+                             md-items="code in $parent.prescriptions.getHcpcsCodes(searchHcpcsCode)"
+                             md-item-text="code.Text"
+                             md-min-length="1"
+                             md-floating-label="search"
+                             ng-model-options="{debounce: 450}"
+                             md-menu-container-class="hcpcs-decorator"
+                             clear-on-click
+                             drowz-clear-value>
+                <md-item-template>
+                    <div title="{{code.Description}}">{{code.Text + ' ' + code.Description}}</div>
+                </md-item-template>
+                <md-not-found>Not found</md-not-found>
+            </md-autocomplete>
+        </div>
+        <div class="created-date">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>date</label>
+                <input ng-model="$ctrl.filtersObj.ExpiryDateEquals"
+                       ng-change="$parent.prescriptions.resetExpiryDateListFilters()"
+                       datetimepicker
+                       use-current="false"
+                       format="MM/DD/YYYY"
+                       clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="physician-td">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search physician</label>
+                <input type="text"
+                       ng-model="$ctrl.filtersObj.treatingNameOrNpi"
+                       ng-model-options="{debounce: 450}"
+                       clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="status-td no-divider">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>select</label>
+                <md-select ng-model="$ctrl.filtersObj.Status"
+                           clear-on-click>
+                    <md-option ng-value="status.Id"
+                               ng-repeat="status in $parent.prescriptions.statuses">
+                        {{status.Text}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div class="number-td filter-reset-btn align-right">
+            <inftbl-filter-reset-btn></inftbl-filter-reset-btn>
+        </div>
+    </infinity-table-filters>
+
+    <infinity-table-row class="drowz-infinite-row"
+                        ng-click="$parent.prescriptions.openPrescriptionDetails(item.Patient.Id, item.Id)">
+
+        <div class="custom-table-body no-divider">
+            <div class="number-td">
+                <md-checkbox class="md-primary"
+                             aria-label="..."
+                             ng-click="$parent.prescriptions.toggleItem($event, item)"
+                             ng-checked="item.isSelected">
+                </md-checkbox>
+            </div>
+            <div class="patient-td">
+                <div>
+                    <span ng-bind="item.Patient.Name.FullName"></span><br>
+                    (<span ng-bind='item.Patient.DateOfBirth | amUtc | amDateFormat: "MM/DD/YYYY"'></span>)
+                </div>
+            </div>
+            <div class="primary-short-td"
+                 ng-bind="item.Payer.Name || '-'"></div>
+            <div class="w160px"
+                 ng-bind='item.EffectiveDate ? (item.EffectiveDate | amUtc | amDateFormat: "MM/DD/YYYY") : "-"'></div>
+            <div class="w110px">
+                <div popover-directive="item.allHcpcsCodes"
+                     hide-first-item="true"
+                     min-width="50"></div>
+            </div>
+            <div class="created-date"
+                 ng-bind='item.ExpiryDate ? (item.ExpiryDate | amUtc | amDateFormat: "MM/DD/YYYY") : "-"'></div>
+            <div class="physician-td">
+                <div>
+                    <span ng-bind="item.displayName"></span><br>
+                    <span ng-if="item.TreatingProvider.Npi">(NPI: {{item.TreatingProvider.Npi}})</span>
+                </div>
+            </div>
+            <div class="two-line-status status-td no-divider">
+                <prescription-status status-obj="item.Status"></prescription-status>
+                <br>
+                <div class="status-label dark-blue"
+                     ng-if="item.InProgress"
+                     simple-tooltip="{{item.InProgressDate | amUtc | amDateFormat: 'MM/DD/YYYY'}}">
+                In Progress
+            </div>
+            </div>
+            <div class="number-td align-center">
+                <!--<md-button aria-label="..." class="action-feature-icon"-->
+                           <!--ng-click="$parent.prescriptions.openUpdatePrescriptionMenu(item.Activities, item.OrderPrescriptionId, item.Fax, $event)">-->
+                    <!--<md-icon md-svg-src="assets/images/default/update.svg"></md-icon>-->
+                <!--</md-button>-->
+                &nbsp;
+            </div>
+        </div>
+        <div class="custom-table-body no-divider" ng-if="item.InProgressBy">
+            <div class="number-td no-divider">&nbsp;</div>
+            <div class="no-divider align-content-right in-progress-section grow-1">
+                <span class="font-italic">Set in progress by &nbsp;</span>
+                <span class="font-semibold" ng-bind="item.InProgressBy.FullName"></span>
+                <span class="font-italic">&nbsp;on&nbsp;</span>
+                <span class="font-semibold" ng-bind="(item.InProgressDate | amUtc | amDateFormat: 'MM/DD/YYYY')"></span>
+            </div>
+        </div>
+
+
+    </infinity-table-row>
+
+    <infinity-table-no-items>
+        <no-records text="Prescriptions" is-fullpage="true"></no-records>
+    </infinity-table-no-items>
+
+
+</infinity-table>

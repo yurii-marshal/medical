@@ -1,0 +1,237 @@
+<div class="inbox-patient-container">
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.inbox.list">Inbox</a>
+        <a href="javascript:void(0)" class="active">{{(attach.viewName === 'attach') ? 'Attach to Patient(s)' : 'New Patient(s)'}}</a>
+    </div>
+
+    <div ng-form="attach.form">
+        <div class="inbox-new-patient preview-container" ng-class="{'opened-preview': attach.isOpenedPreview}">
+            <div class="new-patient-container">
+
+                <div class="drowz-wizard-body">
+                    <div class="drowz-wizard-body-flex">
+                        <div class="grow-1">
+                            <div class="drowz-wizard-block no-float">
+                                <div class="drowz-wizard-block-title">
+                                    <div class="wizard-title-text">{{attach.viewName === 'attach' ? 'Attach to Patient(s)' : 'New Patient(s)'}}:</div>
+                                </div>
+                                <div class="drowz-wizard-block-body body-new-patients"
+                                     scroll-bar
+                                     scroll-bar-above-element="true">
+                                    <div class="patient-rows"
+                                         id="patient-row-{{$index}}"
+                                         ng-repeat="item in attach.patientsArr track by $index"
+                                         ng-init="patientIndex = $index">
+
+                                        <div class="flex-row bottom-border align-center" ng-if="attach.viewName === 'attach'">
+                                            <div class="info-block grow-1">
+                                                <md-autocomplete class="drowz-infinite-autocomplete"
+                                                                 md-no-cache="true"
+                                                                 md-selected-item="item.patient"
+                                                                 md-search-text="searchPatient"
+                                                                 md-items="item in attach.getPatients(searchPatient)"
+                                                                 md-item-text="item.Name.FullName"
+                                                                 md-min-length="0"
+                                                                 md-floating-label="Select Patient:"
+                                                                 ng-model-options="{debounce: 450}"
+                                                                 md-menu-class="order-id-autocomplete"
+                                                                 clear-on-click
+                                                                 ng-required="true"
+                                                                 md-input-name="patient{{patientIndex}}">
+                                                    <md-item-template>
+                                                        <span md-highlight-text="searchPatient" md-highlight-flags="^i">{{item.Name.FullName}}</span>
+                                                    </md-item-template>
+                                                    <md-not-found>
+                                                        No patient was found
+                                                    </md-not-found>
+                                                    <div ng-messages="attach.form['patient'+patientIndex].$error" class="md-input-messages-nice">
+                                                        <div ng-message="required">This field is required</div>
+                                                        <div ng-message="selected">Patient is not valid</div>
+                                                    </div>
+                                                </md-autocomplete>
+                                            </div>
+                                            <a href="javascript:void(0);"
+                                               class="delete-icon-btn"
+                                               ng-if="attach.patientsArr.length > 1"
+                                               ng-click="attach.deletePatient(patientIndex)">
+                                                <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                            </a>
+                                        </div>
+                                        <div class="flex-row bottom-border align-center" ng-if="attach.viewName === 'new'">
+                                            <div class="info-block block-width-50-percent">
+                                                <md-input-container>
+                                                    <label>First Name:</label>
+                                                    <input type="text"
+                                                           ng-model="item.patient.Name.First"
+                                                           name="patient{{patientIndex}}First"
+                                                           ng-required="true"
+                                                           value=""/>
+                                                    <div ng-messages="attach.form['patient'+patientIndex+'First'].$error" class="md-input-messages-nice">
+                                                        <div ng-message="required">This field is required</div>
+                                                    </div>
+                                                </md-input-container>
+                                            </div>
+                                            <div class="info-block block-width-50-percent">
+                                                <md-input-container>
+                                                    <label>Last Name:</label>
+                                                    <input type="text"
+                                                           ng-model="item.patient.Name.Last"
+                                                           name="patient{{patientIndex}}Last"
+                                                           ng-required="true"
+                                                           value=""/>
+                                                    <div ng-messages="attach.form['patient'+patientIndex+'Last'].$error" class="md-input-messages-nice">
+                                                        <div ng-message="required">This field is required</div>
+                                                    </div>
+                                                </md-input-container>
+                                            </div>
+                                            <div class="info-block block-width-200">
+                                                <md-input-container>
+                                                    <label>DOB:</label>
+                                                    <input datetimepicker
+                                                           format="MM/DD/YYYY"
+                                                           min-date="false"
+                                                           max-date="today"
+                                                           is-age-picker="true"
+                                                           name="patient{{patientIndex}}DOB"
+                                                           ng-model="item.patient.DateOfBirth"
+                                                           ng-required="true">
+                                                    <div ng-messages="attach.form['patient'+patientIndex+'DOB'].$error" class="md-input-messages-nice">
+                                                        <div ng-message="required">This field is required</div>
+                                                    </div>
+                                                </md-input-container>
+                                            </div>
+                                            <a href="javascript:void(0);"
+                                               class="delete-icon-btn"
+                                               ng-if="attach.patientsArr.length > 1"
+                                               ng-click="attach.deletePatient(patientIndex)">
+                                                <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                            </a>
+                                        </div>
+
+                                        <div class="flex-row bottom-border align-center" ng-repeat="doc in item.documents"
+                                             ng-init="documentIndex = $index">
+                                            <div class="info-block block-width-100-percent block-document space-right">
+                                                <div class="info-block-label">Document:</div>
+                                                <div class="info-block-body">{{doc.FileName}}</div>
+                                            </div>
+
+                                            <div class="info-block block-width-350 space-right"
+                                                 ng-class="{'search-doc-type': attach.patientsArr[patientIndex].documents[documentIndex].DocumentType.IsCmn}">
+                                                <md-autocomplete md-search-text="searchDocType"
+                                                                 md-selected-item="attach.patientsArr[patientIndex].documents[documentIndex].DocumentType"
+                                                                 md-items="docType in attach.getDocumentTypes(searchDocType)"
+                                                                 md-item-text="docType.Name"
+                                                                 md-min-length="0"
+                                                                 md-input-name="doc{{patientIndex}}-{{documentIndex}}"
+                                                                 md-floating-label="Document Type:"
+                                                                 ng-required="true"
+                                                                 clear-on-click>
+                                                    <md-item-template>
+                                                        <span md-highlight-flags="^i" title="{{docType.Name}}">{{docType.Name}}</span>
+                                                    </md-item-template>
+                                                    <md-not-found>
+                                                        No Document Types
+                                                    </md-not-found>
+                                                    <div ng-messages="attach.form['doc'+patientIndex+'-'+documentIndex].$error"
+                                                         class="md-input-messages-nice">
+                                                        <div ng-message="required">This field is required</div>
+                                                        <div ng-message="selected">Document Type must be selected.</div>
+                                                    </div>
+                                                </md-autocomplete>
+                                            </div>
+
+                                            <div class="info-block block-width-140 space-right"
+                                                 ng-if="attach.patientsArr[patientIndex].documents[documentIndex].DocumentType.IsCmn">
+                                                <md-input-container>
+                                                    <label>Expiration Date:</label>
+                                                    <input type="text"
+                                                           datetimepicker
+                                                           min-date="today"
+                                                           format="MM/DD/YYYY"
+                                                           ng-required="true"
+                                                           ng-model="attach.patientsArr[patientIndex].documents[documentIndex].ExpiredDate"
+                                                           name="ExpiredDate{{patientIndex}}-{{documentIndex}}">
+                                                    <div ng-messages="attach.form['ExpiredDate'+patientIndex+'-'+documentIndex].$error" class="md-input-messages-nice">
+                                                        <div ng-message="required">This field is required</div>
+                                                    </div>
+                                                </md-input-container>
+                                            </div>
+
+                                            <md-radio-group class="info-block block-width-200"
+                                                            ng-model="attach.patientsArr[patientIndex].documents[documentIndex].AllPages">
+                                                <div class="flex-row space-between">
+                                                    <md-radio-button ng-value="true" aria-label="All Pages:" class="grow-1">
+                                                        All Pages:
+                                                    </md-radio-button>
+                                                    <md-radio-button ng-value="false" aria-label=".."></md-radio-button>
+                                                </div>
+                                            </md-radio-group>
+
+                                            <div class="info-block block-width-200">
+                                                <div class="flex-row">
+                                                    <md-input-container>
+                                                        <label>Range:</label>
+                                                        <input type="text"
+                                                               ng-disabled="attach.patientsArr[patientIndex].documents[documentIndex].AllPages"
+                                                               ng-required="!attach.patientsArr[patientIndex].documents[documentIndex].AllPages"
+                                                               ng-model="attach.patientsArr[patientIndex].documents[documentIndex].CustomPages"
+                                                               name="range{{patientIndex}}-{{documentIndex}}"/>
+                                                        <div ng-messages="attach.form['range'+patientIndex+'-'+documentIndex].$error" class="md-input-messages-nice">
+                                                            <div ng-message="required">This field is required</div>
+                                                        </div>
+                                                    </md-input-container>
+                                                    <md-button aria-label="..." class="view-info-icon view-patient-icon"
+                                                               ng-click="attach.viewFile(attach.patientsArr[patientIndex].documents[documentIndex])">
+                                                        <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon>
+                                                    </md-button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="add-more-patient-row">
+
+                                    <md-button class="md-raised add-new-contact middle-btn" ng-click="attach.addPatient()">
+                                        <md-icon md-svg-src="assets/images/default/plus.svg"></md-icon>
+                                        Add Patient
+                                    </md-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="drowz-wizard-footer">
+                    <md-button class="md-raised main-button drowz-wizard-footer-btn"
+                               ng-click="attach.cancel()">Cancel</md-button>
+                    <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                               aria-label="..."
+                               ng-disabled="attach.isLoading"
+                               ng-click="attach.save()">
+                        <icon-loading-white ng-if="attach.isLoading"></icon-loading-white>
+                        <span>Save</span>
+                    </md-button>
+                </div>
+
+            </div>
+
+            <div class="show-file-container" ng-class="{'open': attach.isOpenedPreview}">
+                <div class="show-file-header">
+                    <md-button class="hide-preview small-btn" ng-click="attach.isOpenedPreview = false">
+                        <md-icon md-svg-src="assets/images/default/download.svg"></md-icon>
+                        Hide Preview
+                    </md-button>
+                </div>
+                <div class="show-file-content">
+                    <embed src="" id="pdfPreview" type='application/pdf' />
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>

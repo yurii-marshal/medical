@@ -1,0 +1,26 @@
+<div class="drwz_calendar_header">
+    <div class="pull-left flex-cont">
+        <div ng-transclude="left"></div>
+        <div class="calendar_setup"
+             ng-if="calendar.isLeftViewBtns"
+             ng-include="'core/views/calendar-view-btns.html'"></div>
+    </div>
+
+    <div ng-if="calendar.showTitle" class="calendar_title" ng-bind="title"></div>
+
+    <div class="pull-right flex-cont">
+        <div ng-transclude="right"></div>
+        <div class="calendar_setup"
+             ng-if="!calendar.isLeftViewBtns"
+             ng-include="'core/views/calendar-view-btns.html'"></div>
+    </div>
+</div>
+
+<div class="calendar_btn_overlay">
+    <a href="javascript:void(0);" class="calendar_prv_btn" ng-click="calendar.goPrv()"></a>
+    <a href="javascript:void(0);" class="calendar_next_btn" ng-click="calendar.goNext()"></a>
+</div>
+<div class="fullcalendar_container"></div>
+
+
+

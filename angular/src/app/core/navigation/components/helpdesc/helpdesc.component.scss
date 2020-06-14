@@ -1,0 +1,21 @@
+@import "../../../../../assets/styles/base/variables";
+@import "../../../../../assets/styles/utils/mixins";
+
+:host {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include size(48px, 100%);
+    cursor: pointer;
+    user-select: none;
+
+    mat-icon {
+      fill: $dark-gray-color;
+    }
+
+    &:hover {
+      mat-icon {
+        fill: lighten($dark-gray-color, 20%);
+      }
+    }
+}

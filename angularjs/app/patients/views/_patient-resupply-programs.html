@@ -1,0 +1,186 @@
+<div class="patient-resupply-programs pad-v-30 pad-h-25"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="patientResupplyPrograms">
+    <v-accordion class="flow-accordion"
+                 ng-if="resupply.programs.length"
+                 multiple>
+        <v-pane class="marg-v-20"
+                expanded="true"
+                ng-repeat="program in resupply.programs track by $index">
+
+            <v-pane-header class="flow-accordion-title">
+                <md-icon md-svg-src="assets/images/default/chevron.svg" class="flow-accordion-title-icon"></md-icon>
+                <div class="flow-title-text">
+                    <span>Resupply Program {{$index + 1}}</span>
+                </div>
+                <div class="accordion-line"></div>
+            </v-pane-header>
+            <v-pane-content>
+                <div class="resupply-program grey-bordered-block">
+                    <!--PROGRAM DETAILS-->
+                    <div class="resupply-program-details flex-row">
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">Reference Order:</div>
+                            <div class="info-block-body">
+                                <a href="javascript:void(0);"
+                                   class="underline-after-link"
+                                   ui-sref="root.orders.order.initialdetails({ orderId: program.OrderId })"
+                                   ng-bind="program.OrderName">
+                                </a>
+                                <span class="vertical-divider marg-h-5">|</span>
+                                <span ng-bind="program.CreatedDate"></span>
+                                <span class="vertical-divider marg-h-5">|</span>
+                                {{program | referralDisplayName}}
+                            </div>
+                        </div>
+                        <div class="info-block block-width-200 left-divider" ng-if="program.DeliveryGroupingDays">
+                            <div class="info-block-label">Group items for Delivery:</div>
+                            <div class="info-block-body">Yes</div>
+                        </div>
+                        <div class="info-block block-width-200" ng-if="program.DeliveryGroupingDays">
+                            <div class="info-block-label">Delivery date within:</div>
+                            <div class="info-block-body" ng-bind="program.DeliveryGroupingDays + ' day(s)'"></div>
+                        </div>
+                        <div class="info-block block-width-310 confirmation-required-checked"
+                             ng-if="program.ConfirmationRequired">
+                            <div class="info-block-label">&nbsp;</div>
+                            <div class="info-block-body">
+                                <md-icon md-svg-src="assets/images/default/check.svg"
+                                         class="checked-delivery-icon"></md-icon>
+                                <span>Confirmation Required for Delivery</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--ORDER ITEMS LIST-->
+                    <div class="order-items">
+                        <div class="active-text">Items:</div>
+                        <table class="drowz-table">
+                            <tr class="drowz-table-header">
+                                <th width="30" class="number-cell">#</th>
+                                <th>Name:</th>
+                                <th>Manufacturer:</th>
+                                <th width="150">ID/Part #:</th>
+                                <th width="130">HCPCS:</th>
+                                <th width="100">Frequency:</th>
+                                <th width="150">Resupply Period:</th>
+                                <th width="150">Next Eligible Date:</th>
+                                <th width="70">Qty:</th>
+                                <th width="70">Status:</th>
+                            </tr>
+                            <tr class="drowz-table-row valign-top" ng-repeat="item in program.Items track by $index">
+                                <td class="number-cell">{{$index + 1}}.</td>
+                                <td ng-bind="item.Name"></td>
+                                <td ng-bind="item.Manufacturer"></td>
+                                <td ng-bind="item.PartNumber"></td>
+                                <td>
+                                    <div min-width="50">{{item.HcpcsCodes.Primary}}</div>
+                                </td>
+                                <td ng-bind="item.Frequency"></td>
+                                <td>
+                                    <span ng-bind="item.PeriodValue"></span>
+                                    <span ng-bind="item.Period"></span>
+                                </td>
+                                <td ng-bind="item.NextScheduledDate"></td>
+                                <td ng-bind="item.Count"></td>
+                                <td>
+                                    <div class="status-label green" ng-if="!item.Hold">Active</div>
+                                    <div class="status-label orange" ng-if="item.Hold">Hold</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <!--RELATED ORDERS LIST-->
+                <div class="related-orders">
+                    <v-accordion class="flow-accordion"
+                                 onexpand="resupply.expandRelatedOrders(program)"
+                                 bs-loading-overlay
+                                 bs-loading-overlay-reference-id="orders-{{program.ResupplyProgramId}}"
+                                 multiple>
+                        <v-pane class="marg-v-20"
+                                expanded="false">
+                            <v-pane-header class="flow-accordion-title">
+                                <div class="flex-row grow-1 grey-bordered-block">
+                                    <md-icon md-svg-src="assets/images/default/chevron.svg" class="flow-accordion-title-icon"></md-icon>
+                                    <div class="flow-title-text">
+                                        <span>Related orders</span>
+                                    </div>
+                                </div>
+                                <div class="orders-history">
+                                    <md-button class="md-raised show-history"
+                                               ng-click="resupply.toOrdersHistory(program.ResupplyProgramId, program.OrderName)">
+                                        <md-icon md-svg-src="assets/images/default/history.svg"></md-icon>
+                                        <span>History</span>
+                                    </md-button>
+                                </div>
+                            </v-pane-header>
+                            <v-pane-content>
+                                <div class="orders-list marg-v-15">
+                                    <div class="flex-row" ng-repeat="order in program.orders track by $index">
+                                        <div class="order-status info-block block-width-150">
+                                            <div class="marg-v-10 status-label {{order.statusClass}}"
+                                                 ng-bind="order.Status.Text"></div>
+                                        </div>
+                                        <div class="info-block grow-1">
+                                            <div class="flex-row marg-v-10">
+                                                <div class="info-block block-width-240 left-divider">
+                                                    <div class="info-block-label">Order ID:</div>
+                                                    <div class="info-block-body">
+                                                        <a href="javascript:void(0);"
+                                                           class="underline-after-link"
+                                                           ui-sref="root.orders.order.details({ orderId: order.OrderId })"
+                                                           ng-bind="order.OrderName">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="info-block block-width-350 left-divider">
+                                                    <div class="info-block-label">Ref. Provider:</div>
+                                                    <div class="info-block-body">
+                                                        {{order | referralDisplayName}}
+                                                    </div>
+                                                </div>
+                                                <div class="info-block block-width-600 left-divider">
+                                                    <div class="info-block-label">Created By:</div>
+                                                    <div class="info-block-body">
+                                                        <span ng-bind="order.CreatedBy.FullName"></span> &nbsp;
+                                                        <span ng-bind="order.CreatedDateDay"></span> &nbsp;
+                                                        <span class="active-text" ng-bind="order.CreatedDateTime"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex-row marg-v-10">
+                                                <div class="info-block block-width-240"></div>
+                                                <div class="info-block block-width-350 left-divider">
+                                                    <div class="info-block-label">Available For:</div>
+                                                    <div class="info-block-body">
+                                                        {{order.Practice || '-'}}
+                                                    </div>
+                                                </div>
+                                                <div class="info-block block-width-600 left-divider">
+                                                    <div class="info-block-label">Modified By:</div>
+                                                    <div class="info-block-body">
+                                                        <span ng-bind="order.LastModifiedBy.FullName || '-'"></span> &nbsp;
+                                                        <span ng-bind="order.LastModifiedDateDay"></span> &nbsp;
+                                                        <span class="active-text" ng-bind="order.LastModifiedDateTime"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <no-records ng-if="program.orders && !program.orders.length"
+                                            text="Related orders"
+                                            is-fullpage="true"></no-records>
+                            </v-pane-content>
+                        </v-pane>
+                    </v-accordion>
+                </div>
+            </v-pane-content>
+        </v-pane>
+    </v-accordion>
+
+    <no-records ng-if="resupply.resupplyProgramsLoaded && (!resupply.programs || !resupply.programs.length)"
+                text="Resupply programs for this patient"
+                is-fullpage="true"></no-records>
+</div>

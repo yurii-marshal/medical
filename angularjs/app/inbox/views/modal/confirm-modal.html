@@ -1,0 +1,27 @@
+<div class="modal-window delete-modal" style="width:400px;min-width:400px;">
+
+    <a href="javascript:void(0);" ng-click="modal.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/trash.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>CONFIRM DELETE?</h2>
+        </div>
+
+        <div class="center-text">
+            Do you want to delete selected {{$ctrl.count}} files?
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised" ng-click="modal.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary"
+                   ng-click="modal.confirm()">
+            Confirm
+        </md-button>
+    </md-dialog-actions>
+
+</div>

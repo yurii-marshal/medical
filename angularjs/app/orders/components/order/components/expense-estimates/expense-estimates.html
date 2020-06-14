@@ -1,0 +1,379 @@
+<div class="pad-20 expanse-estimates-wrap"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="expanseEstimates"
+>
+    <div class="flex-row">
+        <div class="financial-block w200px">
+            <div class="financial-block-header">Charges:</div>
+            <div class="financial-block-body">
+                <div class="financial-sum">
+                    <md-icon md-svg-src="assets/images/default/dollar-circle.svg"
+                             class="sum-icon"
+                    ></md-icon>
+                    <div class="sum-number">
+                        {{ expense.model.Charge ? expense.model.Charge.Amount : '-' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="financial-block w200px marg-left-10">
+            <div class="financial-block-header">Allowed:</div>
+            <div class="financial-block-body">
+                <div class="financial-sum">
+                    <md-icon md-svg-src="assets/images/default/dollar-circle.svg"
+                             class="sum-icon"
+                    ></md-icon>
+                    <div class="sum-number">
+                        {{ expense.model.Allowed ? expense.model.Allowed.Amount : '-' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="financial-block w200px marg-left-10">
+            <div class="financial-block-header">Insurance responsibility:</div>
+            <div class="financial-block-body">
+                <div class="financial-sum">
+                    <md-icon md-svg-src="assets/images/default/dollar-circle.svg"
+                             class="sum-icon"
+                    ></md-icon>
+                    <div class="sum-number">
+                        {{ expense.model.InsuranceResposibility ? expense.model.InsuranceResposibility.Amount : '-' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="financial-block grow-1 marg-left-10">
+            <div class="financial-block-header">Patient responsibility:</div>
+            <div class="financial-block-body financial-block-body_with-buttons">
+                <div class="financial-sum">
+                    <md-icon md-svg-src="assets/images/default/dollar-circle.svg"
+                             class="sum-icon"
+                    ></md-icon>
+                    <div class="sum-number">
+                        {{ expense.model.PatientResposibility ? expense.model.PatientResposibility.Amount : '-' }}
+                    </div>
+                </div>
+                <div class="financial-detail">
+                    <div class="financial-detail-title">
+                        <md-icon md-svg-src="assets/images/default/document.svg" class="insurance-icon"></md-icon>
+                        Deductible:
+                    </div>
+                    <div class="financial-detail-number">
+                        <span ng-if="!expense.model.Deductible">
+                            -
+                        </span>
+                        <span ng-if="expense.model.Deductible">
+                            {{ expense.model.Deductible.Currency + ' ' + expense.model.Deductible.Amount }}
+                        </span>
+                    </div>
+                </div>
+                <div class="financial-detail">
+                    <div class="financial-detail-title">
+                        <md-icon md-svg-src="assets/images/default/user_v2.svg" class="patient-icon"></md-icon>
+                        Coinsurance:
+                    </div>
+                    <div class="financial-detail-number">
+                        <span ng-if="!expense.model.Coinsurance">
+                            -
+                        </span>
+                        <span ng-if="expense.model.Coinsurance">
+                            {{ expense.model.Coinsurance.Currency + ' ' + expense.model.Coinsurance.Amount }}
+                        </span>
+                    </div>
+                </div>
+                <div class="financial-detail">
+                    <div class="financial-detail-title">
+                        <md-icon md-svg-src="assets/images/default/user_v2.svg" class="patient-icon"></md-icon>
+                        Copay:
+                    </div>
+                    <div class="financial-detail-number">
+                         <span ng-if="!expense.model.Copay">
+                            -
+                        </span>
+                        <span ng-if="expense.model.Copay">
+                            {{ expense.model.Copay.Currency + ' ' + expense.model.Copay.Amount }}
+                        </span>
+                    </div>
+                </div>
+                <div class="w140px pad-top-5">
+                    <md-button class="md-raised main-button small-btn"
+                               ng-click="expense.onSavePdf()"
+                    >
+                        <icon-loading-white class="blue-loading"
+                                            ng-if="expense.savingDocument"
+                        ></icon-loading-white>
+                        Save
+                    </md-button>
+
+                    <md-button class="md-raised main-button md-primary small-btn"
+                               ng-click="expense.onDownloadPdf()"
+                    >
+                        <icon-loading-white ng-if="expense.downloadingDocument"></icon-loading-white>
+                        Download
+                    </md-button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="insurance-block marg-top-30"
+         ng-repeat="payerItem in expense.model.Payers"
+    >
+        <v-accordion class="vAccordion--default flow-accordion" multiple>
+            <v-pane expanded="true">
+                <v-pane-header class="flow-accordion-title">
+                    <md-icon md-svg-src="assets/images/default/chevron.svg" class="flow-accordion-title-icon"></md-icon>
+                    <span ng-if="payerItem.PayerType.Id === expense.expansePayerTypes.INSURANCE_ID">
+                        {{ expense.insurancePriorityNames[payerItem.Insurance.PositionIndex] || 'other insurance:' }}
+                    </span>
+                    <span ng-if="payerItem.PayerType.Id === expense.expansePayerTypes.PATIENT_ID">
+                        patient:
+                    </span>
+                    <div class="accordion-line"></div>
+                </v-pane-header>
+
+                <v-pane-content>
+                    <div class="expanse-block-header"
+                         ng-if="payerItem.PayerType.Id === expense.expansePayerTypes.INSURANCE_ID"
+                    >
+                        <div class="flex-row">
+                            <div class="expanse-block-item grow-1">
+                                <span class="label-text">Name:</span>
+                                <span class="active-text bold-text">
+                                    {{ payerItem.Insurance.Name }}
+                                </span>
+                            </div>
+
+                            <div class="expanse-block-item w150px">
+                                <span class="label-text">Deductible:</span>
+                                <span class="bold-text">
+                                    <span ng-if="!payerItem.Insurance.Deductible">
+                                        -
+                                    </span>
+                                    <span ng-if="payerItem.Insurance.Deductible">
+                                        {{ payerItem.Insurance.Deductible.Currency + ' ' + payerItem.Insurance.Deductible.Amount }}
+                                    </span>
+                                </span>
+                            </div>
+
+                            <div class="expanse-block-item w150px left-divider">
+                                <span class="label-text">Coinsurance:</span>
+                                <span class="bold-text">
+                                    <span ng-if="payerItem.Insurance.Coinsurance === null">
+                                        -
+                                    </span>
+                                    <span ng-if="payerItem.Insurance.Coinsurance !== null">
+                                        {{ payerItem.Insurance.Coinsurance }} %
+                                    </span>
+                                </span>
+                            </div>
+
+                            <div class="expanse-block-item w150px left-divider">
+                                <span class="label-text">Copay:</span>
+                                <span class="bold-text">
+                                    <span ng-if="!payerItem.Insurance.Copay">
+                                        -
+                                    </span>
+                                    <span ng-if="payerItem.Insurance.Copay">
+                                        {{ payerItem.Insurance.Copay.Currency + ' ' + payerItem.Insurance.Copay.Amount }}
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="drowz-table disable-hover">
+                        <tr class="drowz-table-header">
+                            <th>Item:</th>
+                            <th class="w200px">Service:</th>
+                            <th class="w150px">HCPCS:</th>
+                            <th class="w120px">Charge:</th>
+                            <th class="w120px">Allowed:</th>
+                            <th class="w120px">Deductible:</th>
+                            <th class="w120px">Co-pay:</th>
+                            <th class="w120px">Coinsurance:</th>
+                            <th class="w70px">QTY:</th>
+                            <th class="buttons-cell w180px"
+                                ng-if="$first"
+                            ></th>
+                        </tr>
+                        <tr class="drowz-table-row"
+                            ng-repeat="item in payerItem.Items"
+                        >
+                            <td>
+                                {{ item.Product.Name }}
+                            </td>
+
+                            <td class="w200px">
+                                {{ item.Name }}
+                            </td>
+
+                            <td class="w150px">
+                                {{ item.Hcpcs }}
+                            </td>
+                            <td class="bold-table-text w120px">
+                                <span ng-if="!item.Charge">
+                                    -
+                                </span>
+                                <span ng-if="item.Charge">
+                                    {{ item.Charge.Currency + ' ' + item.Charge.Amount }}
+                                </span>
+                            </td>
+                            <td class="bold-table-text w120px">
+                                <span ng-if="!item.Allowed">
+                                    -
+                                </span>
+                                <span ng-if="item.Allowed">
+                                    {{ item.Allowed.Currency + ' ' + item.Allowed.Amount }}
+                                </span>
+                            </td>
+                            <td class="bold-table-text w120px">
+                                <span ng-if="!item.Deductible">
+                                    -
+                                </span>
+                                <span ng-if="item.Deductible">
+                                    {{ item.Deductible.Currency + ' ' + item.Deductible.Amount }}
+                                </span>
+                            </td>
+                            <td class="bold-table-text w120px">
+                                <span ng-if="!item.Copay">
+                                    -
+                                </span>
+                                <span ng-if="item.Copay">
+                                    {{ item.Copay.Currency + ' ' + item.Copay.Amount }}
+                                </span>
+                            </td>
+                            <td class="bold-table-text w120px">
+                                 <span ng-if="!item.Coinsurance">
+                                    -
+                                 </span>
+                                 <span ng-if="item.Coinsurance">
+                                    {{ item.Coinsurance.Currency + ' ' + item.Coinsurance.Amount }}
+                                </span>
+                            </td>
+
+                            <td class="bold-table-text w70px">
+                                 <span>
+                                    {{:: item.Count || '-' }}
+                                 </span>
+                            </td>
+
+                            <td class="buttons-cell w180px"
+                                ng-if="$parent.$first"
+                            >
+                                <div class="flex-row align-center justify-content-end">
+                                    <div class="pad-5"
+                                         ng-if="expense.isNeedSelectPriceOption(item)"
+                                    >
+                                        <md-icon class="action-required-icon"
+                                                 md-svg-src="assets/images/default/alert.svg"
+                                                 simple-tooltip="Select price option!"
+                                                 tooltip-position="left">
+                                        </md-icon>
+                                    </div>
+                                    <div>
+                                        <md-button class="md-raised main-button"
+                                                   ng-click="expense.selectPriceOption(item)"
+                                        >
+                                            Price option
+                                        </md-button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="expanse-block-footer">
+                        <div class="flex-row align-center">
+                            <div class="w350px">
+                                <div class="flex-row">
+                                    <div class="expanse-block-item grow-1">
+                                        <div>
+                                            <span class="small-bold-text">Insurance responsibility:</span>
+                                            <span class="active-text">
+                                                <b>
+                                                    <span ng-if="!payerItem.InsuranceResposibility">
+                                                        -
+                                                    </span>
+                                                    <span ng-if="payerItem.InsuranceResposibility">
+                                                        {{ payerItem.InsuranceResposibility.Currency + ' ' + payerItem.InsuranceResposibility.Amount }}
+                                                    </span>
+                                                </b>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span class="small-bold-text">Patient responsibility:</span>
+                                            <span class="active-text">
+                                                <b>
+                                                    <span ng-if="!payerItem.PatientResposibility">
+                                                        -
+                                                    </span>
+                                                    <span ng-if="payerItem.PatientResposibility">
+                                                        {{ payerItem.PatientResposibility.Currency + ' ' + payerItem.PatientResposibility.Amount }}
+                                                    </span>
+                                                </b>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grow-1">
+                                <div class="flex-row justify-content-end">
+                                    <div class="expanse-block-item w120px left-divider bold-text">
+                                        <span ng-if="!payerItem.Charge">
+                                            -
+                                        </span>
+                                        <span ng-if="payerItem.Charge">
+                                            {{ payerItem.Charge.Currency + ' ' + payerItem.Charge.Amount }}
+                                        </span>
+                                    </div>
+
+                                    <div class="expanse-block-item w120px left-divider bold-text">
+                                        <span ng-if="!payerItem.Allowed">
+                                            -
+                                        </span>
+                                        <span ng-if="payerItem.Allowed">
+                                            {{ payerItem.Allowed.Currency + ' ' + payerItem.Allowed.Amount }}
+                                        </span>
+                                    </div>
+
+                                    <div class="expanse-block-item w120px left-divider bold-text">
+                                        <span ng-if="!payerItem.Deductible">
+                                            -
+                                        </span>
+                                        <span ng-if="payerItem.Deductible">
+                                            {{ payerItem.Deductible.Currency + ' ' + payerItem.Deductible.Amount }}
+                                        </span>
+                                    </div>
+
+                                    <div class="expanse-block-item w120px left-divider bold-text">
+                                        <span ng-if="!payerItem.Copay">
+                                            -
+                                        </span>
+                                        <span ng-if="payerItem.Copay">
+                                            {{ payerItem.Copay.Currency + ' ' + payerItem.Copay.Amount }}
+                                        </span>
+                                    </div>
+
+                                    <div class="expanse-block-item w120px left-divider bold-text">
+                                        <span ng-if="!payerItem.Coinsurance">
+                                            -
+                                        </span>
+                                        <span ng-if="payerItem.Coinsurance">
+                                            {{ payerItem.Coinsurance.Currency + ' ' + payerItem.Coinsurance.Amount }}
+                                        </span>
+                                    </div>
+                                    <div class="expanse-block-item w83px"></div>
+                                    <div class="expanse-block-item w170px" ng-if="$first"></div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </v-pane-content>
+            </v-pane>
+        </v-accordion>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+<md-input-container ng-if="calendar.btns['jumpTo']" class="calendar_icon">
+    <label>Jump to:</label>
+    <input datetimepicker
+           ng-model-options="{debounce: 0}"
+           clear-on-hide="true"
+           value-on-show="{{ calendar.currentDate }}"
+           format="MM/DD/YYYY"
+           aria-label="appoitmentDate"
+           readonly="readonly"
+           ng-model="calendar.dateNow">
+    <div style="background:transparent; width:118px;height:30px;position:relative;" ng-click="clickHelperJumpTo($event)"></div>
+</md-input-container>
+
+<md-button ng-if="calendar.btns['today']" class="setup_header_btn today-btn" ng-click="calendar.goToNow()"><span>Today</span></md-button>
+
+<md-button ng-if="calendar.btns['agendaDay']"
+           class="setup_header_icon_btn"
+           ng-click="calendar.changeView('agendaDay')"
+           ng-class="{'active': calendar.drwzCurrentView === 'agendaDay'}">
+    <md-icon md-svg-src="assets/images/default/calendar-day.svg"></md-icon>
+    <span class="visible-from-1400">Day</span>
+    <md-tooltip class="hidden-from-1400">Day view</md-tooltip>
+</md-button>
+
+<md-button ng-if="calendar.btns['agendaWeek']"
+           class="setup_header_icon_btn"
+           ng-click="calendar.changeView('agendaWeek')"
+           ng-class="{'active': calendar.drwzCurrentView === 'agendaWeek'}">
+    <md-icon md-svg-src="assets/images/default/calendar-week.svg"></md-icon>
+    <span class="visible-from-1400">Week</span>
+    <md-tooltip class="hidden-from-1400">Week view</md-tooltip>
+</md-button>
+
+<md-button ng-if="calendar.btns['month']"
+           class="setup_header_icon_btn"
+           ng-click="calendar.changeView('month')"
+           ng-class="{'active': calendar.drwzCurrentView === 'month'}"
+           tooltip-text="Month">
+    <md-icon md-svg-src="assets/images/default/calendar-month.svg"></md-icon>
+    <span class="visible-from-1400">Month</span>
+    <md-tooltip class="hidden-from-1400">Month view</md-tooltip>
+</md-button>

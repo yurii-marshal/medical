@@ -1,0 +1,29 @@
+<div class="drowz-wizard">
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.inventory.list">Inventory</a>
+        <a href="javascript:void(0)" ui-sref="root.inventory.purchase-orders">Purchase Orders</a>
+        <a href="javascript:void(0)" class="active">{{ !!purchaseOrderItems.purchaseOrderId ? 'Edit' : 'New' }} Purchase Order</a>
+    </div>
+
+    <div>
+        <div class="bs-loading-overlay-fullscreen">
+            <div class="drowz-wizard-body">
+                <search-items items="purchaseOrderItems.products"
+                              type="products"
+                              is-hide-select-any-device-btn="true"
+                ></search-items>
+            </div>
+        </div>
+
+        <div class="drowz-wizard-footer">
+            <md-button class="md-raised main-button drowz-wizard-footer-btn"
+                       ng-click="purchaseOrderItems.cancel()">Cancel</md-button>
+            <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                       ng-disabled="!purchaseOrderItems.products.length"
+                       ng-click="purchaseOrderItems.save()">Add</md-button>
+        </div>
+    </div>
+
+</div>

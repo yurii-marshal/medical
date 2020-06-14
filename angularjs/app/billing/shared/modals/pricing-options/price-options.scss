@@ -1,0 +1,78 @@
+.modal-window {
+    &.price-options-modal {
+        width: 1300px;
+        min-width: 1300px;
+
+        .modal-icon {
+            @include size(37px, 37px);
+        }
+
+        .active-title.flow-body-active-title {
+            justify-content: center;
+        }
+
+        .price-option-item {
+            margin: 0;
+            padding: 20px 0;
+
+            &:not(:last-of-type) {
+                border-bottom: 1px solid $lighter-gray-color;
+            }
+
+            .md-container {
+                top: 20px;
+                transform: none;
+            }
+
+            price-option-content {
+                display: flex;
+                align-items: flex-start;
+                justify-content: flex-start;
+            }
+
+            .two-line-status {
+                padding-left: 10px;
+                display: flex;
+                align-items: flex-start;
+                justify-content: flex-start;
+                flex-direction: column;
+                width: 185px;
+                min-width: 185px;
+                min-height: 40px;
+            }
+        }
+
+        .price-options-filters {
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            padding: 20px 0;
+
+            md-input-container {
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+
+            .dos-filter {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+
+                md-input-container.calendar_icon {
+                    width: 125px;
+                    margin: 0 15px;
+                }
+            }
+
+            .period-filter {
+                width: 140px;
+                padding: 0 10px;
+            }
+
+            .payer-filter {
+                width: 350px;
+                padding: 0 10px;
+            }
+        }
+    }
+}

@@ -1,0 +1,62 @@
+<div class="flex-row">
+    <div class="col-xs-6 subwizard-container-block">
+        <md-icon md-svg-src="assets/images/default/new-invoice-rect.svg" class="subwizard-container-icon new-invoice-rect-icon"></md-icon>
+        <md-input-container class="subwizard-container">
+            <label>Scan or Enter Lot Number:</label>
+            <input type="text"
+                   auto-focus
+                   ng-model="recWiz.pairCurrent.product.lotNumber"
+                   on-press-enter="recWiz.goStep4NonSerialized()" />
+        </md-input-container>
+        <div class="subwizard-container-btns">
+            <md-button class="md-primary md-raised small-btn enter-barcode-btn"
+                       ng-click="recWiz.goStep4NonSerialized()"
+                       ng-disabled="!recWiz.pairCurrent.product.lotNumber">
+                Enter
+            </md-button>
+        </div>
+    </div>
+    <div class="col-xs-6 subwizard-container-block with-blue-border">
+        <md-icon md-svg-src="assets/images/default/location.svg" class="subwizard-container-icon location-icon"></md-icon>
+        <div class="info-block grow-1">
+            <div class="info-block-label">Destination Location:</div>
+            <div class="info-block-body">{{recWiz.pairCurrent.location.Name + ", " + recWiz.pairCurrent.location.Description}}</div>
+        </div>
+        <div class="subwizard-container-btns">
+            <md-button class="md-raised small-btn" ng-click="recWiz.searchLocationModal($event)">
+                Change
+            </md-button>
+        </div>
+    </div>
+</div>
+<hr class="drowz-line">
+<div class="scanned-item-block">
+    <div class="flex-row">
+        <div class="col-xs-12 subwizard-container-block current-prev-item">
+            <md-icon md-svg-src="assets/images/default/inventory.svg" class="subwizard-container-icon inventory-icon"></md-icon>
+            <div class="info-block block-width-25-percent">
+                <div class="info-block-label">Current Item:</div>
+                <div class="info-block-body">{{recWiz.pairCurrent.product.Name}}</div>
+            </div>
+            <div class="info-block block-width-25-percent left-divider red-block">
+                <div class="info-block-label">Lot Number:</div>
+                <div class="info-block-body">&nbsp;</div>
+            </div>
+            <div class="info-block block-width-25-percent left-divider">
+                <div class="info-block-label">Qty:</div>
+                <div class="info-block-body">{{recWiz.pairCurrent.product.Count}}</div>
+            </div>
+            <div class="subwizard-container-btns">
+                <md-button class="md-raised small-btn"
+                           ng-click="recWiz.editQtyModal($event, 'current' ,null)"
+                           ng-if="recWiz.pairCurrent.product.Multiple">
+                    Change Qty
+                </md-button>
+                <md-button class="md-raised small-btn"
+                           ng-click="recWiz.editNotesModal($event, current, null)">
+                    Notes
+                </md-button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,156 @@
+.patient-rental-tab {
+    $tab-padding-v: 15px;
+    padding: $tab-padding-v 28px;
+
+    no-records {
+        height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height} - #{$tab-padding-v} * 2);
+    }
+
+    .patient-rental-filters {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: 10px 0 20px;
+
+        .item-number {
+            min-width: 9px;
+            margin-right: 20px;
+            padding-top: 10px;
+        }
+
+        .clear-filters {
+            margin: 9px 6px 0 0;
+            padding: 0;
+            height: 22px;
+            width: 22px;
+            min-width: 22px;
+
+            md-icon {
+                margin: 0;
+                width: 16px;
+                height: 16px;
+                transform: scale(-1, 1);
+                color: $main-active-color;
+            }
+
+            &:hover, &:focus {
+                background-color: transparent;
+
+                md-icon {
+                    color: $main-active-hover-color;
+                }
+            }
+        }
+
+        .search-field {
+            margin: 0 10px;
+            flex-grow: 1;
+        }
+
+        .content-header-select {
+            margin: 0 10px;
+            width: 300px;
+            min-width: 300px;
+        }
+
+        md-input-container.content-header-timepicker.calendar_icon {
+            width: 140px;
+            min-width: 140px;
+            margin: 0 10px 0 10px;
+
+            .md-input-messages-nice {
+                position: relative;
+                z-index: 2;
+                margin-bottom: -36px;
+                font-size: 11px;
+                line-height: 11px;
+                letter-spacing: -0.9px;
+            }
+        }
+
+        .append-tracking-item {
+            margin: 0 0 0 10px;
+
+            md-icon {
+                width: 15px;
+                height: 16px;
+                margin: 0 10px 0 0;
+                color: #fff;
+            }
+        }
+    }
+
+    .rental-items-list {
+        counter-reset: item;
+
+        .rental-item {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            padding: 30px 35px 15px 40px;
+
+            &:not(:first-of-type) {
+                border-top: 1px solid $lighter-gray-color;
+            }
+
+            &::before {
+                content: counter(item)'.';
+                counter-increment: item;
+                position: absolute;
+                top: 30px;
+                left: 0;
+                font-size: $font-size-md;
+            }
+
+            .status-label {
+                width: 65px;
+                min-width: 65px;
+                text-align: center;
+                margin: 0 15px 0 0;
+
+                &.status-inactive-reason {
+                    cursor: pointer;
+                }
+            }
+
+            .md-button, .md-button:not([disabled="disabled"]), .md-button:not([disabled="true"]) {
+                &.patient-rental-btn {
+                    background-color: $red-color;
+                    color: #fff;
+
+                    &.stopped {
+                        background-color: $green-color;
+                    }
+                }
+
+                &.patient-rental-btn,
+                &.edit-rent-btn,
+                &.rent-audit-btn {
+                    width: 90px;
+                    margin: 0px;
+                }
+
+                &.edit-rent-btn {
+                    md-icon {
+                        @include size(16px, 15px);
+                        margin-left: 3px;
+                        color: $gray-color;
+                    }
+                }
+
+                &.rent-audit-btn {
+                    md-icon {
+                        @include size(19px, 18px);
+                        margin-left: 3px;
+                        color: $gray-color;
+                    }
+                }
+            }
+
+
+        }
+    }
+
+
+}

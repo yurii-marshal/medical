@@ -1,0 +1,21 @@
+<div class="modal-window confirm-modal">
+    <md-toolbar class="modal-title">
+        <div class="md-toolbar-tools">
+            <h2>Confirm Delete</h2>
+            <a href="javascript:void(0);" ng-click="modal.cancel()" class="close-modal"></a>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="modal-padding">
+            <p>Do you want to delete all occurrences of the recurring appointment, or Just this one?</p>
+            <md-radio-group class="radio-with-content" ng-model="modal.deleteOption">
+                <div class="radio-row"><md-radio-button value="1" class="md-primary" aria-label="empty label">Delete this occurrence</md-radio-button></div>
+                <div class="radio-row"><md-radio-button value="2" class="md-primary" aria-label="empty label">Delete the series</md-radio-button></div>
+            </md-radio-group>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter" layout="row" layout-align="space-between center">
+        <md-button class="md-raised" ng-click="modal.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised" ng-click="modal.save(modal.deleteOption)">Yes</md-button>
+    </md-dialog-actions>
+</div>

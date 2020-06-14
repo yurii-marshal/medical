@@ -1,0 +1,19 @@
+<div class="date-set">
+    <app-period-switch [period]="formatDecade(date)"
+                   (prev)="prev()"
+                   (next)="next()"
+                   (modeChange)="modeChanged.emit($event)">
+    </app-period-switch>
+    <ul class="date-set__dates">
+        <li *ngFor="let year of _value"
+            [ngClass]="
+                {
+                     'date-set__date': true,
+                     'selected': isSelected(year),
+                     'not-allowed': !isAllowedDate(year)
+                }"
+            (mousedown)="onDateSelected(year)">
+            {{ year.format("YYYY") }}
+        </li>
+    </ul>
+</div>

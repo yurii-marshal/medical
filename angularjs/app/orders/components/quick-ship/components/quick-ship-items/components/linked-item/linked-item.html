@@ -1,0 +1,125 @@
+<div class="product-details flex-row pad-bottom-5"
+     ng-form="$ctrl['linkedItemForm-' + $ctrl.copiedLinkedItem._hash]">
+    <div class="info-block">
+        <div class="info-block-body marg-0">
+            <span class="inner-val">{{ $ctrl.index }}.</span>
+        </div>
+    </div>
+
+    <div class="info-block grow-1">
+        <div class="info-block-label">Location:</div>
+        <div class="info-block-body marg-0">
+            <span class="inner-val">{{ $ctrl.copiedLinkedItem.location }}</span>
+        </div>
+    </div>
+
+    <div class="info-block block-width-200 left-divider">
+        <div class="info-block-label">Serial Number:</div>
+        <div class="info-block-body marg-0">
+            <span class="inner-val">{{ $ctrl.copiedLinkedItem.serialNumber || '-' }}</span>
+        </div>
+    </div>
+
+    <div class="info-block block-width-200 left-divider">
+        <div class="info-block-label">Lot Number:</div>
+        <div class="info-block-body marg-0">
+            <span class="inner-val">{{ $ctrl.copiedLinkedItem.lotNumber || '-' }}</span>
+        </div>
+    </div>
+
+    <div class="info-block block-width-200 left-divider">
+        <div class="info-block-label"></div>
+        <div class="info-block-body marg-0">
+            <md-input-container>
+                <label>Tracking Number:</label>
+                <input type="text"
+                       alphanumerics-validator
+                       ng-minlength="5"
+                       ng-maxlength="40"
+                       exclude-validators="$ctrl.excludeValidations"
+                       ng-model="$ctrl.copiedLinkedItem.trackingNumber"
+                       ng-required="$ctrl.copiedLinkedItem.deliveryCompany"
+                       name="tracking-number-{{$ctrl.copiedLinkedItem._hash}}"
+                       ng-blur="$ctrl.onUpdateTrackingNumber($ctrl.copiedLinkedItem.trackingNumber, $ctrl.copiedLinkedItem._hash)"
+                >
+                <div ng-messages="$ctrl['linkedItemForm-' + $ctrl.copiedLinkedItem._hash]['tracking-number-' + $ctrl.copiedLinkedItem._hash].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required">This field is required</div>
+                    <div ng-message="alphanumerics">Only alphanumeric characters</div>
+                    <div ng-message="minlength">Must contain min 5 symbols</div>
+                    <div ng-message="maxlength">Must contain max 40 symbols</div>
+                </div>
+            </md-input-container>
+        </div>
+    </div>
+
+    <div class="info-block block-width-200">
+        <div class="info-block-label"></div>
+        <div class="info-block-body marg-0">
+            <md-input-container class="method-select">
+                <label>Select Carrier:</label>
+                <md-select ng-model="$ctrl.copiedLinkedItem.deliveryCompany"
+                           ng-change="$ctrl.onChangeDeliveryCompany($ctrl.copiedLinkedItem.deliveryCompany, $ctrl.copiedLinkedItem._hash)"
+                           name="company-{{$ctrl.copiedLinkedItem._hash}}"
+                           ng-required="$ctrl.isRequiredDeliveryCompany"
+                           class="md-select-value-transparent"
+                           clear-on-click
+                >
+                    <md-option ng-value="company.id"
+                               ng-repeat="company in $ctrl.deliveryCompanies"
+                    >
+                        {{:: company.name }}
+                    </md-option>
+                </md-select>
+                <div ng-messages="$ctrl['linkedItemForm-' + $ctrl.copiedLinkedItem._hash]['company-' + $ctrl.copiedLinkedItem._hash].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required">This field is required</div>
+                </div>
+            </md-input-container>
+        </div>
+    </div>
+
+    <div class="info-block block-width-200 left-divider">
+        <div class="info-block-label"></div>
+        <div class="info-block-body marg-0">
+            <md-input-container class="calendar_icon left-input-icon">
+                <label>Ship Date:</label>
+                <input ng-model="$ctrl.copiedLinkedItem.shipDate"
+                       name="ship-date"
+                       datetimepicker
+                       use-current="false"
+                       required="true"
+                       format="MM/DD/YYYY"
+                       ng-change="$ctrl.onUpdateShipDate($ctrl.copiedLinkedItem.shipDate, $ctrl.copiedLinkedItem._hash)"
+                       clear-on-click
+                >
+                <div ng-messages="$ctrl['linkedItemForm-' + $ctrl.copiedLinkedItem._hash]['ship-date'].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required">This field is required</div>
+                </div>
+            </md-input-container>
+
+        </div>
+    </div>
+
+    <div class="info-block block-width-70 left-divider">
+        <div class="info-block-label">Qty:</div>
+        <div class="info-block-body marg-0">
+            <span class="inner-val">{{ $ctrl.copiedLinkedItem.count }}</span>
+        </div>
+    </div>
+
+    <div>
+        <div class="info-block-body marg-0">
+            <span class="close-btn cursor-pointer"
+                  ng-click="$ctrl.onRemoveItem($ctrl.copiedLinkedItem._hash)"
+            ></span>
+        </div>
+    </div>
+</div>
+
+<linked-item-components
+    ng-if="$ctrl.copiedLinkedItem.componentsHashes"
+    linked-item-components="$ctrl.linkedItemComponents"
+    linked-item-components-hashes="$ctrl.copiedLinkedItem.componentsHashes"
+></linked-item-components>

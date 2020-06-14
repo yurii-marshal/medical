@@ -1,0 +1,301 @@
+<advanced-filters
+    cache-filters-key="denials.cacheFiltersKey"
+    init-filters="denials.initFilters"
+    update-filters="denials.updateFilters">
+</advanced-filters>
+
+<toolbar
+    items="denials.toolbarItems"
+    ng-if="denials.selectedItemsArrCount()">
+</toolbar>
+
+<infinity-table load-items-promise="denials.getDenials"
+                page-size="24"
+                item-alias="item"
+                filters-obj="denials.filtersObj"
+                sort-obj="denials.sortExpr"
+                default-sort-field="'CreatedOn'"
+                default-sort-value="'false'"
+                cache-filters-key="denials.cacheFiltersKey"
+                class="custom-table double-row-table denails-table">
+
+    <infinity-table-sort>
+        <div class="number-td">&nbsp;</div>
+        <div class="denial-td">
+            <md-icon md-svg-src="assets/images/default/documents.svg" class="main-sort-icon document-icon"></md-icon>
+            Denial:
+        </div>
+        <div class="created-td">
+            <md-icon md-svg-src="assets/images/default/calendar-new.svg" class="main-sort-icon date-icon"></md-icon>
+            <inftbl-sort-list param-name="CreatedOn">Created:</inftbl-sort-list>
+        </div>
+        <div class="patient-td">
+            <md-icon md-svg-src="assets/images/default/user-square.svg" class="main-sort-icon user-icon"></md-icon>
+            <inftbl-sort-list param-name="PatientName">Patient:</inftbl-sort-list>
+        </div>
+        <div class="invoice-td">
+            <md-icon md-svg-src="assets/images/default/documents.svg" class="main-sort-icon document-icon"></md-icon>
+            Invoice:
+        </div>
+        <div class="dos-td">
+            <md-icon md-svg-src="assets/images/default/calendar-new.svg" class="main-sort-icon date-icon"></md-icon>
+            <inftbl-sort-list param-name="Dos">DOS From:</inftbl-sort-list>
+        </div>
+        <div class="hcpcs-td">
+            <md-icon md-svg-src="assets/images/default/insurance.svg" class="main-sort-icon insurance-icon"></md-icon>
+            <inftbl-sort-list param-name="Hcpcs">HCPCS:</inftbl-sort-list>
+        </div>
+        <div class="modifiers-td">
+            <md-icon md-svg-src="assets/images/default/setup.svg" class="main-sort-icon billing-icon"></md-icon>
+            Modifiers:
+        </div>
+        <div class="charge-td">
+            <md-icon md-svg-src="assets/images/default/billing.svg" class="main-sort-icon billing-icon"></md-icon>
+            <inftbl-sort-list param-name="Charge">Amount:</inftbl-sort-list>
+        </div>
+        <div class="primary-insurance-td">
+            <md-icon md-svg-src="assets/images/default/documents.svg" class="main-sort-icon document-icon"></md-icon>
+            <inftbl-sort-list param-name="Source">Payer:</inftbl-sort-list>
+        </div>
+        <div class="status-td">
+            <md-icon md-svg-src="assets/images/default/star-half.svg" class="main-sort-icon status-icon"></md-icon>
+            Status:
+        </div>
+        <div class="number-td">&nbsp;</div>
+    </infinity-table-sort>
+
+    <infinity-table-filters class="drowz-infinite-row-filter">
+        <div class="number-td">
+            <md-checkbox class="md-primary"
+                         aria-label="..."
+                         ng-click="$ctrl.selectAllFn()"
+                         ng-checked="$ctrl.isSelectAll">
+            </md-checkbox>
+        </div>
+        <div class="denial-td">
+            <md-autocomplete-with-infinite-scroll class="drowz-infinite-autocomplete in-grid-filter-pos"
+                                                  md-menu-container-class="modifier-decorator"
+                                                  md-no-cache="true"
+                                                  md-selected-item="$ctrl.filtersObj.Code"
+                                                  md-search-text="searchCode"
+                                                  md-items="item in $parent.denials.getDenialsReasons(searchCode, pageIndex)"
+                                                  md-item-text="item.Name"
+                                                  md-min-length="0"
+                                                  md-floating-label="search"
+                                                  ng-model-options="{debounce: 450}"
+                                                  clear-on-click
+                                                  drowz-clear-value
+            >
+                <md-item-template>
+                    <span md-highlight-text="searchCode"
+                          md-highlight-flags="^i"
+                          title="{{item.Name}} - {{item.Description}}">
+                        {{item.Name}} - {{item.Description}}
+                     </span>
+                </md-item-template>
+                <md-not-found>
+                    No reason code was found
+                </md-not-found>
+            </md-autocomplete-with-infinite-scroll>
+        </div>
+        <div class="created-td">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>select</label>
+                <input ng-model="$ctrl.filtersObj.CreatedOn"
+                       datetimepicker
+                       use-current="false"
+                       format="MM/DD/YYYY"
+                       show-today-button="false"
+                       aria-label="..."
+                       clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="patient-td">
+            <md-autocomplete class="drowz-infinite-autocomplete"
+                             md-no-cache="true"
+                             md-selected-item="$ctrl.filtersObj.Patient"
+                             md-search-text="searchPatient"
+                             md-items="item in $parent.denials.getPatients(searchPatient)"
+                             md-item-text="item.Name.FullName"
+                             md-min-length="0"
+                             md-floating-label="search name"
+                             ng-model-options="{debounce: 450}"
+                             clear-on-click
+                             drowz-clear-value>
+                <md-item-template>
+                    <span md-highlight-text="searchPatient" md-highlight-flags="^i">
+                        {{item.Name.FullName}}
+                     </span>
+                </md-item-template>
+                <md-not-found>
+                    No patient was found
+                </md-not-found>
+            </md-autocomplete>
+        </div>
+        <div class="invoice-td">
+            <md-autocomplete-with-infinite-scroll class="drowz-infinite-autocomplete in-grid-filter-pos"
+                                                  md-no-cache="true"
+                                                  md-selected-item="$ctrl.filtersObj.Claim"
+                                                  md-search-text="searchInvoice"
+                                                  md-items="item in $parent.denials.getClaims(searchInvoice, pageIndex)"
+                                                  md-item-text="item.Name"
+                                                  md-min-length="0"
+                                                  md-floating-label="search id"
+                                                  ng-model-options="{debounce: 450}"
+                                                  md-menu-container-class="invoice-id-dropdown"
+                                                  clear-on-click
+                                                  drowz-clear-value
+            >
+                <md-item-template>
+                    <span md-highlight-text="searchInvoice" md-highlight-flags="^i">
+                        {{item.Name}}
+                     </span>
+                </md-item-template>
+                <md-not-found>
+                    No invoice was found
+                </md-not-found>
+            </md-autocomplete-with-infinite-scroll>
+        </div>
+        <div class="dos-td">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>select</label>
+                <input ng-model="$ctrl.filtersObj.Dos"
+                       datetimepicker
+                       use-current="false"
+                       format="MM/DD/YYYY"
+                       show-today-button="false"
+                       aria-label="..."
+                       clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="hcpcs-td">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search</label>
+                <input type="text"
+                       ng-model="$ctrl.filtersObj.Hcpcs"
+                       ng-model-options="{debounce: 450}"
+                       clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="modifiers-td"></div>
+        <div class="charge-td">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search</label>
+                <input type="text"
+                       ng-model="$ctrl.filtersObj.Charge"
+                       ng-model-options="{debounce: 450}"
+                       clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="primary-insurance-td">
+            <md-autocomplete class="drowz-infinite-autocomplete"
+                             md-no-cache="true"
+                             md-selected-item="$ctrl.filtersObj.Insurance"
+                             md-search-text="searchInsurance"
+                             md-items="item in $parent.denials.getInsurancePayers(searchInsurance)"
+                             md-item-text="item.FullName"
+                             md-min-length="0"
+                             md-floating-label="search insurance"
+                             ng-model-options="{debounce: 450}"
+                             clear-on-click
+                             drowz-clear-value>
+                <md-item-template>
+                    <span md-highlight-text="searchInsurance" md-highlight-flags="^i">
+                        {{item.FullName}}
+                     </span>
+                </md-item-template>
+                <md-not-found>
+                    No insurance was found
+                </md-not-found>
+            </md-autocomplete>
+        </div>
+        <div class="status-td no-divider">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>select</label>
+                <md-select ng-model="$ctrl.filtersObj.Status"
+                           clear-on-click>
+                    <md-option ng-value="status.Id" ng-repeat="status in $parent.denials.statuses">
+                        {{status.Name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div class="number-td filter-reset-btn align-right">
+            <inftbl-filter-reset-btn></inftbl-filter-reset-btn>
+        </div>
+    </infinity-table-filters>
+
+    <infinity-table-row class="drowz-infinite-row"
+                        ng-click="$parent.denials.goToInvoice(item.InvoiceId, item.ServiceLineId)">
+        <div class="custom-table-body no-divider custom-table-body-auto-height">
+            <div class="number-td">
+                <md-checkbox class="md-primary toggle-item-checkbox"
+                             aria-label="..."
+                             ng-click="$parent.denials.toggleItem($event, item)"
+                             ng-checked="item.isSelected">
+                </md-checkbox>
+            </div>
+
+            <div class="denial-td font-semibold"
+                 ng-bind="item.Reasons[0].Group.Code + ' - ' + item.Reasons[0].Code.Id"
+            ></div>
+
+            <div class="created-td"
+                 ng-bind="item.CreatedOn | amUtc | amDateFormat: 'MM/DD/YYYY'"></div>
+            <div class="patient-td">
+                <div>
+                    <span ng-bind="item.PatientFullName"></span><br>
+                    (<span ng-bind="item.PatientDateOfBirth"></span>)
+                </div>
+            </div>
+            <div class="invoice-td" ng-bind="item.InvoiceDisplayId"></div>
+            <div class="dos-td">
+                <span ng-bind="(item.Dos.From | amUtc | amDateFormat: 'MM/DD/YYYY')"></span>&nbsp;-&nbsp;
+                <span ng-bind="(item.Dos.To | amUtc | amDateFormat: 'MM/DD/YYYY')"></span>
+            </div>
+            <div class="hcpcs-td">
+                <div popover-directive="item.Hcpcs" min-width="50"></div>
+            </div>
+            <div class="modifiers-td">
+                <div class="code-with-slash"
+                     ng-repeat="(key, value) in item.Modifiers"
+                     ng-bind="value || '-'"></div>
+            </div>
+            <div class="charge-td font-semibold">
+                 <span ng-if="item.Charge.Amount"
+                       ng-bind="(item.Charge.Currency) + ' ' + (item.Charge.Amount | absNumber)"></span>
+                 <span ng-if="!item.Charge.Amount">-</span>
+            </div>
+            <div class="primary-insurance-td" ng-bind="item.Source || '-'"></div>
+            <div class="status-td two-line-status no-divider">
+                <div class="status-label {{item.StatusClass}}"
+                      ng-bind="item.Status.Name"></div>
+                <br>
+                <div class="status-label dark-blue"
+                     ng-if="item.InProgress"
+                     simple-tooltip="{{item.InProgressStartDate | amUtc | amDateFormat: 'MM/DD/YYYY'}}">
+                    In Progress
+                </div>
+            </div>
+            <div class="number-td">&nbsp;</div>
+        </div>
+        <div class="custom-table-body denial-reason font-italic">
+            <div class="number-td no-divider">&nbsp;</div>
+            <div class="no-divider grow-1" ng-bind="item.Reasons[0].Code.Name || '-'"></div>
+
+            <div class="no-divider align-content-right in-progress-section grow-1"
+                 ng-if="item.InProgressUser">
+                <span class="font-italic">Set in progress by &nbsp;</span>
+                <span class="font-semibold"
+                      ng-bind="(item.InProgressUser | fullname)"></span>
+                <span class="font-italic">&nbsp;on&nbsp;</span>
+                <span class="font-semibold"
+                      ng-bind="(item.InProgressStartDate | amUtc | amDateFormat: 'MM/DD/YYYY')"></span>
+            </div>
+        </div>
+    </infinity-table-row>
+
+    <infinity-table-no-items>
+        <no-records text="Denials" is-fullpage="true"></no-records>
+    </infinity-table-no-items>
+</infinity-table>

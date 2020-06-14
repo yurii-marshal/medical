@@ -1,0 +1,30 @@
+<div class="infinite-scroll-bg billing-main"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="patientFillSign">
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.patient({patientId: patientFill.patientId})">Patient</a>
+        <a href="javascript:void(0)" ui-sref="root.patient.forms({patientId: patientFill.patientId})">Forms</a>
+        <a href="javascript:void(0)" class="active">{{patientFill.pageName}}</a>
+    </div>
+
+    <div ng-if="patientFill._pdfPages"
+         id="container"
+         pdf-edit
+         file-name="patientFill._pdfName"
+         pages="patientFill._pdfPages"
+         class="container pdf-editor-container">
+    </div>
+
+    <div class="flow-body-footer">
+        <md-button class="md-raised main-button" ng-click="patientFill.cancel()">Cancel</md-button>
+
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="patientFill.save()">
+            Save
+        </md-button>
+    </div>
+
+</div>
+

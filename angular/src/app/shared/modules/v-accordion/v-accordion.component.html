@@ -1,0 +1,26 @@
+<mat-accordion class="accordion-panel">
+
+    <mat-expansion-panel [expanded]=expanded>
+
+        <mat-expansion-panel-header
+            [collapsedHeight]="'26px'"
+            [expandedHeight]="'26px'"
+        >
+
+            <mat-panel-title class="accordion-header">
+
+                {{ header }}:
+
+                <div class="accordion-line"></div>
+
+                <mat-icon svgIcon="chevron" class="accordion-chevron"></mat-icon>
+
+            </mat-panel-title>
+
+        </mat-expansion-panel-header>
+
+        <ng-content #name></ng-content>
+
+    </mat-expansion-panel>
+
+</mat-accordion>

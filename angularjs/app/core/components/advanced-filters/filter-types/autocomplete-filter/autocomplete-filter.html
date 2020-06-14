@@ -1,0 +1,68 @@
+<div class="flex-row"
+     ng-class="{'subfilter' : $ctrl.options.subfilter}">
+
+    <div class="filters-block-label active-text font-semibold">
+        <span ng-if="!$ctrl.options.subfilter"
+              ng-bind="$ctrl.options.label + ':'"></span>
+    </div>
+
+    <div class="filters-block-body">
+        <div ng-if="$ctrl.options.subfilter"
+             class="filters-block-label">
+            <span ng-bind="$ctrl.options.label + ':'"></span>
+        </div>
+        <!--Dynamic search-->
+        <md-autocomplete ng-if="!$ctrl.options.isStaticDictionary"
+                         id="{{$ctrl.autocompleteId}}"
+                         class="autocomplete-filter"
+                         md-no-cache="true"
+                         close-on-scroll="true"
+                         md-floating-label="Search..."
+                         md-selected-item="$ctrl.options.filterValue"
+                         md-search-text="$ctrl.searchText"
+                         md-items="item in $ctrl.getDictionary($ctrl.searchText)"
+                         md-item-text="item[$ctrl.options.dictionaryKeyName]"
+                         placeholder="{{$ctrl.options.placeholder}}"
+                         ng-disabled="$ctrl.options.isDisabled"
+                         md-min-length="0"
+                         clear-on-click>
+            <md-item-template>
+                    <span md-highlight-text="searchText"
+                          md-highlight-flags="i"
+                          title="{{item[$ctrl.options.dictionaryKeyName]}}">
+                        {{::item[$ctrl.options.dictionaryKeyName]}}
+                    </span>
+            </md-item-template>
+            <md-not-found>
+                Nothing was found
+            </md-not-found>
+        </md-autocomplete>
+
+        <!--Static search-->
+        <md-autocomplete ng-if="$ctrl.options.isStaticDictionary"
+                         id="{{$ctrl.autocompleteId}}"
+                         class="autocomplete-filter"
+                         md-no-cache="true"
+                         close-on-scroll="true"
+                         md-floating-label="Search..."
+                         md-selected-item="$ctrl.options.filterValue"
+                         md-search-text="$ctrl.searchText"
+                         md-items="item in $ctrl.autocompleteQuerySearch($ctrl.searchText)"
+                         md-item-text="item[$ctrl.options.dictionaryKeyName]"
+                         placeholder="{{$ctrl.options.placeholder}}"
+                         ng-disabled="$ctrl.options.isDisabled"
+                         md-min-length="0"
+                         clear-on-click>
+            <md-item-template>
+                    <span md-highlight-text="searchText"
+                          md-highlight-flags="i"
+                          title="{{item[$ctrl.options.dictionaryKeyName]}}">
+                        {{::item[$ctrl.options.dictionaryKeyName]}}
+                    </span>
+            </md-item-template>
+            <md-not-found>
+                Nothing was found
+            </md-not-found>
+        </md-autocomplete>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="login-block"
+     [formGroup]="form"
+>
+    <div class="login-title login-code-title">
+        We noticed that you may be logging in <br /> from a new location
+    </div>
+
+    <div class="login-desc pad-v-20">
+        In order to identify you, we are sending a verification code to your email address. Once you receive it, please
+        enter it below:
+    </div>
+
+    <app-spell-text-input formControlName="code"></app-spell-text-input>
+
+    <div class="login-row">
+        <button class="login-btn spinner-btn"
+                tabindex="3"
+                mat-raised-button
+                color="primary"
+                [disabled]="form.invalid"
+                (click)="submitForm()"
+        >
+            <mat-progress-spinner *ngIf="isLoading"
+                                  mode="indeterminate"
+                                  [diameter]="27">
+            </mat-progress-spinner>
+            <span>Sign in</span>
+        </button>
+    </div>
+
+    <div class="login-footer-text">
+        Your code never arrived? <br />
+        Click <a class="blue"
+                 href="javascript:void(0)"
+                 (click)="resendCode()">here</a> to send new code.
+    </div>
+</div>

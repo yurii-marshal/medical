@@ -1,0 +1,111 @@
+﻿﻿<div class="modal-window-wrap w800px"
+      [formGroup]="helpdescForm"
+>
+    <app-loading [show]="isSendingRequest"></app-loading>
+
+    <a href="javascript:void(0);"
+       (click)="cancel()"
+       class="close-modal"
+    ></a>
+
+    <mat-dialog-content class="modal-body">
+        <mat-icon svgIcon="question-fill"
+                  class="modal-icon"></mat-icon>
+
+        <h2 mat-dialog-title class="modal-title">
+            HAVE A QUESTION? DROP US A NOTE…
+        </h2>
+
+        <div class="flex-row">
+            <div class="info-block grow-1 pad-h-0">
+                <mat-form-field class="col-w-100">
+                    <input matInput
+                           placeholder="Subject:"
+                           type="text"
+                           autocomplete="off"
+                           formControlName="subject"
+                    />
+                    <mat-error [appErrorMessages]="helpdescForm.controls.subject">
+                        <div data-error-message="required"> This field is required.</div>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="flex-row">
+            <div class="info-block grow-1 pad-h-0">
+                <mat-form-field class="col-w-100">
+                    <textarea matInput
+                              rows="3"
+                              placeholder="Description:"
+                              type="text"
+                              formControlName="description"
+                    ></textarea>
+                    <mat-error [appErrorMessages]="helpdescForm.controls.description">
+                        <div data-error-message="required"> This field is required.</div>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="flex-row pad-0 pad-bottom-20"
+             *ngIf="files.length"
+        >
+            <mat-chip-list>
+                <span class="pad-top-10 pad-right-10"
+                      *ngFor="let file of files; let i = index;"
+                >
+                    <mat-chip class="no-focused"
+                              (click)="removeFile(i)"
+                    >
+                        {{ file.name }}
+                        <mat-icon svgIcon="trash" class="remove-chip-btn-icon"></mat-icon>
+                    </mat-chip>
+                </span>
+            </mat-chip-list>
+        </div>
+        <div class="flex-row pad-bottom-20">
+            <span class="file-upload-block">
+                <input type="file"
+                       (change)="fileChange($event)"
+                       placeholder="Upload file"
+                       class="load-file-input"
+                       multiple="multiple"
+                >
+                <button class="niko-mat-button"
+                        mat-raised-button
+                >
+                    <mat-icon svgIcon="upload" class="upload-btn-icon"></mat-icon>
+                    Attach file
+                </button>
+            </span>
+        </div>
+
+    </mat-dialog-content>
+
+    <mat-dialog-actions class="flex-row space-between">
+        <span>
+            <mat-checkbox color="primary"
+                          formControlName="agree"
+            >
+                I am not including any protected health information
+            </mat-checkbox>
+        </span>
+        <span>
+            <button class="niko-mat-button"
+                    mat-raised-button
+                    (click)="cancel()"
+            >
+                Cancel
+            </button>
+            <button class="niko-mat-button"
+                    mat-raised-button
+                    color="primary"
+                    [disabled]="!helpdescForm.controls.agree.value"
+                    (click)="send()"
+            >
+                <mat-icon svgIcon="send" class="send-btn-icon"></mat-icon>
+                Send
+            </button>
+        </span>
+    </mat-dialog-actions>
+
+</div>

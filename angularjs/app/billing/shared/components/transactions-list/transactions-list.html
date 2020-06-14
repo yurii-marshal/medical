@@ -1,0 +1,78 @@
+<table class="drowz-table small-table invoice-transactions-table"
+       ng-show="$ctrl.transactions.length">
+    <tr class="drowz-table-header">
+        <th class="date-cell">Date:</th>
+        <th class="source-cell">Source:</th>
+        <th class="type-cell">Type:</th>
+        <th class="desc-cell">Description:</th>
+        <th class="amount-cell">Payment / Adjustments</th>
+        <th class="notes-cell">&nbsp;</th>
+        <th class="btns-transactions-cell">&nbsp;</th>
+    </tr>
+    <tr class="drowz-table-row"
+        ng-class="{ 'item-inactive': !transaction.IsActive }"
+        ng-repeat="transaction in $ctrl.transactions track by $index"
+        ng-click="$ctrl.determineGoToPayment(transaction)"
+    >
+        <td class="date-cell">{{transaction.Date | localDateTime: "MM/DD/YYYY"}}</td>
+        <td class="source-cell">{{transaction.Source.Name}}</td>
+        <td class="type-cell">
+            <div class="flex-cont">
+                <div class="status-label {{transaction.typeClass}}">
+                    <span>{{transaction.Type.Name}}</span>
+                </div>
+            </div>
+        </td>
+        <td class="desc-cell">
+            <span>
+                {{transaction.description}}
+            </span>
+            <span ng-if="transaction.RefNumber">
+                , Ref #: {{transaction.RefNumber}}
+            </span>
+        </td>
+        <td class="amount-cell font-semibold">
+            {{ transaction.Paid.Currency }}{{ (transaction.Paid.Amount | absNumber:2) || '-' }} /
+            {{ transaction.Adjust.Currency }}{{ (transaction.Adjust.Amount | absNumber:2) || '-' }}
+        </td>
+        <td class="notes-cell">
+            <md-icon md-svg-src="assets/images/default/list.svg"
+                     ng-if="transaction.Notes"
+                     simple-tooltip="{{transaction.Notes}}"
+                     tooltip-position="left">
+        </td>
+        <td class="btns-transactions-cell"
+            ng-click="$event.stopPropagation()"
+        >
+            <div class="flex-cont-inline">
+                <md-button class="user-info-icon"
+                           aria-label="..."
+                           simple-tooltip="{{transaction.tooltipText}}"
+                           simple-tooltip-max-width="null"
+                           simple-tooltip-is-html="true"
+                           tooltip-position="left">
+                    <md-icon md-svg-src="assets/images/default/user-circle.svg"></md-icon>
+                </md-button>
+
+                <md-button class="delete-icon-btn"
+                           aria-label="..."
+                           ng-if="!$ctrl.isVoidInvoice &&
+                            (transaction.Source.Id !== $ctrl.adjustmentSourceConstants.PAYER_ID)"
+                           confirm-ng-click="$ctrl.removeTransaction(transaction.Id)"
+                           confirm-msg="'Are you sure you want to delete this transaction?'"
+                           confirm-title="Delete transaction">
+                    <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                </md-button>
+                <md-button class="delete-icon-btn"
+                           aria-label="..."
+                           ng-if="!$ctrl.isVoidInvoice &&
+                            (transaction.Source.Id === $ctrl.adjustmentSourceConstants.PAYER_ID)"
+                           confirm-ng-click="$ctrl.removeTransaction(transaction.Id)"
+                           confirm-msg="'This transaction will be deleted from invoice also. Are you sure you want to delete this transaction?'"
+                           confirm-title="Delete transaction">
+                    <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                </md-button>
+            </div>
+        </td>
+    </tr>
+</table>

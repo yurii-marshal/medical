@@ -1,0 +1,27 @@
+﻿<div class="modal-window timer-modal">
+    <md-dialog-content class="md-dialog-content">
+
+        <div class="modal-title">
+            <h2>Session Expired</h2>
+        </div>
+
+        Your session will expire in:
+        <div class="session-timer-content">
+            <timer countdown="15"
+                   max-time-unit="'minute'"
+                   interval="1000"
+                   finish-callback="$ctrl.logout()"
+                   class="session-timer">
+                {{mminutes}}:{{sseconds}}
+            </timer>
+        </div>
+        Ready to call it a day?
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.continueWorking()">
+            Continue Working
+        </md-button>
+    </md-dialog-actions>
+</div>

@@ -1,0 +1,16 @@
+<md-button class="content-tabs-btn"
+           aria-label="..."
+           ng-repeat="tab in $ctrl.tabs track by $index"
+           ui-sref="{{tab.State}}"
+           ng-class="{
+                'active': $ctrl.isActive(tab.State),
+                'readonly': tab.Readonly
+           }">
+    {{tab.Text}}
+    <span ng-if="$ctrl.customMsg" class="custom-msg">
+        <span ng-if="$ctrl.customMsg[tab.Text.toLowerCase()] > 0"
+               class="red-color">({{$ctrl.customMsg[tab.Text.toLowerCase()]}})</span>
+        <md-icon md-svg-src="assets/images/default/check.svg"
+                 ng-if="$ctrl.customMsg[tab.Text.toLowerCase()] === 0"></md-icon>
+    </span>
+</md-button>

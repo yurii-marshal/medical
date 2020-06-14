@@ -1,0 +1,98 @@
+.shipment-product {
+    display: flex;
+
+    .product-container {
+        width: 100%;
+        padding: 20px 0;
+
+        .info-block-body {
+            min-height: 34px;
+            line-height: 34px;
+            margin: 10px 0 18px 0;
+
+            &.marg-0 {
+                margin: 0;
+            }
+        }
+
+        .product-details,
+        .inventory-details,
+        .dropship-details {
+            justify-content: flex-start;
+            align-items: center;
+            padding: 20px;
+            margin: 20px 0px 20px 150px;
+            border: 1px solid $calendar-gray-color;
+            background-color: $light-gray-color;
+            border-radius: 7px;
+        }
+
+        .product-details {
+
+            &.pad-bottom-5 {
+                padding-bottom: 5px;
+            }
+
+            .calendar_icon.left-input-icon {
+                label {
+                    padding-left: 25px;
+                }
+            }
+        }
+
+        .inventory-details {
+            position: relative;
+            justify-content: space-between;
+
+            .amount-in-inventory {
+                padding: 10px;
+                border-radius: 7px;
+                border: 1px solid $calendar-gray-color;
+
+                .text-disabled {
+                    color: $label-color;
+                }
+
+                .pick-btn {
+                    margin-left: 20px;
+                }
+            }
+
+            .amount-in-inventory-error {
+                position: absolute;
+                left: 20px;
+                bottom: 0px;
+                padding: 0 10px;
+                font-size: 12px;
+                color: $red-color;
+            }
+
+            .picked-devices {
+                padding: 10px;
+                color: $main-active-color;
+                font-weight: 500;
+            }
+        }
+
+        .dropship-details {
+            .alert-icon-blue {
+                margin: 0px 20px;
+            }
+        }
+
+        .bundle-components {
+            margin-left: 150px;
+        }
+
+        .product-notes {
+            margin-left: 150px;
+            padding-left: 15px;
+            padding-right: 15px;
+
+            ::placeholder {
+                font-style: italic;
+            }
+        }
+    }
+
+}

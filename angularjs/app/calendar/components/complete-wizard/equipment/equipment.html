@@ -1,0 +1,135 @@
+<div class="drowz-wizard-block no-float">
+    <div class="drowz-wizard-block-title">
+        <div class="wizard-title-text">Current:</div>
+    </div>
+    <div class="drowz-wizard-block-body">
+        <no-records text="Current items"
+                    ng-if="!equipment.model.devices.length && complete.isModelLoaded"
+        ></no-records>
+        <div class="wizard-list" ng-if="equipment.model.devices.length">
+            <device-items devices="equipment.model.devices"
+                          editing="true"
+                          move-popup="equipment.IsHaveEventPersonnel"
+                          is-current-devices="true"
+                          is-patient-items="true"
+                          qty-editable="true"
+            ></device-items>
+        </div>
+    </div>
+</div>
+
+<div class="drowz-wizard-block no-float"
+     ng-if="equipment.model.orders.length > 0"
+>
+    <div class="drowz-wizard-block-title">
+        <div class="wizard-title-text">
+            <span>New:</span>
+
+            <span class="b-header-title-buttons">
+                 <md-button class="round-btn"
+                            ng-repeat="order in equipment.model.orders"
+                            ng-class="{'active': order.isActive}"
+                            ng-click="equipment.selectOrder(order)"
+                 >
+                    {{ order.DisplayId }}
+                 </md-button>
+            </span>
+        </div>
+    </div>
+    <div class="drowz-wizard-block-body"
+         bs-loading-overlay
+         bs-loading-overlay-reference-id="orderItems"
+    >
+        <v-accordion class="flow-accordion grow-1">
+            <v-pane expanded="true">
+                <v-pane-header class="flow-accordion-title">
+                    <md-icon md-svg-src="assets/images/default/chevron.svg"
+                             class="flow-accordion-title-icon"
+                    ></md-icon>
+                    <span>Pending:</span>
+                    <div class="accordion-line"></div>
+                </v-pane-header>
+                <v-pane-content class="pad-left-15">
+                    <div class="wizard-list"
+                         ng-if="equipment.model.selectedOrder.ordered.length"
+                    >
+                        <device-items devices="equipment.model.selectedOrder.ordered"
+                                      editing="false"
+                                      ordered="true"
+                                      qty-editable="true"
+                        ></device-items>
+                    </div>
+                    <no-records text="Pending items"
+                                ng-if="!equipment.model.selectedOrder.ordered.length"
+                    ></no-records>
+
+                </v-pane-content>
+            </v-pane>
+        </v-accordion>
+
+        <v-accordion class="flow-accordion grow-1">
+            <v-pane expanded="true">
+                <v-pane-header class="flow-accordion-title">
+                    <md-icon md-svg-src="assets/images/default/chevron.svg"
+                             class="flow-accordion-title-icon"
+                    ></md-icon>
+                    <span>SELECTED:</span>
+                    <div class="accordion-line"></div>
+                    <md-button class="md-raised md-primary small-btn"
+                               ng-click="equipment.addEquipment()"
+                    >
+                        Add
+                    </md-button>
+                </v-pane-header>
+                <v-pane-content class="pad-left-15">
+                    <div class="wizard-list" ng-if="equipment.model.selectedOrder.selected.length">
+                        <device-items devices="equipment.model.selectedOrder.selected"
+                                      resupply-devices="equipment.model.ResupplyProgram.Items"
+                                      editing="true"
+                                      dynamic-max-count="true"
+                                      qty-editable="true"
+                        ></device-items>
+                    </div>
+                    <no-records text="Selected items"
+                                ng-if="!equipment.model.selectedOrder.selected.length"
+                    ></no-records>
+
+                </v-pane-content>
+            </v-pane>
+        </v-accordion>
+    </div>
+</div>
+
+<div class="drowz-wizard-block no-float"
+     ng-if="equipment.model.orders.length === 0"
+>
+    <div class="drowz-wizard-block-title">
+        <div class="wizard-title-text">
+            <span>New:</span>
+        </div>
+
+        <md-button class="md-raised md-primary small-btn"
+                   ng-click="equipment.addEquipment()"
+        >
+            Add
+        </md-button>
+
+    </div>
+    <div class="drowz-wizard-block-body"
+         bs-loading-overlay
+         bs-loading-overlay-reference-id="orderItems"
+    >
+        <no-records text="New items"
+                    ng-if="equipment.model.selectedOrder && !equipment.model.selectedOrder.selected.length"
+        ></no-records>
+        <div class="wizard-list"
+             ng-if="equipment.model.selectedOrder && equipment.model.selectedOrder.selected.length"
+        >
+            <device-items devices="equipment.model.selectedOrder.selected"
+                          resupply-devices="equipment.model.ResupplyProgram.Items"
+                          editing="true"
+                          qty-editable="true"
+            ></device-items>
+        </div>
+    </div>
+</div>

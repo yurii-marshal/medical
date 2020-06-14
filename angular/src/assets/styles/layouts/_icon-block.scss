@@ -1,0 +1,48 @@
+.icon-block {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+  padding: 3px 15px 5px 40px;
+  min-height: 32px;
+
+  > .info-block {
+    padding-right: 0;
+    padding-left: 0;
+
+    + .info-block {
+      margin-left: 15px;
+      padding-left: 10px;
+    }
+  }
+
+  .icon-block-icon {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 32px;
+    height: 32px;
+    color: $gray-blue-color;
+  }
+
+  > .flex-row {
+    margin-left: -15px;
+    margin-right: -15px;
+
+    > .info-block {
+      padding-left: 15px;
+    }
+  }
+
+  &.appointment-block {
+    padding-bottom: 7px;
+
+    + .appointment-block {
+      padding-top: 7px;
+    }
+
+    .status-label {
+      min-width: 77px;
+    }
+  }
+}

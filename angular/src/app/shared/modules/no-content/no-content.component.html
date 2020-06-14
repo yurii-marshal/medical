@@ -1,0 +1,13 @@
+<div class="no-record-wrapper">
+  <div class="no-records {{ type }}">
+    <mat-icon svgIcon="lens-icon" aria-hidden="true">
+    </mat-icon>
+    <div class="no-records-text">
+      <div *ngIf="hasDefaultText">{{ noContentText }}</div>
+
+      <div *ngIf="text">{{ text }}</div>
+      
+      <div *ngFor="let message of messages">{{ message }}</div>
+    </div>
+  </div>
+</div>

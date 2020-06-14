@@ -1,0 +1,53 @@
+<div class="audit-tab"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="eobEraTab">
+
+    <div class="audit-tab-list" ng-show="eob_era.eobEraList.length">
+        <div class="audit-tab-item" ng-repeat="item in eob_era.eobEraList">
+            <div class="info-block grow-1">
+                <div class="info-block-label">Payer:</div>
+                <div class="info-block-body">
+                    <span ng-bind="item.Payer || '-'"></span>
+                </div>
+            </div>
+            <div class="info-block long-date-block left-divider">
+                <div class="info-block-label">Remittance Date:</div>
+                <div class="info-block-body">{{item.Date | amUtc | amDateFormat: "MM/DD/YYYY"}}</div>
+            </div>
+            <div class="info-block block-width-200">
+                <div class="info-block-label">&nbsp;</div>
+                <div class="flex-cont space-around">
+                    <md-button class="md-raised small-btn eye-details-btn"
+                               ng-disabled="item.isEobLoading"
+                               ng-click="eob_era.openEob(item)">
+                        <icon-loading-white ng-if="item.isEobLoading" class="blue-loading"></icon-loading-white>
+                        <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon>
+                        <span>EOB</span>
+                    </md-button>
+                    <md-button class="md-raised small-btn eye-details-btn"
+                               ng-disabled="item.isEraLoading"
+                               ng-click="eob_era.openEra(item)">
+                        <icon-loading-white ng-if="item.isEraLoading" class="blue-loading"></icon-loading-white>
+                        <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon>
+                        <span>ERA</span>
+                    </md-button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <no-records text="EOB/ERA Records" is-fullpage="true" ng-show="!eob_era.eobEraList.length"></no-records>
+
+</div>
+
+<ul ng-if="eob_era.TotalCount > eob_era.perPage"
+    uib-pagination
+    total-items="eob_era.TotalCount"
+    ng-model="eob_era.currPage"
+    items-per-page="eob_era.perPage"
+    ng-change="eob_era.loadItems(eob_era.currPage-1)"
+    max-size="10"
+    class="pagination-sm"
+    boundary-link-numbers="false"
+    previous-text="&lsaquo;" next-text="&rsaquo;">
+</ul>

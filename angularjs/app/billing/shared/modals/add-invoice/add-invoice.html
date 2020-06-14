@@ -1,0 +1,98 @@
+<div class="modal-window add-invoice-modal"
+     ng-form="$ctrl.modalForm"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/new-invoice-rect.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Add new Invoice:</h2>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <md-autocomplete
+                        md-selected-item="$ctrl.patient"
+                        md-selected-item-change="$ctrl.patientChanged($ctrl.patient.Id)"
+                        md-search-text="searchPatient"
+                        md-items="patient in $ctrl.getPatients(searchPatient)"
+                        md-item-text="patient.Name.FullName"
+                        md-min-length="2"
+                        md-delay="350"
+                        md-floating-label="Patient name:"
+                        ng-required="true"
+                        clear-on-click
+                        md-require-match="true"
+                        md-input-name="patient">
+                    <md-item-template>
+                        <span md-highlight-text="searchPatient" md-highlight-flags="i">
+                            {{patient.Name.FullName}}, {{patient.DateOfBirthday | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                        </span>
+                    </md-item-template>
+                    <div ng-messages="$ctrl.modalForm.patient.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="md-require-match">Patient is invalid</div>
+                    </div>
+                    <md-not-found>No patients found</md-not-found>
+                </md-autocomplete>
+            </div>
+            <div class="info-block block-width-120" ng-show="$ctrl.patient">
+                <div class="info-block-label">DOB:</div>
+                <div class="info-block-body">
+                    {{$ctrl.patient.DateOfBirthday | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-row"
+             ng-if="$ctrl.dictionaryOrders.length > 0 && !$ctrl.noBillingProviderId">
+            <div class="info-block grow-1">
+                <md-input-container>
+                    <label>Order:</label>
+                    <md-select ng-model="$ctrl.order"
+                               ng-change="$ctrl.orderChanged($ctrl.order)"
+                               clear-on-click>
+                        <md-option ng-value="order.Id"
+                                   ng-repeat="order in $ctrl.dictionaryOrders">
+                            Order: {{order.DisplayId}} <span class="vertical-divider">|</span>
+                            Status: {{order.State.Status.Text}} <span class="vertical-divider">|</span>
+                            Date: {{order.CreatedDate | amUtc | amDateFormat: "MM/DD/YYYY"}} <span class="vertical-divider">|</span>
+                            Ref. Provider: {{order.displayName}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row" ng-if="$ctrl.dictionaryEvents.length > 0 && !$ctrl.noBillingProviderId">
+            <div class="info-block grow-1">
+                <md-input-container>
+                    <label>Appointment:</label>
+                    <md-select ng-model="$ctrl.event"
+                               clear-on-click>
+                        <md-option ng-value="event.EventId"
+                                   ng-repeat="event in $ctrl.dictionaryEvents">
+                            Type: {{event.AppointmentType}} | Date: {{event.formattedDate}}
+                            | Team Member: {{event.Personnel.FullName || '-'}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.next()"
+                   ng-disabled="!$ctrl.patient || $ctrl.noBillingProviderId">
+            Continue
+        </md-button>
+    </md-dialog-actions>
+
+</div>

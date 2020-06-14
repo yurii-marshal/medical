@@ -1,0 +1,27 @@
+<div class="modal-window submit-invoice-modal">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/shield.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Submit:</h2>
+        </div>
+
+        <div>
+            By pressing <span class="active-text">&rsquo;Submit&rsquo;</span> you are sending
+            <span ng-if="$ctrl.isMupltiple">these invoices</span>
+            <span ng-if="!$ctrl.isMupltiple">this invoice</span>
+            for processing by insurance company
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button" ng-click="$ctrl.save()">Submit</md-button>
+    </md-dialog-actions>
+
+</div>

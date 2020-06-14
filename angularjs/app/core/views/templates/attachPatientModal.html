@@ -1,0 +1,54 @@
+﻿<div class="modal-window attach-patient-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="sign_modal" ng-form="ctrl.Form">
+
+    <a href="javascript:void(0);" ng-click="ctrl.closeWindow()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/link.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Select Patient to link:</h2>
+        </div>
+
+        <div class="info-block">
+            <md-autocomplete class="add-user-offices add-patient-offices attach-patient"
+                             ng-required="true"
+                             md-input-name="patientToAttach"
+                             md-require-match="true"
+                             md-min-length="2"
+                             md-no-cache="true"
+                             md-delay="500"
+                             md-selected-item="ctrl.selectedPatient"
+                             md-search-text="ctrl.searchTextPatient"
+                             md-items="item in ctrl.querySearchPatient(ctrl.searchTextPatient)"
+                             md-item-text="item.Name.FullName"
+                             md-floating-label="Patient Name:">
+                <md-item-template>
+                    <span md-highlight-text="ctrl.searchTextPatient" title="{{item.Name.FullName}}">{{item.Name.Last}}, {{item.Name.First}}_{{item.DateOfBirthday | amUtc | amDateFormat: "MM/DD/YYYY"}}</span>
+                </md-item-template>
+                <md-not-found>
+                    No Patients matching "{{ctrl.searchTextPatient}}" were found.
+                </md-not-found>
+                <div class="md-input-messages-nice" ng-messages="ctrl.Form.patientToAttach.$error">
+                    <div ng-message="required"><b>Patient</b> cannot be empty.</div>
+                    <div ng-message="md-require-match"><b>Patient</b> must be selected.</div>
+                </div>
+                <img alt="close icon"
+                     show-on-fill
+                     clean-autocomplete
+                     searched-text="ctrl.searchTextPatient"
+                     clean-model="ctrl.selectedPatient"
+                     class="close-icon-filter md-remove-filter-button"
+                     src="assets/images/close.png" />
+            </md-autocomplete>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter center">
+        <md-button class="md-raised md-primary main-button" ng-click="ctrl.doAttach()">Link</md-button>
+    </md-dialog-actions>
+
+</div>

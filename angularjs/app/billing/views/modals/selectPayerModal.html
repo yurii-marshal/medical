@@ -1,0 +1,73 @@
+<div ng-form="$ctrl.selectPayerForm"
+     class="modal-window select-payer-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="selectPayerModalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/user-rect.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Select payer:</h2>
+        </div>
+
+        <p>Select among supported payers to apply response automatically.</p>
+
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <md-autocomplete-with-infinite-scroll
+                    ng-cloak
+                    md-no-cache="true"
+                    md-selected-item="$ctrl.selectedPayer"
+                    md-selected-item-change="$ctrl.payerChanged()"
+                    md-search-text="selectedPayer"
+                    md-items="item in $ctrl.getPayers(selectedPayer, pageIndex)"
+                    md-item-text="item.FullName"
+                    md-min-length="0"
+                    md-floating-label="Name:"
+                    clear-on-click
+                    require-search-text-only
+                    md-input-name="payer">
+                    <md-item-template>
+                        <div md-highlight-flags="^i" title="{{item.FullName}}">
+                            {{item.FullName}}
+                        </div>
+                    </md-item-template>
+                    <md-not-found>
+                        No payers were found
+                    </md-not-found>
+                    <div ng-messages="$ctrl.selectPayerForm.payer.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="searchTextRequired">This field is required</div>
+                    </div>
+                </md-autocomplete-with-infinite-scroll>
+            </div>
+            <div class="info-block block-width-120">
+                <md-input-container>
+                    <label>ID:</label>
+                    <input type="text"
+                           ng-model="$ctrl.ClaimCode"
+                           ng-disabled="true"
+                           ng-required="true"
+                           name="claimCode" />
+                    <div ng-messages="$ctrl.selectPayerForm.claimCode.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.connectPayer()">Select</md-button>
+    </md-dialog-actions>
+
+</div>
+

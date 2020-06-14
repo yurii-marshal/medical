@@ -1,0 +1,50 @@
+<div class="flex-row"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="step2">
+    <div class="col-xs-6 subwizard-container-block with-additional-text">
+        <div class="additional-text-title active-title flow-body-active-title">Select Location TO:</div>
+        <md-icon md-svg-src="assets/images/default/location.svg"
+                 class="subwizard-container-icon location-icon"></md-icon>
+        <md-input-container class="subwizard-container">
+            <label>Scan or Enter Location Barcode or Use Search for Location Lookup:</label>
+            <input type="text"
+                   auto-focus
+                   ng-model="wiz.pairCurrent.locationTo.Id"
+                   on-press-enter="wiz.searchLocationById('to')"/>
+        </md-input-container>
+        <div class="subwizard-container-btns">
+            <md-button class="md-raised small-btn"
+                       ng-click="wiz.searchLocationToModal($event, true)">
+                Search
+            </md-button>
+            <md-button class="md-primary md-raised small-btn enter-barcode-btn"
+                       ng-click="wiz.searchLocationById('to')"
+                       ng-disabled="!wiz.pairCurrent.locationTo.Id">
+                Enter
+            </md-button>
+        </div>
+    </div>
+    <div class="col-xs-6 subwizard-container-block with-blue-border">
+        <md-icon md-svg-src="assets/images/default/location.svg"
+                 class="subwizard-container-icon location-icon"></md-icon>
+        <div class="flex-cont col-xs-6">
+            <div class="info-block grow-1">
+                <div class="info-block-label">From:</div>
+                <div class="info-block-body">
+                    <div ng-if="!wiz.pairCurrent.locationFrom.Id">Any Location</div>
+                    <div ng-if="wiz.pairCurrent.locationFrom.Id">
+                        {{wiz.pairCurrent.locationFrom.Name}}
+                        <span ng-if="wiz.pairCurrent.locationFrom.Description">,
+                            {{wiz.pairCurrent.locationFrom.Description}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="subwizard-container-btns">
+                <md-button class="md-raised small-btn"
+                           ng-click="wiz.searchLocationFromModal($event)">
+                    Change
+                </md-button>
+            </div>
+        </div>
+    </div>
+</div>

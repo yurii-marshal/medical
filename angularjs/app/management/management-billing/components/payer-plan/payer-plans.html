@@ -1,0 +1,131 @@
+<div class="payer-plans" ng-form="$ctrl.plansForm">
+    <div class="payer-plan" ng-repeat="item in $ctrl.plans track by $index">
+
+        <a href="javascript:void(0)"
+           ng-click="$ctrl.removePayerPlan($index)"
+           class="delete-payer-plan"
+           ng-if="$ctrl.plans.length > 1">
+        </a>
+
+        <div class="payer-plan-info">
+            <div class="flex-row">
+                <div class="info-block block-width-50-percent">
+                    <md-input-container>
+                        <label>Name:</label>
+                        <input type="text"
+                               ng-model="item.Name"
+                               ng-required="item.isRequiredNameAndType"
+                               name="payerName-{{$index}}">
+                        <div ng-messages="$ctrl.plansForm['payerName-' + $index].$error" class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div class="info-block block-width-50-percent">
+                    <md-input-container>
+                        <label>Type:</label>
+                        <md-select aria-label="..."
+                                   name="type-{{$index}}"
+                                   ng-required="item.isRequiredNameAndType"
+                                   ng-model="item.Type"
+                                   ng-model-options="{ trackBy: '$value.Id' }">
+                            <md-option ng-value="type" ng-repeat="type in $ctrl.planTypesDictionary">
+                                {{type.Text}}
+                            </md-option>
+                        </md-select>
+                        <div ng-messages="$ctrl.plansForm['type-' + $index].$error" class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="info-block block-width-50-percent">
+                    <md-input-container>
+                        <label>Address (line 1):</label>
+                        <input type="text"
+                               ng-model="item.Address.AddressLine"
+                               ng-required="item.hasNotFilledAddress"
+                               name="addressLine1-{{$index}}">
+                        <div ng-messages="$ctrl.plansForm['addressLine1-' + $index].$error" class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div class="info-block block-width-50-percent">
+                    <md-input-container>
+                        <label>Address (line 2):</label>
+                        <input type="text" ng-model="item.Address.AddressLine2">
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="info-block block-width-50-percent">
+                    <div class="flex-row">
+                        <div class="info-block block-width-50-percent">
+                            <md-input-container>
+                                <label>City:</label>
+                                <input type="text"
+                                       ng-model="item.Address.City"
+                                       ng-required="item.hasNotFilledAddress"
+                                       name="city-{{$index}}">
+                                <div ng-messages="$ctrl.plansForm['city-' + $index].$error" class="md-input-messages-nice">
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block block-width-50-percent">
+                            <input-state-string
+                                    form-name="item.hasNotFilledAddress ? $ctrl.plansForm : ''"
+                                    input-name="state"
+                                    ng-required="item.hasNotFilledAddress"
+                                    selected-item="item.Address.State"
+                                    add-directives="clear-on-click">
+                            </input-state-string>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-block block-width-160">
+                    <input-zip-string
+                            form-name="item.hasNotFilledAddress ? $ctrl.plansForm : ''"
+                            input-name="zip"
+                            ng-required="item.hasNotFilledAddress"
+                            selected-item="item.Address.Zip"
+                            add-directives="clear-on-click">
+                    </input-zip-string>
+                </div>
+            </div>
+            <hr class="drowz-line" ng-if="item.CreatedBy">
+            <div class="flex-row" ng-if="item.CreatedBy">
+                <div class="info-block grow-1">
+                    <div class="info-block-label">Created By:</div>
+                    <div class="info-block-body">
+                        {{item.CreatedBy.Name.FullName}}&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{item.CreatedOn | localDateTime:"MM/DD/YYYY"}} <span class="active-text">{{item.CreatedOn | localDateTime:"hh:mm A"}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="payer-plan-contacts">
+
+            <div class="flex-row">
+                <div class="info-block grow-1">
+                    <md-input-container>
+                        <label>Contact Person:</label>
+                        <input type="text" ng-model="item.ContactPerson">
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div class="patient-contacts">
+                <organization-contacts
+                        selected-contacts="item.Contacts"
+                        allow-not-unique-types="false">
+                </organization-contacts>
+            </div>
+
+        </div>
+
+    </div>
+</div>

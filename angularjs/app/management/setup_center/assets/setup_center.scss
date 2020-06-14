@@ -1,0 +1,171 @@
+.repeat-block {
+    .active-title.flow-body-active-title {
+        height: 30px;
+        margin-top: 0;
+    }
+
+    .specific-dates {
+        padding-top: 18px;
+
+        .md-container {
+            top: 2px;
+            transform: none;
+        }
+
+        .pf_modal_datetime {
+            width: 120px;
+        }
+    }
+
+    .repetition-range {
+        padding-left: 30px;
+        border-left: 1px solid $lighter-gray-color;
+
+        .end-after-container {
+            width: 120px;
+            min-width: 120px;
+            margin-right: 17px;
+        }
+
+        md-input-container .md-input[disabled] {
+            color: rgba(0,0,0,0.54);
+        }
+    }
+
+    .repeat-block-header {
+        padding-bottom: 10px;
+    }
+
+    .every_day_container {
+        margin-left: 12px;
+        margin-right: 17px;
+        width: 120px;
+    }
+
+    .radio-row {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 40px;
+
+        &.disabled {
+            md-input-container .md-input {
+                color: rgba(0,0,0,0.54);
+            }
+        }
+    }
+
+    .weekly-container {
+        width: 120px;
+        margin-left: 10px;
+        margin-right: 17px;
+    }
+
+    .weeks-checkboxes-container {
+        display: block;
+        padding-top: 10px;
+
+        > * {
+            margin: 0 0 10px 0;
+            display: block;
+            float: left;
+            width: 33%;
+            min-width: 125px;
+        }
+    }
+
+    .center-text-select {
+        margin-left: 10px;
+        margin-right: 17px;
+        width: 70px;
+        text-align: center;
+
+        &.day-container {
+            margin-left: 0;
+            margin-right: 5px;
+            width: 110px;
+        }
+
+        &.specific-day-select {
+            width: 80px;
+            margin-right: 5px;
+        }
+
+        &.short-input-container {
+            width: 40px;
+            margin-left: 5px;
+            margin-right: 0;
+        }
+    }
+}
+
+.button_container {
+	position: relative;
+	display: inline-block;
+}
+
+.pf_modal_datetime {
+	margin-bottom: 5px;
+	margin-top: 10px;
+
+	.remove_input, .add_input {
+		display: block;
+		position: absolute;
+		right: -33px;
+		bottom: 7px;
+		width: 18px;
+		height: 18px;
+		background-color: $gray-color-main;
+		border: none;
+		border-radius: 2px;
+		transition: .2s;
+
+		&:hover {
+			background-color: $main-active-color;
+		}
+
+		&::before {
+			content: "";
+			position: absolute;
+			background: #fff;
+			top: 50%;
+			left: 50%;
+			width: 10px;
+			height: 2px;
+			margin-top: -1px;
+			margin-left: -5px;
+		}
+	}
+
+	.add_input {
+		display: none;
+
+		&::after {
+			content: "";
+			position: absolute;
+			background: #fff;
+			top: 50%;
+			left: 50%;
+			width: 2px;
+			height: 10px;
+			margin-top: -5px;
+			margin-left: -1px;
+		}
+	}
+
+	&:last-child {
+		.add_input {
+			display: block;
+		}
+
+		.remove_input {
+			display: none;
+		}
+	}
+}
+
+.setup_name {
+	md-autocomplete {
+		width: 290px;
+	}
+}

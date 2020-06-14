@@ -1,0 +1,20 @@
+<div class="modal-window file-download-modal">
+
+    <a href="javascript:void(0);" ng-click="modal.cancel()" class="close-modal"></a>
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/documents.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>File was generated:</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 info-block center-text">
+                <a class="md-button md-primary md-raised" ng-href="{{modal.url}}" target="_blank">
+                    {{modal.buttonText}}<md-icon class="icon_download" md-svg-src="assets/images/default/ext-link.svg"></md-icon>
+                </a>
+            </div>
+        </div>
+    </md-dialog-content>
+</div>

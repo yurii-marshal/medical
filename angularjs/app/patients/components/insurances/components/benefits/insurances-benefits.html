@@ -1,0 +1,298 @@
+<div>
+    <div class="main-content">
+
+        <div class="breadcrumbs">
+            <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+            <a href="javascript:void(0)" ui-sref="root.patients.list">Patients</a>
+            <a href="javascript:void(0)" ui-sref="root.patient.insurances({patientId: benefits.patientId})">Insurance</a>
+            <a href="javascript:void(0)" class="active">Benefits
+                <span ng-if="benefits.insuranceName">for {{benefits.insuranceName}}</span></a>
+        </div>
+
+        <div ng-if="benefits.showInProgress">
+            <style>md-progress-circular.md-white path { stroke: #06aed5;}</style>
+            <div class="drowz-message-warn" style="border-color:#06aed5; margin:30px 60px;">
+                <div class="icon">
+                    <md-progress-circular style="margin:0 auto"
+                        md-diameter="25px" class="md-white"></md-progress-circular>
+                </div>
+                <div class="content">
+                    Benefits loading is in progress now. <br>
+                    The page will be populated automatically after the benefits will be received. <br>
+                    You can close the page and return later. <br>
+                </div>
+            </div>
+        </div>
+
+        <div class="insurances-benefits patient-insurances"
+             bs-loading-overlay
+             bs-loading-overlay-reference-id="benefits"
+             ng-if="!benefits.showInProgress"
+        >
+
+            <!--TODO check if we need this condition-->
+            <div ng-if="benefits.model.RequestValidation">
+                <div class="active-title flow-body-active-title" style="color:#ff6325;">Request Validation:</div>
+
+                <div class="flex-row" ng-repeat="item in benefits.model.RequestValidation track by $index">
+                    <div class="info-block block-width-250">
+                        <div class="info-block-label">Section:</div>
+                        <div class="info-block-body">{{item.Section.Name}}</div>
+                    </div>
+                    <div class="info-block block-width-250 left-divider">
+                        <div class="info-block-label">Reject Message:</div>
+                        <div class="info-block-body">{{item.RejectMessage}}</div>
+                    </div>
+                    <div class="info-block grow-1 left-divider">
+                        <div class="info-block-label">Follow UpAction:</div>
+                        <div class="info-block-body">{{item.FollowUpAction.Name}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="active-title flow-body-active-title">Patient Details:</div>
+            <div class="flex-row">
+                <div class="info-block block-width-250">
+                    <div class="info-block-label">First Name:</div>
+                    <div class="info-block-body">{{benefits.model.Patient.Name.FirstName}}</div>
+                </div>
+                <div class="info-block block-width-250 left-divider">
+                    <div class="info-block-label">Last Name:</div>
+                    <div class="info-block-body">{{benefits.model.Patient.Name.LastName}}</div>
+                </div>
+                <div class="info-block block-width-140 left-divider"
+                    ng-if="benefits.model.Patient.DateOfBirth"
+                    >
+                    <div class="info-block-label">DOB:</div>
+                    <div class="info-block-body">{{benefits.model.Patient.DateOfBirth | amUtc | amDateFormat: "MM/DD/YYYY"}}</div>
+                </div>
+                <div class="info-block block-width-140 left-divider"
+                    ng-if="benefits.model.Patient.Gender.Name">
+                    <div class="info-block-label">Gender:</div>
+                    <div class="info-block-body">{{benefits.model.Patient.Gender.Name}}</div>
+                </div>
+                <div class="info-block grow-1 left-divider"
+                     ng-if="benefits.model.Patient.Address"
+                >
+                    <div class="info-block-label">Address:</div>
+                    <div class="info-block-body">{{benefits.model.Patient.Address | addressToString}}</div>
+                </div>
+            </div>
+
+            <hr class="drowz-line">
+
+            <div class="active-title flow-body-active-title">Payer Details:</div>
+            <div class="flex-row">
+                <div class="info-block block-width-250">
+                    <div class="info-block-label">Id:</div>
+                    <div class="info-block-body">{{benefits.model.Payer.Id}}</div>
+                </div>
+                <div class="info-block block-width-250 left-divider">
+                    <div class="info-block-label">Name:</div>
+                    <div class="info-block-body">{{benefits.model.Payer.Name}}</div>
+                </div>
+                <div class="info-block grow-1 left-divider"
+                     ng-if="benefits.model.Eligibility.General.PlanType">
+                    <div class="info-block-label">Plan details:</div>
+                    <div class="info-block-body">{{benefits.model.Eligibility.General.PlanType}}</div>
+                </div>
+            </div>
+
+            <hr class="drowz-line">
+
+            <div class="active-title flow-body-active-title">Insured information:</div>
+            <div class="flex-row">
+                <div class="info-block block-width-250">
+                    <div class="info-block-label">First Name:</div>
+                    <div class="info-block-body">{{benefits.model.Holder.Name.FirstName}}</div>
+                </div>
+                <div class="info-block block-width-250 left-divider">
+                    <div class="info-block-label">Last Name:</div>
+                    <div class="info-block-body">{{benefits.model.Holder.Name.LastName}}</div>
+                </div>
+                <div class="info-block block-width-280 left-divider"
+                     ng-if="benefits.model.Holder.PolicyNumber">
+                    <div class="info-block-label">Identification:</div>
+                    <div class="info-block-body">{{benefits.model.Holder.PolicyNumber}}</div>
+                </div>
+                <div class="info-block block-width-140 left-divider"
+                    ng-if="benefits.model.Holder.DateOfBirth">
+                    <div class="info-block-label">DOB:</div>
+                    <div class="info-block-body">{{benefits.model.Holder.DateOfBirth | amUtc | amDateFormat: "MM/DD/YYYY"}}</div>
+                </div>
+                <div class="info-block block-width-140 left-divider"
+                     ng-if="benefits.model.Holder.Gender.Name">
+                    <div class="info-block-label">Gender:</div>
+                    <div class="info-block-body">{{benefits.model.Holder.Gender.Name}}</div>
+                </div>
+            </div>
+            <div class="flex-row"
+                 ng-if="benefits.model.HistoryDates[0].DatePeriod">
+                <div class="info-block block-width-250">
+                    <div class="info-block-label">Date(s):</div>
+                    <div class="info-block-body">
+                        <span ng-repeat="date in benefits.model.HistoryDates">
+                            {{date.Name}}:
+                            {{date.DatePeriod}}
+                            <span ng-if="$index < (benefits.model.HistoryDates.length-1)">, </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!--TODO check if we need this condition-->
+            <div ng-if="!benefits.RequestValidation || benefits.RequestValidation.length === 0">
+
+                <hr class="drowz-line" ng-if="benefits.model.Additional.length">
+
+                <div class="active-title flow-body-active-title"
+                     ng-if="benefits.model.Additional.length">Additional Information:</div>
+                <div class="flex-row additional-info-container"
+                     ng-repeat="_additional in benefits.model.Additional track by $index">
+                    <div class="info-block block-width-250">
+                        <div class="info-block-label">Name:</div>
+                        <div class="info-block-body">{{_additional.Name}}</div>
+                    </div>
+                    <div class="info-block block-width-280 left-divider">
+                        <div class="info-block-label">Number:</div>
+                        <div class="info-block-body">{{_additional.Number}}</div>
+                    </div>
+                    <div class="info-block grow-1 left-divider">
+                        <div class="info-block-label">Description:</div>
+                        <div class="info-block-body">{{_additional.Description || "-"}}</div>
+                    </div>
+                </div>
+
+                <hr class="drowz-line">
+
+                <div class="active-title flow-body-active-title">Benefits:
+                    <span ng-if="benefits.model.Eligibility.Coverages.length > 1">
+                        <span class="toggle-accordion"
+                               ng-show="!accordion.hasExpandedPane()"
+                               ng-click="accordion.expandAll()">Expand all</span>
+                        <span class="toggle-accordion"
+                              ng-show="accordion.hasExpandedPane()"
+                              ng-click="accordion.collapseAll()">Collapse all</span>
+                    </span>
+                </div>
+
+                <v-accordion multiple class="benefits-accordion"
+                             control="accordion">
+                    <v-pane expanded="false"
+                            ng-repeat="_item in benefits.model.Eligibility.Coverages track by $index">
+                        <v-pane-header>
+                            <div class="benefits-accordion-title">
+                                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                                         class="benefits-accordion-img"></md-icon>
+                                <span>
+                                    {{_item.Description}}
+                                    <span ng-if="_item.Status.Name">
+                                        - <span class="benefit-status {{_item.Status.Class}} uppercase">{{_item.Status.Name}}</span>
+                                    </span>
+                                    <span ng-if="_item.InsuranceType.Name">
+                                        - <span class="uppercase">{{_item.InsuranceType.Name}}</span>
+                                    </span>
+                                </span>
+                            </div>
+                        </v-pane-header>
+                        <v-pane-content>
+                            <div class="benefit-content"
+                                 ng-repeat="_detail in _item.Benefits track by $index">
+
+                                <div class="flex-row benefit-content-title">
+                                    <div class="info-block block-width-250">
+                                        <div class="info-block-body deductible-block">
+                                        <span ng-if="_detail.Details.Name.indexOf('Deductible') !== -1">
+                                            Deductible
+                                        </span>
+                                            <span ng-if="_detail.Details.Name.indexOf('Deductible') == -1">
+                                            {{_detail.Details.Name || "-"}}
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="info-block block-width-150 blue-font-block center-text left-divider">
+                                        <div class="info-block-body">{{_detail.Details.Condition.Value || "-"}}</div>
+                                    </div>
+                                    <div class="info-block block-width-420 content-status-labels left-divider">
+                                        <div class="info-block-body">
+                                        <span ng-if="_detail.Network.Name"
+                                              class="status-label dark-blue">
+                                            {{_detail.Network.Name}}-Network
+                                        </span>
+                                            <span ng-if="_detail.CoverageLevel.Name"
+                                                  class="status-label blue">
+                                            {{_detail.CoverageLevel.Name}}
+                                        </span>
+                                            <span ng-if="_detail.Details.AuthorizationRequired.Name"
+                                                  class="status-label green">
+                                            Authorization Required: {{_detail.Details.AuthorizationRequired.Name}}
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="info-block block-width-310 left-divider">
+                                        <div class="info-block-body date-details flex-column">
+                                            <span ng-if="!_detail.Details.Dates.length">-</span>
+                                            <div ng-repeat="dateItem in _detail.Details.Dates track by $index">{{dateItem}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="info-block block-width-310 center-text left-divider">
+                                        <div class="info-block-body">
+                                            <span ng-if="_detail.Details.Condition.PeriodType">{{_detail.Details.Condition.PeriodType}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex-row">
+                                    <div class="info-block block-width-250" ng-if="_detail.PlanType">
+                                        <div class="info-block-label">Plan Type:</div>
+                                        <div class="info-block-body">{{_detail.PlanType || "-"}}</div>
+                                    </div>
+                                    <div class="info-block grow-1"
+                                         ng-if="_detail.Messages.length"
+                                         ng-class="{'left-divider': _detail.PlanType}">
+                                        <div class="info-block-label">Messages:</div>
+                                        <div class="info-block-body">{{_detail.Messages.join(', ')}}</div>
+                                    </div>
+                                </div>
+
+                                <div class="flex-row" ng-repeat="item in _detail.RelatedEntities">
+                                    <div class="info-block block-width-400">
+                                        <div class="info-block-label">Name:</div>
+                                        <div class="info-block-body">{{item.Name.Name || "-"}}</div>
+                                    </div>
+                                    <div class="info-block block-width-250 left-divider"
+                                         ng-repeat="contact in item.Contacts track by $index">
+                                        <div class="info-block-label">{{contact.Type.Name}}:</div>
+                                        <div class="info-block-body">{{contact.Value || '-'}}</div>
+                                    </div>
+                                    <div class="info-block grow-1 left-divider"
+                                         ng-if="item.Identification.Name">
+                                        <div class="info-block-label">Identification:</div>
+                                        <div class="info-block-body">{{item.Identification.Name}}</div>
+                                    </div>
+                                </div>
+                                <hr class="drowz-line">
+                            </div>
+                        </v-pane-content>
+                    </v-pane>
+                </v-accordion>
+            </div>
+
+            <div ng-if="benefits.RequestValidation">
+                <div class="drowz-message-warn"
+                     ng-repeat="item in benefits.RequestValidation track by $index">
+                    <div class="icon">
+                        <md-icon md-svg-src="assets/images/default/alert.svg"></md-icon>
+                    </div>
+                    <div class="content">
+                        <div ng-if="item.RejectMessage">{{item.RejectMessage}}</div>
+                        <div ng-if="item.FollowUpAction.Name">{{item.FollowUpAction.Name}}</div>
+                        <div ng-if="!item.RejectMessage && !item.FollowUpAction.Name">
+                            <pre>{{item | json}}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

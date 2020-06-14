@@ -1,0 +1,404 @@
+<div class="flex-row">
+    <div class="col-w-50">
+        <h2 class="mat-h2">Buttons:</h2>
+        <div class="example-button-row">
+            <button mat-raised-button color="primary" class="btn-small">Primary</button>
+            <button mat-raised-button class="btn-small">Basic</button>
+            <button mat-raised-button color="primary" class="btn-small"><mat-icon>description</mat-icon> Primary</button>
+            <button mat-raised-button class="btn-small"><mat-icon>description</mat-icon> Basic</button>
+        </div>
+        <div class="example-button-row">
+            <button mat-raised-button color="primary">Primary</button>
+            <button mat-raised-button>Basic</button>
+            <button mat-raised-button color="primary"><mat-icon>description</mat-icon> Primary</button>
+            <button mat-raised-button><mat-icon>description</mat-icon> Basic</button>
+        </div>
+        <div class="example-button-row">
+            <button mat-raised-button color="primary" class="btn-big">Primary</button>
+            <button mat-raised-button class="btn-big">Basic</button>
+            <button mat-raised-button color="primary" class="btn-big"><mat-icon>description</mat-icon> Primary</button>
+            <button mat-raised-button class="btn-big"><mat-icon>description</mat-icon> Basic</button>
+        </div>
+        <h2 class="mat-h2">Forms Elements:</h2>
+        <div class="flex-row">
+            <div class="col-w-33">
+                <mat-form-field>
+                    <input matInput placeholder="Placeholder" aria-label="Placeholder">
+                </mat-form-field>
+            </div>
+            <div class="col-w-33">
+                <mat-form-field>
+                    <mat-select placeholder="Select">
+                        <mat-option value="option">Option</mat-option>
+                        <mat-option value="option2">Option 2</mat-option>
+                        <mat-option value="option3">Option 3</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-w-33">
+                <mat-form-field>
+                    <mat-label>Select your car (required)</mat-label>
+                    <mat-select placeholder="Select" required>
+                        <mat-option value="option">Option</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        This field is required
+                    </mat-error>
+                    <mat-hint>Lorem ipsum dolor sit amet.</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="flex-row">
+            <div class="col-w-33">
+                <mat-form-field class="example-full-width">
+                    <textarea matInput placeholder="Leave a comment"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="col-w-33">
+                <mat-radio-group>
+                    <mat-radio-button value="1" color="primary">Option 1</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div class="col-w-33">
+                <mat-slide-toggle color="primary">Slide me!</mat-slide-toggle>
+            </div>
+        </div>
+        <div class="flex-row">
+            <div class="col-w-33">
+                <mat-form-field>
+                    <input matInput placeholder="Placeholder" aria-label="Placeholder" value="wwwwwww" disabled>
+                </mat-form-field>
+            </div>
+            <div class="col-w-33">
+                <mat-checkbox color="primary">Check me!</mat-checkbox>
+                <mat-checkbox class="custom-checkbox">Female</mat-checkbox>
+            </div>
+        </div>
+        <h2 class="mat-h2">Chips:</h2>
+        <mat-form-field class="chips-add-input">
+            <input matInput placeholder="Input Label:" aria-label="Input Label:" value="Press Enter to Add">
+            <mat-icon matSuffix>add_circle</mat-icon>
+        </mat-form-field>
+        <mat-chip-list>
+            <mat-chip>One fish <mat-icon matChipRemove>close</mat-icon></mat-chip>
+            <mat-chip>One fish <mat-icon matChipRemove>close</mat-icon></mat-chip>
+            <mat-chip>J45.20 - Mild intermittent asthma, uncomplicated</mat-chip>
+            <mat-chip>J02.9 - Acute pharyngitis, unspecified</mat-chip>
+        </mat-chip-list>
+        <h2 class="mat-h2">Additional Items:</h2>
+        <h5 class="mat-h5">Label:</h5>
+        <p>
+            <span class="status-label active">Lorem</span><br>
+            <span class="status-label orange">Lorem</span><br>
+            <span class="status-label dark-blue">Lorem</span><br>
+            <span class="status-label">Lorem</span>
+        </p>
+    </div>
+    <div class="col-w-50">
+        <h2 class="mat-h2">Table:</h2>
+        <h5 class="mat-h5 font-bold uppercase">Table name:</h5>
+        <table class="table">
+            <tr>
+                <th class="counter">#</th>
+                <th>Column Name: (Roboto Bold 11 pt)</th>
+                <th>Column Name:</th>
+                <th>Column Name:</th>
+                <th>Column Name:</th>
+                <th class="actions"></th>
+            </tr>
+            <tr>
+                <td class="counter">1.</td>
+                <td>Roboto Regular 13 pt</td>
+                <td>Lorem ipsum dolor sit amet.</td>
+                <td>Lorem ipsum dolor sit amet.</td>
+                <td>Lorem</td>
+                <td class="actions">
+                    <mat-icon class="icon-edit">create</mat-icon>
+                    <mat-icon class="icon-delete">delete_forever</mat-icon>
+                </td>
+            </tr>
+            <tr>
+                <td class="counter">2.</td>
+                <td>Roboto Regular 13 pt</td>
+                <td>Lorem ipsum dolor sit amet.</td>
+                <td>Lorem ipsum dolor sit amet.</td>
+                <td>Lorem</td>
+                <td class="actions">
+                    <mat-icon class="icon-edit">create</mat-icon>
+                    <mat-icon class="icon-delete">delete_forever</mat-icon>
+                </td>
+            </tr>
+            <tr>
+                <td class="counter">3.</td>
+                <td>Roboto Regular 13 pt</td>
+                <td>Lorem ipsum dolor sit amet.</td>
+                <td>Lorem ipsum dolor sit amet.</td>
+                <td>Lorem</td>
+                <td class="actions">
+                    <mat-icon class="icon-edit">create</mat-icon>
+                    <mat-icon class="icon-delete">delete_forever</mat-icon>
+                </td>
+            </tr>
+            <tr>
+                <td class="counter">4.</td>
+                <td>Roboto Regular 13 pt</td>
+                <td>Lorem ipsum dolor sit amet.</td>
+                <td>Lorem ipsum dolor sit amet.</td>
+                <td>Lorem</td>
+                <td class="actions">
+                    <mat-icon class="icon-edit">create</mat-icon>
+                    <mat-icon class="icon-delete">delete_forever</mat-icon>
+                </td>
+            </tr>
+        </table>
+        <h2 class="mat-h2">Labels:</h2>
+        <div class="flex-row">
+            <div class="col-w-33">
+                <div class="info-block">
+                    <div class="info-block-body font-bold uppercase">lorem</div>
+                    <div class="info-block-label">lorem</div>
+                    <div class="info-block-body">lorem</div>
+                </div>
+            </div>
+            <div class="col-w-33">
+                <div class="info-block">
+                    <div class="info-block-label">lorem</div>
+                    <div class="info-block-body font-bold">lorem</div>
+                    <div class="info-block-body font-bold red-color">lorem</div>
+                </div>
+            </div>
+            <div class="col-w-33">
+                <div class="info-block">
+                    <div class="info-block-label">lorem</div>
+                    <div class="info-block-body font-bold active-text">lorem</div>
+                </div>
+            </div>
+        </div>
+        <h2 class="mat-h2">Icon block:</h2>
+        <div class="icon-block">
+            <mat-icon svgIcon="calendar-circle" class="icon-block-icon"></mat-icon>
+            <div class="info-block">
+                <div class="info-block-label">MedSage:</div>
+                <div class="info-block-body">Patient enrolled to MedSage resupply program</div>
+            </div>
+        </div>
+        <h2 class="mat-h2">Statuses:</h2>
+        <div class="delivery-statuses">
+            <div class="delivery-status-stage active">
+                <div class="delivery-status-icon">
+                    <mat-icon svgIcon="clock-filled" class="clock-icon" aria-hidden="true"></mat-icon>
+                </div>
+                <div class="delivery-status-text">Pending</div>
+            </div>
+            <div class="delivery-status-stage">
+                <div class="delivery-status-icon">
+                    <mat-icon svgIcon="track-in-progress" class="track-icon"></mat-icon>
+                </div>
+                <div class="delivery-status-text">In Progress</div>
+            </div>
+            <div class="delivery-status-stage">
+                <div class="delivery-status-icon">
+                    <mat-icon class="check-icon">check</mat-icon>
+                </div>
+                <div class="delivery-status-text">Completed</div>
+            </div>
+        </div>
+    </div>
+</div>
+<h2 class="mat-h2">Document items:</h2>
+
+<div class="patient-documents-row">
+    <div class="main-document">
+        <mat-checkbox color="primary">
+            <div class="info-block block-width-15-percent">
+                <div class="info-block-label">Document Type:</div>
+                <div class="info-block-body flex-cont align-top">
+                    Referral Info
+                    <mat-icon class="csm-document-icon"></mat-icon>
+                </div>
+            </div>
+            <div class="info-block block-width-180 left-divider">
+                <div class="info-block-label">Uploaded:</div>
+                <div class="info-block-body">
+                    06/12/2018
+                    <span class="active-text">09:10 PM</span>
+                </div>
+            </div>
+            <div class="info-block block-width-15-percent left-divider">
+                <div class="info-block-label">User:</div>
+                <div class="info-block-body">Edward Gibwe</div>
+            </div>
+            <div class="info-block block-width-30-percent left-divider">
+                <div class="info-block-label">Notes:</div>
+                <div class="info-block-body">
+                    <span>-</span>
+                </div>
+            </div>
+            <div class="info-block block-width-180 left-divider">
+                <div class="info-block-label">Expiration Date:</div>
+                <div class="info-block-body">
+                    06/12/2018
+                </div>
+            </div>
+            <div class="info-block two-line-status block-width-150">
+                <div class="status-label"></div>
+                <div class="status-label dark-blue">
+                    In Progress
+                </div>
+            </div>
+            <div class="patient-documents-buttons">
+                <button mat-raised-button class="eye-details-btn btn-small"><mat-icon>visibility</mat-icon> Details</button>
+                <button mat-raised-button class="edit-doc btn-small"><mat-icon>create</mat-icon> Edit</button>
+                <button mat-raised-button class="toggle-doc-btn">
+                    <mat-icon>expand_more</mat-icon>
+                </button>
+            </div>
+        </mat-checkbox>
+
+    </div>
+</div>
+<div class="patient-documents-row">
+    <div class="main-document">
+        <mat-checkbox color="primary">
+            <div class="info-block block-width-15-percent">
+                <div class="info-block-label">Document Type:</div>
+                <div class="info-block-body flex-cont align-top">
+                    Referral Info
+                    <mat-icon class="csm-document-icon"></mat-icon>
+                </div>
+            </div>
+            <div class="info-block block-width-180 left-divider">
+                <div class="info-block-label">Uploaded:</div>
+                <div class="info-block-body">
+                    06/12/2018
+                    <span class="active-text">09:10 PM</span>
+                </div>
+            </div>
+            <div class="info-block block-width-15-percent left-divider">
+                <div class="info-block-label">User:</div>
+                <div class="info-block-body">Edward Gibwe</div>
+            </div>
+            <div class="info-block block-width-30-percent left-divider">
+                <div class="info-block-label">Notes:</div>
+                <div class="info-block-body">
+                    <span>-</span>
+                </div>
+            </div>
+            <div class="info-block block-width-180 left-divider">
+                <div class="info-block-label">Expiration Date:</div>
+                <div class="info-block-body">
+                    06/12/2018
+                </div>
+            </div>
+            <div class="info-block two-line-status block-width-150">
+                <div class="status-label"></div>
+                <div class="status-label dark-blue">
+                    In Progress
+                </div>
+            </div>
+            <div class="patient-documents-buttons">
+                <button mat-raised-button class="eye-details-btn btn-small"><mat-icon>visibility</mat-icon> Details</button>
+                <button mat-raised-button class="edit-doc btn-small"><mat-icon>create</mat-icon> Edit</button>
+                <button mat-raised-button class="toggle-doc-btn">
+                    <mat-icon>expand_more</mat-icon>
+                </button>
+            </div>
+        </mat-checkbox>
+
+    </div>
+</div>
+
+<h2 class="mat-h2">Document item:</h2>
+<div class="flex-row">
+    <div class="col-w-33">
+        <div class="flex-row">
+            <div class="info-block col-w-20 left-divider">
+                <div class="info-block-label">Prefix:</div>
+                <div class="info-block-body">Ms.</div>
+            </div>
+            <div class="info-block col-w-40 left-divider">
+                <div class="info-block-label">First Name:</div>
+                <div class="info-block-body">Abigail</div>
+            </div>
+            <div class="info-block col-w-40 left-divider">
+                <div class="info-block-label">Middle Name:</div>
+                <div class="info-block-body">dabi</div>
+            </div>
+        </div>
+        <div class="flex-row">
+            <div class="info-block col-w-20 left-divider">
+                <div class="info-block-label">Age:</div>
+                <div class="info-block-body">68</div>
+            </div>
+            <div class="info-block col-w-40 left-divider">
+                <div class="info-block-label">DOB:</div>
+                <div class="info-block-body">01/01/1950</div>
+            </div>
+            <div class="info-block col-w-40 left-divider">
+                <div class="info-block-label">SSN:</div>
+                <div class="info-block-body">-</div>
+            </div>
+        </div>
+        <div class="flex-row">
+            <div class="info-block grow-1 left-divider">
+                <div class="info-block-label">Patient Address:</div>
+                <div class="info-block-body">1400 A O Jones Blvd, Fort Mill, SC, 29715</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2 class="mat-h2">Pagination:</h2>
+<ul class="pagination-sm tab-pagination pagination">
+    <li class="pagination-prev disabled">
+        <a href="" disabled>‹</a>
+    </li>
+    <li class="pagination-page active" style="">
+        <a href="">1</a>
+    </li>
+    <li class="pagination-page">
+        <a href="">2</a>
+    </li>
+    <li class="pagination-next">
+        <a href="">›</a>
+    </li>
+</ul>
+
+<h2 class="mat-h2">Block with gray background:</h2>
+<div class="flex-row">
+    <div class="col-w-30">
+        <div class="financial-block">
+            <div class="financial-block-header">Balance:</div>
+            <div class="financial-block-body">
+                <div class="financial-sum">
+                    <mat-icon svgIcon="dollar-circle" class="sum-icon"></mat-icon>
+                    <div class="sum-number">0.00</div>
+                </div>
+                <div class="financial-detail">
+                    <div class="financial-detail-title">
+                        <mat-icon svgIcon="document" class="insurance-icon"></mat-icon>
+                        Insurance:
+                    </div>
+                    <div class="financial-detail-number">$ 0.00</div>
+                </div>
+                <div class="financial-detail">
+                    <div class="financial-detail-title">
+                        <mat-icon svgIcon="user_v2" class="patient-icon"></mat-icon>
+                        Patient:
+                    </div>
+                    <div class="financial-detail-number">$ 0.00</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2 class="mat-h2">Gray block with header:</h2>
+<div class="drowz-wizard-block patient-details-block no-float">
+    <div class="drowz-wizard-block-title">
+        <div class="wizard-title-text">Patient Details:</div>
+    </div>
+    <div class="drowz-wizard-block-body flex-row space-between">
+
+    </div>
+</div>

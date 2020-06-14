@@ -1,0 +1,413 @@
+<div ng-form="step1Form" class="order-wizard-step-1">
+    <div class="drowz-wizard-body-flex align-stretch">
+            <div class="flex-50-percent flex-cont stretch flex-column">
+                <div class="drowz-wizard-block">
+                    <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">Info:</div>
+                    </div>
+                    <div class="drowz-wizard-block-body">
+                    <div class="drowz-wizard-block-row">
+                        <div class="info-block block-width-300">
+                            <md-autocomplete md-selected-item="step.model.patient"
+                                             md-selected-item-change="step.patientChanged(step.model.patient)"
+                                             md-search-text="step.searchPatient"
+                                             md-items="patient in step.getPatients(step.searchPatient)"
+                                             md-item-text="patient.Name.FullName"
+                                             md-min-length="2"
+                                             md-delay="350"
+                                             md-floating-label="Patient Name:"
+                                             ng-required="true"
+                                             md-require-match="true"
+                                             clear-on-click
+                                             md-input-name="patient"
+                                             ng-readonly="!step.isNew">
+                                <md-item-template>
+                                    <span md-highlight-text="step.searchPatient" md-highlight-flags="i" class="item-title">
+                                        {{patient.Name.FullName}} ({{patient.DateOfBirthday | amUtc | amDateFormat: "MM/DD/YYYY"}})
+                                    </span>
+                                </md-item-template>
+                                <div ng-messages="orderWizard.mainForm.step1Form.patient.$error" class="md-input-messages-nice">
+                                    <div ng-message="required">This field is required</div>
+                                    <div ng-message="md-require-match">Patient is invalid</div>
+                                </div>
+                                <md-not-found>No patients found</md-not-found>
+                            </md-autocomplete>
+                        </div>
+                        <div class="info-block date-block">
+                            <div class="info-block-label">Patient DOB:</div>
+                            <div class="info-block-body">{{step.model.patient.DateOfBirthday ? (step.model.patient.DateOfBirthday | amUtc | amDateFormat: "MM/DD/YYYY") : "-"}}</div>
+                        </div>
+                    </div>
+
+                    <div class="drowz-wizard-block-row">
+                        <div class="info-block block-width-300">
+                            <md-input-container>
+                                <label>Priority Level:</label>
+                                <md-select ng-model="step.model.priorityLevel"
+                                           ng-model-options="{trackBy: '$value.Id'}">
+                                    <md-option ng-value="level" ng-repeat="level in step.priorityLevels">
+                                        {{level.Text}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block">
+                            <md-input-container>
+                                <label>Scheduled Date:</label>
+                                <input ng-model="step.model.startDate"
+                                       datetimepicker
+                                       use-current="false"
+                                       format="MM/DD/YYYY"
+                                       show-today-button="false"
+                                       aria-label="startdate"
+                                       name="startDate"
+                                       ng-change="step.dateChanged(step.model.startDate)"
+                                       ng-required="true"
+                                />
+                                <div ng-messages="orderWizard.mainForm.step1Form.startDate.$error"
+                                     class="md-input-messages-nice"
+                                >
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+
+                    <div class="drowz-wizard-block-row">
+                        <div class="info-block grow-1">
+                            <md-input-container>
+                                <label>type your notes here...</label>
+                                <textarea ng-maxlength="step.notesMaxLength"
+                                      ng-model="step.model.info"
+                                      name="notes"
+                            ></textarea>
+                                <div ng-messages="orderWizard.mainForm.step1Form.notes.$error" class="md-input-messages-nice">
+                                <div ng-message="maxlength" class="md-input-message-animation">
+                                    Additional info is too long, max length is {{step.notesMaxLength}} symbols
+                                </div>
+                            </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+
+                </div>
+                </div>
+            </div>
+            <div class="flex-50-percent flex-cont stretch flex-column">
+
+            <div class="drowz-wizard-block">
+                <div class="drowz-wizard-block-title">
+                    <div class="wizard-title-text">
+                        Referring Provider:
+                    </div>
+                    <div class="flex-row">
+                        <div class="info-block padding-top-10">
+                            <md-button class="md-primary md-raised small-btn"
+                                       ng-click="step.addReferral($event)"
+                                       ng-disabled="step.isDisabledReferringProviderBlock()">
+                                Add New
+                            </md-button>
+                        </div>
+
+                        <div class="padding-top-15">
+                            <md-switch class="md-primary"
+                                       ng-model="step.model.hasReferringProvider"
+                                       ng-change="step.toggleReferringProvider(orderWizard.mainForm.step1Form);"
+                            ></md-switch>
+                        </div>
+                    </div>
+                </div>
+                <div class="drowz-wizard-block-body"
+                     ng-disabled="!step.model.patient.Id">
+                    <div class="drowz-wizard-block-row">
+                        <div class="info-block grow-1">
+                            <md-autocomplete md-selected-item="step.model.referral"
+                                             md-selected-item-change="step.referralChanged(step.model.referral)"
+                                             md-search-text="step.searchReferral"
+                                             md-items="referral in step.getReferrals(step.searchReferral)"
+                                             md-item-text="referral.displayName"
+                                             md-min-length="2"
+                                             md-delay="350"
+                                             md-floating-label="Search Referring Provider:"
+                                             clear-on-click
+                                             md-require-match="!step.isDisabledReferringProviderBlock()"
+                                             ng-required="!step.isDisabledReferringProviderBlock()"
+                                             md-input-name="referral"
+                                             ng-disabled="step.isDisabledReferringProviderBlock()"
+                            >
+                                <md-item-template>
+                                    <span md-highlight-text="step.searchReferral"
+                                          md-highlight-flags="i"
+                                          class="item-title"
+                                          title="{{referral.searchName}}">
+                                        {{referral.searchName}}
+                                    </span>
+                                </md-item-template>
+                                <div ng-messages="orderWizard.mainForm.step1Form.referral.$error" class="md-input-messages-nice">
+                                    <div ng-message="required">This field is required</div>
+                                    <div ng-message="selected">Selected referral is not valid</div>
+                                    <div ng-message="md-require-match"><b>Provider</b> must be selected.</div>
+                                </div>
+                                <md-not-found>No Referring Providers found</md-not-found>
+                            </md-autocomplete>
+                        </div>
+                        <div class="info-block block-width-200">
+                            <div class="info-block-label">NPI:</div>
+                            <div class="info-block-body">
+                                {{step.model.referral.ReferralCardSource.Npi || step.model.referral.Physician.Npi || '-'}}
+                            </div>
+                        </div>
+                        <div class="info-block block-width-200">
+                            <md-input-container>
+                                <label>Order Referral Date:</label>
+                                <input ng-model="step.model.referralDate"
+                                       datetimepicker
+                                       use-current="false"
+                                       format="MM/DD/YYYY"
+                                       show-today-button="false"
+                                       aria-label="startdate"
+                                       name="referralDate"
+                                       ng-required="!step.isDisabledReferringProviderBlock()"
+                                       ng-disabled="step.isDisabledReferringProviderBlock()"/>
+                                <div ng-messages="orderWizard.mainForm.step1Form.referralDate.$error" class="md-input-messages-nice">
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div class="drowz-wizard-block-row referring-provider-note-block-row"
+                         ng-repeat="item in step.referringProviderNotes"
+                         ng-class="{'last-item': $last}"
+                    >
+                        <div class="drowz-message with-icon">
+                            <md-icon class="info-icon" md-svg-src="assets/images/default/alert.svg"></md-icon>
+                            <div class="drowz-message-content">
+                                <span class="status-label {{:: item.labelClass }}">{{:: item.label }}</span>
+                                <span>{{:: item.note }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="drowz-wizard-block-row" ng-if="step.model.referral">
+                        <div class="info-block w300px">
+                            <div class="info-block-label">Practice:</div>
+                            <div class="info-block-body">
+                                {{step.model.referral.ReferralCardSource.Practice || step.model.referral.Physician.Practice || '-'}}
+                            </div>
+                        </div>
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">Office Address:</div>
+                            <div class="info-block-body">
+                                <span ng-if="!step.model.referral.Location.Address.AddressLine">
+                                    {{step.model.referral.Location.Address}}
+                                </span>
+                                <span ng-if="step.model.referral.Location.Address.AddressLine">
+                                    {{step.model.referral.Location.Address | addressToString}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="info-block w230px referral-location-error-block">
+                            <md-input-container class="hidden-validation-input">
+                                <input type="text"
+                                       ng-model="step.model.referral.Location.Address"
+                                       ng-required="!step.model.referral.Location"
+                                       name="referralLocation"
+                                />
+                                <div ng-messages="orderWizard.mainForm.step1Form.referralLocation.$error" class="md-input-messages-nice">
+                                    <div ng-message="required">
+                                        <span>Referring provider location is not selected</span>
+                                        <md-icon md-svg-src="assets/images/default/alert.svg" class="alert-icon"></md-icon>
+                                    </div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block w70px edit-referral-location-block">
+                            <md-button class="md-raised small-btn"
+                                       aria-label="..."
+                                       ng-click="step.changeReferralLocation()">
+                                <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                            </md-button>
+                        </div>
+                    </div>
+                    <div class="drowz-wizard-block-row b-referring-contact" ng-if="step.model.referral">
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">Phone:</div>
+                            <div class="info-block-body">
+                                <span ng-if="!step.model.referral.Location.Phone">-</span>
+                                {{step.model.referral.Location.Phone | tel}}
+                            </div>
+                        </div>
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">Fax:</div>
+                            <div class="info-block-body">
+                                <span ng-if="!step.model.referral.Location.Fax ">-</span>
+                                {{step.model.referral.Location.Fax | tel}}
+                            </div>
+                        </div>
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">Email:</div>
+                            <div class="info-block-body">
+                                {{step.model.referral.Location.Email || '-'}}
+                            </div>
+                        </div>
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">Contact Person:</div>
+                            <div class="info-block-body">{{step.model.referral.ContactPerson || '-'}}</div>
+                        </div>
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">Sales Rep:</div>
+                            <div class="info-block-body">
+                                {{ step.model.referral.SalesAgent.Name.FullName ||
+                                        step.model.referral.SalesAgent.FullName ||
+                                                 step.model.referral.SalesAgent || '-' }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="drowz-wizard-body-flex align-stretch"
+         ng-if="step.model.referral"
+    >
+        <div class="grow-1 flex-cont stretch flex-column">
+            <div class="drowz-wizard-block no-float">
+                <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">Hospital Discharge:</div>
+                        <md-switch ng-model="step.model.hospitalDischarge.isEnabled"
+                                   class="md-primary no-text"
+                                   aria-label="..."
+                                   ng-change="step.isHospitalDischargeEnabledChanged()"
+                        ></md-switch>
+                    </div>
+                <div class="drowz-wizard-block-body">
+                    <div class="drowz-wizard-block-row">
+                        <div class="info-block date-block discharge-date-block">
+                                        <md-input-container>
+                                            <label>Discharge Date:</label>
+                                            <input datetimepicker
+                                                   format="MM/DD/YYYY"
+                                                   use-current="false"
+                                                   ng-model="step.model.hospitalDischarge.dischargeDate"
+                                                   ng-disabled="!step.model.hospitalDischarge.isEnabled"
+                                                   ng-required="step.model.hospitalDischarge.isEnabled"
+                                                   name="dischargeDate"/>
+                                            <div ng-messages="orderWizard.mainForm.step1Form.dischargeDate.$error" class="md-input-messages-nice">
+                                                <div ng-message="required">This field is required</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                        <div class="info-block">
+                                        <div class="info-block-label">&nbsp;</div>
+                                        <div class="info-block-body">
+                                            <md-checkbox ng-model="step.model.hospitalDischarge.isTimeUnknown" class="md-primary" ng-disabled="!step.model.hospitalDischarge.isEnabled">Time is Unknown</md-checkbox>
+                                        </div>
+                                    </div>
+                        <div class="info-block timepicker-block"
+                                         ng-hide="step.model.hospitalDischarge.isTimeUnknown"
+                                    >
+                                        <md-input-container>
+                                            <label>From:</label>
+                                            <input datetimepicker
+                                                   format="hh:mm A"
+                                                   stepping="1"
+                                                   use-default-time="true"
+                                                   use-current="false"
+                                                   show-today-button="false"
+                                                   start-time-validator
+                                                   end-time="step.model.hospitalDischarge.to"
+                                                   ng-model="step.model.hospitalDischarge.from"
+                                                   ng-disabled="!step.model.hospitalDischarge.isEnabled"
+                                                   ng-required="step.model.hospitalDischarge.isEnabled && !step.model.hospitalDischarge.isTimeUnknown"
+                                                   name="from"/>
+                                            <div ng-messages="orderWizard.mainForm.step1Form.from.$error" class="md-input-messages-nice">
+                                                <div ng-message="required">This field is required</div>
+                                                <div ng-message="startTime">From time has to be less than To time</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                        <div class="info-block grow-1 timepicker-block"
+                             ng-hide="step.model.hospitalDischarge.isTimeUnknown"
+                        >
+                            <md-input-container>
+                                <label>To:</label>
+                                <input datetimepicker
+                                                   format="hh:mm A"
+                                                   stepping="1"
+                                                   use-default-time="true"
+                                                   use-current="false"
+                                                   show-today-button="false"
+                                                   end-time-validator
+                                                   start-time="step.model.hospitalDischarge.from"
+                                                   ng-model="step.model.hospitalDischarge.to"
+                                                   ng-disabled="!step.model.hospitalDischarge.isEnabled"
+                                                   ng-required="step.model.hospitalDischarge.isEnabled && !step.model.hospitalDischarge.isTimeUnknown"
+                                                   name="to"/>
+                                <div ng-messages="orderWizard.mainForm.step1Form.to.$error" class="md-input-messages-nice">
+                                    <div ng-message="required">This field is required</div>
+                                    <div ng-message="endTime">To time has to be bigger than From time</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block grow-1">
+                            <md-autocomplete md-selected-item="step.model.hospitalDischarge.hospital"
+                                             md-search-text="step.model.hospitalDischarge.hospitalName"
+                                             md-selected-item-change="step.hospitalDischargeChanged()"
+                                             md-items="hospital in step.getHospitals(step.model.hospitalDischarge.hospitalName)"
+                                             md-item-text="hospital.Name"
+                                             md-floating-label="Hospital:"
+                                             md-min-length="1"
+                                             ng-disabled="!step.model.hospitalDischarge.isEnabled"
+                                             ng-required="step.model.hospitalDischarge.isEnabled"
+                                             md-input-name="hospital"
+                            >
+                                <md-item-template>
+                                    <span md-highlight-text="step.model.hospitalDischarge.hospitalName" md-highlight-flags="i" title="{{hospital.Name}}">
+                                        {{hospital.Name}}
+                                    </span>
+                                </md-item-template>
+                                <div ng-messages="orderWizard.mainForm.step1Form.hospital.$error" class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                            </md-autocomplete>
+                        </div>
+                        <div class="info-block grow-1">
+                                <md-input-container>
+                                    <label>Address:</label>
+                                    <input type="text" ng-model="step.model.hospitalDischarge.hospitalAddress"
+                                           ng-disabled="!step.model.hospitalDischarge.isEnabled"
+                                           ng-required="step.model.hospitalDischarge.isEnabled"
+                                           name="address"/>
+                                    <div ng-messages="orderWizard.mainForm.step1Form.address.$error" class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                        </div>
+                        <div class="info-block">
+                                <md-input-container>
+                                    <label>Contact:</label>
+                                    <input type="text"
+                                           ng-model="step.model.hospitalDischarge.hospitalContact"
+                                           ng-disabled="!step.model.hospitalDischarge.isEnabled"
+                                           name="contact"
+                                           input-phone-mask
+                                    />
+                                    <div ng-messages="orderWizard.mainForm.step1Form.contact.$error" class="md-input-messages-nice">
+                                        <div ng-message="phone-pattern" class="md-input-message-animation">Contact must be in correct format.</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        <div class="info-block block-width-140">
+                                <md-input-container>
+                                    <label>Room:</label>
+                                    <input type="text" ng-model="step.model.hospitalDischarge.room"
+                                           ng-disabled="!step.model.hospitalDischarge.isEnabled"
+                                           name="room"/>
+                                </md-input-container>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

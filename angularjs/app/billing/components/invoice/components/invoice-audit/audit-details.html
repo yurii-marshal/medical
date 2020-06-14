@@ -1,0 +1,113 @@
+<div class="audit-details"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="auditDetails">
+
+    <div class="exit">
+        <md-button class="md-raised small-btn arrow-back-button"
+                   ng-click="audit.backToAuditList()">
+            <md-icon md-svg-src="assets/images/default/arrow-back.svg"></md-icon>
+            Back to Audit records
+        </md-button>
+    </div>
+    <!--1-->
+    <div class="details-header"
+         ng-if="audit.auditDetailsType === audit.auditDetailsTypeConstants.INVOICE_ACKNOWLEDGMENT_ID">
+        <div>
+             <div class="status-label"
+                 ng-class="audit.auditDetails.Status.Name | lowercase"
+                 ng-bind="audit.auditDetails.Status.Name">
+            </div>
+        </div>
+        <div class="marg-v-10 flex-cont space-between align-top">
+            <div>
+                <div class="pad-v-7 pad-h-10 transparent-bordered-block">
+                    From: <span ng-bind="audit.auditDetails.Respondent.Type.Name"></span> - <span ng-bind="audit.auditDetails.Respondent.Name"></span>
+                    <time class="marg-h-5"
+                          datetime="audit.auditDetails.Respondent.DateOfSubmit | localDateTime: 'MM/DD/YYYY hh:mm:ss A'"
+                          ng-bind="audit.auditDetails.Respondent.DateOfSubmit | localDateTime: 'MM/DD/YYYY hh:mm:ss A'">
+                    </time>
+                </div>
+                <div class="pad-v-10 tax-id active-text">
+                    Provider Tax ID:
+                    <span ng-bind="audit.auditDetails.Provider.TaxId + ' - ' + audit.auditDetails.Provider.Name"></span>
+                </div>
+            </div>
+            <div class="flex-cont space-between align-top total-results">
+                <div class="uppercase pad-h-15 pad-v-5">Totals for the invoice:</div>
+                <div class="pad-v-5 pad-h-15 transparent-bordered-block">
+                    <div class="total-results__service-lines">
+                        <span class="uppercase red-color">Rejected:</span>
+                        <span ng-bind="audit.auditDetails.RejectedAmount.Currency + ' ' + audit.auditDetails.RejectedAmount.Amount"></span>
+                    </div>
+                    <div class="total-results__service-lines">
+                        <span class="uppercase">Processed:</span>
+                        <span ng-bind="audit.auditDetails.AcceptedAmount.Currency + ' ' + audit.auditDetails.AcceptedAmount.Amount"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="audit.auditDetails.ErrorMessages.length && (audit.auditDetails.ErrorMessages[0] != null)"
+             class="pad-15 grey-bordered-block error-description">
+            <div ng-repeat="msg in audit.auditDetails.ErrorMessages track by $index"
+                 ng-bind="msg ? (msg + '.') : ''"></div>
+        </div>
+    </div>
+    <!--2-->
+    <div class="details-header"
+         ng-if="audit.auditDetailsType === audit.auditDetailsTypeConstants.IMPLEMENTATION_ACKNOWLEDGMENT_ID">
+        <div>
+            <div class="status-label"
+                 ng-class="audit.auditDetails.Status.Name | lowercase"
+                 ng-bind="audit.auditDetails.Status.Name">
+            </div>
+        </div>
+        <div class="pad-v-7 datetime">
+            <time datetime="audit.auditDetails.Date | localDateTime: 'DD/MM/YYYY hh:mm:ss A'"
+                  ng-bind="audit.auditDetails.Date | localDateTime: 'DD/MM/YYYY hh:mm:ss A'">
+            </time>
+        </div>
+        <div class="marg-v-20 details-message"
+             ng-repeat="msg in audit.auditDetails.Messages track by $index">
+            <div class="pad-10 transparent-bordered-block">
+                <span class="red-color font-bold msg-code"
+                      ng-bind="msg.Code"></span> -
+                <span ng-bind="msg.Description"></span>
+            </div>
+        </div>
+   </div>
+
+    <div class="operations-list" ng-show="audit.auditDetails.ServiceLines.length">
+        <div ng-repeat="item in audit.auditDetails.ServiceLines" class="item pad-v-10">
+            <div class="flex-row pad-v-20">
+                <div class="info-block block-width-200">
+                    <div class="status-label"
+                         ng-class="item.Status.Name | lowercase"
+                         ng-bind="item.Status.Name">
+                    </div>
+                </div>
+                <div class="info-block block-width-200 left-divider">
+                    <div class="info-block-label">HCPCS:</div>
+                    <div class="info-block-body"
+                         ng-bind="item.Hcpcs"></div>
+                </div>
+                <div class="info-block block-width-200 left-divider">
+                    <div class="info-block-label">Charge:</div>
+                    <div class="info-block-body"
+                         ng-bind="item.Charge.Currency + ' ' + item.Charge.Amount"></div>
+                </div>
+                <div class="info-block block-width-200 left-divider">
+                    <div class="info-block-label">DOS:</div>
+                    <div class="info-block-body"
+                         ng-bind="item.DateOfService | localDateTime: 'DD/MM/YYYY'"></div>
+                </div>
+            </div>
+            <div class="error-message">
+                <span class="red-color">
+                    <span class="uppercase">Error:</span>
+                    <span ng-bind="item.Message"></span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+</div>

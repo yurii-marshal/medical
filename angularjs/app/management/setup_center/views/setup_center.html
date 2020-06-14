@@ -1,0 +1,14 @@
+<!-- calendar start -->
+<drwz-calendar-simple drwz-ng-model="setup_center.eventSource"
+                      drwz-ui-calendar="setup_center.uiConfig.calendar"
+                      drwz-options="btns-today ,btns-agendaDay, btns-agendaWeek, showTitle"
+                      bs-loading-overlay
+                      bs-loading-overlay-reference-id="serviceCenterOverlay">
+    <drwz-calendar-left
+        ng-include="'management/setup_center/views/setup_center.calendar_btn_left.html'">
+    </drwz-calendar-left>
+    <drwz-calendar-right
+        ng-if="setup_center.canEdit"
+        ng-include="'management/setup_center/views/setup_center.calendar_btn_right.html'">
+    </drwz-calendar-right>
+</drwz-calendar-simple>

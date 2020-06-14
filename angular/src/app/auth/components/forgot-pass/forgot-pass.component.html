@@ -1,0 +1,79 @@
+<div class="login">
+
+    <div class="forgotpass-block"
+         [formGroup]="forgotPassForm"
+    >
+        <div class="login-title">
+            Please enter your login and email address if you want to
+            <span class="blue">reset your password.</span>
+        </div>
+
+        <div class="login-row row-with-icon">
+            <mat-icon svgIcon="user-circle"
+                      class="login-row-icon"></mat-icon>
+            <mat-form-field>
+                <input matInput
+                       autocomplete="off"
+                       placeholder="Login:"
+                       type="text"
+                       tabindex="1"
+                       formControlName="username"
+                       (keyup)="submitForm($event)"
+                />
+
+                <mat-error *ngIf="forgotPassForm.controls.username.invalid">
+                    <b>Login</b> cannot be empty.
+                </mat-error>
+
+            </mat-form-field>
+        </div>
+
+        <div class="login-row row-with-icon">
+            <mat-icon svgIcon="email-circle"
+                      class="login-row-icon"></mat-icon>
+            <mat-form-field>
+                <input matInput
+                       autocomplete="off"
+                       placeholder="Email:"
+                       type="email"
+                       tabindex="2"
+                       formControlName="email"
+                       (keyup)="submitForm($event)"
+                />
+                <mat-error *ngIf="forgotPassForm.controls.email.hasError('required') ">
+                    <b>Email</b> cannot be empty.
+                </mat-error>
+
+                <mat-error
+                    *ngIf="forgotPassForm.controls.email.errors?.email && !forgotPassForm.controls.email.errors?.required">
+                    <b>Email</b> is not valid.
+                </mat-error>
+
+            </mat-form-field>
+        </div>
+
+        <div class="login-row">
+            <button class="spinner-btn login-btn"
+                    tabindex="3"
+                    mat-raised-button
+                    color="primary"
+                    (click)="resetPass()"
+            >
+                <mat-progress-spinner *ngIf="isLoading"
+                                      mode="indeterminate"
+                                      [diameter]="27">
+                </mat-progress-spinner>
+                <span>Reset password</span>
+            </button>
+        </div>
+
+        <div class="login-row">
+            <a href="javascript:void(0);"
+               routerLink="/login"
+               class="reset-login"
+            >
+                Cancel
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+mode: ContinuousDeployment
+branches:
+  develop:
+    tracks-release-branches: false
+ignore:
+  sha: ['ed61242525aade7aea13c2ae68ba2d867a2346c9', 'd0148cc6858d1f214ba19812e6b4ca6f4959771c', 'e2cb5862e30d055141a54253ddf8fb529e3ef2bc']
+  commits-before: 2019-05-01T12:00:00

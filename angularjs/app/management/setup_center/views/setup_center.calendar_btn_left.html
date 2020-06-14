@@ -1,0 +1,27 @@
+<div class="setup_name" ng-form="setup_center.Form">
+    <md-autocomplete
+        md-no-cache="true"
+        md-selected-item="setup_center.selectedSetupCenter"
+        md-search-text="setup_center.searchText"
+        md-selected-item-change="setup_center.selectSetupCenter(item)"
+        md-items="item in setup_center.getSetupCenterList(setup_center.searchText)"
+        md-item-text="item.Name"
+        md-min-length="0"
+        md-input-name="setupCenterName"
+        ng-required="true"
+        md-floating-label="Patient Service Center:"
+        md-require-match="true"
+        ng-model-options="{ debounce: 300 }"
+        clear-on-click>
+        <md-item-template>
+            <span md-highlight-text="setup_center.searchText" md-highlight-flags="^i">{{item.Name}}</span>
+        </md-item-template>
+        <md-not-found>
+            No Service Centers were found
+        </md-not-found>
+        <div ng-messages="setup_center.Form.setupCenterName.$error" class="md-input-messages-nice">
+            <div ng-message="required">This field is required.</div>
+            <div ng-message="md-require-match">Service Center must be selected.</div>
+        </div>
+    </md-autocomplete>
+</div>

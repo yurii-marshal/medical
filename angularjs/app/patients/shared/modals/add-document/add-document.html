@@ -1,0 +1,107 @@
+<div class="modal-window new-doc-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="addDoc.close()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content" ng-form="addDoc.addDocumentForm">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/documents.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Add New Document:</h2>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block block-width-300">
+                <div class="info-block-label">Document Name:</div>
+                <div class="info-block-body doc-name-container">
+                    <div class="ellipsis"
+                         title="{{addDoc.document.name}}">{{addDoc.document.name || '-'}}</div>
+                    <input type="file"
+                           id="fileUploader"
+                           class="file-uploader-input"
+                           nv-file-select
+                           uploader="addDoc.uploader"
+                           options="addDoc.uploadOptions"
+                           filters="documentFilter"
+                           ng-hide="true">
+                </div>
+            </div>
+            <md-button class="md-raised middle-btn browse-files-btn"
+                       ng-click="addDoc.browseFiles()">Browse</md-button>
+
+            <div class="info-block grow-1">
+                <md-autocomplete
+                        md-search-text="searchDocType"
+                        md-items="docType in addDoc.getDocumentTypesDictionary(searchDocType)"
+                        md-item-text="docType.Text"
+                        md-min-length="0"
+                        md-selected-item="addDoc.document.documentType"
+                        md-floating-label="Document Type:"
+                        clear-on-click
+                        ng-required="true"
+                        md-require-match="true"
+                        md-input-name="type">
+                    <md-item-template>
+                        <span md-highlight-flags="^i" title="{{docType.Text}}">{{docType.Text}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                        No Document Types was found
+                    </md-not-found>
+                    <div ng-messages="addDoc.addDocumentForm.type.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="md-require-match">Selected Document Type is not valid</div>
+                    </div>
+                </md-autocomplete>
+            </div>
+            <div class="info-block block-width-150" ng-if="addDoc.document.documentType.IsCmn">
+                <md-input-container>
+                    <label>Expiration Date:</label>
+                    <input type="text"
+                           name="ExpiredDate"
+                           datetimepicker
+                           min-date="today"
+                           format="MM/DD/YYYY"
+                           ng-model="addDoc.document.ExpiredDate"
+                           ng-required="true">
+                    <div ng-messages="addDoc.addDocumentForm.ExpiredDate.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <md-input-container>
+                    <label>Notes:</label>
+                    <textarea ng-model="addDoc.document.notes"></textarea>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row select-practice" ng-if="addDoc.document.orders.length">
+            <div class="info-block grow-1">
+                <div class="info-block-label">Select Order to Share:</div>
+                <div class="select-practice-block clearfix">
+                    <div class="col-xs-6" ng-repeat="order in addDoc.document.orders">
+                        <md-checkbox ng-model="order.checked" class="md-primary practice-checkbox">{{order.Text}}</md-checkbox>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter" layout="row" layout-align="end center">
+        <md-button class="md-raised main-button" ng-click="addDoc.close()">Close</md-button>
+        <md-button class="md-primary md-raised main-button"
+                   ng-click="addDoc.upload()"
+                   ng-disabled="!addDoc.document.name">
+            Upload
+        </md-button>
+    </md-dialog-actions>
+</div>

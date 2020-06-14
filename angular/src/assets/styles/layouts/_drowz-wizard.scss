@@ -1,0 +1,358 @@
+.drowz-wizard {
+  width: 100%;
+  position: relative;
+  min-height: calc(100vh - #{$main-menu-height});
+  padding: 0 20px 100px;
+  background-color: $lighter-gray-color;
+  flex-grow: 1;
+
+  &.no-footer-wizard {
+    padding-bottom: 10px;
+  }
+
+  .breadcrumbs {
+    margin-bottom: 5px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.drowz-wizard-body {
+  position: relative;
+  padding-top: 15px;
+  margin-left: calc(-#{$wizard-block-margin} / 2);
+  margin-right: calc(-#{$wizard-block-margin} / 2);
+}
+
+.drowz-wizard-body-flex {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  .flex-300 {
+    width: 300px;
+    min-width: 300px;
+  }
+
+  .flex-360 {
+    width: 25%;
+    min-width: 360px;
+  }
+
+  .flex-400 {
+    width: 25%;
+    min-width: 400px;
+  }
+
+  .flex-min-400 {
+    min-width: 400px;
+  }
+
+  .insurances-block {
+    width: 420px;
+    min-width: 420px;
+  }
+
+  .flex-25-percent {
+    width: 25%;
+    min-width: 350px;
+  }
+
+  .flex-30-percent {
+    width: 30%;
+  }
+
+  .flex-min-40-percent {
+    min-width: 575px;
+    width: 40%;
+  }
+
+  .flex-50-percent {
+    width: 50%;
+    min-width: 50%;
+  }
+
+  .flex-25-percent {
+    width: 25%;
+    min-width: 25%;
+  }
+
+  .flex-75-percent {
+    width: 75%;
+    min-width: 75%;
+  }
+
+  .flex-max-360 {
+    max-width: 360px;
+  }
+
+  &.align-stretch {
+    align-items: stretch;
+  }
+
+  &.product-picture-block {
+    width: 400px;
+    min-width: 400px;
+  }
+}
+
+.drowz-wizard-block {
+  float: left;
+  margin: 0 15px 30px;
+  box-shadow: $box-shadow;
+  border-radius: 3px;
+  background-color: #fff;
+
+  &.service-centers {
+    margin-bottom: 0;
+  }
+
+  &.no-float {
+    float: none;
+  }
+
+  .drowz-wizard-block-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: $wizard-title-height;
+    padding: 0 10px 0 20px;
+    background-color: $wizard-title-color;
+    border-radius: 3px 3px 0 0;
+
+    &.active-color-title {
+      background-color: $main-active-color;
+
+      .wizard-title-text {
+        color: #fff;
+      }
+    }
+
+    .wizard-title-text {
+      text-transform: uppercase;
+      color: $main-active-color;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .md-button:last-of-type {
+      margin-right: 0;
+    }
+  }
+
+  .drowz-wizard-block-body {
+    padding: 20px 20px 10px;
+
+    &.drowz-wizard-block-body-table {
+      padding: 0 0 25px;
+    }
+
+    &.received-equipment-list {
+      padding-top: 5px;
+    }
+
+    &.max-height-with-btn {
+      position: relative;
+      max-height: 540px;
+      overflow: hidden;
+      transition: .5s;
+      padding-bottom: 40px;
+      will-change: height;
+
+      &.max-height-300 {
+        max-height: 300px;
+      }
+
+      .show-more-btn {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        font-size: 14px;
+        text-decoration: none;
+        font-weight: 400;
+        background-image: linear-gradient(to top, $wizard-title-color 0%, white 100%);
+        transition: .2s;
+
+        &::before {
+          display: none;
+        }
+
+        &:hover {
+          text-decoration: none;
+
+          > mat-icon {
+            color: $main-active-hover-color;
+          }
+
+          .show-more-text {
+            color: $main-active-hover-color;
+
+            &::before {
+              left: 50%;
+              width: 0;
+              background-color: $main-active-hover-color;
+            }
+          }
+        }
+
+        > mat-icon {
+          width: 16px;
+          height: 16px;
+          margin: 0 10px 0 0;
+          color: $main-active-color;
+          transform: rotate(180deg);
+        }
+
+        .show-more-text {
+          position: relative;
+          display: inline-block;
+          height: 17px;
+          transition: .2s;
+          color: $font-color;
+          text-transform: none;
+
+          &::before {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: currentColor;
+            transition: .2s;
+          }
+        }
+      }
+
+      &.opened {
+        max-height: none;
+
+        .show-more-btn {
+          > mat-icon {
+            transform: rotate(0deg);
+          }
+        }
+      }
+    }
+
+    &.with-scroll {
+      padding: 0;
+    }
+
+    &.pagination-body {
+      position: relative;
+      padding-bottom: 45px;
+
+      > .pagination {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    > .no-records {
+      padding-top: 5px;
+    }
+
+    > .info-block {
+      padding-right: 0;
+    }
+  }
+
+  .drowz-wizard-block-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-left: calc(-#{$wizard-block-margin} / 2);
+    margin-right: calc(-#{$wizard-block-margin} / 2);
+
+    > .info-block {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    + .drowz-wizard-block-row {
+      padding-top: 10px;
+    }
+
+    &.align-bottom {
+      align-items: flex-end;
+    }
+
+    &.align-stretch {
+      align-items: stretch;
+    }
+  }
+
+  &.select-patient-block {
+    width: calc(35% - #{$wizard-block-margin});
+    max-width: 500px;
+  }
+
+  &.referral-block {
+    width: calc(65% - #{$wizard-block-margin});
+    max-width: 800px;
+  }
+
+  &.half-size-block {
+    width: calc(50% - #{$wizard-block-margin});
+  }
+
+  &.profile-picture-block {
+    width: 300px;
+    min-width: 300px;
+  }
+
+  &.password-block {
+    width: 33%;
+    max-width: 350px;
+  }
+
+  md-input-container {
+    display: block;
+    width: 100%;
+  }
+}
+
+.drowz-wizard-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 20px 20px;
+
+  &.static-footer {
+    position: static;
+  }
+
+  .drowz-wizard-footer-btn {
+    margin: 0 10px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.big-number-block {
+  display: flex;
+  align-items: center;
+
+  .big-number {
+    margin-right: 20px;
+    color: $orange-color;
+    font-size: 34px;
+    line-height: 40px;
+    font-weight: 500;
+  }
+}

@@ -1,0 +1,124 @@
+.organization-setup, .location-view, .provider-view {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    > * {
+        width: 100%;
+    }
+
+    .top-block {
+        padding-left: 5px;
+        padding-right: 5px;
+
+        .breadcrumbs {
+            padding-left: 15px;
+        }
+    }
+
+    .set-height-65 {
+        min-height: 65px;
+    }
+}
+
+.modifier-code {
+    &:not(:last-of-type) {
+        margin-right: 10px;
+    }
+}
+
+.modifiers-inputs.info-block {
+    .info-block-label {
+        margin-bottom: 0;
+    }
+
+    .info-block-body {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+
+        md-input-container {
+            margin-top: 0;
+            margin-right: 10px;
+
+            &:last-of-type {
+                margin-right: 0;
+            }
+        }
+    }
+}
+
+.pricing-page {
+    md-autocomplete-with-infinite-scroll {
+        min-width: 150px;
+
+        .clear-field {
+            top:22px;
+        }
+    }
+
+    .capped-rentals-block {
+        .drowz-wizard-block-body {
+            md-input-container {
+                input {
+                    padding-right: 30px;
+                }
+
+                .info-tooltip {
+                    &.has-tooltip {
+                        &:after {
+                            top: -15px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .daily-billing-block {
+        .nowrap {
+            white-space: nowrap;
+        }
+    }
+}
+
+.referrals-list {
+    .monitor-list-blue {
+        visibility: hidden;
+
+        &.visible-icon {
+            visibility: visible;
+        }
+    }
+}
+
+.provider-view {
+    .pecos-enrollment {
+        display: flex;
+        align-items: center;
+        min-height: 43px;
+
+        .alert-icon, .success-icon {
+            @include size(20px, 20px);
+            margin-right: 5px;
+        }
+
+        .alert-icon {
+            color: $red-color;
+        }
+
+        .success-icon {
+            color: $green-color;
+        }
+    }
+}
+
+
+.organization-resupply-block.organization-resupply-block {
+    md-input-container {
+        width: 51px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}

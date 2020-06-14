@@ -1,0 +1,16 @@
+.print-product-labels {
+    .inf-table-container {
+        height: calc(100vh - #{$main-menu-height} - #{$breadscrumbs-height} - 190px);
+        overflow-y: auto;
+    }
+}
+
+.print-label-box {
+    width: 100%;
+    padding-right: 150px;
+
+    > img {
+        margin-top: 30px;
+        width: 140mm;
+    }
+}

@@ -1,0 +1,58 @@
+<div class="modal-window invoice-validate-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/alert_rect_icon.svg"></md-icon>
+
+        <div ng-if="$ctrl.isValidationFailed"
+             class="modal-title">
+            <h2>Invoice <span class="active-text">{{$ctrl.invoiceId}}</span> validation has failed:</h2>
+        </div>
+
+        <div ng-if="!$ctrl.isValidationFailed"
+             class="modal-title">
+            <h2>Invoice <span class="active-text">{{$ctrl.invoiceId}}</span> validation was updated</h2>
+        </div>
+
+        <div ng-if="$ctrl.isValidationFailed"
+             class="modal-body">
+            <div class="marg-v-20">
+                <md-icon class="" md-svg-src="assets/images/default/alert.svg"></md-icon>
+                <span>
+                    Select <span class="active-text">"Cancel"</span> to continue modifying the invoice
+                </span>
+            </div>
+            <div class="marg-v-20">
+                <md-icon class="" md-svg-src="assets/images/default/alert.svg"></md-icon>
+                <span>
+                    Select <span class="active-text">"Save"</span> to ignore validation errors
+                    and save the invoice
+                </span>
+            </div>
+            <div class="marg-v-20">
+                <md-icon class="" md-svg-src="assets/images/default/alert.svg"></md-icon>
+                <span>
+                    Select <span class="active-text">"Update"</span> to save the invoice
+                    and put it on hold
+                </span>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button"
+                   ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.saveInvoice()">Save</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-if="$ctrl.isValidationFailed"
+                   ng-click="$ctrl.updateInvoice()">Update</md-button>
+    </md-dialog-actions>
+
+</div>
+

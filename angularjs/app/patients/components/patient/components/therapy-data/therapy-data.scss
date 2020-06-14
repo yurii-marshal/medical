@@ -1,0 +1,29 @@
+.therapy-data-wrap {
+    .small-btn.edit-data-btn {
+        @include size(38px, 38px);
+        padding: 0;
+        margin: 5px 15px;
+
+        md-icon {
+            @include size(17px, 17px);
+            color: $gray-color;
+        }
+    }
+}
+
+.modal-window {
+    &.compliance-date-modal {
+        width: 335px;
+
+        .info-icon {
+            @include size(17px, 17px);
+            color: $main-active-color;
+            margin: 0 10px;
+        }
+
+        .dialog-text {
+            font-style: italic;
+        }
+
+    }
+}

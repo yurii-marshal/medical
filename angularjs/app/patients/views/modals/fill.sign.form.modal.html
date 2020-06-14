@@ -1,0 +1,41 @@
+<div class="modal-window sign-fill-modal" ng-form="$ctrl.signFillForm">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/email_v2.svg"></md-icon>
+        <div class="modal-title">
+            <h2>Signature:</h2>
+        </div>
+        <div class="flex-row">
+            <div class="grow-1">
+                <div class="signature-pad grow-1"
+                     signature
+                     parent-this="$ctrl"
+                     set-signature="$ctrl.setSignatureBytes"
+                     signed-bytes="$ctrl.signature"
+                     send-base-64="true"
+                >
+                </div>
+                <div class="signature-error">
+                    <md-input-container>
+                        <input class="hide-this" aria-label="..." type="text" ng-model="$ctrl.signature" name="signatureBytes" ng-required="true">
+                        <div ng-messages="$ctrl.signFillForm.signatureBytes.$error" class="md-input-messages-nice">
+                            <div ng-message="required">Signature is required</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.save()">
+            Save
+        </md-button>
+    </md-dialog-actions>
+
+</div>

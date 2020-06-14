@@ -1,0 +1,243 @@
+<div class="flex-row"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="step3">
+    <div class="col-xs-6 subwizard-container-block">
+        <md-icon md-svg-src="assets/images/default/inventory.svg" class="subwizard-container-icon inventory-icon"></md-icon>
+        <md-input-container class="subwizard-container">
+            <label ng-show="!wiz.pairCurrent.NextKey || wiz.pairCurrent.NextKey.KeyType.Code==='ProductId'">Scan or Enter Product Barcode or Use Search for Product Lookup:</label>
+            <label ng-show="wiz.pairCurrent.NextKey && wiz.pairCurrent.NextKey.KeyType.Code==='SerialNumber'">Scan or Enter Seria Number:</label>
+            <label ng-show="wiz.pairCurrent.NextKey && wiz.pairCurrent.NextKey.KeyType.Code==='LotNumber'">Scan or Enter Lot Number:</label>
+            <input type="text"
+                   auto-focus
+                   ng-model="wiz.pairCurrent.product.barcode"
+                   on-press-enter="wiz.searchProductByProductId()"/>
+        </md-input-container>
+        <div class="subwizard-container-btns">
+            <md-button class="md-raised small-btn"
+                       ng-hide="wiz.pairCurrent.product.Id"
+                       ng-click="wiz.searchProductModal()">
+                Search
+            </md-button>
+            <md-button class="md-primary md-raised small-btn enter-barcode-btn"
+                       ng-click="wiz.searchProductByProductId()"
+                       ng-disabled="!wiz.pairCurrent.product.barcode">
+                Enter
+            </md-button>
+        </div>
+    </div>
+    <div class="col-xs-6 subwizard-container-block with-blue-border">
+        <md-icon md-svg-src="assets/images/default/location.svg" class="subwizard-container-icon location-icon"></md-icon>
+        <div class="flex-row grow-1">
+            <div class="col-xs-6 flex-cont">
+                <div class="info-block grow-1">
+                    <div class="info-block-label">From:</div>
+                    <div class="info-block-body">
+                        <div ng-if="!wiz.pairCurrent.locationFrom.Name">Any Location</div>
+                        <div ng-if="wiz.pairCurrent.locationFrom.Name">
+                            {{wiz.pairCurrent.locationFrom.Name}}
+                            <span ng-if="wiz.pairCurrent.locationFrom.Description">,
+                                {{wiz.pairCurrent.locationFrom.Description}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="subwizard-container-btns">
+                    <md-button class="md-raised small-btn" ng-click="wiz.searchLocationFromModal($event)">
+                        Change
+                    </md-button>
+                </div>
+            </div>
+            <div class="col-xs-6 flex-cont">
+                <div class="info-block grow-1">
+                    <div class="info-block-label">To:</div>
+                    <div class="info-block-body">
+                        {{wiz.pairCurrent.locationTo.DisplayName}}
+                    </div>
+                </div>
+                <div class="subwizard-container-btns">
+                    <md-button class="md-raised small-btn" ng-click="wiz.searchLocationToModal($event)">
+                        Change
+                    </md-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr class="drowz-line"
+    ng-if="wiz.pairCurrent.Status.Code === 'NotDetermined' || wiz.pairLast || wiz.isProductNotFound">
+<!--Not Determined-->
+<div class="scanned-item-block"
+     ng-if="wiz.pairCurrent.Status.Code === 'NotDetermined'">
+     <!--ng-if="wiz.pairCurrent && (!wiz.pairCurrent.product.Components || wiz.pairCurrent.product.Components.length === 0)">-->
+    <div class="flex-row">
+        <div class="col-xs-12 subwizard-container-block current-prev-item">
+            <md-icon md-svg-src="assets/images/default/check-circle.svg"
+                     class="subwizard-container-icon success-icon"></md-icon>
+            <div class="info-block block-width-25-percent">
+                <div class="info-block-label">Current Item:</div>
+                <div class="info-block-body">{{wiz.pairCurrent.product.Name}}</div>
+            </div>
+            <div class="info-block block-width-25-percent left-divider"
+                 ng-class="{'red-block' : wiz.pairCurrent.product.isLotNumberActive}"
+                 ng-if="wiz.pairCurrent.product.LotNumber || wiz.pairCurrent.product.isLotNumberActive">
+                <div class="info-block-label">Lot Number:</div>
+                <div class="info-block-body">{{wiz.pairCurrent.product.LotNumber}}</div>
+            </div>
+            <div class="info-block block-width-25-percent left-divider"
+                 ng-class="{'red-block' : wiz.pairCurrent.product.isSerialNumberActive}"
+                 ng-if="wiz.pairCurrent.product.SerialNumber || wiz.pairCurrent.product.isSerialNumberActive">
+                <div class="info-block-label">Serial Number:</div>
+                <div class="info-block-body">{{wiz.pairCurrent.product.SerialNumber}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="bundle-items-row" ng-if="wiz.pairCurrent.product.Components">
+        <div class="wizard-components-title">Items: </div>
+        <table class="drowz-table small-table regular-table">
+            <tr class="drowz-table-header">
+                <th class="number-cell">#</th>
+                <th class="cell-40-percent">Name</th>
+                <th class="cell-25-percent">Serial Number</th>
+                <th class="cell-25-percent">Lot Number</th>
+                <th class="cell-10-percent">Qty</th>
+            </tr>
+            <tr class="drowz-table-row"
+                ng-repeat="item in wiz.pairCurrent.product.Components track by $index">
+                <td class="number-cell">{{$index +1}}.</td>
+                <td class="cell-40-percent">{{item.Name}}</td>
+                <td class="cell-25-percent" ng-show="item.isSerialNumberActive">
+                    <div class="scan-current-block">
+                        <md-icon md-svg-src="assets/images/default/new-invoice-rect.svg"></md-icon>
+                    </div>
+                </td>
+                <td class="cell-25-percent" ng-hide="item.isSerialNumberActive">
+                    {{item.serialNumber}}
+                </td>
+                <td class="cell-25-percent" ng-show="item.isLotNumberActive">
+                    <div class="scan-current-block">
+                        <md-icon md-svg-src="assets/images/default/new-invoice-rect.svg"></md-icon>
+                    </div>
+                </td>
+                <td class="cell-25-percent" ng-hide="item.isLotNumberActive">
+                    {{item.lotNumber}}
+                </td>
+                <td class="cell-10-percent">
+                    {{item.Count}}
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- prev item without Components-->
+<div class="scanned-item-block last-scanned"
+     ng-if="wiz.pairLast.product.Id
+      && (!wiz.pairLast.product.Components || wiz.pairLast.product.Components.length === 0)">
+    <div class="flex-row">
+        <div class="col-xs-12 subwizard-container-block current-prev-item">
+            <md-icon md-svg-src="assets/images/default/check-circle.svg" class="subwizard-container-icon success-icon"></md-icon>
+            <div class="info-block block-width-25-percent">
+                <div class="info-block-label">Last Scanned Item:</div>
+                <div class="info-block-body">{{wiz.pairLast.product.Name}}</div>
+            </div>
+            <div class="info-block block-width-25-percent left-divider"
+                 ng-if="wiz.pairLast.product.LotNumber">
+                <div class="info-block-label">Lot Number:</div>
+                <div class="info-block-body">{{wiz.pairLast.product.LotNumber}}</div>
+            </div>
+            <div class="info-block block-width-25-percent left-divider"
+                 ng-if="wiz.pairLast.product.SerialNumber">
+                <div class="info-block-label">Serial Number:</div>
+                <div class="info-block-body">{{wiz.pairLast.product.SerialNumber}}</div>
+            </div>
+            <div class="info-block block-width-100 left-divider">
+                <div class="info-block-label">Qty:</div>
+                <div class="info-block-body">{{wiz.pairLast.product.Count}}</div>
+            </div>
+            <div class="info-block left-divider two-line-status">
+                <div class="status-label {{wiz.pairLast.product.statusClass}}">
+                    {{wiz.pairLast.product.Status.Name}}
+                </div>
+                <div class="status-label gray" ng-show="wiz.pairLast.product.Refurbished">
+                    Refurbished
+                </div>
+            </div>
+            <div class="subwizard-container-btns">
+                <md-button class="md-raised small-btn"
+                           ng-if="wiz.pairLast.product.canChangeQty" ng-click="wiz.editQtyModal($event, 'last' ,null)">
+                    Change Qty
+                </md-button>
+                <md-button class="md-raised small-btn"
+                           ng-click="wiz.editNotesModal($event, 'last' ,null)">
+                    Notes
+                </md-button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- prev item with Components-->
+<div class="scanned-item-block last-scanned"
+     ng-if="wiz.pairLast && wiz.pairLast.product.Components && wiz.pairLast.product.Components.length > 0">
+    <div class="flex-row">
+        <div class="col-xs-12 subwizard-container-block current-prev-item">
+            <md-icon md-svg-src="assets/images/default/check-circle.svg"
+                     class="subwizard-container-icon success-icon"></md-icon>
+            <div class="info-block block-width-25-percent">
+                <div class="info-block-label">Last Scanned Item:</div>
+                <div class="info-block-body">{{wiz.pairLast.product.Name}}</div>
+            </div>
+            <div class="info-block left-divider two-line-status block-width-200">
+                <div class="info-block-label">Status:</div>
+                <div class="status-label {{wiz.pairLast.product.statusClass}}">
+                    {{wiz.pairLast.product.Status.Name}}
+                </div>
+                <div class="status-label gray"
+                     ng-show="wiz.pairLast.product.Refurbished">
+                    Refurbished
+                </div>
+            </div>
+            <div class="info-block block-width-100 left-divider">
+                <div class="info-block-label">Qty:</div>
+                <div class="info-block-body">{{wiz.pairLast.product.Count}}</div>
+            </div>
+            <div class="subwizard-container-btns">
+                <md-button class="md-raised small-btn"
+                           ng-if="wiz.pairLast.product.canChangeQty"
+                           ng-click="wiz.editQtyModal($event, 'last' ,null)">
+                    Change Qty
+                </md-button>
+                <md-button class="md-raised small-btn"
+                           ng-click="wiz.editNotesModal($event, 'last' ,null)">
+                    Notes
+                </md-button>
+            </div>
+        </div>
+    </div>
+    <div class="bundle-items-row">
+        <div class="wizard-components-title">Items: </div>
+        <table class="drowz-table small-table regular-table">
+            <tr class="drowz-table-header">
+                <th class="number-cell">#</th>
+                <th class="cell-40-percent">Name</th>
+                <th class="cell-25-percent">Serial Number</th>
+                <th class="cell-25-percent">Lot Number</th>
+                <th class="cell-10-percent">Qty</th>
+            </tr>
+            <tr class="drowz-table-row"
+                ng-repeat="item in wiz.pairLast.product.Components track by $index">
+                <td class="number-cell">{{$index +1}}.</td>
+                <td class="cell-40-percent">{{item.Name}}</td>
+                <td class="cell-25-percent">{{item.SerialNumber}}</td>
+                <td class="cell-25-percent">{{item.LotNumber}}</td>
+                <td class="cell-10-percent">{{item.Count}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- product not found -->
+<div class="scanned-item-block not-found" ng-if="wiz.isProductNotFound && !wiz.pairLast">
+    <md-icon md-svg-src="assets/images/default/alert.svg" class="not-found-icon"></md-icon>
+    <div>Product was not found.</div>
+</div>

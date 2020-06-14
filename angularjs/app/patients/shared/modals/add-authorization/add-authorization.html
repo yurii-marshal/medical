@@ -1,0 +1,202 @@
+﻿<div class="modal-window authorization-modal"
+     ng-form="$ctrl.addForm"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="addAuthorization">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.close()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/shield.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>{{$ctrl.title}}:</h2>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <md-input-container>
+                    <label>Authorization Number:</label>
+                    <input type="text"
+                           ng-model="$ctrl.model.AuthNumber"
+                           ng-required="true"
+                           name="AuthNumber"/>
+                    <div ng-messages="$ctrl.addForm.AuthNumber.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+        <div class="flex-row">
+            <div class="add-autocomplete info-block col-xs-6">
+                <md-autocomplete id="focusAutocomplite"
+                                 class="autocomplete-with-addBtn"
+                                 md-no-cache="true"
+                                 md-selected-item="$ctrl.hcpcs"
+                                 md-search-text="this.searchHcpcs"
+                                 md-items="item in $ctrl.getHcpcsCodes(this.searchHcpcs)"
+                                 md-item-text="item.Text + ' ' + item.Description"
+                                 md-input-name="Hcpcs"
+                                 md-min-length="2"
+                                 ng-required="!$ctrl.model.Hcpcs.length"
+                                 md-delay="350"
+                                 md-floating-label="HCPCS:"
+                                 md-selected-item-change="$ctrl.addHcpcs($ctrl.hcpcs)"
+                                 clear-on-click>
+                    <md-item-template>
+                    <span md-highlight-flags="^i" title="{{item.Text + ' ' + item.Description}}">
+                        {{item.Text + ' ' + item.Description}}
+                    </span>
+                    </md-item-template>
+                    <md-not-found>
+                        No HCPCS were found
+                    </md-not-found>
+                    <div ng-messages="$ctrl.addForm.Hcpcs.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-autocomplete>
+            </div>
+            <div class="info-block col-xs-6">
+                <md-input-container>
+                    <label>Type:</label>
+                    <md-select ng-model="$ctrl.model.PriceOption.Id"
+                               name="priceOption"
+                               clear-on-click>
+                        <md-option ng-value="item.Id"
+                                   ng-repeat="item in $ctrl.priceOptionsDictionary">
+                            {{item.Text}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row" ng-if="$ctrl.model.Hcpcs.length">
+            <div class="info-block grow-1">
+                <div class="info-block-label">Selected HCPCS:</div>
+                <div class="info-block-body">
+                    <div ng-repeat="item in $ctrl.model.Hcpcs" class="round-chip-block">
+                        <span>{{item}}</span>
+                        <div class="delete-chip" ng-click="$ctrl.deleteHcpcs($index)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1 modifier-info-block">
+                <div class="info-block-label">Modifiers:</div>
+                <div class="info-block-body">
+                    <modifiers data="$ctrl.model.Modifiers" is-service-line-modifiers="true"></modifiers>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <md-autocomplete class="hcpcscode-autocomplete-block"
+                                 md-selected-item="$ctrl.model.Payer"
+                                 md-search-text="searchPayer"
+                                 md-items="code in $ctrl.getPayers(searchPayer)"
+                                 md-item-text="code.Description"
+                                 md-input-name="Payer"
+                                 md-min-length="0"
+                                 md-delay="350"
+                                 ng-required="true"
+                                 md-floating-label="Payer:"
+                                 md-require-match="true">
+                    <md-item-template>
+                        <span md-highlight-flags="^i" title="{{code.Description}}">
+                            {{code.Description}}
+                            <span ng-if="code.Text">({{code.Text}})</span>
+                        </span>
+                    </md-item-template>
+                    <md-not-found>Not found</md-not-found>
+                    <div ng-messages="$ctrl.addForm.Payer.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="md-require-match">Payer is not valid</div>
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-autocomplete>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block col-xs-3" ng-show="!statements.withoutDateRange">
+                <md-input-container>
+                    <label>From:</label>
+                    <input datetimepicker
+                           ng-model="$ctrl.model.From"
+                           name="startDate"
+                           format="MM/DD/YYYY"
+                           ng-required="true"
+                           start-date-validator
+                           end-date="$ctrl.model.To">
+                    <div ng-messages="$ctrl.addForm.startDate.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="startDate">Date has to be equal or less than "To" Date</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div class="info-block col-xs-3" ng-show="!statements.withoutDateRange">
+                <md-input-container>
+                    <label>To:</label>
+                    <input datetimepicker
+                           name="endDate"
+                           ng-model="$ctrl.model.To"
+                           format="MM/DD/YYYY"
+                           end-date-validator
+                           start-date="$ctrl.model.From">
+                    <div ng-messages="$ctrl.addForm.endDate.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="endDate">Date has to be equal or bigger than "From" Date</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div class="col-xs-3">
+                <md-input-container>
+                    <label>Units:</label>
+                    <input type="text"
+                           only-digits-with-length
+                           min="1"
+                           ng-model="$ctrl.model.Units"
+                           name="Units"/>
+                </md-input-container>
+            </div>
+            <div class="col-xs-3">
+                <md-input-container class="currency-container">
+                    <div class="currency-icon">$</div>
+                    <label>Amount:</label>
+                    <input type="number"
+                           min="0"
+                           step="0.01"
+                           ng-model="$ctrl.model.Amount"
+                           name="amount">
+                    <div ng-messages="$ctrl.addForm.amount.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="min">Min amount is 0</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <md-input-container>
+                    <label>Notes:</label>
+                    <textarea ng-model="$ctrl.model.Notes" cols="1" rows="1"></textarea>
+                </md-input-container>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter" layout="row" layout-align="end center">
+        <md-button class="md-raised main-button" ng-click="$ctrl.close()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button" ng-click="$ctrl.save()">{{$ctrl.btnText}}</md-button>
+    </md-dialog-actions>
+
+</div>

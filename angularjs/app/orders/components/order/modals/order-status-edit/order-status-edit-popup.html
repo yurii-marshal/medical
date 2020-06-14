@@ -1,0 +1,60 @@
+<div class="modal-window order-status-edit-modal"
+     ng-form="$ctrl.Form"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="statusEditModal">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.close()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/setup-rect.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Edit Order Status:</h2>
+        </div>
+
+        <div class="sidebar-order-status {{$ctrl.orderStateObj.Status.statusClass}}">
+            <div class="flex-row">
+                <md-input-container class="grow-1">
+                    <label>Status:</label>
+                    <md-select ng-model="$ctrl.orderStateObj.Status"
+                               class="status-select"
+                               ng-disabled="$ctrl.orderStateObj.Status.Id.toString() === '4' && $ctrl.dictionaries.statuses.length == 1"
+                               ng-model-options="{trackBy: '$value.Id'}">
+                        <md-option ng-value="status"
+                                   ng-repeat="status in $ctrl.dictionaries.statuses track by $index">
+                            <span ng-bind="status.Text"></span>
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div class="flex-row">
+               <attrs-tags class="grow-1"
+                           tags="$ctrl.orderTags"
+                           tags-parent="order"
+                           disable-add-new-tags="!$ctrl.userPermissions.isAllow($ctrl.permissionsCategoriesConstants.ORDERS, $ctrl.ordersPermissionsConstants.TAG_CREATE)"
+               ></attrs-tags>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter" layout="row" layout-align="end center">
+        <md-button class="md-raised main-button" ng-click="$ctrl.close()">Cancel</md-button>
+        <md-button ng-if="!$ctrl.isResupplyOrderCanceled()"
+                   class="md-primary md-raised main-button"
+                   ng-click="$ctrl.save()"
+        >Save</md-button>
+        <md-button ng-if="$ctrl.isResupplyOrderCanceled()"
+                   class="md-primary md-raised main-button"
+                   confirm-ng-click="$ctrl.save()"
+                   confirm-body-class-name="confirm-dialog-is-showing"
+                   confirm-class-name="max-width-450"
+                   confirm-title="Cancel resupply order"
+                   confirm-msg="'If future resupply orders are needed, please update the next scheduled date for these items(s).'"
+                   confirm-btn-ok="Yes"
+                   confirm-btn-cancel="No"
+        >Save</md-button>
+    </md-dialog-actions>
+
+</div>

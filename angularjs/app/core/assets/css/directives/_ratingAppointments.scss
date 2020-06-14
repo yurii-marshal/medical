@@ -1,0 +1,22 @@
+.rating-body {
+    font-size: 0;
+    display: flex;
+
+    .gray-rating {
+        width: 5px;
+        height: 10px;
+        margin: 0 1px;
+        background-color: #e8e8e8;
+        border-radius: 2px;
+        position: relative;
+
+        .blue-rating {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            border-radius: 2px;
+            background-color: $main-active-color;
+        }
+    }
+}

@@ -1,0 +1,67 @@
+<div class="notifications-bell"
+     (click)="toggleNotifications()"
+     [ngClass]="{ 'opened': isNotificationsOpened }">
+
+    <mat-icon [ngClass]="{ 'have-notifications': haveNotifications }"
+              svgIcon="notification-bell"
+    ></mat-icon>
+</div>
+
+<div class="notifications-overflow-wrap">
+    <div class="notifications-container"
+     [ngClass]="{
+        'opened': isNotificationsOpened,
+        'hidden-menu': isNotificationsOpened === false
+     }">
+
+    <app-loading [show]="notificationsLoadingStatus"></app-loading>
+
+    <div class="notifications-header">
+        <div class="notifications-header-text">Notifications:</div>
+    </div>
+
+    <div class="no-notifications"
+         *ngIf="!notificationsState.notifications.allIds.length">
+        No new notifications.
+    </div>
+    <perfect-scrollbar class="blue-scroll-theme">
+        <div class="notifications-list"
+             *ngIf="notificationsState.notifications.allIds.length">
+
+                <div class="notification-item"
+                     *ngFor="let itemId of notificationsState.notifications.allIds; let idx = index"
+                >
+                    <mat-icon class="notification-item-icon documents-icon"
+                              svgIcon="document-icon"
+                              *ngIf="notificationsState.notifications.byId[itemId].typeId === notificationTypes.Document"
+                    ></mat-icon>
+                    <mat-icon class="notification-item-icon messages-icon"
+                              svgIcon="message-icon"
+                              *ngIf="notificationsState.notifications.byId[itemId].typeId === notificationTypes.Message"
+                    ></mat-icon>
+
+                    <div class="notification-item-title">
+                        {{ notificationsState.notifications.byId[itemId].displayText }}
+                    </div>
+                    <div class="notification-item-date">
+                        {{ notificationsState.notifications.byId[itemId].date | amLocal | amDateFormat: 'D MMM YYYY, h:mm A' }}
+                    </div>
+                    <div class="close-notification"
+                         (click)="clearNotificationById(itemId, idx)"></div>
+
+                </div>
+
+        </div>
+    </perfect-scrollbar>
+
+    <div class="clear-all-notifications"
+         (click)="clearAllNotifications()"
+         *ngIf="notificationsState.notifications.allIds.length">
+
+        <button mat-raised-button
+                class="niko-mat-button transparent-light-btn clear-all-btn">
+            Clear all notifications
+        </button>
+    </div>
+</div>
+</div>

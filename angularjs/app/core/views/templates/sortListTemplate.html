@@ -1,0 +1,8 @@
+<a href="javascript:void(0);" class="sort-link" ng-click="sortFunction()">
+    {{columnName}}
+    <md-icon md-svg-src="images/default/chevron.svg"
+             class="sort-icon"
+             ng-class="{'desc': isSortByAsc, 'asc': !isSortByAsc}"
+             ng-if="isSortByAsc === true || isSortByAsc === false">
+    </md-icon>
+</a>

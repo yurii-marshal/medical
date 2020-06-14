@@ -1,0 +1,54 @@
+<div class="order-documents-tab"
+     ng-class="{'no-records': !documents.documents.length}">
+
+    <no-records text="Documents" is-fullpage="true" ng-if="!documents.documents.length"></no-records>
+
+    <div class="flex-row"
+         ng-repeat="document in documents.documents track by $index">
+        <div class="info-block block-width-25-percent">
+            <div class="info-block-label">Type:</div>
+            <div class="info-block-body flex-cont align-top">
+                {{document.DocumentType.Name}}
+                <md-icon
+                    class="csm-document-icon"
+                    ng-if="document.DocumentType.Name.toLowerCase()==='cms'"
+                    md-svg-src="assets/images/default/tasks.svg"></md-icon>
+            </div>
+        </div>
+        <div class="info-block block-width-25-percent left-divider">
+            <div class="info-block-label">Added:</div>
+            <div class="info-block-body">
+                {{document.CreatedDate | localDateTime: "MM/DD/YYYY"}}
+                <span class="active-text">{{document.CreatedDate | localDateTime: "hh:mm A"}}</span>
+            </div>
+        </div>
+        <div class="info-block block-width-25-percent left-divider">
+            <div class="info-block-label">Added by:</div>
+            <div class="info-block-body">{{document.CreatedUser.FullName}}</div>
+        </div>
+        <div class="info-block block-width-25-percent left-divider">
+            <div class="info-block-label">Practice:</div>
+            <div class="info-block-body">{{document.PracticeName || '-'}}</div>
+        </div>
+        <div class="info-block block-width-150" ng-class="{'left-divider': document.IsCmn && document.ExpiredDate}">
+            <div class="info-block-label" ng-if="document.IsCmn && document.ExpiredDate">Expiration Date:</div>
+            <div class="info-block-body" ng-if="document.IsCmn && document.ExpiredDate">
+                {{document.ExpiredDate | amUtc | amDateFormat: 'MM/DD/YYYY'}}
+            </div>
+        </div>
+        <div class="info-block block-width-150">
+            <div class="info-block-label">&nbsp;</div>
+            <div class="info-block-body flex-cont align-end">
+                <md-button class="md-raised small-btn eye-details-btn"
+                           aria-label="..."
+                           ng-click="documents.view(document)"
+                           ng-disabled="document.isLoading">
+                    <icon-loading-white ng-if="document.isLoading" class="blue-loading"></icon-loading-white>
+                    <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon>
+                    Details
+                </md-button>
+            </div>
+        </div>
+    </div>
+
+</div>

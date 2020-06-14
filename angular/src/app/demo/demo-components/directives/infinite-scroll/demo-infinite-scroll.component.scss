@@ -1,0 +1,36 @@
+.scroll-title {
+    display: flex;
+    flex-direction: row;
+    margin: 30px 30px 5px;
+    
+    p { 
+        width: 485px;
+        text-align: center;
+        font-weight: bold;
+        margin: 0;
+    }
+}
+
+.scroll-wrapper {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 30px 30px;
+
+    .scroll {
+        margin: 10px;
+        .scroll-data {
+            display: flex;
+            
+            .data-property {
+                border: 1px solid #333;
+                padding-left: 10px;
+            }
+        }
+
+        &.self {
+            height: 319px;
+            overflow: scroll;
+        }
+    }
+
+}

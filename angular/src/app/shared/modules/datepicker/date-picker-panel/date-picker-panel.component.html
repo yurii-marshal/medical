@@ -1,0 +1,15 @@
+<div class="datepicker-panel" *ngIf="isPopup">
+    <app-date-selector *ngIf="dateSelectorVisible"
+                   [displayDateMode]="displayDateMode"
+                   [showTodayButton]="showTodayButton"
+                   [(ngModel)]="date"
+                   [minRange]="minRange"
+                   [maxRange]="maxRange"
+                   (finishEditing)="finishEditing.emit()">
+    </app-date-selector>
+    <app-time-selector *ngIf="timeSelectorVisible"
+                   [isMeridiem]="isMeridiem"
+                   [(ngModel)]="time"
+                   [interval]="interval">
+    </app-time-selector>
+</div>

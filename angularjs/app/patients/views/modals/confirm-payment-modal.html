@@ -1,0 +1,28 @@
+﻿<div class="modal-window confirm-payment-modal">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/billing.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Please confirm your payment details:</h2>
+        </div>
+
+        <div class="modal-padding">
+            <div class="confirm-payment-row"><span class="active-text font-semibold">From:</span> {{$ctrl.shortInfo.Name.FullName}}</div>
+            <div class="confirm-payment-row"><span class="active-text font-semibold">Amount:</span> $ {{$ctrl.Amount}}</div>
+            <div class="confirm-payment-row" ng-if="$ctrl.Card">
+                <span class="active-text font-semibold">Card Number:</span> {{$ctrl.Card.Type}} {{$ctrl.Card.Last4}}
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button" ng-click="$ctrl.confirm()">Confirm</md-button>
+    </md-dialog-actions>
+
+</div>

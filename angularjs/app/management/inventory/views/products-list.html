@@ -1,0 +1,175 @@
+<infinity-table load-items-promise="productsList.getProductsList"
+                page-size="24"
+                item-alias="item"
+                filters-obj="productsList.filter"
+                sort-obj="productsList.sortExpr"
+                default-sort-field="'Name'"
+                cache-filters-key="productsList.cacheFiltersKey"
+>
+    <infinity-table-sort>
+        <div>
+            <md-icon md-svg-src="assets/images/default/inventory.svg" class="main-sort-icon inventory-icon"></md-icon>
+            Product ID:
+        </div>
+        <div>
+            <md-icon md-svg-src="assets/images/default/inventory.svg" class="main-sort-icon inventory-icon"></md-icon>
+            <inftbl-sort-list param-name="Name">Name:</inftbl-sort-list>
+        </div>
+        <div class="w160px">
+            <md-icon md-svg-src="assets/images/default/tasks.svg" class="main-sort-icon tasks-icon"></md-icon>
+            <inftbl-sort-list param-name="Group">Group:</inftbl-sort-list>
+        </div>
+        <div class="w160px">
+            <md-icon md-svg-src="assets/images/default/tasks.svg" class="main-sort-icon tasks-icon"></md-icon>
+            <inftbl-sort-list param-name="Category">Category:</inftbl-sort-list>
+        </div>
+        <div class="w130px">
+            <md-icon md-svg-src="assets/images/default/documents.svg" class="main-sort-icon document-icon"></md-icon>
+            ID/Part #:
+        </div>
+        <div class="w180px">
+            <md-icon md-svg-src="assets/images/default/museum.svg" class="main-sort-icon museum-icon"></md-icon>
+            <inftbl-sort-list param-name="Manufacturer">Manufacturer:</inftbl-sort-list>
+        </div>
+        <div class="w110px">
+            <md-icon md-svg-src="assets/images/default/documents.svg" class="main-sort-icon document-icon"></md-icon>
+            HCPCS:
+        </div>
+        <div class="status-td no-divider">
+            <md-icon md-svg-src="assets/images/default/star-half.svg" class="main-sort-icon status-icon"></md-icon>
+            Status:
+        </div>
+        <div class="assign-td no-divider">&nbsp;</div>
+    </infinity-table-sort>
+
+    <infinity-table-filters class="drowz-infinite-row-filter">
+        <div>
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search id</label>
+                <input type="text"
+                       ng-model="$ctrl.filtersObj.Id"
+                       ng-model-options="{debounce: 450}"
+                       clear-on-click />
+            </md-input-container>
+        </div>
+        <div>
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search name</label>
+                <input type="text"
+                       ng-model="$ctrl.filtersObj.Name"
+                       ng-model-options="{debounce: 450}"
+                       clear-on-click />
+            </md-input-container>
+        </div>
+        <div class="w160px">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search group</label>
+                <input type="text"
+                       ng-model="$ctrl.filtersObj.Group"
+                       ng-model-options="{debounce: 450}"
+                       clear-on-click />
+            </md-input-container>
+        </div>
+        <div class="w160px">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search</label>
+                <input type="text"
+                       ng-model="$ctrl.filtersObj.Category"
+                       ng-model-options="{debounce: 450}"
+                       clear-on-click />
+            </md-input-container>
+        </div>
+        <div class="w130px">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search id/part #</label>
+                <input type="text"
+                       ng-model="$ctrl.filtersObj.PartNumber"
+                       ng-model-options="{debounce: 450}"
+                       clear-on-click />
+            </md-input-container>
+        </div>
+        <div class="w180px">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search</label>
+                <input type="text"
+                       ng-model="$ctrl.filtersObj.Manufacturer"
+                       ng-model-options="{debounce: 450}"
+                       clear-on-click />
+            </md-input-container>
+        </div>
+        <div class="w110px">
+            <md-autocomplete-with-infinite-scroll class="drowz-infinite-autocomplete in-grid-filter-pos"
+                             md-no-cache="true"
+                             md-selected-item="$ctrl.filtersObj.HcpcsCode"
+                             md-search-text="searchHcpcsCode"
+                             md-items="code in $parent.productsList.getHcpcsCodes(searchHcpcsCode, pageIndex)"
+                             md-item-text="code.Text"
+                             md-min-length="1"
+                             md-floating-label="search"
+                             ng-model-options="{debounce: 450}"
+                             md-menu-container-class="hcpcs-decorator"
+                             clear-on-click
+                             drowz-clear-value>
+                <md-item-template>
+                    <div title="{{code.Description}}">{{code.Text + ' ' + code.Description}}</div>
+                </md-item-template>
+                <md-not-found>Not found</md-not-found>
+            </md-autocomplete-with-infinite-scroll>
+        </div>
+        <div class="status-td no-divider">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>select</label>
+                <md-select ng-model="$ctrl.filtersObj.Status"
+                           clear-on-click>
+                    <md-option ng-value="status.Name" ng-repeat="status in $parent.productsList.statuses">
+                        {{::status.Name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div class="assign-td filter-reset-btn">
+            <inftbl-filter-reset-btn></inftbl-filter-reset-btn>
+        </div>
+    </infinity-table-filters>
+
+    <infinity-table-row class="drowz-infinite-row hide-btns-row"
+                        ng-click="$parent.productsList.editProduct(item.Id)">
+        <div ng-bind="item.Id"></div>
+        <div>
+            <div class="flex-cont">
+                <div popover-directive="item.Name" ng-class="{'with-icon' : item.Type.Name === 'Bundle'}" class="w100"></div>
+                <md-icon class="drowz-infinite-row-icon bundle-icon"
+                         ng-if="item.Type.Name === 'Bundle'"
+                         md-svg-src="assets/images/default/bundle-icon.svg"
+                         simple-tooltip="Bundle"
+                         tooltip-position="right">
+                </md-icon>
+            </div>
+        </div>
+        <div class="w160px" ng-bind="item.Group"></div>
+        <div class="w160px" ng-bind="item.Category"></div>
+        <div class="w130px" ng-bind="item.PartNumber"></div>
+        <div class="w180px" ng-bind="item.ManufacturerName"></div>
+        <div class="w110px">
+            <div popover-directive="item.allHcpcsCodes"
+                 hide-first-item="true"
+                 min-width="50"></div>
+        </div>
+        <div class="status-td no-divider">
+            <div class="status-label {{item.statusClass}}" ng-bind="item.Status.Name"></div>
+        </div>
+        <div class="assign-td center-cell no-divider">
+            <md-button class="delete-icon-btn"
+                       aria-label="..."
+                       confirm-ng-click="$parent.productsList.deleteProduct(item.Id)"
+                       confirm-msg="'Are you sure you want to delete Product?'"
+                       confirm-title="Delete Product">
+                <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+            </md-button>
+        </div>
+    </infinity-table-row>
+
+    <infinity-table-no-items>
+        <no-records text="Products" is-fullpage="true"></no-records>
+    </infinity-table-no-items>
+</infinity-table>

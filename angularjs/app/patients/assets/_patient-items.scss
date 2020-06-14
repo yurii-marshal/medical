@@ -1,0 +1,65 @@
+.patient-items {
+    padding: 28px;
+    counter-reset: item;
+
+    .patient-items-row {
+        position: relative;
+        padding: 22px 15px 20px 0;
+        width: 100%;
+        border-bottom: 1px solid $light-gray-color;
+
+        .info-block {
+            margin-bottom: 0;
+        }
+
+        .notes-row {
+            padding-top: 15px;
+            padding-left: 100px;
+        }
+    }
+
+    .patient-items-buttons {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 30px;
+
+        .md-button.round-btn {
+            md-icon {
+                width: 21px;
+                height: 18px;
+                margin-right: 10px;
+                color: $gray-color;
+            }
+
+            &.active, &:hover, &:focus {
+                md-icon {
+                    color: #fff;
+                }
+            }
+        }
+    }
+
+    .img-prev {
+        width: 86px;
+        min-width: 86px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        border: 1px solid $light-gray-color;
+
+        img {
+            max-width: 86px;
+            max-height: 35px;
+        }
+    }
+
+    .patient-item-desc md-icon {
+        width: 26px;
+        min-width: 26px;
+        height: 22px;
+        margin: 0 0 0 10px;
+        color: $main-active-color;
+    }
+}

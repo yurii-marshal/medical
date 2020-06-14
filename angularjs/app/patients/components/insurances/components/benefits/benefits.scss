@@ -1,0 +1,177 @@
+.insurances-benefits {
+    width: 100%;
+    position: relative;
+
+    > .flex-row {
+        margin-left: -15px;
+        margin-right: -15px;
+
+        + .flex-row {
+            padding-top: 10px;
+        }
+    }
+
+    .additional-info-container {
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+
+    .info-block.status-block {
+        width: 150px;
+        min-width: 150px;
+    }
+
+    .benefit-content {
+        padding-top: 20px;
+
+        &:last-of-type {
+
+        }
+
+        > .flex-row {
+            margin-left: -15px;
+            margin-right: -15px;
+
+            + .flex-row {
+                padding-top: 10px;
+            }
+        }
+
+        .benefit-content-title {
+            > .info-block {
+                min-height: 36px;
+
+                > .info-block-body {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    height: 100%;
+
+                    &.date-details {
+                        align-items: flex-start;
+                    }
+
+                    &.flex-column {
+                        flex-direction: column;
+                    }
+                }
+
+                &.content-status-labels {
+                    > .info-block-body {
+                        flex-wrap: wrap;
+                        justify-content: center;
+                    }
+
+                    .status-label {
+                        margin: 2px 5px;
+                    }
+                }
+
+                .status-label {
+                    margin-right: 5px;
+                }
+            }
+        }
+
+        .deductible-block {
+            color: $orange-color;
+            font-weight: $font-weight-bold;
+        }
+
+        .blue-font-block {
+            color: $main-active-color;
+            font-weight: $font-weight-bold;
+            text-align: center;
+        }
+    }
+
+    .benefits-accordion {
+        > v-pane {
+            padding-bottom: 15px;
+
+            .benefits-accordion-title {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+                    right: 0;
+                    z-index: 1;
+                    height: 1px;
+                    background-color: $lighter-gray-color;
+                }
+
+                .benefits-accordion-img {
+                    position: absolute;
+                    left: 0;
+                    top: 50%;
+                    z-index: 3;
+                    width: 12px;
+                    height: 12px;
+                    margin-top: -6px;
+                    padding: 2px;
+                    color: #FFF;
+                    background-color: $main-active-color;
+                    border-radius: 3px;
+                    transform: rotate(0deg);
+                    transition: .2s;
+                }
+
+                > span {
+                    position: relative;
+                    z-index: 2;
+                    display: block;
+                    max-width: 30%;
+                    padding-left: 25px;
+                    padding-right: 10px;
+                    color: $dark-blue-color;
+                    font-size: $font-size-sm;
+                    line-height: $font-size-sm;
+                    font-weight: $font-weight-bold;
+                    text-transform: uppercase;
+                    background-color: #fff;
+                }
+
+                .benefit-status {
+                    color: $red-color;
+
+                    &.active {
+                        color: $green-color;
+                    }
+                }
+            }
+
+            &.is-expanded {
+                .benefits-accordion-title {
+                    .benefits-accordion-img {
+                        transform: rotate(180deg);
+                    }
+                }
+            }
+
+            .benefits-accordion-body {
+
+                > .info-block {
+                    padding: 25px 15px 5px 0;
+                }
+
+                .flex-row + .flex-row {
+                    padding-top: 20px;
+                }
+
+                .status-label {
+                    width: 80px;
+                    min-width: 80px;
+                    margin-right: 35px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
+

@@ -1,0 +1,9 @@
+<router-outlet></router-outlet>
+
+<iframe #iframe
+        [hidden]="!isIframe"
+        width="100%"
+        scrolling="auto"
+        frameborder="0"
+        (load)="onload($event)">
+</iframe>

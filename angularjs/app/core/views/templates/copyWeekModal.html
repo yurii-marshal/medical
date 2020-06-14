@@ -1,0 +1,64 @@
+<form name="$ctrl.copyForm" class="modal-window copy-modal-window">
+
+    <md-dialog-content class="md-dialog-content">
+        <md-radio-group  ng-model="$ctrl.typeOfAction" class="radio-with-containers content-radio-btns">
+            <md-radio-button ng-value="1" class="md-primary">Following week</md-radio-button>
+            <md-radio-button ng-value="2" class="md-primary">2nd Following week</md-radio-button>
+            <md-radio-button ng-value="3" class="md-primary">
+                <div class="row pf_modal_containers">
+                    <div class="col-xs-4">
+                        <div>Skip</div>
+                        <input-number
+                                form-name="$ctrl.copyForm"
+                                input-name="skip"
+                                ng-model="$ctrl.skip"
+                                ng-required="$ctrl.typeOfAction==3"
+                                min="0"
+                                max="99"
+                                required-message="Required"
+                        ></input-number>
+                    </div>
+                    <div class="col-xs-4">
+                        <div>Take</div>
+                        <input-number
+                                form-name="$ctrl.copyForm"
+                                input-name="take"
+                                ng-model="$ctrl.take"
+                                ng-required="$ctrl.typeOfAction==3"
+                                min="0"
+                                max="99"
+                                required-message="Required"
+                        ></input-number>
+                    </div>
+                    <div class="col-xs-4">
+                        <div>Repeat</div>
+                        <input-number
+                                form-name="$ctrl.copyForm"
+                                input-name="repeat"
+                                ng-model="$ctrl.repeat"
+                                ng-required="$ctrl.typeOfAction==3"
+                                min="0"
+                                max="99"
+                                required-message="Required"
+                        ></input-number>
+                    </div>
+                </div>
+            </md-radio-button>
+        </md-radio-group>
+    </md-dialog-content>
+
+    <div class="modalFooter space-between">
+        <div>
+            <md-checkbox class="md-primary no-bottom-margin" ng-show="!$ctrl.splitInnerEvents" ng-model="$ctrl.includeInnerEvents">Include Time Blocks</md-checkbox>
+            <md-checkbox class="md-primary" ng-show="$ctrl.splitInnerEvents" ng-model="$ctrl.includeInnerBreaks">Include Time Blocks</md-checkbox>
+            <md-checkbox class="md-primary no-bottom-margin" ng-show="$ctrl.splitInnerEvents" ng-model="$ctrl.includeExtraTimes">Include On-Call Hours</md-checkbox>
+        </div>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.copySchedule('week')"
+                   ng-disabled="$ctrl.typeOfAction===0 || $ctrl.actionDisabled">
+            Copy
+        </md-button>
+
+    </div>
+
+</form>

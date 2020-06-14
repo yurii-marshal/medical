@@ -1,0 +1,40 @@
+<div id="scrollHere"
+     class="drowz-wizard"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="order-wizard"
+>
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.orders.list">Orders</a>
+        <a href="javascript:void(0)" class="active">{{orderWizard.breadcrumbName}}</a>
+    </div>
+
+    <div drowz-wizard-tabnames
+         steps="orderWizard.steps"
+         class="drowz-wizard-tabnames">
+        <a href="javascript:void(0);"
+           class="drowz-wizard-tab"
+           ng-repeat="tab in orderWizard.tabs"
+           ng-class="{'active': orderWizard.isActive(tab.state), 'finished': tab.isFinished}">
+            {{tab.name}}
+        </a>
+    </div>
+    <ng-form name="orderWizard.mainForm">
+        <div class="drowz-wizard-body clearfix" ui-view></div>
+    </ng-form>
+
+    <div class="drowz-wizard-footer">
+        <md-button class="md-raised main-button drowz-wizard-footer-btn"
+                   ng-click="orderWizard.cancel()">Cancel</md-button>
+        <md-button class="md-raised main-button drowz-wizard-footer-btn"
+                   ng-click="orderWizard.previous()"
+                   ng-disabled="orderWizard.isPreviousDisabled()">Previous</md-button>
+        <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                   ng-click="orderWizard.next()"
+                   ng-hide="orderWizard.isSaveShown()"
+                   ng-disabled="orderWizard.isNextDisabled()">Next</md-button>
+        <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                   ng-click="orderWizard.save()" ng-show="orderWizard.isSaveShown()">Save</md-button>
+    </div>
+
+</div>

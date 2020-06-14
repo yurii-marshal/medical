@@ -1,0 +1,135 @@
+<div class="drowz-wizard-body-flex">
+
+    <div class="drowz-wizard-block flex-25-percent">
+
+        <div class="drowz-wizard-block-title">
+            <div class="wizard-title-text">Patient Details:</div>
+        </div>
+        <div class="drowz-wizard-block-body">
+            <div class="flex-row row">
+                <div class="info-block">
+                    <div class="info-block-label">Patient:</div>
+                    <div class="info-block-body">{{wizard.selectedPatient.Name.FullName}}</div>
+                </div>
+            </div>
+            <patient-contacts contacts="wizard.selectedContacts" readonly="true"></patient-contacts>
+        </div>
+
+    </div>
+
+    <div class="drowz-wizard-block flex-25-percent">
+
+        <div class="drowz-wizard-block-title">
+            <div class="wizard-title-text">Appointment Details:</div>
+        </div>
+        <div class="drowz-wizard-block-body">
+            <appointment-detail-time-info
+                    class="flex-row row"
+                    start="wizard.choosenAppointment.Date.From"
+                    end="wizard.choosenAppointment.Date.To"
+            ></appointment-detail-time-info>
+            <div class="flex-row row">
+                <div class="info-block">
+                    <div class="info-block-label">Team Member:</div>
+                    <div class="info-block-body">{{wizard.choosenAppointment.Personnel.Name.FullName}}</div>
+                </div>
+            </div>
+            <div class="flex-row row">
+                <div class="info-block">
+                    <div class="info-block-label">Location:</div>
+                    <div class="info-block-body">{{wizard.choosenAppointment.EventAddress.FullAddress}}</div>
+                </div>
+            </div>
+            <div class="flex-row row">
+                <div class="info-block">
+                    <md-checkbox ng-model="wizard.isConfirmed"
+                                 aria-label="..."
+                                 class="md-primary">
+                        Confirm Appointment
+                    </md-checkbox>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="drowz-wizard-block grow-1 appointment-orders-summary">
+
+        <div class="drowz-wizard-block-title">
+            <div class="wizard-title-text">Order Details:</div>
+        </div>
+        <div class="drowz-wizard-block-body">
+            <div>
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block">
+                        <div class="info-block-label">Appointment Type:</div>
+                        <div class="info-block-body">
+                            <span ng-if="wizard.appointmentType.Id === 1">Initial</span>
+                            <span ng-if="wizard.appointmentType.Id === 2">Follow Up</span>
+                            <span ng-if="wizard.appointmentType.Id === 3">Items Pickup</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="drowz-wizard-block-row space-between order-details-item"
+                     ng-if="order.patientOrder.Id"
+                     ng-repeat="order in wizard.selectedOrders track by $index"
+                >
+                    <div class="info-block">
+                        <div class="flex-row row">
+                            <div class="info-block">
+                                <div class="info-block-label">Order:</div>
+                                <div class="info-block-body">{{order.patientOrder.DisplayId}}</div>
+                            </div>
+                        </div>
+
+                        <div class="flex-row row">
+                            <div class="info-block">
+                                <div class="info-block-label">Status:</div>
+                                <div class="info-block-body">
+                                    <span class="status-label {{order.patientOrder.StatusClass}}"
+                                    >
+                                        {{order.patientOrder.State.Status.Text}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-block">
+                        <md-button class="md-raised small-btn eye-details-btn appointment-summary-btn"
+                                   ng-click="wizard.viewOrderDetails(order.patientOrder)">
+                            <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon> Details
+                        </md-button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="drowz-wizard-block flex-25-percent">
+
+        <div class="drowz-wizard-block-title">
+            <div class="wizard-title-text">Documents:</div>
+        </div>
+        <div class="drowz-wizard-block-body">
+            <no-records text="Documents"
+                        class="no-records-small"
+                        ng-if="!wizard.model.event.Documents[0].AccessToken"></no-records>
+            <div ng-if="wizard.model.event.Documents[0].AccessToken">
+                <div class="drowz-wizard-block-row" ng-repeat="document in wizard.model.event.Documents track by $index">
+                    <div class="info-block grow-1">
+                        <div class="info-block-body">{{document.DocumentType.Text}}</div>
+                    </div>
+                    <div class="info-block">
+                        <md-button class="md-raised small-btn eye-details-btn" ng-click="wizard.openPreview(document.AccessToken)">
+                            <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon> Open
+                        </md-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,42 @@
+<div class="modal-window change-item-tracking-status-modal"
+     ng-form="$ctrl.form"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/document-update.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2 ng-if="$ctrl.actionTypeId === 1">Backorder</h2>
+            <h2 ng-if="$ctrl.actionTypeId === 3">Mark as delivered</h2>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <md-input-container>
+                    <label>Date:</label>
+                    <input type="text"
+                           name="date"
+                           datetimepicker
+                           format="MM/DD/YYYY"
+                           ng-model="$ctrl.date"
+                           ng-required="true">
+                    <div ng-messages="$ctrl.form.date.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button"
+                   ng-click="$ctrl.save()">
+            Save
+        </md-button>
+    </md-dialog-actions>
+</div>

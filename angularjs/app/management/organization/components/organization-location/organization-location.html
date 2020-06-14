@@ -1,0 +1,250 @@
+<div class="infinite-scroll-bg location-view full-height-with-footer"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="locationPage"
+     ng-form="locationView.locationForm">
+
+    <div class="top-block">
+
+        <div class="breadcrumbs transparent-bg">
+            <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+            <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+            <a href="javascript:void(0)" ui-sref="root.management.organization">Organization</a>
+            <a href="javascript:void(0)" ui-sref="root.management.organization.locations.list">Locations</a>
+            <a href="javascript:void(0)" class="active">
+                <span ng-if="!locationView.locationId">Add</span>
+                <span ng-if="locationView.locationId">Edit</span>
+                location
+            </a>
+        </div>
+
+        <div class="drowz-wizard-body-flex">
+
+            <div class="grow-1">
+
+                <div class="drowz-wizard-block no-float">
+                    <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">Details:</div>
+                    </div>
+                    <div class="drowz-wizard-block-body">
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1">
+                                <md-input-container>
+                                    <label>Name:</label>
+                                    <input type="text"
+                                           ng-model="locationView.model.Name"
+                                           name="name"
+                                           ng-required="true"
+                                           clear-on-click>
+                                    <div ng-messages="locationView.locationForm.name.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div class="drowz-wizard-block-row">
+                            <div class="col-xs-6">
+                                <md-input-container>
+                                    <label>Address (line 1):</label>
+                                    <input type="text"
+                                           ng-model="locationView.model.Address.AddressLine"
+                                           name="addressLine1"
+                                           ng-required="true"
+                                           clear-on-click>
+                                    <div ng-messages="locationView.locationForm.addressLine1.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="col-xs-6">
+                                <md-input-container>
+                                    <label>Address (line 2):</label>
+                                    <input type="text"
+                                           ng-model="locationView.model.Address.AddressLine2"
+                                           clear-on-click>
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div class="drowz-wizard-block-row">
+                            <div class="col-xs-6">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <md-input-container>
+                                            <label>City:</label>
+                                            <input type="text"
+                                                   name="city"
+                                                   ng-model="locationView.model.Address.City"
+                                                   ng-required="true"
+                                                   clear-on-click>
+                                            <div ng-messages="locationView.locationForm.city.$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">This field is required</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <input-state-string form-name="locationView.locationForm"
+                                                            input-name="state"
+                                                            selected-item="locationView.model.Address.State"
+                                                            add-directives="clear-on-click"
+                                                            ng-required="true">
+                                        </input-state-string>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <input-zip-string form-name="locationView.locationForm"
+                                                  input-name="zip"
+                                                  selected-item="locationView.model.Address.Zip"
+                                                  add-directives="clear-on-click"
+                                                  ng-required="true">
+                                </input-zip-string>
+                            </div>
+                        </div>
+                        <div class="drowz-wizard-block-row">
+                            <div class="col-xs-6">
+                                <md-input-container>
+                                    <label>NPI:</label>
+                                    <input type="text"
+                                           ng-model="locationView.model.Npi"
+                                           name="npi"
+                                           ng-required="true"
+                                           ng-maxlength="10"
+                                           ng-minlength="10"
+                                           ng-pattern="/^[0-9]*$/"
+                                           clear-on-click>
+                                    <div ng-messages="locationView.locationForm.npi.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                        <div ng-message="pattern">NPI number consists only from numbers</div>
+                                        <div ng-message="maxlength, minlength">Value should consist of 10 digits.</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="info-block">
+                                <md-button class="md-raised middle-btn"
+                                           ng-click="locationView.populateNPI(locationView.model.Npi)">
+                                    Populate NPI data
+                                </md-button>
+                                <md-button class="md-raised middle-btn npi-lookup-btn no-margin"
+                                           ng-click="locationView.npiLookup()">
+                                    NPI Lookup
+                                </md-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-360">
+                <div class="drowz-wizard-block no-float">
+                    <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">Contacts:</div>
+                    </div>
+                    <div class="drowz-wizard-block-body">
+                        <div class="contacts-container">
+                            <organization-contacts
+                                selected-contacts="locationView.model.Contacts"
+                                allow-not-unique-types="false"
+                                min-required="1"
+                                org-location-required="true"
+                                all-contact-types="locationView.allContactTypes">
+                            </organization-contacts>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="drowz-wizard-body-flex">
+            <div class="grow-1">
+                <div class="drowz-wizard-block no-float">
+                    <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">Billing Details:</div>
+                    </div>
+                    <div class="drowz-wizard-block-body">
+                        <div class="drowz-wizard-block-row">
+                            <div class="col-xs-6 set-height-65">
+                                <md-autocomplete-with-infinite-scroll
+                                        md-no-cache="true"
+                                        md-selected-item="locationView.model.BillingProvider"
+                                        md-search-text="searchProvider"
+                                        md-items="item in locationView.getProviders(searchProvider, pageIndex)"
+                                        md-item-text="item.Name"
+                                        ng-required="true"
+                                        md-min-length="0"
+                                        md-floating-label="Billing Provider:"
+                                        md-menu-container-class="full-wide-decorator"
+                                        clear-on-click
+                                        md-autocomplete-required
+                                        md-input-name="provider">
+                                    <md-item-template>
+                                        <span md-highlight-flags="^i" title="{{item.Name}}">{{item.Name}}</span>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No providers were found
+                                    </md-not-found>
+                                    <div ng-messages="locationView.locationForm.provider.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                        <div ng-message="selected">Selected Provider is not valid</div>
+                                    </div>
+                                </md-autocomplete-with-infinite-scroll>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grow-1">
+                <div class="drowz-wizard-block no-float">
+                    <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">Rendering provider:</div>
+                    </div>
+                    <div class="drowz-wizard-block-body">
+                        <div class="drowz-wizard-block-row">
+                            <div class="col-xs-6 set-height-65">
+                                <md-autocomplete-with-infinite-scroll
+                                        md-no-cache="true"
+                                        md-selected-item="locationView.model.RenderingProvider"
+                                        md-search-text="searchRenderingProvider"
+                                        md-items="item in locationView.getRenderingProviders(searchRenderingProvider, pageIndex)"
+                                        md-item-text="item.Name"
+                                        md-min-length="0"
+                                        md-floating-label="Rendering provider:"
+                                        md-menu-container-class="full-wide-decorator"
+                                        clear-on-click
+                                        md-autocomplete-required
+                                        md-input-name="renderingProvider">
+                                    <md-item-template>
+                                        <span md-highlight-flags="^i" title="{{ item.Name }}">{{ item.Name }}</span>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No providers were found
+                                    </md-not-found>
+                                    <div ng-messages="locationView.locationForm.renderingProvider.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="selected">Selected Provider is not valid</div>
+                                    </div>
+                                </md-autocomplete-with-infinite-scroll>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="flow-body-footer">
+        <md-button class="md-raised main-button"
+                   ui-sref="root.management.organization.locations.list">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="locationView.save()">
+            Save
+        </md-button>
+    </div>
+
+</div>

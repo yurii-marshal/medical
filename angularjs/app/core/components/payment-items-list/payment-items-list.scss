@@ -1,0 +1,49 @@
+.payments-items-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 32px;
+    background-color: $lighter-gray-color;
+    color: $label-color;
+    font-size: 11px;
+    padding: 0 20px;
+
+    .info-block {
+        margin-bottom: 0;
+    }
+}
+
+.payment-item {
+    padding: 30px 20px 20px;
+    border: 1px solid transparent;
+    font-size: 16px;
+    line-height: 26px;
+
+    &:nth-child(2n + 1) {
+        background-color: #fbfbfb;
+        border-color: $lighter-gray-color;
+        border-radius: 3px;
+    }
+
+    .payment-item-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+
+        > .info-block {
+
+        }
+    }
+
+    .status-label {
+        margin: 4px 0 0;
+    }
+
+    .payment-item-note {
+        font-size: $font-size-base;
+
+        format-string-by-paragraphs {
+            line-height: 16px;
+        }
+    }
+}

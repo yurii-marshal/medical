@@ -1,0 +1,51 @@
+<div class="drowz-wizard-block-title">
+    <div class="wizard-title-text">Shipment Summary:</div>
+</div>
+<div class="drowz-wizard-block-body flex-row">
+    <div class="info-block block-width-300" ng-show="$ctrl.patientInfo">
+        <div class="info-block-label">Name:</div>
+        <div class="info-block-body flex-cont">
+            <span ng-bind="$ctrl.patientInfo.firstName || '-'"></span>&nbsp;
+            <span ng-bind="$ctrl.patientInfo.lastName || '-'"></span>
+            <span class="gender-icon">
+                    <md-icon md-svg-src="assets/images/colored/male.svg"
+                             ng-if="$ctrl.patientInfo.gender === $ctrl.genders.MALE_GENDER_ID"></md-icon>
+                    <md-icon md-svg-src="assets/images/colored/female.svg"
+                             ng-if="$ctrl.patientInfo.gender === $ctrl.genders.FEMALE_GENDER_ID"></md-icon>
+                </span>
+        </div>
+    </div>
+    <div class="info-block block-width-450 left-divider" ng-show="$ctrl.patientInfo">
+        <div class="info-block-label">Delivery Address:</div>
+        <div class="info-block-body"
+             ng-bind="$ctrl.patientInfo.deliveryFullAddress">
+        </div>
+    </div>
+
+    <div class="info-block grow-1 left-divider"
+         ng-show="$ctrl.orderShortInfo">
+        <div class="info-block-label">Order:</div>
+        <div class="info-block-body">
+            <a href="javascript:void(0);"
+               class="underline-after-link"
+               ui-sref="root.orders.order.details({ orderId: $ctrl.orderShortInfo.id })"
+               ng-bind="$ctrl.orderShortInfo.orderDisplayId">
+            </a>
+            <span class="vertical-divider">|</span>
+            <span>{{$ctrl.orderShortInfo.createdDate | localDateTime: "MM/DD/YYYY"}}</span>
+            <span class="vertical-divider">|</span>
+            <span>{{$ctrl.orderShortInfo.referralCard}}</span>
+        </div>
+    </div>
+
+    <div class="info-block block-width-200">
+        <md-button class="md-raised md-primary small-btn"
+                   ng-disabled="$ctrl.isPackagingSlipLoading || !$ctrl.shipItems.items.allHashes.length"
+                   ng-click="$ctrl.generatePackagingSlip()">
+            <icon-loading-white
+                ng-if="$ctrl.isPackagingSlipLoading"></icon-loading-white>
+            Generate Packing Slip
+        </md-button>
+    </div>
+</div>
+

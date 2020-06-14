@@ -1,0 +1,237 @@
+<div class="drowz-wizard statements-page"
+     ng-form="statements.form"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="statementLoading"
+>
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.billing.invoices">Billing</a>
+        <a href="javascript:void(0)" class="active">Statements</a>
+    </div>
+
+    <div class="drowz-wizard-body">
+
+         <div class="statements-toollbar-container"
+              ng-class="{ 'show-progress' : statements.isProgressShow }">
+
+             <div class="statements-toollbar">
+                <div class="filter-block">
+                    <div class="filter-label">Balance greater than:</div>
+                    <div class="filter-field">
+                        <md-input-container class="currency-container">
+                            <div class="currency-icon">$</div>
+                            <input type="number"
+                                   ng-model-options="{debounce: 450}"
+                                   ng-change="statements.search()"
+                                   ng-model="statements.applyFilters.BalanceGreaterThan"
+                                   clear-on-click>
+                        </md-input-container>
+                    </div>
+                </div>
+                <div class="filter-block">
+                    <div class="filter-label">A/R Aging:</div>
+                    <div class="filter-field">
+                        <md-input-container class="ages-container">
+                            <md-select ng-model="statements.applyFilters.Age"
+                                       ng-change="statements.search()"
+                                       clear-on-click>
+                                <md-option ng-value="item.Id"
+                                           ng-repeat="item in statements.agesDictionary">
+                                    {{::item.Name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </div>
+
+                <div class="control-block">
+                    <md-button class="reset-filters"
+                               aria-label="..."
+                               ng-click="statements.resetFilters()">
+                        <md-icon class="reset-filters-icon"
+                                 md-svg-src="assets/images/default/clear-filters.svg">
+                        </md-icon>
+                    </md-button>
+                </div>
+            </div>
+
+             <div class="statements-toollbar">
+                 <div class="select-all-block-left">
+                    <md-icon md-svg-src="assets/images/default/task-success.svg"></md-icon>
+                    <div>
+                        <span>
+                            <span ng-bind="statements.getSelectedItemsCount()"></span> patients are selected.
+                            <a ng-if="statements.getSelectedItemsCount()!== statements.getTotalPatients()"
+                               ng-click="statements.selectAllFn()"
+                               href="javascript:void(0);">
+                                Select all <span ng-bind="statements.getTotalPatients() || 0"></span> patients
+                            </a>
+                        </span>
+                    </div>
+                 </div>
+
+                 <div>
+                     <md-button class="md-raised md-primary small-btn"
+                                ng-click="statements.generate()"
+                                ng-disabled="statements.isLoading || !statements.getSelectedItemsCount()">
+                         <icon-loading-white ng-if="statements.isLoading"></icon-loading-white>
+                         <span>Generate</span>
+                     </md-button>
+                 </div>
+            </div>
+
+             <div class="file-download-progress-block"
+                  ng-class="{ 'progress-block' : statements.isProgressShow }"
+             >
+                 <div class="progress-process">
+                    <span ng-if="statements.generationStatus === statements.generationStatuses.PROCESSING_STATUS_ID"
+                          class="progress-circular">
+                        <md-progress-circular md-diameter="22"
+                                              md-mode="indeterminate"></md-progress-circular>
+                    </span>
+                    <span ng-if="statements.generationStatus === statements.generationStatuses.PROCESSING_STATUS_ID ||
+                            statements.generationStatus === statements.generationStatuses.PROCESSED_STATUS_ID"
+                          class="marg-left-20 counter font-semibold">
+                        {{statements.generationStatus === statements.generationStatuses.PROCESSING_STATUS_ID ?
+                          statements.result.Progress.ProcessedCount :
+                          statements.result.Progress.TotalCount
+                         }}/
+                        {{statements.result.Progress.TotalCount}}
+                    </span>
+                    <span ng-if="statements.generationStatus === statements.generationStatuses.PROCESSING_STATUS_ID"
+                          class="marg-left-20 font-semibold">
+                        Please wait, your statements are being generated
+                    </span>
+                    <span ng-if="statements.generationStatus === statements.generationStatuses.PROCESSED_STATUS_ID"
+                          class="marg-left-20 font-semibold">
+                        Your statements were successfully generated
+                    </span>
+                </div>
+
+                 <div class="control-block">
+                     <md-button class="md-raised md-primary small-btn"
+                                ng-click="statements.downloadStatements()"
+                                ng-if="statements.generationStatus === statements.generationStatuses.PROCESSED_STATUS_ID">
+                         <icon-loading-white ng-if="statements.isLoading"></icon-loading-white>
+                         <span>Download statements</span>
+                     </md-button>
+                     <div ng-if="statements.generationStatus === statements.generationStatuses.PROCESSING_STATUS_ID"
+                          class="cancel-process active-title"
+                          ng-click="statements.cancelProcess()">
+                         Cancel process
+                     </div>
+                     <div ng-if="statements.generationStatus === statements.generationStatuses.PROCESSED_STATUS_ID"
+                          class="marg-left-20 close-btn"
+                          ng-click="statements.hideProgressBar()">
+                     </div>
+                 </div>
+             </div>
+        </div>
+
+        <infinity-table load-items-promise="statements.getStatements"
+                        page-size="24"
+                        item-alias="item"
+                        filters-obj="statements.filterObj"
+                        sort-obj="statements.sortExpr"
+                        default-sort-field="'FullName'">
+            <infinity-table-sort>
+                <div class="number-td">
+                    <md-checkbox class="md-primary"
+                                 aria-label="..."
+                                 ng-click="$ctrl.selectAllFn()"
+                                 ng-checked="$ctrl.isSelectAll">
+                    </md-checkbox>
+                </div>
+                <div>
+                    <md-icon md-svg-src="assets/images/default/user-square.svg" class="main-sort-icon user-icon"></md-icon>
+                    <inftbl-sort-list param-name="FullName">Patient Name:</inftbl-sort-list>
+                </div>
+                <div class="w180px">
+                    <md-icon md-svg-src="assets/images/default/calendar-new.svg"  class="main-sort-icon date-icon"></md-icon>
+                    <inftbl-sort-list param-name="DateOfBirth">DOB:</inftbl-sort-list>
+                </div>
+                <div>
+                    <md-icon md-svg-src="assets/images/default/location2.svg" class="main-sort-icon location-icon"></md-icon>
+                    Address:
+                </div>
+                <div class="w180px no-divider">
+                    <md-icon md-svg-src="assets/images/default/billing.svg" class="main-sort-icon billing-icon"></md-icon>
+                    Balance:
+                </div>
+            </infinity-table-sort>
+
+            <infinity-table-filters class="drowz-infinite-row-filter">
+                <div class="number-td">
+                    <inftbl-filter-reset-btn></inftbl-filter-reset-btn>
+                </div>
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search name</label>
+                        <input type="text"
+                               ng-model="$ctrl.filtersObj.FullName"
+                               ng-model-options="{debounce: 450}"
+                               clear-on-click>
+                    </md-input-container>
+                </div>
+                <div class="w180px">
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search</label>
+                        <input ng-model="$ctrl.filtersObj.Dob"
+                               datetimepicker
+                               use-current="false"
+                               format="MM/DD/YYYY"
+                               max-date="today"
+                               clear-on-click>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search address</label>
+                        <input type="text"
+                               ng-model="$ctrl.filtersObj.FullAddress"
+                               ng-model-options="{debounce: 350}"
+                               clear-on-click>
+                    </md-input-container>
+                </div>
+                <div class="w180px no-divider">
+                    <md-input-container class="drowz-infinite-input-container">
+                        <label>search</label>
+                        <input type="number"
+                               ng-model="$ctrl.filtersObj.Balance"
+                               ng-model-options="{debounce: 350}"
+                               clear-on-click>
+                    </md-input-container>
+                </div>
+            </infinity-table-filters>
+
+            <infinity-table-row class="drowz-infinite-row"
+                                ng-click="$parent.statements.toggleItem(item)">
+                <div class="number-td">
+                    <md-checkbox class="md-primary"
+                                 aria-label="..."
+                                 ng-checked="item.isSelected">
+                    </md-checkbox>
+                </div>
+                <div>
+                    <a href="javascript:void(0);"
+                       ui-sref="root.patient({ patientId: item.Id })"
+                       ng-bind="item.FullName">
+                    </a>
+                </div>
+                <div class="w180px" ng-bind='item.DateOfBirth | amUtc | amDateFormat: "MM/DD/YYYY"'></div>
+                <div>
+                    <div popover-directive="item.FullAddress"></div>
+                </div>
+                <div class="w180px no-divider font-semibold"
+                     ng-bind="(item.Balance.Currency) + ' ' + (item.Balance.Amount | absNumber)"></div>
+            </infinity-table-row>
+
+            <infinity-table-no-items>
+                <no-records text="Patients" is-fullpage="true"></no-records>
+            </infinity-table-no-items>
+        </infinity-table>
+
+
+    </div>
+
+</div>

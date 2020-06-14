@@ -1,0 +1,185 @@
+<div class="modal-window pricing-details-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/billing.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Pricing Details:</h2>
+        </div>
+
+        <div class="pricing-details-block">
+            <div class="status-labels-block">
+                <div class="status-label dark-blue">{{$ctrl.model.PricingType.Name}}</div>
+                <div class="status-label bordered-label"
+                     ng-if="$ctrl.model.SalesTax"
+                >Sales Tax</div>
+            </div>
+            <div class="grow-1">
+                <div class="flex-row">
+                    <div class="info-block w130px left-divider"
+                         ng-if="$ctrl.model.Name">
+                        <div class="info-block-label">Name:</div>
+                        <div class="info-block-body">
+                            {{$ctrl.model.Name}}
+                        </div>
+                    </div>
+                    <div class="info-block w130px left-divider">
+                        <div class="info-block-label">Charge:</div>
+                        <div class="info-block-body">
+                            {{$ctrl.model.Charge.Currency}}
+                            {{$ctrl.model.Charge.Amount | number:2}}
+                        </div>
+                    </div>
+                    <div class="info-block w130px left-divider">
+                        <div class="info-block-label">Allowed:</div>
+                        <div class="info-block-body">
+                            <div ng-if="!$ctrl.model.Allowed">-</div>
+                            <div ng-if="$ctrl.model.Allowed">
+                                {{ $ctrl.model.Allowed.Currency }}
+                                {{ $ctrl.model.Allowed.Amount | number:2 | absNumber }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-block w150px left-divider">
+                        <div class="info-block-label">Modifiers:</div>
+                        <div class="info-block-body">
+                            <span ng-if="!$ctrl.model.PricingConfiguration.Modifiers">-</span>
+                            <span class="code-with-slash"
+                                  ng-repeat="(key, modifier) in $ctrl.model.PricingConfiguration.Modifiers">
+                                {{modifier.Name || '-'}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="info-block block-width-130 left-divider">
+                        <div class="info-block-label">Effective:</div>
+                        <div class="info-block-body">
+                            <div ng-if="!$ctrl.model.PricingConfiguration.EffectivePeriod.From">-</div>
+                            <div ng-if="$ctrl.model.PricingConfiguration.EffectivePeriod.From">
+                                {{$ctrl.model.PricingConfiguration.EffectivePeriod.From| amUtc | amDateFormat: "MM/DD/YYYY"}}&nbsp;-&nbsp;
+                                <span ng-if="$ctrl.model.PricingConfiguration.EffectivePeriod.To">
+                                    {{$ctrl.model.PricingConfiguration.EffectivePeriod.To | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                                </span>
+                                <span ng-if="!$ctrl.model.PricingConfiguration.EffectivePeriod.To">...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-block grow-1 left-divider">
+                        <div class="info-block-label">Location:</div>
+                        <div class="info-block-body">
+                            {{ $ctrl.model.Location.Name || '-' }}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-row">
+                    <div class="info-block w130px left-divider">
+                        <div class="info-block-label">HCPCS:</div>
+                        <div class="info-block-body">
+                            {{$ctrl.model.PricingConfiguration.HcpcsCode || '-'}}
+                        </div>
+                    </div>
+                    <div class="info-block w130px left-divider"
+                         ng-class="{
+                            'grow-1' : $ctrl.model.PricingConfiguration.Payer.Name
+                         }">
+                        <div class="info-block-label">Payer:</div>
+                        <div class="info-block-body">
+                            {{$ctrl.model.PricingConfiguration.Payer.Name || '-'}}
+                        </div>
+                    </div>
+                    <div class="info-block w130px left-divider"
+                         ng-if="$ctrl.model.RentalConfigurationModel && $ctrl.model.RentalConfigurationModel.Interval">
+                        <div class="info-block-label">Interval:</div>
+                        <div class="info-block-body">
+                            {{$ctrl.model.RentalConfigurationModel.Interval.From}}
+                            <span ng-if="$ctrl.model.RentalConfigurationModel.Interval.To">
+                                &nbsp;-&nbsp;{{$ctrl.model.RentalConfigurationModel.Interval.To}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="info-block w150px left-divider"
+                         ng-if="$ctrl.model.RentalConfigurationModel && $ctrl.model.RentalConfigurationModel.CappedInterval">
+                        <div class="info-block-label">Capped Rentals:</div>
+                        <div class="info-block-body">
+                            {{ $ctrl.model.RentalConfigurationModel.CappedInterval || '-' }}
+                        </div>
+                    </div>
+                    <div class="info-block w130px left-divider"
+                         ng-if="$ctrl.model.RentalConfigurationModel && $ctrl.model.RentalConfigurationModel.Cycle">
+                        <div class="info-block-label">Cycle:</div>
+                        <div class="info-block-body">
+                            {{$ctrl.model.RentalConfigurationModel.Cycle.Name}}
+                        </div>
+                    </div>
+                    <div class="info-block w100px left-divider"
+                         ng-if="$ctrl.model.Units">
+                        <div class="info-block-label">Units:</div>
+                        <div class="info-block-body">
+                            {{$ctrl.model.Units}}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-row" ng-if="$ctrl.model.PricingConfiguration.Product">
+                    <div class="info-block grow-1 left-divider">
+                        <div class="info-block-label">Product:</div>
+                        <div class="info-block-body">
+                            {{$ctrl.model.PricingConfiguration.Product}}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-row purchase-after-wrap"
+                     ng-if="$ctrl.model.RentalConfigurationModel && $ctrl.model.RentalConfigurationModel.PurchaseAfter"
+                >
+                    <div class="info-block w150px purchase-after"
+                         ng-if="$ctrl.model.RentalConfigurationModel && $ctrl.model.RentalConfigurationModel.PurchaseAfter">
+                        <md-icon md-svg-src="assets/images/default/check.svg" class="checked-icon"></md-icon>
+                        Purchase After
+                    </div>
+                    <div class="info-block w150px left-divider"
+                         ng-if="$ctrl.model.RentalConfigurationModel && $ctrl.model.RentalConfigurationModel.GeneratePurchaseInvoice">
+                        <div class="info-block-label">Modifiers:</div>
+                        <div class="info-block-body"
+                             ng-if="$ctrl.model.RentalConfigurationModel.Modifiers">
+                            <div class="code-with-slash"
+                                 ng-repeat="(key, modifier) in $ctrl.model.RentalConfigurationModel.Modifiers"
+                                 ng-bind="modifier.Name || '-'">
+                            </div>
+                        </div>
+                        <div class="info-block-body"
+                             ng-if="!$ctrl.model.RentalConfigurationModel.Modifiers">-</div>
+                    </div>
+                    <div class="info-block w130px left-divider"
+                         ng-if="$ctrl.model.RentalConfigurationModel && $ctrl.model.RentalConfigurationModel.Charge">
+                        <div class="info-block-label">Charge:</div>
+                        <div class="info-block-body">
+                            {{$ctrl.model.RentalConfigurationModel.Charge.Currency}}
+                            {{$ctrl.model.RentalConfigurationModel.Charge.Amount | number:2}}
+                        </div>
+                    </div>
+                    <div class="info-block w150px left-divider"
+                         ng-if="$ctrl.model.RentalConfigurationModel && $ctrl.model.RentalConfigurationModel.GeneratePurchaseInvoice">
+                        <div class="info-block-label">Allowed:</div>
+                        <div class="info-block-body"
+                             ng-if="$ctrl.model.RentalConfigurationModel.Allowed">
+                            {{$ctrl.model.RentalConfigurationModel.Allowed.Currency}}
+                            {{$ctrl.model.RentalConfigurationModel.Allowed.Amount | number:2}}
+                        </div>
+                        <div class="info-block-body"
+                             ng-if="!$ctrl.model.RentalConfigurationModel.Allowed">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+          <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.cancel()">OK</md-button>
+    </md-dialog-actions>
+
+</div>

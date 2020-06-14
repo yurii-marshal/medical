@@ -1,0 +1,77 @@
+<div class="flex-row">
+    <div class="info-block w250px readonly-info-block height-info-block">
+        <md-input-container>
+            <div class="info-block-label">
+                DOS:
+            </div>
+            <div class="info-block-body">
+                {{ $ctrl.serviceLine.ServicePeriod.From | amUtc | amDateFormat: "MM/DD/YYYY" }} - {{ $ctrl.serviceLine.ServicePeriod.To | amUtc | amDateFormat: "MM/DD/YYYY" }}
+            </div>
+        </md-input-container>
+    </div>
+
+    <div class="info-block w100px left-divider readonly-info-block height-info-block">
+        <md-input-container>
+            <div class="info-block-label">
+                HCPCS:
+            </div>
+            <div class="info-block-body">
+                {{ $ctrl.serviceLine.HcpcsCode.Name }}
+            </div>
+        </md-input-container>
+    </div>
+
+    <div class="info-block w200px left-divider readonly-info-block height-info-block">
+        <md-input-container>
+            <div class="info-block-label">
+                Modifiers:
+            </div>
+            <div class="info-block-body">
+                <div class="code-with-slash">
+                    {{  $ctrl.serviceLine.Modifiers.Level1.Name || '-' }}
+                </div>
+                <div class="code-with-slash">
+                    {{  $ctrl.serviceLine.Modifiers.Level2.Name || '-' }}
+                </div>
+                <div class="code-with-slash">
+                    {{  $ctrl.serviceLine.Modifiers.Level3.Name || '-' }}
+                </div>
+                <div class="code-with-slash">
+                    {{  $ctrl.serviceLine.Modifiers.Level4.Name || '-' }}
+                </div>
+            </div>
+        </md-input-container>
+    </div>
+
+    <div class="info-block w70px left-divider readonly-info-block height-info-block">
+        <md-input-container>
+            <div class="info-block-label">
+                Qty:
+            </div>
+            <div class="info-block-body">
+                {{  $ctrl.serviceLine.Quantity }}
+            </div>
+        </md-input-container>
+    </div>
+
+    <div class="info-block w150px left-divider readonly-info-block height-info-block">
+        <md-input-container>
+            <div class="info-block-label">
+                Charge:
+            </div>
+            <div class="info-block-body">
+                {{  $ctrl.serviceLine.Charge.Currency }} <b>{{ $ctrl.serviceLine.Charge.Amount | absNumber:2 }}</b>
+            </div>
+        </md-input-container>
+    </div>
+    <div class="info-block w150px left-divider readonly-info-block height-info-block">
+        <md-input-container>
+            <div class="info-block-label">
+                Balance:
+            </div>
+            <div class="info-block-body">
+                {{  $ctrl.serviceLine.Balance.Currency }} <b>{{ $ctrl.serviceLine.Balance.Amount | absNumber:2 }}</b>
+            </div>
+        </md-input-container>
+    </div>
+</div>

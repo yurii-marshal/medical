@@ -1,0 +1,113 @@
+.drowz-message {
+    position: relative;
+    flex-grow: 1;
+    width: 100%;
+    padding: 10px 35px 10px 20px;
+    margin-bottom: 20px;
+    background-color: $light-gray-color;
+    border-radius: 3px;
+    box-shadow: $box-shadow;
+
+    &.with-icon {
+        padding-left: 50px;
+
+        > md-icon {
+            position: absolute;
+            top: 10px;
+            left: 18px;
+
+            &.info-icon {
+                width: 20px;
+                height: 20px;
+                color: $main-active-color;
+            }
+        }
+    }
+
+    .close-message-icon {
+        display: block;
+        position: absolute;
+        top: 9px;
+        right: 8px;
+        width: 11px;
+        height: 11px;
+        z-index: 1;
+        cursor: pointer;
+        outline: none;
+
+        &::after, &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -7px;
+            margin-left: -1px;
+            width: 2px;
+            height: 14px;
+            background-color: $gray-color-main;
+            transition: .2s;
+        }
+
+        &::after {
+            transform: rotate(-45deg);
+        }
+
+        &::before {
+            transform: rotate(45deg);
+        }
+
+        &:hover {
+            &::after, &::before {
+                background-color: $label-color;
+            }
+        }
+    }
+
+    .drowz-message-header {
+        margin-bottom: 10px;
+        color: $gray-disabled;
+        font-size: 12px;
+        font-weight: 400;
+    }
+
+    .drowz-message-content {
+        font-size: 14px;
+        line-height: 22px;
+        word-wrap: break-word;
+    }
+}
+
+.drowz-message-flat {
+    box-shadow: none;
+    background-color: transparent;
+}
+
+.drowz-message-warn {
+    border: 1px solid $red-color;
+    border-radius: 3px;
+    display: flex;
+    margin-bottom: 15px;
+
+    .icon {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 60px;
+        font-size: 10px;
+        font-weight: 500;
+        text-transform: uppercase;
+
+        md-icon {
+            width: 18px;
+            margin: 0 auto;
+            color: $red-color;
+        }
+    }
+    .content {
+        padding: 14px 0;
+    }
+    pre {
+        border: none !important;
+        background: none;
+    }
+}

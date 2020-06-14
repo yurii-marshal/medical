@@ -1,0 +1,158 @@
+.white-block {
+  display: block;
+  background-color: $white-color;
+  -webkit-box-shadow: 0 1px 3px rgba(10, 10, 10, 0.15);
+  box-shadow: 0 1px 3px rgba(10, 10, 10, 0.15);
+  border-radius: 3px;
+}
+
+.mat-field-line-label {
+  -ms-flex-item-align: center;
+  -ms-grid-row-align: center;
+  align-self: center;
+  font-weight: 300;
+  padding: 0 15px 0 20px;
+  color: $middle-gray-color;
+  font-size: 14px;
+}
+
+
+.reports-table-view {
+
+    md-autocomplete.no-float-hint {
+        width: 100%;
+
+        md-input-container {
+            .md-input {
+                padding-right: 35px;
+                text-overflow: ellipsis;
+            }
+            &.md-input-focused, &.md-input-has-value {
+                label {
+                    display: none;
+                }
+            }
+            label:not(.md-no-float):not(.md-container-ignore) {
+                padding: 7px 35px 0 0;
+                margin: 0;
+                height: 30px;
+                line-height: 28px;
+                font-size: 16px;
+                color: $font-color;
+            }
+        }
+    }
+
+  .breadcrumbs {
+    background-color: rgba(78, 107, 137, 0.1);
+
+    drowz-tabs {
+      margin-left: 320px;
+      background-color: transparent;
+    }
+  }
+  // todo: remove when button is replaced with toolbar
+  .export-csv-btn {
+    position: absolute;
+    width: 120px;
+    right: 25px;
+    top: 20px;
+  }
+
+  .report-filters {
+
+    @include clear-filters-btn(18px, false, $gray-color-main, false);
+
+    .filters-form {
+
+      .filter-item {
+        display: inline-block;
+      }
+    }
+
+    .filter-field {
+      margin: 0 10px 0 0;
+      padding: 0;
+    }
+
+    md-input-container[md-no-float]  {
+      md-select {
+        .md-select-value.md-select-placeholder > span:not(.md-select-icon) {
+          color: $font-color;
+          font-size: 16px;
+        }
+        &:focus .md-select-value {
+          border-bottom-color: $gray-color-main;
+        }
+      }
+    }
+
+  }
+
+  .report-totals {
+    .report-total-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin: 0 auto 30px;
+      padding: 10px 10px;
+      flex-grow: 1;
+
+      .report-total-item {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 110px;
+        margin: 0;
+        padding: 0 10px;
+        white-space: nowrap;
+
+        &:not(:last-of-type) {
+          &::after {
+            content: "";
+            position: absolute;
+            top: 12px;
+            bottom: 12px;
+            right: -10px;
+            width: 1.5px;
+            background-color: $wizard-title-color;
+          }
+        }
+
+        .total-text {
+          color: $dark-blue-color;
+          font-weight: 500;
+          font-size: 19px;
+          line-height: 19px;
+          margin-bottom: 20px;
+        }
+
+        .total-number {
+          color: $main-active-color;
+          font-size: 29px;
+          line-height: 28px;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .reports-table-container {
+    height: 100%;
+
+    .ag-theme-material {
+      width: 100%;
+    }
+  }
+}
+
+.reports-table-select-menu-container {
+  md-option {
+    height: 34px;
+    line-height: 34px;
+  }
+}
+
+

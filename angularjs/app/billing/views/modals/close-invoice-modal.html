@@ -1,0 +1,28 @@
+<div class="modal-window close-invoice-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/plus-circle-thin.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Close invoice:</h2>
+        </div>
+
+        <div class="center-text">
+            The invoice (<span class="active-text">{{$ctrl.displayId}}</span>) balance is <span class="font-semibold">$ 0.00</span>.
+            <br>
+            Do you want to close it?
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">No</md-button>
+        <md-button class="md-raised md-primary main-button" ng-click="$ctrl.save()">Yes</md-button>
+    </md-dialog-actions>
+
+</div>

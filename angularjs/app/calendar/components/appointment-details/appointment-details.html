@@ -1,0 +1,366 @@
+﻿
+<div class="small-sidebar"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="appointmentDetails">
+
+    <div class="sidebar-container"
+         drowz-sidebar
+         drowz-sidebar-name="appointment">
+
+        <patient-short-info-sidebar
+                class="sidebar"
+                patient-id="appointment.event.Patient.Id"
+                patient="appointment.shortInfo"
+                have-view-patient-btn="true">
+        </patient-short-info-sidebar>
+
+        <div class="main-content appointment-details-page">
+
+            <toolbar items="appointment.toolbarItems"
+                     ng-hide="appointment.isToolbarHidden()">
+            </toolbar>
+
+            <div class="breadcrumbs">
+                <a href="javascript:void(0)" ui-sref="root.calendar">Calendar</a>
+                <a href="javascript:void(0)" class="active">Appointment Details</a>
+            </div>
+
+            <div class="appointment-details">
+
+                <v-accordion class="vAccordion--default flow-accordion" multiple>
+                    <v-pane expanded="true">
+
+                        <v-pane-header class="flow-accordion-title">
+                            <md-icon md-svg-src="assets/images/default/chevron.svg" class="flow-accordion-title-icon"></md-icon>
+                            <span>Appointment Details:</span>
+                            <div class="accordion-line"></div>
+                        </v-pane-header>
+
+                        <v-pane-content>
+                            <div class="flex-row">
+                                <div class="appointment-details-left-col">
+                                    <div class="flex-row">
+                                        <div class="info-block block-width-50-percent">
+                                            <div class="info-block-label">Date:</div>
+                                            <div class="info-block-body">
+                                                {{appointment.event.when.date}}
+                                                <span class="active-text">{{appointment.event.when.time}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="info-block block-width-50-percent left-divider">
+                                            <div class="flex-cont">
+                                                <md-input-container class="appointment-status">
+                                                    <label>Appointment Status:</label>
+                                                    <md-select ng-model="appointment.appointmentStatus"
+                                                               ng-readonly="appointment.event.AppointmentStatus.Id === 4 || appointment.event.AppointmentStatus.Id === 3">
+                                                        <md-option ng-value="status.Id"
+                                                                   ng-repeat="status in appointment.appointmentStatuses track by status.Id"
+                                                                   ng-selected="appointment.event.AppointmentStatus.Id === status.Id">
+                                                            {{status.Text}}
+                                                        </md-option>
+                                                    </md-select>
+                                                </md-input-container>
+                                                <md-button class="md-raised md-primary small-btn"
+                                                           ng-click="appointment.updateStatus(appointment.appointmentStatus)"
+                                                           ng-show="appointment.appointmentStatus !== appointment.event.AppointmentStatus.Id && (appointment.event.AppointmentStatus.Id !== 4 && appointment.event.AppointmentStatus.Id !== 3)">
+                                                    Update
+                                                </md-button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-row">
+                                        <div class="info-block block-width-50-percent">
+                                            <div class="info-block-label">Team Member:</div>
+                                            <div class="info-block-body">
+                                                {{appointment.event.Personnel.Name.FullName || '-'}}
+                                            </div>
+                                        </div>
+                                        <div class="info-block block-width-50-percent left-divider">
+                                            <div class="info-block-label">Appointment Address:</div>
+                                            <div class="info-block-body">{{appointment.event.Address.FullAddress}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="appointment-details-right-col">
+                                    <div class="flex-row">
+                                        <div class="info-block grow-1" ng-if="appointment.event.CreatedByUser">
+                                            <div class="info-block-label">Scheduled by:</div>
+                                            <div class="info-block-body">{{appointment.event.CreatedByUser.Name.FullName}}</div>
+                                        </div>
+                                        <div class="info-block block-width-200" ng-if="appointment.event.CreatedDate">
+                                            <div class="info-block-label">Scheduled:</div>
+                                            <div class="info-block-body">
+                                                {{appointment.event.CreatedDate | localDateTime: 'MM/DD/YYYY'}}
+                                                <span class="active-text">{{appointment.event.CreatedDate | localDateTime: "hh:mm A"}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-row">
+                                        <div class="info-block grow-1" ng-if="appointment.event.LastModifiedByUser">
+                                            <div class="info-block-label">Modified by:</div>
+                                            <div class="info-block-body">{{appointment.event.LastModifiedByUser.Name.FullName}}</div>
+                                        </div>
+                                        <div class="info-block block-width-200" ng-if="appointment.event.LastModifiedDate">
+                                            <div class="info-block-label">Modified:</div>
+                                            <div class="info-block-body">
+                                                {{appointment.event.LastModifiedDate | localDateTime: 'MM/DD/YYYY'}}
+                                                <span class="active-text">{{appointment.event.LastModifiedDate | localDateTime: 'hh:mm A'}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- AppointmentType -->
+                            <div class="flex-row">
+                                <div class="info-block w200px">
+                                    <div class="info-block-label">Type:</div>
+                                    <div class="info-block-body">
+                                        {{appointment.event.AppointmentType.Text}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex-row"
+                                 ng-show="appointment.event.AppointmentType.Id === 2"
+                            >
+                                <div class="appointment-details-left-col">
+                                    <div class="flex-row">
+                                        <div class="info-block block-width-50-percent">
+                                            <div class="info-block-label">Equipment Maintenance:</div>
+                                            <div class="info-block-body">
+                                                {{appointment.event.RevisitOptions.EquipmentMaintenance.Value.Text || '-'}}
+                                            </div>
+                                        </div>
+                                        <div class="info-block block-width-50-percent left-divider">
+                                            <div class="info-block-label">Mask Refit:</div>
+                                            <div class="info-block-body">
+                                                {{appointment.event.RevisitOptions.MaskRefitType.Text || '-'}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="appointment-details-right-col">
+                                    <div class="flex-row">
+                                        <div class="info-block">
+                                            <div class="info-block-label">Equipment Change:</div>
+                                            <div class="info-block-body">
+                                                {{appointment.event.RevisitOptions.EquipmentChangeType.Text || '-'}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex-row"
+                                 ng-show="appointment.event.AppointmentType.Id === 2"
+                            >
+                                <div class="appointment-details-left-col">
+                                    <div class="flex-row">
+                                        <div class="info-block block-width-50-percent">
+                                            <div class="info-block-label">Patient Assessment / Follow Up:</div>
+                                            <div class="info-block-body">
+                                                {{appointment.event.RevisitOptions.PatientAssesment.Value.Text || '-'}}
+                                            </div>
+                                        </div>
+                                        <div class="info-block block-width-50-percent left-divider">
+                                            <div class="info-block-label">Reported Issue:</div>
+                                            <div class="info-block-body">
+                                                {{appointment.event.RevisitOptions.EquipmentMaintenance.Reason || '-'}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="appointment-details-right-col no-divider">&nbsp;</div>
+                            </div>
+
+                            <div class="flex-row"
+                                 ng-show="appointment.event.AppointmentType.Id === 2"
+                            >
+                                <div class="appointment-details-left-col">
+                                    <div class="flex-row">
+                                        <div class="info-block block-width-50-percent">
+                                            <div class="info-block-label">Reason:</div>
+                                            <div class="info-block-body">
+                                                {{appointment.event.RevisitOptions.PatientAssesment.Reason || '-'}}
+                                            </div>
+                                        </div>
+                                        <div class="info-block block-width-50-percent">&nbsp;</div>
+                                    </div>
+                                </div>
+                                <div class="appointment-details-right-col no-divider">&nbsp;</div>
+                            </div>
+
+                            <div class="flex-row"
+                                 ng-show="appointment.event.AppointmentType.Id === 3"
+                            >
+                                <div class="appointment-details-left-col">
+                                    <div class="flex-row">
+                                        <div class="info-block block-width-50-percent">
+                                            <div class="info-block-label">Reason:</div>
+                                            <div class="info-block-body">
+                                                {{appointment.event.PickupOptions.Reason.Text || '-'}}
+                                            </div>
+                                        </div>
+                                        <div class="info-block block-width-50-percent left-divider">
+                                            <div class="info-block-label">Expired Date:</div>
+                                            <div class="info-block-body">
+                                                {{
+                                                appointment.event.PickupOptions.ReasonPatientExpired
+                                                ? (appointment.event.PickupOptions.ReasonPatientExpired | amUtc | amDateFormat: "MM/DD/YYYY")
+                                                : "-"
+                                                }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="appointment-details-right-col">
+                                    <div class="flex-row">
+                                        <div class="info-block">
+                                            <div class="info-block-label">Other:</div>
+                                            <div class="info-block-body">
+                                                {{appointment.event.PickupOptions.ReasonOtherText || '-'}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="active-title flow-body-active-title"
+                                 ng-show="appointment.event.AppointmentType.Id === 3 && appointment.event.PickupOptions.Devices.length"
+                            >
+                                Pickup Items:
+                            </div>
+                            <div class="pickup-items-table"
+                                 ng-show="appointment.event.AppointmentType.Id === 3 && appointment.event.PickupOptions.Devices.length"
+                            >
+                                <div class="pickup-items-table-header">
+                                    <div class="pickup-items-table-cell number-cell">#</div>
+                                    <div class="pickup-items-table-cell name-cell grow-1">Name:</div>
+                                    <div class="pickup-items-table-cell cell-width-200">Manufacturer:</div>
+                                    <div class="pickup-items-table-cell cell-width-100">ID/Part #:</div>
+                                    <div class="pickup-items-table-cell cell-width-100">HCPCS:</div>
+                                </div>
+                                <div class="pickup-items-table-row"
+                                     ng-repeat="item in appointment.event.PickupOptions.Devices track by $index">
+                                    <div class="main-item-row">
+                                        <div class="pickup-items-table-cell number-cell">{{$index + 1}}.</div>
+                                        <div class="pickup-items-table-cell name-cell grow-1">
+                                            {{item.Name}}
+                                            <div class="status-label blue" ng-if="item.Bundle">Bundle</div>
+                                        </div>
+                                        <div class="pickup-items-table-cell cell-width-200">{{item.Manufacturer}}</div>
+                                        <div class="pickup-items-table-cell cell-width-100">{{item.PartNumber}}</div>
+                                        <div class="pickup-items-table-cell cell-width-100">{{item.HcpcsCodes.Primary || '-'}}</div>
+                                    </div>
+                                    <div class="bundle-item-row" ng-repeat="bundleItem in item.Components">
+                                        <div class="pickup-items-table-cell number-cell"></div>
+                                        <div class="pickup-items-table-cell name-cell grow-1">&#8231; {{bundleItem.Name || '-'}}</div>
+                                        <div class="pickup-items-table-cell cell-width-200">{{bundleItem.Manufacturer || '-'}}</div>
+                                        <div class="pickup-items-table-cell cell-width-100">{{bundleItem.PartNumber || '-'}}</div>
+                                        <div class="pickup-items-table-cell cell-width-100">{{bundleItem.HcpcsCodes.Primary}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </v-pane-content>
+                    </v-pane>
+                    <v-pane expanded="true">
+
+                        <v-pane-header class="flow-accordion-title">
+                            <md-icon md-svg-src="assets/images/default/chevron.svg" class="flow-accordion-title-icon"></md-icon>
+                            <span>Order Details:</span>
+                            <div class="accordion-line"></div>
+                        </v-pane-header>
+
+                        <v-pane-content>
+                            <div class="appointment-order-details" ng-repeat="order in appointment.event.Relations">
+                                <div class="flex-row row space-between">
+                                    <div class="info-block grow-1">
+                                        <div class="info-block-label">Order:</div>
+                                        <div class="info-block-body">
+                                            Order:
+                                            <a href="javascript:void(0)"
+                                               class="underline-after-link"
+                                               ui-sref="root.orders.order.details({ orderId: order.OrderId })">
+                                                {{order.DisplayId}}
+                                            </a>
+                                            <span class="vertical-divider">|</span>
+                                            Date: <span class="active-text">{{order.CreatedDate | localDateTime: 'MM/DD/YYYY'}}</span>
+                                            <span class="vertical-divider">|</span>
+                                            Ref. Provider: <span class="active-text">{{order | referralDisplayName}}</span>
+                                            <span class="vertical-divider">|</span>
+                                            Status:
+                                            <div class="status-label marg-left-5 {{ order.OrderStatus.statusClass }}"
+                                                 ng-bind="order.OrderStatus.Text"></div>
+                                        </div>
+                                    </div>
+                                    <div class="info-block block-width-370">
+                                        <div class="flex-cont space-between">
+                                            <md-button class="md-raised small-btn eye-details-btn"
+                                                       ng-click="appointment.viewOrderDetails(order.OrderId)">
+                                                <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon>
+                                                <span>Details</span>
+                                            </md-button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <no-records text="Reference Orders"
+                                        ng-if="!appointment.event.Relations.length"
+                                        class="no-records-small"></no-records>
+                        </v-pane-content>
+                    </v-pane>
+                    <v-pane expanded="true">
+
+                        <v-pane-header class="flow-accordion-title">
+                            <md-icon md-svg-src="assets/images/default/chevron.svg" class="flow-accordion-title-icon"></md-icon>
+                            <span>Documents:</span>
+                            <div class="accordion-line"></div>
+                        </v-pane-header>
+
+                        <v-pane-content>
+                            <div class="appointment-document-row" ng-repeat="document in appointment.event.Documents">
+                                <div class="info-block grow-1">
+                                    <div class="info-block-label">Document Type:</div>
+                                    <div class="info-block-body">{{document.DocumentType.Text}}</div>
+                                </div>
+                                <md-button class="md-raised small-btn eye-details-btn" ng-click="appointment.openPreview(document.AccessToken)">
+                                    <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon> Open
+                                </md-button>
+                            </div>
+                            <no-records text="Documents"
+                                        ng-if="!appointment.event.Documents.length"
+                                        class="no-records-small"></no-records>
+                        </v-pane-content>
+                    </v-pane>
+                    <v-pane expanded="true" ng-if="appointment.event.Notes">
+
+                        <v-pane-header class="flow-accordion-title">
+                            <md-icon md-svg-src="assets/images/default/chevron.svg" class="flow-accordion-title-icon"></md-icon>
+                            <span>Additional Info:</span>
+                            <div class="accordion-line"></div>
+                        </v-pane-header>
+
+                        <v-pane-content>
+                            <div class="flex-row" ng-if="appointment.event.Notes">
+                                <div class="info-block grow-1">
+                                    <div class="info-block-label">Notes:</div>
+                                    <div class="info-block-body">
+                                        <format-string-by-paragraphs text="appointment.event.Notes"></format-string-by-paragraphs>
+                                    </div>
+                                </div>
+                            </div>
+                            <no-records text="Additional Info"
+                                        ng-if="!appointment.event.Notes"
+                                        class="no-records-small"></no-records>
+                        </v-pane-content>
+                    </v-pane>
+                </v-accordion>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

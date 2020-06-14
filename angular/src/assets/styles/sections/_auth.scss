@@ -1,0 +1,178 @@
+.login {
+  @include size(100%, 100vh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('#{$image-path}/login-bg.jpg');
+  background-repeat: no-repeat;
+  background-size: 1920px 1280px;
+  background-position: center;
+
+  @include respond-to(hugeScreens) {
+    background-size: cover;
+  }
+
+  .login-block,
+  .forgotpass-block,
+  .changepass-block {
+    position: relative;
+    z-index: 1;
+    max-width: 100%;
+    max-height: 100%;
+    width: 420px;
+    padding: 30px 30px 10px 20px;
+    overflow: hidden;
+  }
+
+  .login-title {
+    margin-bottom: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    color: $dark-text-color;
+    text-align: center;
+
+    &.login-code-title {
+      margin-bottom: 5px;
+    }
+
+    .blue {
+      color: $main-active-color;
+    }
+  }
+
+  .login-footer-text {
+    margin-top: 35px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    color: $dark-text-color;
+    text-align: center;
+
+    .blue {
+      color: $main-active-color;
+    }
+  }
+
+  .login-desc {
+    font-size: 11px;
+    text-align: center;
+    color: $label-color;
+    width: 236px;
+    line-height: 1.45;
+    margin: auto;
+  }
+
+  .verification-code-input {
+    width: 28px;
+    height: 38px;
+    border-radius: 3px;
+    border: solid 1px $middle-gray-color;
+    background-color: #ffffff;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 5px;
+    text-transform: uppercase;
+
+    &:focus{
+      border: solid 1px $main-active-color;
+    }
+  }
+
+  .login-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 5px;
+    padding-top: 5px;
+
+    mat-form-field {
+      display: block;
+
+      label:not(.md-container-ignore).md-required:after {
+        display: none;
+      }
+
+      .md-input-messages-nice > div {
+        padding-top: 2px;
+      }
+    }
+
+    &.row-with-icon {
+      justify-content: space-between;
+
+      .login-row-icon {
+        @include size(36px, 36px);
+        display: block;
+        margin: -5px 10px 0 0;
+      }
+
+      mat-form-field {
+        flex: 1 1 auto;
+      }
+    }
+  }
+
+  .changepass-block {
+    .login-row.row-with-icon {
+      position: relative;
+      padding-left: 45px;
+      transition: padding-bottom 0.7s;
+
+      &.new-password-error {
+        padding-bottom: 80px;
+      }
+
+      .login-row-icon {
+        position: absolute;
+        left: 0;
+        top: 10px;
+        margin: 0;
+      }
+    }
+  }
+
+  .login-btn.mat-raised-button[disabled] {
+    background-color: #0084bb;
+    color: #04bbe6;
+  }
+
+  .login-btn,
+  .md-button.login-btn,
+  .md-button.md-primary.login-btn {
+    margin: 15px 0 10px;
+    width: 200px;
+    max-width: 90%;
+    color: white;
+    line-height: 41px;
+    font-size: 16px;
+    border-radius: 0;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0);
+
+    &:hover {
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    }
+  }
+
+  .mat-raised-button.spinner-btn {
+    padding: 3px 15px;
+    font-size: 16px;
+  }
+
+  md-checkbox.login-remember {
+    margin: 0;
+  }
+
+  .reset-login {
+    font-size: 13px;
+  }
+}
+
+
+
+
+
+
+
+

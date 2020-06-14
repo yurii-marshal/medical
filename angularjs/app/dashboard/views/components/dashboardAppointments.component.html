@@ -1,0 +1,113 @@
+<div class="dashboard-block-title">Upcoming appointments:</div>
+<div class="dashboard-block-body"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="upcomingAppointments">
+
+    <div class="custom-no-records horizontal" ng-if="!$ctrl.Items.length">
+        <div class="custom-no-records-icon">
+            <md-icon md-svg-src="assets/images/default/calendar-big.svg"></md-icon>
+        </div>
+        <div class="custom-no-records-content">
+            <div class="custom-no-records-title">You do not have any Appointments yet.</div>
+            <div class="custom-no-records-text">
+                Appointments can be created from the Calendar. On the Dashboard you will <br> see all your upcoming
+                appointments for the next 3 days.
+            </div>
+            <md-button class="md-raised md-primary middle-btn custom-no-records-btn"
+                       ui-sref="root.appointment_wizard">
+                <md-icon md-svg-src="assets/images/default/calendar-v2.svg" class="calendar-icon"></md-icon>
+                <span>New Appointment</span>
+            </md-button>
+        </div>
+    </div>
+
+    <div class="dashboard-appointments-list" ng-if="$ctrl.Items.length">
+        <div ng-repeat="item in $ctrl.Items track by $index"
+             class="dashboard-appointment-item">
+
+            <div class="left-col">
+                <div class="info-block">
+                    <div class="info-block-label">Patient:</div>
+                    <div class="info-block-body">
+                        <a href="javascript:void(0);"
+                           class="font-semibold"
+                           ui-sref="root.patient.demographics({ patientId: item.PatientId })">
+                            {{item.PatientName.FullName}} ({{item.PatientDateOfBirthday | amUtc | amDateFormat: "MM/DD/YYYY"}})
+                        </a>
+                    </div>
+                </div>
+                <div class="info-block">
+                    <div class="info-block-label">Address:</div>
+                    <div class="info-block-body">{{item.Address | addressToString}}</div>
+                </div>
+                <div class="info-block">
+                    <div class="info-block-label">Date:</div>
+                    <div class="info-block-body">
+                        <span class="dark-blue-text">{{item.DateRange.From | amUtc | amDateFormat: "MM/DD/YYYY"}} </span>
+                        <span class="active-text">{{item.DateRange.From | amUtc | amDateFormat: "h:mm A"}} </span>
+                    </div>
+                </div>
+                <div class="info-block">
+                    <div class="info-block-label">Appointment Type:</div>
+                    <div class="info-block-body">
+                        {{item.AppointmentType.Text}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="grow-1">
+                <div class="flex-row space-between">
+                    <div class="active-title flow-body-active-title">Orders:</div>
+                    <div class="flex-cont">
+                        <md-button class="view-info-icon" aria-label="..."
+                                   ng-click="$ctrl.openAppointment(item)"
+                        >
+                            <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon>
+                        </md-button>
+                        <div class="status-label {{ item.statusClass }}">
+                            {{item.Status.Text}}
+                        </div>
+                    </div>
+                </div>
+                <div class="orders-table">
+                    <div class="orders-table-header">
+                        <div class="number-cell">#</div>
+                        <div class="order-id-cell">Order ID:</div>
+                        <div class="date-cell">Date:</div>
+                        <div class="grow-1">Ref. Provider:</div>
+                    </div>
+                    <div class="orders-table-body"
+                         scroll-bar
+                         scroll-bar-above-element="true">
+                        <div class="orders-table-row" ng-repeat="order in item.Orders track by $index">
+                            <div class="number-cell">{{$index+1}}.</div>
+                            <div class="order-id-cell">
+                                <a href="javascript:void(0);"
+                                   ui-sref="root.orders.order.details({ orderId: order.Id })">
+                                    {{order.DisplayId}}
+                                </a>
+                            </div>
+                            <div class="date-cell" ng-if="order.Date">{{order.Date | amUtc | amDateFormat: "MM/DD/YYYY"}}</div>
+                            <div class="date-cell" ng-if="!order.Date">-</div>
+                            <div class="grow-1">{{order.PhysicianName.FullName || order.Practice}}</div>
+                        </div>
+                    </div>
+                    <no-records text="Orders"
+                                class="no-records-small"
+                                is-fullpage="false"
+                                ng-if="!item.Orders.length"></no-records>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ul ng-if="$ctrl.TotalCount > $ctrl.perPage"
+        uib-pagination total-items="$ctrl.TotalCount" ng-model="$ctrl.appPage"
+        items-per-page="$ctrl.perPage"
+        ng-change="$ctrl.loadAppointments($ctrl.appPage-1)"
+        max-size="20"
+        class="pagination-sm"
+        boundary-link-numbers="false"
+        previous-text="&lsaquo;" next-text="&rsaquo;">
+    </ul>
+    <no-records text="Upcoming Appointments" is-fullpage="true" ng-if="false"></no-records>
+</div>

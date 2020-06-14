@@ -1,0 +1,179 @@
+.patient-orders {
+    $patient-filters-height: 64px;
+    $tab-padding: 28px;
+
+    position: relative;
+    padding: 10px $tab-padding $tab-padding;
+
+    .order-items-filters {
+        height: $patient-filters-height;
+
+        .content-header-select {
+            width: 40%;
+            max-width: 350px;
+            flex-grow: 1;
+        }
+    }
+
+    no-records {
+        height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height} - #{$patient-filters-height} - #{$tab-padding} * 2);
+    }
+}
+
+.patient-order-item {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    padding: 25px 0;
+    border-top: 1px solid $lighter-gray-color;
+
+    .order-product {
+        margin-bottom: 25px;
+    }
+
+    .info-block {
+        .info-block-label {
+            margin-bottom: 5px;
+        }
+    }
+
+    .patient-order-left-column {
+        width: 120px;
+        padding-right: 20px;
+        margin-right: 20px;
+        border-right: 1px solid $lighter-gray-color;
+
+        .status-label {
+            display: block;
+            text-align: center;
+            margin-bottom: 12px;
+            width: 100%;
+            padding: 0;
+        }
+
+        .delivery-statuses {
+            border-top: 1px solid $lighter-gray-color;
+            padding: 24px 0 15px;
+
+            .delivery-status-stage {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                color: #c2c2c2;
+
+                &:not(:first-of-type) {
+                    padding-top: 30px;
+
+                    .delivery-status-icon {
+                        &::after {
+                            content: "";
+                            position: absolute;
+                            top: -30px;
+                            left: 50%;
+                            width: 1px;
+                            height: 30px;
+                            background-color: currentColor;
+                        }
+                    }
+                }
+
+                .delivery-status-icon {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 21px;
+                    min-width: 21px;
+                    height: 21px;
+                    margin-right: 10px;
+                    background-color: currentColor;
+                    border-radius: 50%;
+
+                    > md-icon {
+                        display: block;
+                        margin: 0;
+                        color: #fff;
+
+                        &.clock-icon {
+                            width: 11px;
+                            height: 11px;
+                        }
+
+                        &.track-icon {
+                            width: 13px;
+                            height: 7px;
+                        }
+
+                        &.check-icon {
+                            width: 10px;
+                            height: 8px;
+                        }
+                    }
+                }
+
+                .delivery-status-text {
+                    color: currentColor;
+                    font-size: $font-size-xs;
+                    line-height: $font-size-xs;
+                    white-space: nowrap;
+                }
+
+                &.active {
+                    color: $deeper-blue-color;
+
+                    .delivery-status-text {
+                        color: $font-color;
+                    }
+                }
+            }
+        }
+    }
+
+    .patient-order-content {
+        width: calc(100% - 370px);
+        padding-right: 30px;
+
+        .patient-order-content-row {
+            margin: 0 -15px;
+
+            .info-block {
+                display: inline-block;
+            }
+        }
+
+
+    }
+
+    .patient-order-sidebar {
+        position: relative;
+        width: 230px;
+        padding-left: 30px;
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background-color: $lighter-gray-color;
+        }
+    }
+
+    .patient-order-table {
+        margin: 5px 0 20px;
+
+        .patient-order-table-title {
+            margin-bottom: 10px;
+            color: $main-active-color;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .bundle-label {
+            min-width: 65px;
+            margin-left: 10px;
+        }
+    }
+}

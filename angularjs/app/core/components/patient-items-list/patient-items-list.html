@@ -1,0 +1,123 @@
+<div class="patient-items-row" ng-repeat="item in $ctrl.items track by $index">
+    <div class="flex-row">
+
+        <div class="info-block block-width-100">
+            <div class="info-block block-width-100">
+                <div class="item-img-container">
+                    <img ng-src="{{
+                    item.PictureUrl
+                        ? ($ctrl.WEB_API_INVENTORY_SERVICE_URI + item.PictureUrl)
+                        : $ctrl.noImage
+                    }}" alt="" class="item-img">
+                </div>
+            </div>
+        </div>
+
+        <div class="info-block grow-1">
+            <div class="flex-row">
+                <div class="info-block grow-1 patient-item-desc">
+                    <div class="info-block-label">Name:</div>
+                    <div class="info-block-body flex-cont">
+                        {{item.Name}}
+                        <md-icon class="equipment-arrow"
+                                 ng-if="item.Activated"
+                                 md-svg-src="assets/images/default/cloud-arrow.svg">
+                        </md-icon>
+                        <md-icon
+                                 ng-click="$ctrl.showItemDetails($event, item)"
+                                 md-svg-src="assets/images/default/bundle-icon.svg"
+                                 ng-if="item.Bundle">
+                        </md-icon>
+                    </div>
+                </div>
+                <div class="info-block block-width-160 left-divider">
+                    <div class="info-block-label">Manufacturer:</div>
+                    <div class="info-block-body">{{item.Manufacturer}}</div>
+                </div>
+            </div>
+            <div class="flex-row patient-items-serial-row" ng-if="item.SerialNumber || item.LotNumber">
+                <div class="info-block grow-1">
+                    <div class="info-block-label">Serial Number:</div>
+                    <div class="info-block-body">{{item.SerialNumber || '-'}}</div>
+                </div>
+                <div class="info-block block-width-160 left-divider" ng-if="item.LotNumber">
+                    <div class="info-block-label">Lot Number:</div>
+                    <div class="info-block-body">{{item.LotNumber}}</div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="info-block block-width-120 left-divider">
+            <div class="info-block-label">Part #:</div>
+            <div class="info-block-body">{{item.PartNumber || '-'}}</div>
+        </div>
+
+        <div class="info-block block-width-100 left-divider">
+            <div class="info-block-label">HCPCS:</div>
+            <div class="info-block-body">
+                <div popover-directive="item.Hcpcs"
+                     hide-first-item="true"
+                     min-width="50"
+                ></div>
+            </div>
+        </div>
+
+        <div class="info-block block-width-100 left-divider">
+            <div class="info-block-label">Qty:</div>
+            <div class="info-block-body">{{item.Count}}</div>
+        </div>
+
+        <div class="info-block block-width-140 left-divider">
+            <div class="info-block-label">ID:</div>
+            <div class="info-block-body">
+
+                <a href="javascript:void(0);"
+                   ng-if="item.OrderName"
+                   class="underline-after-link"
+                   ui-sref="root.orders.order.items({ orderId: item.OrderId })"
+                >
+                    {{ item.OrderName }}
+                </a>
+                <span ng-if="!item.OrderName">-</span>
+
+            </div>
+        </div>
+
+        <div class="info-block w120px left-divider" ng-if="item.DeliveryDate">
+            <div class="info-block-label">Delivery Date:</div>
+            <div class="info-block-body">
+                {{ item.DeliveryDate ? (item.DeliveryDate | amUtc | amDateFormat: 'MM/DD/YYYY') : '-' }}
+            </div>
+        </div>
+
+        <div class="info-block w120px left-divider" ng-if="item.ShippedDate">
+            <div class="info-block-label">Ship Date:</div>
+            <div class="info-block-body">
+                {{ item.ShippedDate ? (item.ShippedDate | amUtc | amDateFormat: 'MM/DD/YYYY') : '-' }}
+            </div>
+        </div>
+
+        <!--TODO fix property name after backend task finishing-->
+        <div class="info-block block-width-60 flex-cont left-divider">
+            <md-icon class="register-device-icon"
+                     md-svg-src="assets/images/default/ic-therapydata.svg"
+                     simple-tooltip="Device is registered or available for registration"
+                     tooltip-position="bottom"
+                     ng-click="$ctrl.goToTherapyData(item.TherapyId)"
+                     ng-if="item.TherapyId"
+            >
+            </md-icon>
+        </div>
+
+    </div>
+
+    <div class="flex-row notes-row">
+        <div class="info-block grow-1"
+             ng-if="item.Notes"
+        >
+            <div class="info-block-label">Notes:</div>
+            <div class="info-block-body">{{item.Notes}}</div>
+        </div>
+    </div>
+</div>

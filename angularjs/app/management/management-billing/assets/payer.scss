@@ -1,0 +1,133 @@
+.payer {
+    .payer-main-width {
+        width: calc(100% - 430px);
+    }
+
+    .payer-contacts-width {
+        width: 430px;
+        min-width: 430px;
+    }
+
+    .payer-main-width:not(.flow-title), .payer-contacts-width:not(.flow-title) {
+        padding: 10px 20px 10px 30px;
+    }
+
+    .payer-main-width:not(.flow-title) {
+        padding-left: 15px;
+
+        > .flex-row {
+            margin-left: -15px;
+            margin-right: -15px;
+        }
+    }
+
+    .payer-contacts-width:not(.flow-title) {
+        position: relative;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 15px;
+            bottom: 0;
+            left: 0;
+            width: 1px;
+            background-color: $lighter-gray-color;
+        }
+    }
+
+    .breadcrumbs {
+        padding-right: 0;
+    }
+}
+
+.payer-billing-content {
+    > .flex-row {
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+
+    > .drowz-line {
+        margin-top: 5px;
+    }
+
+    .payer-billing-options {
+        padding-top: 5px;
+
+        .method-icon-no, .method-icon-yes {
+            height:12px;
+            width: 12px;
+            margin: 0 10px 0 0;
+        }
+
+        .method-icon-no {
+            color: $red-error-color;
+        }
+
+        .method-icon-yes {
+            color: $main-active-color;
+        }
+    }
+
+    .payer-billing-switches {
+        flex-grow: 1;
+        padding: 10px 0 0 19px;
+
+        > md-switch {
+            .md-container {
+                margin-right: 20px;
+            }
+
+            .md-label {
+                padding-right: 80px;
+            }
+        }
+    }
+}
+
+.payer-details-tab, .payer-billing-tab, .payer-rules-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    min-height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height});
+    padding: 20px 20px 20px 25px;
+
+    > * {
+        width: 100%;
+    }
+}
+
+.payer-details-tab, .payer-billing-tab {
+    .payer-billing-block {
+        padding-top: 0;
+
+        .payer-main-width, .payer-contacts-width {
+            padding-top: 0;
+
+            > .active-title {
+                margin-top: 0;
+            }
+        }
+
+        .payer-contacts-width:not(.flow-title) {
+            &::before {
+                top: 5px;
+            }
+        }
+    }
+}
+
+.payer-billing-tab {
+    .payer-main-width {
+        margin-top: 38px;
+    }
+}
+
+.payer-modal {
+    .md-input-messages-nice {
+        .md-input-message-animation {
+            opacity: 1;
+            margin: 0;
+        }
+    }
+}

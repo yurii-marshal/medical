@@ -1,0 +1,418 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <base href="/">
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="/favicon.png" rel="shortcut icon" type="image/x-icon">
+
+
+</head>
+<body digest-watcher>
+    <!--[if lt IE 10]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser.
+        Please <a href="http://browsehappy.com/">upgrade
+        your browser</a> to improve your experience.
+    </p>
+    <![endif]-->
+    <div class="app-loading" id="loading_white"></div>
+    <div class="app-loading" id="loading_overlay">
+        <div id="floatingCirclesG">
+            <div class="f_circleG" id="frotateG_01"></div>
+            <div class="f_circleG" id="frotateG_02"></div>
+            <div class="f_circleG" id="frotateG_03"></div>
+            <div class="f_circleG" id="frotateG_04"></div>
+            <div class="f_circleG" id="frotateG_05"></div>
+            <div class="f_circleG" id="frotateG_06"></div>
+            <div class="f_circleG" id="frotateG_07"></div>
+            <div class="f_circleG" id="frotateG_08"></div>
+        </div>
+
+        <style>
+            #loading_white {
+                background-color: #ffffff !important;
+                width: 100vw;
+                height: 100vh;
+            }
+            #loading_overlay {
+                display: none;
+                background-color: #f0f3f7 !important;
+            }
+            #floatingCirclesG {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 51px;
+                height: 51px;
+                margin: auto;
+                transform: scale(0.6);
+                -o-transform: scale(0.6);
+                -ms-transform: scale(0.6);
+                -webkit-transform: scale(0.6);
+                -moz-transform: scale(0.6);
+            }
+
+            .f_circleG {
+                position: absolute;
+                background-color: rgb(255, 255, 255);
+                height: 9px;
+                width: 9px;
+                border-radius: 5px;
+                -o-border-radius: 5px;
+                -ms-border-radius: 5px;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                animation-name: f_fadeG;
+                -o-animation-name: f_fadeG;
+                -ms-animation-name: f_fadeG;
+                -webkit-animation-name: f_fadeG;
+                -moz-animation-name: f_fadeG;
+                animation-duration: 0.622s;
+                -o-animation-duration: 0.622s;
+                -ms-animation-duration: 0.622s;
+                -webkit-animation-duration: 0.622s;
+                -moz-animation-duration: 0.622s;
+                animation-iteration-count: infinite;
+                -o-animation-iteration-count: infinite;
+                -ms-animation-iteration-count: infinite;
+                -webkit-animation-iteration-count: infinite;
+                -moz-animation-iteration-count: infinite;
+                animation-direction: normal;
+                -o-animation-direction: normal;
+                -ms-animation-direction: normal;
+                -webkit-animation-direction: normal;
+                -moz-animation-direction: normal;
+            }
+
+            #frotateG_01 {
+                left: 0;
+                top: 21px;
+                animation-delay: 0.2295s;
+                -o-animation-delay: 0.2295s;
+                -ms-animation-delay: 0.2295s;
+                -webkit-animation-delay: 0.2295s;
+                -moz-animation-delay: 0.2295s;
+            }
+
+            #frotateG_02 {
+                left: 6px;
+                top: 6px;
+                animation-delay: 0.316s;
+                -o-animation-delay: 0.316s;
+                -ms-animation-delay: 0.316s;
+                -webkit-animation-delay: 0.316s;
+                -moz-animation-delay: 0.316s;
+            }
+
+            #frotateG_03 {
+                left: 21px;
+                top: 0;
+                animation-delay: 0.3925s;
+                -o-animation-delay: 0.3925s;
+                -ms-animation-delay: 0.3925s;
+                -webkit-animation-delay: 0.3925s;
+                -moz-animation-delay: 0.3925s;
+            }
+
+            #frotateG_04 {
+                right: 6px;
+                top: 6px;
+                animation-delay: 0.469s;
+                -o-animation-delay: 0.469s;
+                -ms-animation-delay: 0.469s;
+                -webkit-animation-delay: 0.469s;
+                -moz-animation-delay: 0.469s;
+            }
+
+            #frotateG_05 {
+                right: 0;
+                top: 21px;
+                animation-delay: 0.5455s;
+                -o-animation-delay: 0.5455s;
+                -ms-animation-delay: 0.5455s;
+                -webkit-animation-delay: 0.5455s;
+                -moz-animation-delay: 0.5455s;
+            }
+
+            #frotateG_06 {
+                right: 6px;
+                bottom: 6px;
+                animation-delay: 0.622s;
+                -o-animation-delay: 0.622s;
+                -ms-animation-delay: 0.622s;
+                -webkit-animation-delay: 0.622s;
+                -moz-animation-delay: 0.622s;
+            }
+
+            #frotateG_07 {
+                left: 21px;
+                bottom: 0;
+                animation-delay: 0.6985s;
+                -o-animation-delay: 0.6985s;
+                -ms-animation-delay: 0.6985s;
+                -webkit-animation-delay: 0.6985s;
+                -moz-animation-delay: 0.6985s;
+            }
+
+            #frotateG_08 {
+                left: 6px;
+                bottom: 6px;
+                animation-delay: 0.775s;
+                -o-animation-delay: 0.775s;
+                -ms-animation-delay: 0.775s;
+                -webkit-animation-delay: 0.775s;
+                -moz-animation-delay: 0.775s;
+            }
+
+            @keyframes f_fadeG {
+                0% {
+                    background-color: rgb(0, 0, 0);
+                }
+                100% {
+                    background-color: rgb(255, 255, 255);
+                }
+            }
+
+            @-o-keyframes f_fadeG {
+                0% {
+                    background-color: rgb(0, 0, 0);
+                }
+                100% {
+                    background-color: rgb(255, 255, 255);
+                }
+            }
+
+            @-ms-keyframes f_fadeG {
+                0% {
+                    background-color: rgb(0, 0, 0);
+                }
+                100% {
+                    background-color: rgb(255, 255, 255);
+                }
+            }
+
+            @-webkit-keyframes f_fadeG {
+                0% {
+                    background-color: rgb(0, 0, 0);
+                }
+                100% {
+                    background-color: rgb(255, 255, 255);
+                }
+            }
+
+            @-moz-keyframes f_fadeG {
+                0% {
+                    background-color: rgb(0, 0, 0);
+                }
+                100% {
+                    background-color: rgb(255, 255, 255);
+                }
+            }
+        </style>
+    </div>
+
+    <script>
+        // Redirect to Angular 2 app if there is NO iFrame and NO 'qa' item in localStorage
+        const isQA = localStorage.getItem('qa') === 'true';
+
+        if (window.self === window.top && !isQA) {
+            window.location.href = '/v2#/' + window.location.hash.substr(2);
+        } else {
+            showLoader();
+        }
+
+        function showLoader () {
+            document.getElementById('loading_overlay').style.display = "block";
+            document.getElementById('loading_white').style.display = "none";
+        }
+    </script>
+
+    <toast></toast>
+    <div class="main-app-container">
+        <!--<main-menu></main-menu>-->
+        <div class="main-app-view" ui-view></div>
+    </div>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- build:css({.tmp/serve,app}) styles/main.css -->
+    <!-- bower:css -->
+    <!-- run `gulp inject` to automatically populate bower styles dependencies -->
+    <!-- endbower -->
+
+    <link rel="stylesheet" href="assets/libs/infinite-scroll/md-autocomplete-with-infinite-scroll.css"/>
+    <link rel="stylesheet" href="assets/libs/angular-side-by-side-select/angular-side-by-side-select.min.css"/>
+    <link rel="stylesheet" href="assets/libs/scrollbar/jquery.mCustomScrollbar.min.css"/>
+
+    <!-- inject:css -->
+    <!-- css files will be automatically insert here -->
+    <!-- endinject -->
+    <!-- endbuild -->
+
+    <!-- build:js(app) scripts/vendor.js -->
+    <!-- bower:js -->
+    <!-- run `gulp inject` to automatically populate bower script dependencies -->
+    <!-- endbower -->
+    <script src="assets/libs/infinite-scroll/mdAutocompleteWithInfiniteScroll.js"></script>
+    <script src="assets/libs/fullcalendar/fullcalendar.js"></script>
+    <script src="assets/libs/fullcalendar/fullcalendar_override.js"></script>
+    <script src="assets/libs/accordion/v-accordion.js"></script>
+    <script src="assets/libs/ng-highcharts/highstock.src.js"></script>
+    <script src="assets/libs/ng-highcharts/highcharts-ng.js"></script>
+    <script src="assets/libs/scrollbar/jquery.mCustomScrollbar.js"></script>
+    <script src="assets/libs/angular-overlay/angular-loading-overlay.js"></script>
+
+    <!-- endbuild -->
+    <!-- build:js({app,.tmp/serve,.tmp/partials}) scripts/app.js -->
+    <script src="assets/js/isAdBlockOn.js"></script>
+    <script src="assets/js/guid.js"></script>
+    <script src="assets/js/extensions.js"></script>
+    <script src="assets/js/error_handler.js"></script>
+    <script src="assets/js/touchedErrorFields.js"></script>
+    <script src="assets/js/pdf-editor.js"></script>
+    <!-- inject:js -->
+    <!-- js files will be automatically insert here -->
+    <!-- endinject -->
+
+    <!-- inject:partials -->
+    <!-- angular templates will be automatically converted in js and inserted here -->
+    <!-- endinject -->
+
+    <script src="management/setup_center/scripts/controllers/modals/appointPersonnelModal.controller.js"></script>
+
+    <script src="management/setup_center/scripts/services/setupCenterManagement.service.js"></script>
+    <script src="management/setup_center/scripts/services/setupCenterList.service.js"></script>
+    <script src="management/setup_center/scripts/services/setupCenterAppointment.service.js"></script>
+    <script src="management/setup_center/scripts/services/setupCalendar.service.js"></script>
+    <script src="management/setup_center/scripts/controllers/setup.center.view.controller.js"></script>
+
+    <script src="core/components/search-items/search-items-cart-modal/searchItemsCartModal.controller.es6.js"></script>
+    <script src="calendar/scripts/controllers/modals/appointmentSchedule.controller.js"></script>
+    <script src="calendar/scripts/controllers/modals/removeDeviceMoveToModal.controller.es6.js"></script>
+    <script src="reports/scripts/services/reportsManagementGrid.service.js"></script>
+    <script src="reports/scripts/services/reportsManagement.service.js"></script>
+    <script src="reports/scripts/directives/reportTableRow.directive.js"></script>
+    <script src="reports/scripts/directives/reportFilterRowInner.directive.js"></script>
+    <script src="reports/scripts/directives/report-side-by-side-select.directive.js"></script>
+    <script src="reports/scripts/directives/onlyDigits.directive.js"></script>
+    <script src="reports/scripts/directives/angular-side-by-side-select.js"></script>
+    <script src="reports/scripts/controllers/reportsManagement.controller.js"></script>
+
+    <script src="core/directives/requireSearchTextOnly.directive.js"></script>
+    <script src="core/directives/tagsTooltip.directive.js"></script>
+    <script src="core/directives/switchYesNo.directive.js"></script>
+    <script src="core/directives/sortList.directive.js"></script>
+    <script src="core/directives/selectedItemRequires.directive.js"></script>
+    <script src="core/directives/scrollBar.directive.js"></script>
+    <script src="core/directives/ratingAppointment.directive.js"></script>
+    <script src="core/directives/rateWithNumber.directive.js"></script>
+    <script src="core/directives/popover.directive.js"></script>
+    <script src="core/directives/autocompleteMultiselectFilterPopover.directive.js"></script>
+    <script src="core/directives/clearAutocompleteSearchTextOnBlur.directive.js"></script>
+    <script src="core/directives/phoneMask.directive.js"></script>
+    <script src="core/directives/onlyDigitsWithLength.directive.js"></script>
+    <script src="core/directives/onPressEnter.directive.es6.js"></script>
+    <script src="core/directives/notifications.directive.js"></script>
+    <script src="core/directives/isTrue.directive.js"></script>
+    <script src="core/directives/inputZipString.directive.js"></script>
+    <script src="core/directives/inputStateString.directive.js"></script>
+    <script src="core/directives/inputNumber.directive.js"></script>
+    <script src="core/directives/iconLoadingWhite.directive.js"></script>
+    <script src="core/directives/hasScrollbar.directive.js"></script>
+    <script src="core/directives/fixElementOnScroll.directive.js"></script>
+    <script src="core/directives/easyScroll.directive.js"></script>
+    <script src="core/directives/drowz_calendar_simple.directive.js"></script>
+    <script src="core/directives/drowzSidebar.directive.js"></script>
+    <script src="core/directives/confirmNgClick.directive.js"></script>
+    <script src="core/directives/compareTo.directive.js"></script>
+    <script src="core/directives/cleanFromAutocomplete.directive.js"></script>
+    <script src="core/directives/calendarPopup.directive.js"></script>
+    <script src="core/directives/autoFocus.directive.js"></script>
+    <script src="core/directives/appLoading.directive.js"></script>
+    <script src="core/directives/accordeonWizard.js"></script>
+    <script src="core/directives/ShowOnFillInput.directive.js"></script>
+    <script src="core/directives/ShowOnFill.directive.js"></script>
+    <script src="core/directives/InputPhoneNumber.directive.js"></script>
+    <script src="core/directives/InputEmail.directive.js"></script>
+    <script src="core/directives/ClearOnClick.directive.js"></script>
+    <script src="core/directives/PdfEditor.directive.js"></script>
+    <script src="core/directives/scrollIfAnchor.directive.es6.js"></script>
+    <script src="core/services/urlMapper.service.js"></script>
+    <script src="core/services/token.service.js"></script>
+    <script src="core/services/tabs.service.js"></script>
+    <script src="core/services/popup_without_backdrop.service.js"></script>
+    <script src="core/services/menu.service.js"></script>
+    <script src="core/services/geoAddresses.service.js"></script>
+    <script src="core/services/files.service.es6.js"></script>
+    <script src="core/services/eventRender.service.js"></script>
+    <script src="core/services/copyClear.service.js"></script>
+    <script src="core/services/break.service.js"></script>
+    <script src="core/filters/weekDaysOrder.filter.js"></script>
+    <script src="core/filters/timeUtc.filter.js"></script>
+    <script src="core/filters/replacedEquipment.filter.js"></script>
+    <script src="core/filters/phoneMask.filter.js"></script>
+    <script src="core/filters/patientAddress.filter.js"></script>
+    <script src="core/filters/onlyChecked.filter.js"></script>
+    <script src="core/filters/dateTimeWithUtc.filter.js"></script>
+    <script src="core/filters/dateRange.filter.js"></script>
+    <script src="core/filters/contactTypesIcon.filter.js"></script>
+    <script src="core/filters/addressToString.filter.js"></script>
+    <script src="core/decorators/autocompleteDecorator.js"></script>
+    <script src="core/decorators/materialScrollDecorator.js"></script>
+    <script src="core/scripts/controllers/clear.controller.js"></script>
+    <script src="core/scripts/controllers/breakShort.controller.js"></script>
+    <script src="core/scripts/controllers/break.controller.js"></script>
+    <script src="core/scripts/components/sidebarMenu.component.js"></script>
+    <script src="core/scripts/components/infinity-table.component.js"></script>
+    <script src="core/components/search-items/search-items.service.es6.js"></script>
+    <script src="core/components/search-items-catalog/search-items-catalog.service.es6.js"></script>
+    <script src="core/components/prescription-details/prescription-details.component.es6.js"></script>
+
+    <script src="calendar/scripts/services/settings-validation.service.js"></script>
+    <script src="calendar/scripts/services/events.service.js"></script>
+    <script src="calendar/scripts/directives/summaryEdit.directive.js"></script>
+    <script src="calendar/scripts/directives/startTimeValidator.directive.js"></script>
+    <script src="calendar/scripts/directives/startRageValidator.directive.js"></script>
+    <script src="calendar/scripts/directives/startDateValidator.directive.js"></script>
+    <script src="calendar/scripts/directives/notLessThanCurrentDate.directive.js"></script>
+    <script src="calendar/scripts/directives/menuUserInfo.directive.js"></script>
+    <script src="calendar/scripts/directives/equipmentSettingEditor.directive.js"></script>
+    <script src="calendar/scripts/directives/equipmentPropertyList.directive.js"></script>
+    <script src="calendar/scripts/directives/endTimeValidator.directive.js"></script>
+    <script src="calendar/scripts/directives/endRangeValidator.directive.js"></script>
+    <script src="calendar/scripts/directives/endDateValidator.directive.js"></script>
+    <script src="calendar/scripts/directives/editField.directive.js"></script>
+    <script src="calendar/scripts/directives/drowzClearValue.directive.js"></script>
+    <script src="calendar/scripts/directives/copdValidator.directive.js"></script>
+    <script src="calendar/scripts/directives/blueWizardTabnames.directive.js"></script>
+    <script src="calendar/scripts/directives/appointmentsListInner.component.js"></script>
+    <script src="calendar/scripts/directives/appointmentsList.component.js"></script>
+    <script src="calendar/scripts/directives/angularNumberPicker.directive.js"></script>
+    <script src="config.route.js"></script>
+    <!-- endbuild -->
+    <script src="config.js"></script>
+
+    <!-- This files don't go to build -->
+    <!--<Deject>-->
+    <script src="assets/js/digestWatcherDirective.es6.js"></script>
+    <!--</Deject>-->
+
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,500italic,700,900&subset=latin" rel="stylesheet" type="text/css">
+    <div id="adblock"
+         style="visibility: hidden;
+                 opacity: 0;
+                 position: absolute;
+                 width: 0;
+                 height: 0;
+                 overflow: hidden;"></div>
+
+</body>
+</html>

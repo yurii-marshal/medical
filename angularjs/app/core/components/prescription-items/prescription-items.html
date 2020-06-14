@@ -1,0 +1,285 @@
+<div class="drowz-wizard-block no-float" ng-form="$ctrl.itemsFrom">
+    <div class="drowz-wizard-block-title">
+        <div class="wizard-title-text">{{ $ctrl.prescriptionItemsTitle }}</div>
+        <div class="apply-all-block">
+            <div ng-if="!$ctrl.disableLengthOfNeed"
+                 class="apply-all-block"
+            >
+                Length of need:
+                <md-input-container class="number-container">
+                    <label></label>
+                    <input type="text"
+                           ng-model="$ctrl.modelLengthOfNeed"
+                           only-digits-with-length
+                           max="99"
+                           min="1"/>
+                </md-input-container>
+
+                <md-button class="md-raised md-primary small-btn apply-all marg-left-15 marg-right-15"
+                           ng-click="$ctrl.applyModelLengthOfNeed()"
+                           ng-disabled="$ctrl.modelLengthOfNeed.length === 0"
+                >
+                    Apply to All
+                </md-button>
+            </div>
+
+            <div ng-if="!$ctrl.disableDiagnosis"
+                 class="apply-all-block marg-left-25"
+            >
+                Diagnosis:
+
+                <item-diagnosis
+                    all-diagnosis="$ctrl.patientDiagnosis"
+                    patient-diagnosis="$ctrl.modelDiagnosis"
+                    disabled-validation="true"
+                    class="prescription-items-header"
+                ></item-diagnosis>
+
+                <md-button class="md-raised md-primary small-btn apply-all marg-left-20"
+                           ng-click="$ctrl.applyDiagnosisToAll()"
+                           ng-disabled="$ctrl.isApplyDiagnosisToAllDisabled()"
+                >
+                    Apply to All
+                </md-button>
+            </div>
+
+            <md-button class="md-raised md-primary small-btn add-items-btn marg-left-30"
+                       ng-click="$ctrl.addBtn()"
+                       ng-if="$ctrl.addBtn"
+            >
+                Add
+            </md-button>
+        </div>
+    </div>
+    <div class="drowz-wizard-block-body">
+        <div class="wizard-list">
+            <div class="wizard-list-item"
+                 ng-repeat="item in $ctrl.items"
+            >
+                <div class="wizard-list-item-info">
+                    <div class="info-block grow-1" ng-if="item.isAny">
+                        <div class="info-block-label">&nbsp;</div>
+                        <div class="info-block-body">
+                            <div class="any-device-block">
+                                <span>Generic Item</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-block block-width-100 left-divider" ng-if="item.isAny">
+                        <div class="info-block-label">HCPCS:</div>
+                        <div class="info-block-body">
+                            {{item.HcpcsCode.Id || item.HcpcsCode || item.Code || '-'}}
+                        </div>
+                    </div>
+                    <div class="info-block grow-1" ng-if="!item.isAny">
+                        <div class="info-block-label">Name:</div>
+                        <div class="info-block-body">{{item.Name}}</div>
+                    </div>
+                    <div class="info-block block-width-200 left-divider" ng-if="!item.isAny">
+                        <div class="info-block-label">Manufacturer:</div>
+                        <div class="info-block-body">{{item.Manufacturer || '-'}}</div>
+                    </div>
+                    <div class="info-block block-width-150 left-divider" ng-if="!item.isAny">
+                        <div class="info-block-label">ID/Part #:</div>
+                        <div class="info-block-body">{{item.PartNumber || '-'}}</div>
+                    </div>
+                    <div class="info-block block-width-100 left-divider" ng-if="!item.isAny">
+                        <div class="info-block-label">HCPCS:</div>
+                        <div class="info-block-body">
+                            <div ng-if="item.allHcpcsCodes.length && !item.HcpcsCodes.length"
+                                 popover-directive="item.allHcpcsCodes"
+                                 hide-first-item="true"
+                                 min-width="50"></div>
+
+                            <div ng-if="item.HcpcsCodes.length"
+                                 popover-directive="item.HcpcsCodes"
+                                 hide-first-item="true"
+                                 min-width="50"></div>
+
+                            <div ng-if="!item.allHcpcsCodes.length && !item.HcpcsCodes.length"> - </div>
+                        </div>
+                    </div>
+                    <div class="info-block block-width-120 number-info-block left-divider"
+                         ng-if="!$ctrl.disableLengthOfNeed"
+                    >
+                        <div ng-if="!item.Bundle" class="info-block-label">Length of need *:</div>
+                        <div ng-if="!item.Bundle" class="info-block-body">
+                            <md-input-container class="number-container">
+                                <label></label>
+                                <input type="text"
+                                       name="lengthOfNeed"
+                                       ng-model="item.LengthOfNeed"
+                                       only-digits-with-length
+                                       max="99"
+                                       min="1"
+                                       ng-required="true">
+                                <div ng-messages="$ctrl.itemsFrom.lengthOfNeed.$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="required">Required</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div class="info-block number-info-block left-divider"
+                         ng-if="!$ctrl.disableDiagnosis && !item.Bundle"
+                    >
+                        <div class="info-block-label pad-left-5">Diagnosis:</div>
+                        <div class="info-block-body">
+                            <div class="flex-row">
+                                <item-diagnosis
+                                    all-diagnosis="$ctrl.patientDiagnosis"
+                                    patient-diagnosis="item.Diagnosis"
+                                ></item-diagnosis>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-block block-width-80 number-info-block left-divider">
+                        <div class="info-block-label">Qty *:</div>
+                        <div class="info-block-body">
+                        <md-input-container class="number-container">
+                            <label></label>
+                            <input type="text"
+                                   name="qty"
+                                   ng-model="item.Count"
+                                   only-digits-with-length
+                                   min="1"
+                                   ng-required="true"
+                                   name="modelCount{{$index}}"
+                            >
+                            <div ng-messages="$ctrl.itemsFrom.qty.$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">Required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    </div>
+                    <div class="status-label orange expired-item-label"
+                         ng-if="$ctrl.isItemExpired(item)"
+                    >
+                        Expired
+                    </div>
+
+                    <div class="info-block button-cell">
+                        <div class="info-block-label">&nbsp;</div>
+                        <div class="info-block-body">
+                            <a href="javascript:void(0);"
+                               class="delete-icon-btn"
+                               confirm-ng-click="$ctrl.deleteItem(item, $ctrl.items, $index)"
+                               confirm-msg="'Are you sure you want to remove item <span class=\'active-text\'>{0}</span> ?'.format(item.Name)"
+                               confirm-btn-ok="Remove"
+                               confirm-btn-cancel="Cancel"
+                               confirm-title="Remove Item"
+                               confirm-class-name="max-width-450">
+                                <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-list-item-info" ng-if="item.Bundle">
+                    <v-accordion class="flow-accordion grow-1">
+                        <v-pane expanded="true">
+
+                            <v-pane-header class="flow-accordion-title">
+                                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                                         class="flow-accordion-title-icon"></md-icon>
+                                <span>Items:</span>
+                                <div class="accordion-line"></div>
+                            </v-pane-header>
+
+                            <v-pane-content>
+                                <table class="drowz-table regular-table bundle-components-table">
+                                    <tr class="drowz-table-header">
+                                        <th class="number-cell" width="45">#</th>
+                                        <th>Name:</th>
+                                        <th>Manufacturer:</th>
+                                        <th>ID/Part #:</th>
+                                        <th>HCPCS:</th>
+                                        <th width="150" ng-if="!$ctrl.disableLengthOfNeed">Length of need *:</th>
+                                        <th width="350" ng-if="!$ctrl.disableDiagnosis">Diagnosis:</th>
+                                        <th width="100">Qty:</th>
+                                    </tr>
+                                    <tr class="drowz-table-row" ng-repeat="component in item.Components">
+                                        <td class="number-cell">{{$index + 1}}.</td>
+                                        <td>{{component.Name}}</td>
+                                        <td>{{component.Manufacturer}}</td>
+                                        <td>{{component.PartNumber}}</td>
+                                        <td>
+                                            <div class="flex-cont">
+                                                <div class="info-block-body">
+                                                    <div ng-if="component.allHcpcsCodes.length && !component.HcpcsCodes.length"
+                                                         popover-directive="component.allHcpcsCodes"
+                                                         hide-first-item="true"
+                                                         min-width="50"
+                                                    ></div>
+
+                                                    <div ng-if="component.HcpcsCodes.length"
+                                                         popover-directive="component.HcpcsCodes"
+                                                         hide-first-item="true"
+                                                         min-width="50"
+                                                    ></div>
+
+                                                    <div ng-if="!component.allHcpcsCodes.length && !component.HcpcsCodes.length"> - </div>
+                                                </div>
+
+                                            </div>
+                                        </td>
+                                        <td ng-if="!$ctrl.disableLengthOfNeed">
+                                            <md-input-container class="number-container">
+                                                <label></label>
+                                                <input type="text"
+                                                       name="componentlengthOfNeed{{$index}}"
+                                                       ng-model="component.LengthOfNeed"
+                                                       only-digits-with-length
+                                                       max="99"
+                                                       min="1"
+                                                       ng-required="true">
+                                                <div ng-messages="$ctrl.itemsFrom['componentlengthOfNeed' + $index].$error"
+                                                     class="md-input-messages-nice">
+                                                    <div ng-message="required">Required</div>
+                                                </div>
+                                            </md-input-container>
+                                        </td>
+                                        <td ng-if="!$ctrl.disableDiagnosis">
+                                            <item-diagnosis
+                                                all-diagnosis="$ctrl.patientDiagnosis"
+                                                patient-diagnosis="component.Diagnosis"
+                                                ng-if="item.Bundle"
+                                            ></item-diagnosis>
+                                        </td>
+                                        <td>{{component.Count}}</td>
+                                    </tr>
+                                </table>
+                            </v-pane-content>
+                        </v-pane>
+                    </v-accordion>
+                </div>
+
+                <div class="flex-row align-center">
+                    <div class="grow-1">
+                        <div class="info-block-body">
+                            <md-input-container>
+                                <label>Notes:</label>
+                                <textarea type="text" ng-model="item.Notes"></textarea>
+                            </md-input-container>
+                        </div>
+                    </div>
+
+                    <div class="info-block"
+                         ng-if="$ctrl.effectiveDate"
+                    >
+                        <div class="info-block-body">
+                            Expiration date: <b>{{ $ctrl.getExpirationDate(item) }}</b>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div ng-transclude
+                 ng-if="!$ctrl.items.length"
+            ></div>
+
+        </div>
+    </div>
+</div>

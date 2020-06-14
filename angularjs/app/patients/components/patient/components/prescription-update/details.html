@@ -1,0 +1,29 @@
+<div class="drowz-wizard-body clearfix">
+    <prescription-details
+            effective-date="prUpdate.model.EffectiveDate"
+            is-referral-required="true"
+            prescription-referral="prUpdate.model.TreatingProvider">
+    </prescription-details>
+    <prescription-items
+            items="prUpdate.model.Products"
+            delete-item="prUpdate.deleteItem"
+            add-btn="prUpdate.addItem"
+            prescription-items-title="items:"
+            patient-diagnosis="prUpdate.patientDiagnosis"
+    >
+        <no-records text="Items Selected"
+                    class="no-records-small"
+                    no-default-text="true">
+        </no-records>
+    </prescription-items>
+</div>
+
+<div class="drowz-wizard-footer">
+    <md-button class="md-raised main-button drowz-wizard-footer-btn"
+               ng-click="prUpdate.cancel()">Cancel</md-button>
+    <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+               ng-click="prUpdate.save()"
+               ng-disabled="!prUpdate.model.Products.length">
+        Save
+    </md-button>
+</div>

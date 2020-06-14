@@ -1,0 +1,79 @@
+.drowz-wizard-tabnames {
+    display: block;
+    margin-bottom: 15px;
+    padding: 5px 0;
+    box-shadow: $box-shadow;
+    background-color: #fff;
+    border-radius: 3px;
+    counter-reset: step;
+
+    .drowz-wizard-tab {
+        position: relative;
+        display: inline-block;
+        text-align: center;
+        height: 30px;
+        padding: 0 15px 0 40px;
+        margin: 0 3% 0 15px;
+        color: $gray-disabled;
+        background-color: #fff;
+        font-size: 14px;
+        line-height: 30px;
+        font-weight: 400;
+        cursor: default;
+        text-decoration: none;
+
+        @include respond-to(bigScreens) {
+            margin: 0 40px 0 15px;
+        }
+
+        &:hover {
+            background-color: #fff;
+        }
+
+        &::before {
+            content: counter(step);
+            counter-increment: step;
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            transform: translateY(-50%);
+            border-radius: 50%;
+            background-color: $gray-disabled;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        &:not(:last-of-type)::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            height: 0.08em;
+            min-height: 1px;
+            right: -55px;
+            width: 55px;
+            background-color: #d5d5d5;
+            z-index: 0;
+        }
+
+        &.active {
+            color: $font-color;
+
+            &::before {
+                background-color: $main-active-color;
+            }
+        }
+
+        &.finished {
+            color: $font-color;
+
+            &::before {
+                background-color: $main-active-color;
+            }
+        }
+    }
+}

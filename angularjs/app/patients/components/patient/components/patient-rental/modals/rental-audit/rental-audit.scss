@@ -1,0 +1,19 @@
+.modal-window {
+    &.audit-rental-modal {
+        width: 500px;
+
+        .modal-icon {
+            @include size(37px, 37px);
+        }
+
+        .md-dialog-content {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .audit-rental-modal-body {
+            max-height: 350px;
+            overflow: auto;
+        }
+    }
+}

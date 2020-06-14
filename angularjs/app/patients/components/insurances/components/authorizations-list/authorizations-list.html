@@ -1,0 +1,132 @@
+<div>
+    <div class="flex-row flex-end">
+        <md-button class="md-raised small-btn show-history arrow-back-button"
+                   ng-click="authorizations.changeStatus()"
+                   aria-label="..."
+        >
+            <md-icon md-svg-src="assets/images/default/history.svg"
+                     ng-if="authorizations.isActiveItems">
+            </md-icon>
+
+            <md-icon md-svg-src="assets/images/default/arrow.svg"
+                     ng-if="!authorizations.isActiveItems"
+                     class="rotate-arrow">
+            </md-icon>
+            {{ authorizations.isActiveItems ? 'History' : 'Active' }}
+        </md-button>
+    </div>
+
+    <div class="flex-row marg-top-20"
+         ng-if="!authorizations.loadingItems"
+    >
+        <div class="insurances-list">
+            <div class="authorization-item"
+                 ng-repeat="item in authorizations.authorizationItems"
+            >
+                <div class="flex-row">
+                    <div class="info-block block-width-120"
+                         ng-if="authorizations.isActiveItems"
+                    >
+                        <div class="status-label {{item.StatusClass}}">{{item.Status.Text}}</div>
+                        <div class="status-label dark-blue"
+                             ng-if="item.InProgress"
+                             simple-tooltip="{{item.InProgressStartDate | amUtc | amDateFormat: 'MM/DD/YYYY'}}">
+                            In Progress
+                        </div>
+                    </div>
+                    <div class="info-block block-width-200">
+                        <div class="info-block-label">Auth. Number:</div>
+                        <div class="info-block-body">{{item.AuthNumber}}</div>
+                    </div>
+                    <div class="info-block block-width-100 left-divider">
+                        <div class="info-block-label">Type:</div>
+                        <div class="info-block-body">{{item.PriceOption.Text || '-'}}</div>
+                    </div>
+                    <div class="info-block block-width-100 left-divider">
+                        <div class="info-block-label">HCPCS:</div>
+                        <div class="info-block-body">
+                            <div popover-directive="item.Hcpcs" min-width="50"></div>
+                        </div>
+                    </div>
+                    <div class="info-block block-width-250 left-divider">
+                        <div class="info-block-label">Modifiers:</div>
+                        <div class="info-block-body">
+                                            <span class="code-with-slash">
+                                                {{item.Modifiers.Level1 || '-'}}
+                                            </span>
+                            <span class="code-with-slash">
+                                                {{item.Modifiers.Level2 || '-'}}
+                                            </span>
+                            <span class="code-with-slash">
+                                                {{item.Modifiers.Level3 || '-'}}
+                                            </span>
+                            <span class="code-with-slash">
+                                                {{item.Modifiers.Level4 || '-'}}
+                                            </span>
+                        </div>
+                    </div>
+                    <div class="info-block block-width-150 left-divider">
+                        <div class="info-block-label">From:</div>
+                        <div class="info-block-body">
+                            {{item.FromDate.length? (item.FromDate | amUtc | amDateFormat: "MM/DD/YYYY") : '-'}}
+                        </div>
+                    </div>
+                    <div class="info-block block-width-150 left-divider">
+                        <div class="info-block-label">To:</div>
+                        <div class="info-block-body">
+                            {{item.ToDate.length? (item.ToDate | amUtc | amDateFormat: "MM/DD/YYYY") : '-'}}
+                        </div>
+                    </div>
+                    <div class="info-block grow-1 left-divider">
+                        <div class="info-block-label">Units:</div>
+                        <div class="info-block-body">{{item.Units || '-'}}</div>
+                    </div>
+                    <div class="info-block block-width-80">
+                        <div class="info-block-label">&nbsp;</div>
+                        <div class="info-block-body flex-cont space-between authorizations-actions"
+                             ng-if="authorizations.isActiveItems"
+                        >
+                            <md-button class="edit-info-icon" aria-label="..."
+                                       ng-click="authorizations.edit($event, item)">
+                                <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                            </md-button>
+                            <md-button class="delete-icon-btn" aria-label="..."
+                                       confirm-msg="'Are you sure you want to delete the authorization item?'"
+                                       confirm-title="Delete"
+                                       confirm-ng-click="authorizations.deleteAuthorization(item.Id)">
+                                <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                            </md-button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-row">
+                    <div class="info-block block-width-120"
+                         ng-if="authorizations.isActiveItems"
+                    >&nbsp;</div>
+                    <div class="info-block block-width-400">
+                        <div class="info-block-label">Payer:</div>
+                        <div class="info-block-body">{{item.PayerName}}</div>
+                    </div>
+                    <div class="info-block block-width-250 left-divider">
+                        <div class="info-block-label">Amount:</div>
+                        <div class="info-block-body font-semibold">{{item.Amount ? '$ ' + item.Amount : '-'}}</div>
+                    </div>
+                    <div class="info-block w500px left-divider">
+                        <div class="info-block-label">Notes:</div>
+                        <div class="info-block-body">
+                            <span ng-if="!item.Notes">-</span>
+                            <div popover-directive="item.Notes"
+                                 ng-if="item.Notes"
+                            ></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <no-records text="{{ authorizations.isActiveItems ? 'Active' : 'History' }} Authorizations"
+                is-fullpage="true"
+                ng-if="!authorizations.authorizationItems.length"
+    ></no-records>
+</div>

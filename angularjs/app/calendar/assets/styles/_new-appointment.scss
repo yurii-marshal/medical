@@ -1,0 +1,410 @@
+.insurances-block {
+    .drowz-wizard-block-body {
+        .info-block {
+            margin-bottom: 30px;
+        }
+    }
+
+    .status-label {
+        min-width: 90px;
+        margin-left: 20px;
+    }
+}
+
+.appointment-documents {
+    .select-document-btns {
+        display: flex;
+        align-items: center;
+        width: 170px;
+        padding-top: 15px;
+
+        .delete-icon-btn {
+            margin-left: 25px;
+        }
+    }
+
+    .add-new-contact.md-button {
+        margin-bottom: 15px;
+    }
+}
+
+.has-duration-tooltip {
+    pointer-events: all !important;
+}
+
+.duration-tooltip {
+    position: relative;
+    display: inline-block;
+    margin-left: 4px;
+    width: 18px;
+    height: 18px;
+    background-color: $dark-blue-color;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 18px;
+    color: #FFF;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.set-appointment-checkbox {
+    margin-bottom: 0;
+}
+
+.service-centers.drowz-wizard-block {
+    border-radius: 3px 3px 0 0;
+
+    .service-centers-block {
+        display: block;
+
+        .service-center-repeat {
+            &:not(:last-of-type) {
+                border-bottom: 1px solid rgba($gray-color-main, 0.4);
+            }
+
+            .md-label {
+                display: block;
+            }
+
+            md-checkbox, md-radio-button {
+                padding-bottom: 15px;
+                padding-top: 15px;
+                padding-left: 30px;
+                margin: 0;
+                transition: .2s;
+
+                &:hover, &[checked="checked"], &.md-checked {
+                    background-color: rgba($light-gray-color, 0.7);
+                }
+
+                .md-container {
+                    left: 20px;
+                }
+            }
+
+            .info-block {
+                margin-bottom: 0;
+            }
+        }
+
+        .md-virtual-repeat-scroller {
+            position: relative;
+            max-height: 360px;
+            top: auto;
+            left: auto;
+            bottom: auto;
+            right: auto;
+        }
+    }
+}
+
+.search-appointments-block.drowz-wizard-block {
+    position: relative;
+    z-index: 2;
+    border-radius: 0 0 3px 3px;
+    border-top: 1px solid rgba($gray-color-main, 0.4);
+
+    .info-loading {
+        padding-top: 5px;
+    }
+
+    .search-appointments-row {
+        align-items: center;
+        padding-bottom: 10px;
+
+        .info-block {
+            margin-bottom: 0;
+
+            md-checkbox {
+                margin: 0;
+            }
+
+            .md-button {
+                margin: 0;
+            }
+        }
+    }
+}
+
+.appointment-btns {
+    position: relative;
+    padding-left: 20px;
+    padding-right: 30px;
+    background-color: $wizard-title-color;
+
+    .scroll-appointments {
+        overflow: hidden;
+        width: auto;
+        height: 54px;
+        display: flex;
+
+        .md-button.appointment-btn {
+            margin: 0;
+            height: 54px;
+            line-height: 54px;
+            font-size: 14px;
+            text-transform: none;
+            min-width: 132px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            transition: .2s;
+
+            &:first-child {
+                width: 74px;
+                min-width: 74px;
+            }
+
+            &:hover, &.active {
+                background: none;
+                color: $main-active-color;
+            }
+        }
+    }
+
+    &.hasScrollBtns {
+        padding-left: 30px;
+
+        .scroll-btn {
+            display: block;
+        }
+    }
+
+    .scroll-btn {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 30px;
+        color: $main-active-color;
+        outline: none;
+        box-shadow: 1px 0px 2px -2px #000;
+
+        &::after, &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 9px;
+            height: 3px;
+            background-color: $main-active-color;
+            transition: .2s;
+        }
+
+        &::before {
+            transform: rotate(-45deg) translateY(-5px) translateX(-2px);
+        }
+
+        &::after {
+            transform: rotate(45deg) translateY(5px) translateX(-2px);
+        }
+
+        &.scroll-right {
+            left: auto;
+            right: 0;
+            transform: scale(-1, 1);
+        }
+
+        &:hover {
+            &::after, &::before {
+                background-color: $main-active-hover-color;
+            }
+        }
+    }
+}
+
+.long-appointment-days {
+    width: auto;
+    display: flex;
+}
+
+.appointment-filters {
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 26px;
+    background-color: $wizard-title-color;
+
+    .md-button.appointment-filter-btn {
+        height: 24px;
+        line-height: 24px;
+        margin: 0 5px;
+        padding: 0 10px;
+        border-radius: 9px;
+        background: none;
+        text-transform: none;
+        color: $font-color;
+
+        &:hover, &.active {
+            color: #fff;
+            background-color: $main-active-color;
+        }
+
+        &[disabled] {
+            cursor: default;
+            opacity: .6;
+
+            &:hover, &.active {
+                background: none;
+                color: $font-color;
+            }
+        }
+    }
+}
+
+.appointments-table-header, .appointment-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 40px;
+
+    > div {
+        padding-left: 5px;
+        padding-right: 5px;
+        color: $font-color;
+    }
+
+    .time-cell {
+        width: 170px;
+        min-width: 170px;
+
+        .status-label {
+            margin-left: 15px;
+        }
+    }
+
+    .personnel-cell {
+        width: 155px;
+        min-width: 155px;
+    }
+
+    .type-cell {
+        width: 90px;
+        min-width: 90px;
+    }
+
+    .address-cell {
+        flex-grow: 1;
+    }
+
+    .driving-time-cell {
+        width: 82px;
+        min-width: 82px;
+    }
+
+    .duration-cell {
+        width: 70px;
+        min-width: 70px;
+    }
+
+    .appointments-cell {
+        width: 95px;
+        min-width: 95px;
+    }
+
+    .windshield-cell {
+        width: 110px;
+        min-width: 110px;
+    }
+
+    .rating-cell {
+        width: 100px;
+        min-width: 100px;
+    }
+}
+
+.appointments-table-header {
+    height: 40px;
+    padding-right: 20px;
+    font-size: 13px;
+    background-color: $lighter-gray-color;
+}
+
+.appointments-table-body {
+    .appointment-item {
+        position: relative;
+        height: 72px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: .2s;
+        overflow: hidden;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid $calendar-gray-color;
+        }
+
+        &:hover, &.active {
+            background-color: $light-gray-color;
+        }
+
+        &.active {
+            &::after {
+                left: 21px;
+                width: 7px;
+                height: 7px;
+            }
+
+            &::before {
+                border-color: $main-active-color;
+            }
+        }
+
+        &::before, &::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 50%;
+        }
+
+        &::before {
+            left: 17px;
+            width: 15px;
+            height: 15px;
+            border: 1px solid $dark-gray-color;
+        }
+
+        &::after {
+            content: "";
+            left: 24px;
+            width: 0;
+            height: 0;
+            background-color: $main-active-color;
+            transition: .2s;
+        }
+
+        .windshield-cell {
+            text-align: center;
+        }
+    }
+}
+
+appointment-contacts-readonly {
+    display: block;
+    padding-top: 10px;
+}
+
+appointment-step2 {
+    .drowz-wizard-flex-block {
+        width: 100%;
+        max-width: calc(100% - 720px);
+    }
+}
+
+.appointments-service-centers-filter {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 12px 20px 0 60px;
+    border-bottom: 1px solid rgba(204, 204, 204, 0.4);
+
+    .service-centers-filter-md-input {
+        max-width: 350px;
+
+        &.location-filter-input {
+            margin-left: 13px;
+        }
+    }
+}

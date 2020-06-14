@@ -1,0 +1,221 @@
+.drowz-subwizard-page {
+    .add-lookup-btn {
+        width: 100px;
+    }
+
+    .last-scanned-image {
+        width: 20px;
+        min-width: 20px;
+        width: 22px;
+        margin: 7px 0 0 15px;
+        color: $main-active-color;
+    }
+
+    .drowz-subwizard-overlay {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 48;
+        background-color: rgba(#000, 0.3);
+    }
+
+    .drowz-subwizard-container {
+        > .drowz-wizard-block {
+            position: relative;
+            z-index: 49;
+        }
+    }
+}
+
+.drowz-subwizard-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    .md-button {
+        &:last-of-type {
+            margin-right: 0;
+        }
+    }
+}
+
+.with-blue-border {
+    padding-left: 0px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    margin-left: 30px;
+    margin-bottom: 20px;
+    border-radius: 3px;
+    border: 1px solid #06aed5;
+}
+
+.clear-info-block-padding.subwizard-container-block {
+    .info-block{
+        padding: 0;
+    }
+}
+
+.subwizard-container-block {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 15px;
+    padding-top: 15px;
+    margin-bottom: 15px;
+
+    &.pad-left-0 {
+        padding-left: 0;
+    }
+
+    .bottom-divider {
+        border-bottom: 1px solid $lighter-gray-color;
+    }
+
+    &.no-barcodes-block {
+        align-items: flex-start;
+
+        .alert-icon {
+            top: 10px;
+        }
+
+        .no-barcodes-text {
+            margin-top: 10px;
+        }
+    }
+
+    &.current-prev-item {
+        padding-right: 0;
+
+        .info-block {
+            margin-right: 15px;
+            margin-bottom: 0;
+        }
+
+        .subwizard-container-btns {
+            top: auto;
+        }
+    }
+
+    &.with-additional-text {
+        padding-top: 40px;
+        margin-bottom: 15px;
+
+        .additional-text-title {
+            position: absolute;
+            top: -10px;
+            left: 34px;
+            right: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: $font-color;
+            font-weight: $font-weight-bold;
+        }
+
+        .additional-text-footer {
+            position: absolute;
+            bottom: -10px;
+            left: 34px;
+            text-transform: lowercase;
+            color: $gray-color;
+            font-size: 11px;
+            font-style: italic;
+        }
+    }
+
+    .subwizard-container-icon {
+        margin: 0 20px 0 0;
+        color: $main-active-color;
+
+        &.location-icon {
+            position: relative;
+            min-width: 14px;
+        }
+
+        &.po-icon {
+            position: relative;
+            width: 30px;
+        }
+
+        &.inventory-icon {
+            position: relative;
+            top: -7px;
+            width: 20px;
+            min-width: 20px;
+            height: 22px;
+            margin-right: 14px;
+        }
+
+        &.success-icon {
+            position: relative;
+            width: 20px;
+            min-width: 20px;
+            height: 20px;
+            margin-right: 14px;
+            color: $green-color;
+        }
+
+        &.alert-icon {
+            position: relative;
+            width: 20px;
+            min-width: 20px;
+            height: 20px;
+            margin-right: 14px;
+            margin-left: 5px;
+            color: $orange-color;
+        }
+
+        &.new-invoice-rect-icon {
+            position: relative;
+            top: -7px;
+            width: 18px;
+            min-width: 18px;
+            height: 18px;
+            margin-right: 16px;
+            transform: rotate(90deg);
+        }
+
+        + .info-block {
+            padding-left: 0;
+        }
+    }
+
+    .no-barcodes-text {
+        width: 40%;
+        min-width: 40%;
+        padding-right: 25px;
+        color: $gray-color;
+    }
+
+    .barcodes-chips {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-grow: 1;
+
+        .barcodes-chips-title {
+            padding-top: 10px;
+            padding-right: 15px;
+            margin-bottom: 11px;
+            color: $orange-color;
+        }
+    }
+
+    .subwizard-container-btns {
+        position: relative;
+        top: -5px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-grow: 1;
+        margin-left: 20px;
+
+        .md-button {
+            margin: 0 5px;
+            min-width: 70px;
+        }
+    }
+}

@@ -1,0 +1,12 @@
+<div class="drowz-wizard-body clearfix">
+    <search-items items="resProg.model.Items"
+                  is-resupply-program-items="true"
+                  selected-items-for-resupply-program="resProg.currentSelectedItems"
+                  type="products"
+                  is-hide-select-any-device-btn="true"></search-items>
+</div>
+
+<div class="drowz-wizard-footer">
+    <md-button class="md-raised main-button drowz-wizard-footer-btn" ng-click="resProg.cancelItems()">Cancel</md-button>
+    <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn" ng-click="resProg.saveItems()">Save</md-button>
+</div>

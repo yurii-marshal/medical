@@ -1,0 +1,27 @@
+<div class="flex-row">
+    <div class="filters-block-label active-text font-semibold">
+        <span ng-if="$ctrl.options.label"
+              ng-bind="$ctrl.options.label + ':'"></span>
+    </div>
+    <div class="filters-block-body">
+        <div class="flex-row"
+             ng-if="$ctrl.options.buttonTypeCheckbox">
+            <md-checkbox class="md-primary button-type-checkbox"
+                         ng-repeat="item in $ctrl.options.items track by $index"
+                         ng-model="item.isSelected"
+                         ng-bind="item.displayName">
+            </md-checkbox>
+        </div>
+        <div class="flex-row"
+             ng-if="!$ctrl.options.buttonTypeCheckbox">
+            <md-checkbox class="md-primary"
+                         simple-tooltip="{{$ctrl.options.title}}"
+                         tooltip-position="right"
+                         simple-tooltip-max-width="null"
+                         ng-repeat="item in $ctrl.options.items track by $index"
+                         ng-model="item.isSelected">
+                <span ng-bind="item.displayName"></span>
+            </md-checkbox>
+        </div>
+    </div>
+</div>

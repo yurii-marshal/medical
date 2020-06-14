@@ -1,0 +1,112 @@
+// Main Colors
+$font-color:                    #333 !default;      // in color guide
+$label-color:                   #606060 !default;   // in color guide
+$dark-black-color:              #1D1D1D !default;   // in color guide
+
+$white-color:                   #fff    !default;   // in color guide
+$main-active-color:             #06aed5 !default;   // in color guide
+$main-active-hover-color:       #04bbe6 !default;   // in color guide
+$lighter-gray-color:            #f0f3f7 !default;   // in color guide
+$light-gray-color:              #f8f8f8 !default;   // in color guide
+$calendar-gray-color:           #e8e8e8 !default;   // in color guide
+$gray-color-eee:                #eeeeee !default;
+$wizard-title-color:            #e3e6ea !default;   // in color guide
+$gray-color:                    #abb7c5 !default;   // in color guide
+$gray-color-main:               #cccccc !default;   // in color guide
+$middle-gray-color:             #8e8d8d !default;
+$dark-gray-color:               #4e6b89 !default;   // in color guide
+$gray-disabled:                 #b2b5b9 !default;   // in color guide
+$gray-blue-color:               #c6d3de !default;
+
+$green-color:                   #6dc85e !default;   // in color guide
+$dark-green-color:              #025c1a !default;
+$yellow-color:                  #fff916 !default;
+$orange-color:                  #ff6325 !default;   // in color guide
+$dark-blue-color:               #2a3f54 !default;   // in color guide
+$darker-blue-color:             #0b3954;
+$deep-blue-color:               #3F51B5 !default;   // in color guide
+$deeper-blue-color:             #4F6C8A !default;
+$violet-color:                  #780759 !default;
+$light-blue-color:              #5eb1bf !default;
+$red-color:                     #ff4848 !default;   // in color guide
+$red-error-color:               #dd2c00 !default;   // taken from material components
+$dark-red-color:                #880022 !default;
+
+// invoice attributes/order tags colors
+$orange-label:                  #f78b00;
+$light-green-label:             #9ce035;
+$red-label:                     #ff4848;
+$dark-blue-label:               #160d71;
+$light-violet-label:            #c581b4;
+$bright-green-label:            #39b54a;
+$bright-yellow-label:           #ffd800;
+$bright-violet-label:           #9e005d;
+$bright-blue-label:             #0084bb;
+$light-blue-label:              #59c3ed;
+$light-gray-label:              #c3c3c3;
+$lilac-label:                   #e9a3f8;
+$mint-label:                    #40ddb2;
+$cobalt-blue-label:             #3255e9;
+$sky-blue-label:                #00e4ff;
+
+
+// Font-sizes
+$font-size-base:                14px !default;
+$font-size-xxs:                 10px !default;
+$font-size-xs:                  11px !default;
+$font-size-sm:                  12px !default;
+$font-size-md:                  16px !default;
+$font-size-title:               18px !default;
+$font-size-lg:                  26px !default;
+
+// Font-weights
+$font-weight-normal:            400 !default;
+$font-weight-light:             300 !default;
+$font-weight-semibold:          500 !default;
+$font-weight-bold:              700 !default;
+
+// Line-heights
+$line-height-normal:            1 !default;
+$line-height-base:              1.45 !default;
+
+// Main styles
+$box-shadow:                    0 1px 3px rgba(10, 10, 10, 0.15) !default;
+$box-shadow-hover:              0 1px 3px rgba(10, 10, 10, 0.25) !default;
+$box-shadow-top:                0 -1px 3px rgba(10, 10, 10, 0.15) !default;
+
+// Transitions
+$regular-transition:            .2s ease-in-out !default;
+
+// Main Dimensions
+$main-menu-height:              0px !default;
+$drowz-toolbar-height:          38px !default;
+$drowz-toolbar-width:           200px;
+$drowz-tabs-height:             40px !default;
+$breadscrumbs-height:           40px !default;
+$form-control-height:           30px !default;
+
+// Sidebar Dimensions
+$sidebar-big-regular-width:     300px !default;
+$sidebar-small-regular-width:   260px !default;
+$sidebar-hidden-width:          52px !default;
+$sidabar-menu-width:            260px !default;
+
+// Flow dimensions
+// Large blocks of content in wizards, patients, and other pages
+$title-height:                  30px !default;    // Only for title dimensions and for calc content height under the title
+
+// Wizard styles
+$wizard-title-height:           50px !default;
+$wizard-block-margin:           30px !default;
+
+// Infinite list Dimensions
+$management-list-min-width: 1300px;
+
+//List of width for classes like .w#{$w}px && .block-width-#{$w}
+$list-of-width: "10", "30", "45", "50", "60", "70", "80", "83", "86", "90", "100", "110", "120", "125", "130", "140", "150", "155",
+                "160", "170", "180", "190", "200", "220", "230", "240", "250", "260", "270", "280", "285", "300", "310", "320",
+                "330", "340","350", "370", "400", "440", "450", "500", "570", "600", "480", "700", "740", "800" ,"810", "830";
+
+$list-of-percent-width: 10, 15, 17, 20, 23, 25, 30, 33, 33.33, 35, 40, 45, 50, 66.666, 60, 75, 90, 100;
+
+$list-of-spaces: "0", "5", "7", "10", "15", "17", "20", "25", "30", "45", "60", "150";

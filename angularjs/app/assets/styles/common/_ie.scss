@@ -1,0 +1,67 @@
+// Hack For Glitches Angular Material
+
+// IE
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    html[style="-ms-overflow-y: scroll;"] {
+        body {
+            opacity: 0.99;
+        }
+    }
+
+    body {
+        .appointment-btns .appointment-btn {
+            min-width: 200px !important;
+        }
+
+        .infinity-table infinity-table-filters > div::after,
+        .infinity-table infinity-table-row > div::after,
+        .drowz-table tr.drowz-infinite-row-filter > td::after,
+        .drowz-table tr.drowz-infinite-row > td::after {
+            height: 100%;
+        }
+
+        .action-toolbar {
+            .hide-btns {
+                width: 0;
+                overflow: hidden;
+            }
+        }
+    }
+
+    md-radio-button .md-on, md-radio-button .md-off {
+        transition: none !important;
+        transition: 0s !important;
+    }
+
+    .dashboard-appointments-list .dashboard-appointment-item .orders-table .orders-table-row {
+        height: 42px;
+        overflow: hidden;
+    }
+}
+
+// EDGE
+@supports (-ms-accelerator:true) {
+    html[style="-ms-overflow-y: scroll;"] {
+        body {
+            opacity: 0.99;
+        }
+    }
+
+    body {
+        .appointment-btns .appointment-btn {
+
+            min-width: 200px !important;
+        }
+
+        .flow-title .title-actions .action-btn.with-text {
+            transition: initial;
+        }
+
+        .action-toolbar {
+            .hide-btns {
+                width: 0;
+                overflow: hidden;
+            }
+        }
+    }
+}

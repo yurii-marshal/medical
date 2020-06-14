@@ -1,0 +1,453 @@
+<div class="infinite-scroll-bg provider-view full-height-with-footer"
+     id="scrollContainer"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="referralPage"
+     ng-form="referral.referralForm">
+
+    <div class="top-block">
+        <div class="breadcrumbs transparent-bg">
+            <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+            <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+            <a href="javascript:void(0)" ui-sref="root.management.organization">Organization</a>
+            <a href="javascript:void(0)" ui-sref="root.management.organization.referral.list">Referring Providers</a>
+            <a href="javascript:void(0)" class="active">
+                <span ng-if="!referral.Id">Add New Referring Provider</span>
+                <span ng-if="referral.Id">Edit Referring Provider</span>
+            </a>
+        </div>
+
+        <div class="drowz-wizard-body-flex">
+
+            <div class="grow-1">
+
+                <div class="drowz-wizard-block no-float">
+                    <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">Provider Details:</div>
+                    </div>
+                    <div class="drowz-wizard-block-body">
+                        <div class="drowz-wizard-block-row">
+                            <div class="col-xs-4">
+                                <md-input-container>
+                                    <label>First Name:</label>
+                                    <input type="text"
+                                           ng-model="referral.model.ReferralCardSource.Name.First"
+                                           name="nameFirst"
+                                           ng-required="referral.model.ReferralCardSource.Name.Last || referral.setProviderFieldsRequired()">
+                                    <div ng-messages="referral.referralForm.nameFirst.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="col-xs-4">
+                                <md-input-container>
+                                    <label>Last Name:</label>
+                                    <input type="text"
+                                           ng-model="referral.model.ReferralCardSource.Name.Last"
+                                           name="nameLast"
+                                           ng-required="referral.model.ReferralCardSource.Name.First || referral.setProviderFieldsRequired()">
+                                    <div ng-messages="referral.referralForm.nameLast.$error" class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="col-xs-4">
+                                <md-input-container>
+                                    <label>Title:</label>
+                                    <input type="text"
+                                           ng-model="referral.model.ReferralCardSource.Title"
+                                           name="providerTitle">
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div class="drowz-wizard-block-row">
+                            <div class="col-xs-4 flex-cont align-top">
+                                <md-input-container>
+                                    <label>NPI:</label>
+                                    <input type="text"
+                                           ng-model="referral.model.ReferralCardSource.Npi"
+                                           name="npi"
+                                           ng-maxlength="10"
+                                           ng-minlength="10"
+                                           ng-pattern="/^[0-9]*$/"
+                                           ng-required="referral.model.ReferralCardSource.Name.First || referral.model.ReferralCardSource.Name.Last">
+                                    <div ng-messages="referral.referralForm.npi.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                        <div ng-message="pattern">NPI number consists only from numbers</div>
+                                        <div ng-message="maxlength, minlength">Value should consist of 10 digits.</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="info-block col-xs-8">
+                                <md-input-container>
+                                    <label>Practice:</label>
+                                    <input type="text"
+                                           ng-model="referral.model.ReferralCardSource.Practice"
+                                           ng-required="referral.setProviderFieldsRequired()"
+                                           name="practice">
+                                    <div ng-messages="referral.referralForm.practice.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+
+                        </div>
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1">
+                                <md-input-container>
+                                    <label>type your notes here...</label>
+                                    <textarea ng-maxlength="referral.notesMaxLength"
+                                              ng-model="referral.model.ReferringProviderNote"
+                                              name="referringProviderNote"
+                                    ></textarea>
+                                    <div ng-messages="referral.referralForm.referringProviderNote.$error" class="md-input-messages-nice">
+                                        <div ng-message="maxlength" class="md-input-message-animation">
+                                            Additional info is to long, max length is {{ referral.notesMaxLength }} symbols
+                                        </div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block pecos-enrollment col-xs-4">
+                                <div class="info-block-label"></div>
+                                <div class="info-block-body"
+                                     ng-if="referral.model.PecosEnrollment === true">
+                                    <md-icon md-svg-src="assets/images/default/check-circle.svg"
+                                             class="success-icon"></md-icon>
+                                    <span>Provider is PECOS enrolled</span>
+                                </div>
+                                <div class="info-block-body"
+                                     ng-if="referral.model.PecosEnrollment === false">
+                                    <md-icon md-svg-src="assets/images/default/alert.svg"
+                                             class="alert-icon"></md-icon>
+                                    <span>Provider is NOT PECOS enrolled</span>
+                                </div>
+                            </div>
+                            <div class="flex-row flex-end col-xs-8">
+                                <md-button class="md-raised middle-btn"
+                                           ng-click="referral.populateNPI(referral.model.ReferralCardSource.Npi)">
+                                    Populate NPI data
+                                </md-button>
+                                <md-button class="md-raised middle-btn"
+                                           ng-click="referral.npiLookup(referral.model)">
+                                    NPI Lookup
+                                </md-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="flex-360"></div>
+
+        </div>
+
+        <div class="drowz-wizard-body-flex">
+
+            <div class="grow-1">
+
+                <!--LOCATIONS-->
+                <div class="drowz-wizard-body-flex provider-locations">
+                    <div class="grow-1">
+                        <div class="drowz-wizard-block no-float">
+                            <div class="drowz-wizard-block-title">
+                                <div class="wizard-title-text">Locations:</div>
+                            </div>
+
+                            <div class="drowz-wizard-block-body">
+
+                                <!--LOCATIONS LIST-->
+                                <v-accordion class="flow-accordion" multiple>
+                                    <v-pane expanded="true">
+                                        <v-pane-header class="flow-accordion-title">
+                                            <md-icon md-svg-src="assets/images/default/chevron.svg"
+                                                     class="flow-accordion-title-icon"></md-icon>
+                                            <div class="flow-title-text">
+                                                <span>Primary Address:</span>
+                                            </div>
+                                            <div class="accordion-line"></div>
+                                        </v-pane-header>
+
+                                        <v-pane-content>
+                                            <div class="flex-row">
+                                                <div class="grow-1 pad-30">
+                                                    <div class="drowz-wizard-block-row">
+                                                        <div class="col-xs-6">
+                                                            <md-input-container>
+                                                                <label>Address (line 1):</label>
+                                                                <input type="text"
+                                                                       ng-model="referral.model.PrimaryLocation.Address.AddressLine"
+                                                                       name="addressLine1"
+                                                                       ng-required="true"
+                                                                       clear-on-click>
+                                                                <div ng-messages="referral.referralForm.addressLine1.$error"
+                                                                     class="md-input-messages-nice">
+                                                                    <div ng-message="required">This field is required</div>
+                                                                </div>
+                                                            </md-input-container>
+                                                        </div>
+                                                        <div class="col-xs-6">
+                                                            <md-input-container>
+                                                                <label>Address (line 2):</label>
+                                                                <input type="text"
+                                                                       ng-model="referral.model.PrimaryLocation.Address.AddressLine2"
+                                                                       clear-on-click>
+                                                            </md-input-container>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="drowz-wizard-block-row">
+                                                        <div class="col-xs-6">
+                                                            <div class="row">
+                                                                <div class="col-xs-6">
+                                                                    <md-input-container>
+                                                                        <label>City:</label>
+                                                                        <input type="text"
+                                                                               name="city"
+                                                                               ng-model="referral.model.PrimaryLocation.Address.City"
+                                                                               ng-required="true"
+                                                                               clear-on-click>
+                                                                        <div ng-messages="referral.referralForm.city.$error"
+                                                                             class="md-input-messages-nice">
+                                                                            <div ng-message="required">This field is required</div>
+                                                                        </div>
+                                                                    </md-input-container>
+                                                                </div>
+                                                                <div class="col-xs-6">
+                                                                    <input-state-string form-name="referral.referralForm"
+                                                                                        input-name="state"
+                                                                                        selected-item="referral.model.PrimaryLocation.Address.State"
+                                                                                        add-directives="clear-on-click"
+                                                                                        ng-required="true">
+                                                                    </input-state-string>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-3">
+                                                            <input-zip-string form-name="referral.referralForm"
+                                                                              input-name="zip"
+                                                                              selected-item="referral.model.PrimaryLocation.Address.Zip"
+                                                                              add-directives="clear-on-click"
+                                                                              ng-required="true">
+                                                            </input-zip-string>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-w-25 pad-30">
+                                                    <div class="contacts-container left-divider">
+                                                        <organization-contacts
+                                                                selected-contacts="referral.model.PrimaryLocation.Contacts"
+                                                                not-allowed-types="referral.notAllowedTypes"
+                                                                allow-not-unique-types="false"
+                                                                min-required="1"
+                                                                org-location-required="true"
+                                                        >
+                                                        </organization-contacts>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </v-pane-content>
+                                    </v-pane>
+                                    <v-pane expanded="true"
+                                            ng-repeat="loc in referral.model.Locations track by $index">
+                                        <v-pane-header class="flow-accordion-title">
+                                            <md-icon md-svg-src="assets/images/default/chevron.svg"
+                                                     class="flow-accordion-title-icon"></md-icon>
+                                            <div class="flow-title-text">
+                                                <span>Location {{$index + 1}}:</span>
+                                            </div>
+                                            <div class="accordion-line"></div>
+                                            <md-button class="delete-icon-btn delete-location"
+                                                       aria-label="..."
+                                                       confirm-ng-click="referral.deleteLocation($index)"
+                                                       confirm-msg="'Are you sure you want to delete this location?'"
+                                                       confirm-title="Delete location">
+                                                <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                            </md-button>
+                                        </v-pane-header>
+
+                                        <v-pane-content>
+                                            <div class="flex-row">
+                                                <div class="grow-1 pad-30">
+                                                    <div class="drowz-wizard-block-row">
+                                                        <div class="col-xs-6">
+                                                            <md-input-container>
+                                                                <label>Address (line 1):</label>
+                                                                <input type="text"
+                                                                       ng-model="loc.Address.AddressLine"
+                                                                       name="{{'addressLine1_'+$index}}"
+                                                                       ng-required="true"
+                                                                       clear-on-click>
+                                                                <div ng-messages="referral.referralForm['loc_'+$index].addressLine1.$error"
+                                                                     class="md-input-messages-nice">
+                                                                    <div ng-message="required">This field is required</div>
+                                                                </div>
+                                                            </md-input-container>
+                                                        </div>
+                                                        <div class="col-xs-6">
+                                                            <md-input-container>
+                                                                <label>Address (line 2):</label>
+                                                                <input type="text"
+                                                                       ng-model="loc.Address.AddressLine2"
+                                                                       clear-on-click>
+                                                            </md-input-container>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="drowz-wizard-block-row">
+                                                        <div class="col-xs-6">
+                                                            <div class="row">
+                                                                <div class="col-xs-6">
+                                                                    <md-input-container>
+                                                                        <label>City:</label>
+                                                                        <input type="text"
+                                                                               name="{{'city_'+$index}}"
+                                                                               ng-model="loc.Address.City"
+                                                                               ng-required="true"
+                                                                               clear-on-click>
+                                                                        <div ng-messages="referral.referralForm['loc_'+$index].city.$error"
+                                                                             class="md-input-messages-nice">
+                                                                            <div ng-message="required">This field is required</div>
+                                                                        </div>
+                                                                    </md-input-container>
+                                                                </div>
+                                                                <div class="col-xs-6">
+                                                                    <input-state-string form-name="referral.referralForm"
+                                                                                        input-name="state"
+                                                                                        selected-item="loc.Address.State"
+                                                                                        add-directives="clear-on-click"
+                                                                                        ng-required="true">
+                                                                    </input-state-string>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-3">
+                                                            <input-zip-string form-name="referral.referralForm"
+                                                                              input-name="zip"
+                                                                              selected-item="loc.Address.Zip"
+                                                                              add-directives="clear-on-click"
+                                                                              ng-required="true">
+                                                            </input-zip-string>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-w-25 pad-30">
+                                                    <div class="contacts-container left-divider">
+                                                        <organization-contacts
+                                                                selected-contacts="loc.Contacts"
+                                                                not-allowed-types="referral.notAllowedTypes"
+                                                                allow-not-unique-types="false"
+                                                                min-required="1"
+                                                                org-location-required="true"
+                                                        >
+                                                        </organization-contacts>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </v-pane-content>
+                                    </v-pane>
+                                </v-accordion>
+
+                                <!--ADD LOCATION BUTTON-->
+                                <div class="flex-row marg-bottom-15">
+                                    <md-button class="md-raised middle-btn add-new-location"
+                                               aria-label="..."
+                                               ng-click="referral.addNewLocation()">
+                                        <md-icon md-svg-src="assets/images/default/plus.svg"></md-icon>
+                                        Add Location
+                                    </md-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="drowz-wizard-body-flex">
+
+            <div class="grow-1">
+
+                <div class="drowz-wizard-block no-float">
+                    <div class="drowz-wizard-block-title">
+                        <div class="wizard-title-text">Details:</div>
+                    </div>
+                    <div class="drowz-wizard-block-body">
+                        <div class="drowz-wizard-block-row">
+                            <div class="col-xs-6">
+                                <md-input-container>
+                                    <label>Contact Person:</label>
+                                    <input type="text"
+                                           ng-model="referral.model.ContactPerson"
+                                           name="contactPerson">
+                                </md-input-container>
+                            </div>
+                            <div class="col-xs-6">
+                                <md-autocomplete-with-infinite-scroll
+                                        md-no-cache="true"
+                                        md-selected-item="referral.model.SalesAgent"
+                                        md-selected-item-change="referral.onSalesAgentChange()"
+                                        md-search-text="searchSalesAgent"
+                                        md-items="item in referral.getUsers(searchSalesAgent, pageIndex)"
+                                        md-item-text="item.FullName"
+                                        md-min-length="0"
+                                        md-floating-label="Sales Rep:"
+                                        clear-on-click
+                                        md-input-name="salesAgent">
+                                    <md-item-template>
+                                        <span md-highlight-flags="^i" title="{{ item.FullName }}">{{ item.FullName }}</span>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No sales agents were found
+                                    </md-not-found>
+                                    <div ng-messages="referral.referralForm.salesAgent.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="selected">Selected Sales Agent is not valid</div>
+                                    </div>
+                                </md-autocomplete-with-infinite-scroll>
+                            </div>
+                        </div>
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1">
+                                <md-input-container>
+                                    <label>type your notes here...</label>
+                                    <textarea ng-maxlength="referral.notesMaxLength"
+                                              ng-model="referral.model.SalesAgentNote"
+                                              ng-disabled="!referral.model.SalesAgent"
+                                              name="salesAgentNote"
+                                    ></textarea>
+                                    <div ng-messages="referral.referralForm.salesAgentNote.$error" class="md-input-messages-nice">
+                                        <div ng-message="maxlength" class="md-input-message-animation">
+                                            Additional info is to long, max length is {{ referral.notesMaxLength }} symbols
+                                        </div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-360"></div>
+
+        </div>
+
+    </div>
+
+    <div class="flow-body-footer">
+        <md-button class="md-raised main-button" ng-click="referral.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   scroll-to="#scrollContainer"
+                   disabled-scroll="referral.referralForm.$invalid"
+                   ng-click="referral.save()">
+            Save
+        </md-button>
+    </div>
+</div>

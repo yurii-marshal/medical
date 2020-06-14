@@ -1,0 +1,103 @@
+<div class="modal-window transaction-modal"
+     ng-class="{'payment-type': $ctrl.transaction.shortType == 'Payment'}"
+     ng-form="$ctrl.transactionForm"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="transactionModal">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon"
+                 md-svg-src="assets/images/default/adjustment.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Adjustment:</h2>
+        </div>
+
+        <div class="flex-row">
+
+            <div class="info-block w140px">
+                <md-input-container>
+                    <label>Date:</label>
+                    <input type="text"
+                           datetimepicker
+                           format="MM/DD/YYYY"
+                           ng-model="$ctrl.transaction.Date"
+                           ng-required="true"
+                           name="date">
+                    <div ng-messages="$ctrl.transactionForm.date.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+
+            <div class="info-block w140px">
+                <md-input-container class="currency-container mask-currency-container">
+                    <div class="currency-icon">$</div>
+                    <label>Amount:</label>
+                    <input type="number"
+                           step="0.01"
+                           ng-model="$ctrl.transaction.Amount"
+                           ng-required="true"
+                           name="amount"
+                           price-validator
+                    >
+                    <span class="amount-mask md-input">
+                        {{$ctrl.transaction.Amount | absNumber}}
+                    </span>
+                    <div ng-messages="$ctrl.transactionForm.amount.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="price">Max 2 digits after point</div>
+                    </div>
+                </md-input-container>
+            </div>
+
+            <div class="info-block grow-1">
+                <md-autocomplete-with-infinite-scroll class="notes-autocomplete-block"
+                                                      md-selected-item="$ctrl.transaction.AdjustmentReason"
+                                                      md-search-text="$ctrl.searchReason"
+                                                      md-items="reason in $ctrl.getReasons($ctrl.searchReason, pageIndex)"
+                                                      md-item-text="reason.Name"
+                                                      md-input-name="reason"
+                                                      md-min-length="0"
+                                                      md-menu-class="high-height-tooltip"
+                                                      ng-required="true"
+                                                      md-floating-label="Reason:"
+                                                      md-require-match="true"
+                                                      clear-on-click>
+                    <md-item-template>
+                        <span md-highlight-text="$ctrl.searchReason"
+                              md-highlight-flags="i"
+                              title="{{ reason.Description }}">
+                            {{ reason.Name }}
+                        </span>
+                    </md-item-template>
+                    <md-not-found>No reasons found</md-not-found>
+                    <div ng-messages="$ctrl.transactionForm.reason.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="md-require-match">Reason has to be selected</div>
+                    </div>
+                </md-autocomplete-with-infinite-scroll>
+            </div>
+
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <md-input-container>
+                    <label>Note:</label>
+                    <textarea ng-model="$ctrl.transaction.Notes"></textarea>
+                </md-input-container>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button" ng-click="$ctrl.save()">Save</md-button>
+    </md-dialog-actions>
+
+</div>

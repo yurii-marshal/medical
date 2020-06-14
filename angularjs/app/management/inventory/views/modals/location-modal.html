@@ -1,0 +1,156 @@
+<div class="modal-window location-modal"
+     ng-form="$ctrl.form"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="newLocation">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/organization.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>
+                <span ng-if="!$ctrl.locationId">New</span>
+                <span ng-if="$ctrl.locationId">Edit</span>
+                Location:
+            </h2>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-12 info-block">
+                <md-input-container>
+                    <label>Name:</label>
+                    <input type="text"
+                           ng-model="$ctrl.model.Name"
+                           ng-required="true"
+                           name="name" />
+                    <div ng-messages="$ctrl.form.name.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-12 info-block">
+                <md-input-container>
+                    <label>Address (line 1):</label>
+                    <input type="text"
+                           ng-model="$ctrl.model.Address.AddressLine"
+                           name="addressLine1"
+                           ng-required="true">
+                    <div ng-messages="$ctrl.form.addressLine1.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-6 info-block">
+                <md-input-container>
+                    <label>Address (line 2):</label>
+                    <input type="text" ng-model="$ctrl.model.Address.AddressLine2">
+                </md-input-container>
+            </div>
+            <div class="col-xs-6 info-block">
+                <md-input-container>
+                    <label>City:</label>
+                    <input type="text"
+                           name="city"
+                           ng-model="$ctrl.model.Address.City"
+                           ng-required="true">
+                    <div ng-messages="$ctrl.form.city.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-6 info-block">
+                <input-state-string form-name="$ctrl.form"
+                                    selected-item="$ctrl.model.Address.State"
+                                    add-directives="clear-on-click"
+                                    ng-required="true">
+                </input-state-string>
+            </div>
+            <div class="col-xs-6 info-block">
+                <input-zip-string form-name="$ctrl.form"
+                                  input-name="zip"
+                                  selected-item="$ctrl.model.Address.Zip"
+                                  add-directives="clear-on-click"
+                                  ng-required="true">
+                </input-zip-string>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-6 info-block">
+                <input-phone-number class="small-label"
+                                    form-name="$ctrl.form"
+                                    input-name="phone"
+                                    label="Phone:"
+                                    ng-required="false"
+                                    ng-model="$ctrl.model.Phone"
+                                    add-directives="input-phone-mask">
+                </input-phone-number>
+            </div>
+            <div class="col-xs-6 info-block">
+                <input-phone-number class="small-label"
+                                    form-name="$ctrl.form"
+                                    input-name="fax"
+                                    label="Fax:"
+                                    ng-required="false"
+                                    ng-model="$ctrl.model.Fax"
+                                    add-directives="input-phone-mask">
+                </input-phone-number>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-6 info-block">
+                <input-email form-name="$ctrl.form"
+                             input-name="email"
+                             label="Email:"
+                             ng-required="false"
+                             ng-model="$ctrl.model.Email">
+                </input-email>
+            </div>
+            <div class="col-xs-6 info-block">
+                <md-input-container>
+                    <label>Default:</label>
+                    <md-select ng-model="$ctrl.model.Default"
+                               name="default">
+                        <md-option ng-value="status.value" ng-repeat="status in $ctrl.statuses">
+                            {{status.text}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+        </div>
+
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" aria-label="..." ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button"
+                   aria-label="..."
+                   ng-if="!($ctrl.hasAnotherDefault && $ctrl.model.Default)"
+                   ng-click="$ctrl.save()">
+            <span ng-if="!$ctrl.locationId">Create</span>
+            <span ng-if="$ctrl.locationId">Save</span>
+        </md-button>
+        <md-button class="md-primary md-raised main-button"
+                   ng-if="$ctrl.hasAnotherDefault && $ctrl.model.Default"
+                   confirm-ng-click="$ctrl.save()"
+                   confirm-type="confirm"
+                   confirm-btn-ok="Yes"
+                   confirm-btn-cancel="No"
+                   confirm-msg="'Are you sure you want to change the default Location?'"
+                   confirm-title="Confirm default settings change">
+            <span ng-if="!$ctrl.locationId">Create</span>
+            <span ng-if="$ctrl.locationId">Save</span>
+        </md-button>
+    </md-dialog-actions>
+</div>

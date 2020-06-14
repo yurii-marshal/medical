@@ -1,0 +1,9 @@
+:host {
+    iframe {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        margin-top: 70px;
+        height: calc(100% - 70px);
+    }
+}

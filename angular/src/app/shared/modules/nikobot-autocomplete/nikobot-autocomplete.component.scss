@@ -1,0 +1,48 @@
+@import "~assets/styles/base/variables";
+@import "~assets/styles/utils/mixins";
+
+
+:host {
+    display: none;
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+
+    &.visible {
+        display: block;
+        opacity: 1;
+        position: absolute;
+        top: 55px;
+        left: 20px;
+        width: 60%;
+        max-height: 250px;
+        overflow: auto;
+        background-color: #ffffff;
+        z-index: 111111111111;
+        border: 1px solid $light-gray-color;
+        border-radius: 5px;
+        box-shadow: $box-shadow;
+    }
+
+    &.top-position {
+        bottom: 55px;
+        top: auto;
+    }
+
+    .custom-search-autocomplete-container {
+        padding: 5px 0;
+        overflow-y: auto;
+
+        .item {
+            padding: 7px 15px;
+
+            &:hover {
+                background-color: $main-active-color;
+                color: #ffffff;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+
+

@@ -1,0 +1,28 @@
+<div class="drowz-wizard append-tracking-items bs-loading-overlay-fullscreen"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="appendTrackingItems">
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.orders.list">Orders</a>
+        <a href="javascript:void(0)"
+           ui-sref="root.orders.order.items({ orderId: appendItems.orderId })">
+            {{appendItems.orderDisplayId}}
+        </a>
+        <a href="javascript:void(0)" class="active">Append Tracking Items</a>
+    </div>
+
+    <div class="drowz-wizard-body clearfix">
+        <search-items items="appendItems.Items"
+                      type="products"
+                      is-hide-select-any-device-btn="true"></search-items>
+    </div>
+
+    <div class="drowz-wizard-footer">
+        <md-button class="md-raised main-button drowz-wizard-footer-btn"
+                   ng-click="appendItems.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                   ng-click="appendItems.save()">Save</md-button>
+    </div>
+
+</div>

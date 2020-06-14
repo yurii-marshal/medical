@@ -1,0 +1,44 @@
+<div class="payments-items-header">
+    <div class="info-block grow-1">Source:</div>
+    <div class="info-block block-width-120">Created Date:</div>
+    <div class="info-block block-width-120">Remittance Date:</div>
+    <div class="info-block block-width-120">Total Amount:</div>
+    <div class="info-block block-width-120">Applied:</div>
+    <div class="info-block block-width-120">Unapplied:</div>
+    <div class="info-block block-width-140">Method:</div>
+    <div class="info-block block-width-150">Reference Number:</div>
+    <div class="info-block block-width-100">&nbsp;</div>
+</div>
+
+<div class="payment-item" ng-repeat="item in $ctrl.items | orderBy:'-Date' track by $index">
+    <div class="payment-item-row">
+        <div class="info-block grow-1">
+            <div ng-if="item.PatientSource">{{item.PatientSource.Name | fullname}}</div>
+            <div ng-if="item.PayerSource">{{item.PayerSource.Name}}</div>
+            <div class="status-label {{item.statusClass}}">{{item.Status.Name}}</div>
+        </div>
+        <div class="info-block block-width-120 left-divider">{{item.CreatedOn | localDateTime: "MM/DD/YYYY"}}</div>
+        <div class="info-block block-width-120 left-divider">{{item.PaymentDate | amUtc | amDateFormat: "MM/DD/YYYY"}}</div>
+        <div class="info-block block-width-120 left-divider font-semibold dark-blue-text">
+            {{item.Amount.Currency}}&nbsp;{{item.Amount.Amount | absNumber:2}}
+        </div>
+        <div class="info-block block-width-120 left-divider font-semibold dark-blue-text">
+            {{item.PatientAmount.Currency}}&nbsp;{{item.PatientAmount.Amount | absNumber:2}}
+        </div>
+        <div class="info-block block-width-120 left-divider font-semibold dark-blue-text">
+            {{item.Remains.Currency}}&nbsp;{{item.Remains.Amount | absNumber:2}}
+        </div>
+        <div class="info-block block-width-140 left-divider">{{item.Method.Name}}</div>
+        <div class="info-block block-width-150 left-divider break-word">{{item.Reference || '-'}}</div>
+        <div class="info-block block-width-100">
+            <md-button class="md-raised small-btn eye-details-btn"
+                       ui-sref="root.paymentDetails({ paymentId: item.PaymentId })">
+                <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon> Details
+            </md-button>
+        </div>
+    </div>
+    <div class="payment-item-note font-italic" ng-if="item.Notes">
+        <span class="font-semibold">Note:</span>
+        <format-string-by-paragraphs text="item.Notes"></format-string-by-paragraphs>
+    </div>
+</div>

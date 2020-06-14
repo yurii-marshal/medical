@@ -1,0 +1,32 @@
+<div class="modal-window batch-file-download-modal">
+
+    <a href="javascript:void(0);" ng-click="modal.changeModalCloseMode(true)" class="close-modal"></a>
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/shield.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Invoices submission:</h2>
+        </div>
+
+        <p class="text-center">{{ modal.isCloseMode ? 'Are you sure you want to close modal?' : 'Invoices submission can takes a few minutes. Please, wait.' }}</p>
+
+        <div class="row" ng-if="!modal.isCloseMode">
+            <div class="info-block center-text grow-1">
+                <div class="md-button md-primary md-raised"
+                     ng-disabled="modal.isLoading"
+                >
+                    <icon-loading-white ng-if="modal.isLoading"></icon-loading-white>
+                    {{ modal.statusCounter.processedCount }} / {{ modal.statusCounter.totalCount }}
+                </div>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter" ng-if="modal.isCloseMode">
+        <md-button class="md-raised main-button" ng-click="modal.changeModalCloseMode(false)">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button" ng-click="modal.close()">Close</md-button>
+    </md-dialog-actions>
+
+</div>

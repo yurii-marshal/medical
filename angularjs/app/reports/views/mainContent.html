@@ -1,0 +1,178 @@
+<div class="flow-body">
+    <div class="flow-body-block"
+         ng-form="vm.reportMainForm">
+
+        <div class="row report-border-row">
+            <div class="col-xs-5">
+                <md-autocomplete
+                        md-no-cache="true"
+                        md-selected-item="vm.selected.reportSource"
+                        md-search-text="vm.searchDataSource"
+                        md-items="item in vm.reportSources | filter: { Name: vm.searchDataSource }"
+                        md-item-text="item.Name"
+                        md-min-length="0"
+                        md-floating-label="Select Data Source:"
+                        md-selected-item-change="vm.onSelectDataSource(vm.selected.reportSource)"
+                        ng-click="vm.onClickonSelectDataSource()"
+                        ng-disabled="true"
+                        clear-on-click>
+                    <md-item-template>
+                                <span md-highlight-text="vm.searchDataSource" md-highlight-flags="i" class="item-title">
+                                    {{item.Name}}
+                                </span>
+                    </md-item-template>
+                    <md-not-found>
+                        No data sources were found
+                    </md-not-found>
+                </md-autocomplete>
+            </div>
+        </div>
+
+        <div class="row report-border-row">
+            <div class="col-xs-5">
+                <div class="active-title flow-body-active-title">Filters:</div>
+                <div ng-if="!vm.selected.reportSource"
+                     class="no-records no-side-padding-records">
+                    Please select data source
+                </div>
+                <div class="report-filters"
+                     ng-if="vm.selected.reportSource && vm.selected.reportSource.Id > 0"
+                     bs-loading-overlay
+                     bs-loading-overlay-reference-id="filters">
+
+                    <report-add-filter
+                        filters="vm.filters"
+                        add-filter="vm.addFilter"
+                        selected-filter="vm.selectedFilter"
+                    ></report-add-filter>
+
+                </div>
+            </div>
+
+            <div class="col-xs-12">
+                <div ng-if="!vm.filtersBlock.length" class="no-records no-side-padding-records">
+                    No filters added
+                </div>
+                <div ng-if="vm.filtersBlock.length">
+                    <div class="report-filter"
+                         ng-repeat="block in vm.filtersBlock"
+                         report-filter-row-inner></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row report-border-row">
+            <div class="col-xs-12">
+                <div class="active-title flow-body-active-title">Options:</div>
+                <div ng-if="!vm.selected.reportSource" class="no-records no-side-padding-records">
+                    Please select data source
+                </div>
+                <div class="flow_info small_padding_info"
+                     ng-if="vm.selected.reportSource && vm.selected.reportSource.Id > 0"
+                     bs-loading-overlay
+                     bs-loading-overlay-reference-id="filters">
+
+                    <div class="custom-options-select"
+                         report-side-by-side-select
+                         report-model="vm.selected.options"
+                         items="vm.options">
+                    </div>
+
+                    <div ng-if="vm.error_apply_msg.length > 0"
+                         class="err-msg">{{vm.error_apply_msg}}</div>
+
+                    <div class="filters-btns">
+
+                        <md-button class="md-raised middle-btn"
+                                   ng-click="vm.apply_report_filters()">
+                            Apply
+                        </md-button>
+                        <md-button class="md-raised middle-btn"
+                                   ng-click="vm.clear_report_area()">
+                            Clear
+                        </md-button>
+                        <md-button class="md-raised middle-btn"
+                                   ng-click="vm.openEditView()"
+                                   ng-if="(vm.selected.reportId>0 && vm.selected.Editable === true)">
+                            Edit
+                        </md-button>
+                        <md-button class="md-raised md-primary middle-btn"
+                                   ng-click="vm.openSaveView()"
+                                   ng-hide="(vm.selected.reportId>0)">
+                            Save
+                        </md-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="flow-body"
+     ng-if="vm.selected.reportSource && vm.selected.reportSource.Id > 0">
+    <div class="grow-1">
+        <div class="flow-body-block">
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="active-title flow-body-active-title"
+                         bs-loading-overlay
+                         bs-loading-overlay-reference-id="download_link">
+                        Patient Extract Report:
+                        <div class="dnld-report-block"
+                             ng-show="vm.show_table_content">
+                            <md-icon md-svg-src="assets/images/default/replace.svg"></md-icon>
+                            Report Also available in:
+                            <a class="get-file" href="javascript:void(0);" ng-click="getCurrenReportFile()">Excel</a>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="!vm.show_table_content" class="no-records">
+                    Please apply options
+                </div>
+                <div class="long-table">
+                    <table class="drowz-table small-table"
+                           ng-if="vm.show_table_content"
+                           bs-loading-overlay
+                           bs-loading-overlay-reference-id="table">
+                        <tr class="drowz-table-header">
+                            <th class="number-cell">#</th>
+                            <th ng-repeat="header in vm.gridColumns"
+                                ng-click="vm.sort(header)"
+                                class="with_arrow">
+                                {{header.Name}}
+                            </th>
+                        </tr>
+                        <tr class="drowz-table-row"
+                            ng-if="!vm.isGrouped"
+                            ng-repeat="row in vm.gridTableData.data track by $index"
+                            report-table-row
+                            row-index="{{$index+1}}"
+                            items="row"
+                            columns="vm.gridColumns"></tr>
+                    </table>
+                    <div ng-if="vm.show_table_content" ng-hide="vm.gridTableData.data.length > 0" class="no-records">
+                        No data
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="reports-footer" ng-if="vm.show_table_content" ng-show="vm.totalItems > 0">
+            <ul uib-pagination
+                total-items="vm.totalItems"
+                ng-model="vm.pageIndex"
+                items-per-page="100"
+                ng-change="vm.apply_report_filters()"
+                max-size="3"
+                class="pagination-sm"
+                boundary-link-numbers="true"
+                previous-text="&lsaquo;"
+                next-text="&rsaquo;"></ul>
+            <div class="footer-text">
+                {{ (vm.pageIndex - 1) * 100 + 1}} - {{ vm.pageIndex * 100 > vm.totalItems ? vm.totalItems : vm.pageIndex * 100 }} of {{ vm.totalItems }} items
+            </div>
+        </div>
+    </div>
+</div>

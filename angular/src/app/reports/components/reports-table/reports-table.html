@@ -1,0 +1,49 @@
+<div class="flex-row dark-gray-bg sub-menu-container">
+    <div class="breadcrumbs transparent-bg fix-left-position">
+        <a href="#">
+            Dashboard
+        </a>
+        <a href="#">
+            Reports
+        </a>
+        <a href="#" class="active">
+            Accounts Receivable
+        </a>
+    </div>
+
+    <app-sub-tabs [tabs]="tabs"></app-sub-tabs>
+</div>
+
+<div class="table-wrap">
+
+    <app-loading [show]="pageLoaderStatus"></app-loading>
+
+    <div class="flex-row pad-h-10 marg-top-30">
+        <app-report-filter-block [paramsState]="pageConfData.params"
+                                 [columns]="pageConfData.columns"
+                                 (onChangeParamsState)="onChangedState($event)"
+                                 (onChangeColumns)="onChangedColumn($event)"
+                                 class="info-block grow-1"
+        ></app-report-filter-block>
+    </div>
+
+    <div class="flex-row pad-h-10">
+        <div class="info-block grow-1">
+            <div class="table-wrap">
+
+                <app-loading [show]="rowLoaderStatus"></app-loading>
+
+                <ag-grid-angular
+                    style="width: 100%; height: 800px;"
+                    class="ag-theme-material"
+                    [gridOptions]="gridOptions"
+                    [enableSorting]="true"
+                    [enableFilter]="true"
+                    [rowData]="rowData"
+                    [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+                >
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+</div>

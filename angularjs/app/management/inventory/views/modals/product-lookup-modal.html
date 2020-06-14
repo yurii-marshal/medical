@@ -1,0 +1,53 @@
+<div class="modal-window product-lookup-modal">
+
+    <a href="javascript:void(0);" ng-click="modal.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content" ng-form="modal.form">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/inventory.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Edit product lookup:</h2>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-12 info-block">
+                <md-input-container>
+                    <label>Product Lookup:</label>
+                    <input type="text" ng-model="lookupId">
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-6 info-block">
+                <md-input-container>
+                    <label>Product ID:</label>
+                    <input type="text" ng-model="productId">
+                </md-input-container>
+            </div>
+            <div class="col-xs-6 info-block">
+                <md-input-container>
+                    <label>Lot ID:</label>
+                    <input type="text" ng-model="lotId">
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-12 info-block">
+                <md-input-container>
+                    <label>Notes:</label>
+                    <textarea cols="1" rows="1"></textarea>
+                </md-input-container>
+            </div>
+        </div>
+
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" aria-label="..." ng-click="modal.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button" aria-label="..." ng-click="modal.save()">
+            Save
+        </md-button>
+    </md-dialog-actions>
+</div>

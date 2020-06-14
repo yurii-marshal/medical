@@ -1,0 +1,288 @@
+<div class="invoice-page small-sidebar bs-loading-overlay-fullscreen"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="invoicePage">
+
+    <div id="row"
+         class="sidebar-container no-fold-sidebar"
+         drowz-sidebar
+         drowz-sidebar-name="invoice">
+
+        <div class="sidebar"
+             scroll-bar
+             scroll-bar-above-element="true">
+
+            <div class="sidebar-padding-block flex-cont stretch">
+                <div class="name-status-block">
+                    <div class="sidebar-title">Invoice: {{invoice.model.DisplayId}}</div>
+
+                    <!--BILL TO BLOCK-->
+                    <div class="bill-to-block">
+                        <div class="info-block">
+                            <div class="info-block-label">Bill to:</div>
+                            <div class="payer-name">
+                                <span class="status-label middle-gray"
+                                      ng-if="invoice.model.BillRecipient.PriorityOrder.Name"
+                                      ng-bind="invoice.model.BillRecipient.PriorityOrder.Name"></span>
+                                <span class="payer-name"
+                                      ng-bind="invoice.model.BillRecipient.PayerName || invoice.model.BillRecipient.Type.Name"></span>
+                            </div>
+                        </div>
+                        <div class="info-block block-width-100 in-arreas-status"
+                             ng-if="invoice.model.IsBillInArrears">
+                            <div class="status-label blue">In Arrears</div>
+                        </div>
+                    </div>
+                    <div class="status-and-gender flex-cont invoice-status-block"
+                         ng-class="{'two-line-status': (invoice.model.Statuses.HoldReason
+                                     && invoice.model.Statuses.HoldReason.Reason.Name
+                                     && invoice.model.Statuses.Status.Id === invoice.invoiceStatusConstants.HOLD_STATUS_ID)}"
+                    >
+                        <div class="status-label {{invoice.model.Statuses.statusClass}}">
+                            {{invoice.model.Statuses.Status.Name}}
+                        </div>
+
+                        <md-button class="md-raised edit-doc edit-tags-btn"
+                                   aria-label="..."
+                                   ng-click="invoice.editInvoiceStatus()"
+                                   ng-if="invoice.userPermissions.isAllow(invoice.permissionsCategoriesConstants.BILLING, invoice.billingPermissionsConstants.INVOICE_MODIFY)"
+                        >
+                            <md-icon class="gray-icon" md-svg-src="assets/images/default/edit.svg"></md-icon>
+                        </md-button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-padding-block invoice-restrictions">
+                <span class="attr-label {{tag.AttrClass}}"
+                      ng-repeat="tag in invoice.model.UniqueTags">
+                    <md-icon md-svg-src="assets/images/default/tag.svg"></md-icon>
+                    <span ng-bind="tag.Name"></span>
+                </span>
+            </div>
+
+            <div class="sidebar-padding-block" ng-if="invoice.model.Statuses.ClaimStatusCode">
+                <div class="info-block">
+                    <div class="info-block-label">Status Code:</div>
+                    <div class="info-block-body">{{invoice.model.Statuses.ClaimStatusCode.Name}}</div>
+                </div>
+            </div>
+
+            <v-accordion class="vAccordion--default sidebar-accordeon sidebar-accordeon-overflow-visible sidebar-padding-block" multiple>
+                <v-pane expanded="true" ng-if="invoice.model.Patient">
+                    <v-pane-header class="sidebar-block-title flow-accordion-title">
+                        <span class="active-text">Patient:</span>
+                        <div class="accordion-line"></div>
+                        <md-icon md-svg-src="assets/images/default/chevron.svg"
+                                 class="sidebar-accordeon-icon"></md-icon>
+                    </v-pane-header>
+                    <v-pane-content>
+                        <div class="icon-block">
+                            <md-icon md-svg-src="assets/images/default/user-circle-new.svg" class="icon-block-icon"></md-icon>
+                            <div class="flex-row">
+                                <div class="info-block grow-1">
+                                    <div class="info-block-label">Name:</div>
+                                    <div class="info-block-body">
+                                        <a href="javascript:void(0);"
+                                           class="patient-name-link"
+                                           ui-sref="root.patient.financial.invoices({ patientId: invoice.model.Patient.Id })"
+                                           ng-bind="invoice.model.Patient.Name.FullName">
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="info-block status-block">
+                                    <div class="info-block-label">&nbsp;</div>
+                                    <div class="info-block-body">
+                                        <div class="status-label"
+                                             ng-class="{'active': invoice.model.Patient.Status.Id === 1,
+                                                        'inactive': invoice.model.Patient.Status.Id === 2}">
+                                            {{invoice.model.Patient.Status.Text}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="icon-block">
+                            <md-icon md-svg-src="assets/images/main-menu/calendar.svg"
+                                     class="icon-block-icon"></md-icon>
+                            <div class="info-block">
+                                <div class="info-block-label">DOB:</div>
+                                <div class="info-block-body">
+                                    {{invoice.model.Patient.DateOfBirthday | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="icon-block"
+                             ng-if="invoice.model.Patient.Address.AddressLine">
+                            <md-icon md-svg-src="assets/images/default/address.svg"
+                                     class="icon-block-icon"></md-icon>
+                            <div class="info-block">
+                                <div class="info-block-label">Full Address:</div>
+                                <div class="info-block-body">
+                                    {{invoice.model.Patient.Address | addressToString}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="icon-block"
+                             ng-if="invoice.model.Patient.HomePhone">
+                            <md-icon md-svg-src="assets/images/default/phone-home.svg"
+                                     class="icon-block-icon"></md-icon>
+                            <div class="info-block">
+                                <div class="info-block-label">Home Phone:</div>
+                                <div class="info-block-body">
+                                    {{invoice.model.Patient.HomePhone | tel}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="icon-block" ng-if="invoice.model.Patient.Mobile">
+                            <md-icon md-svg-src="assets/images/default/phone-cell.svg"
+                                     class="icon-block-icon"></md-icon>
+                            <div class="info-block">
+                                <div class="info-block-label">Cell Phone:</div>
+                                <div class="info-block-body">{{invoice.model.Patient.Mobile | tel}}</div>
+                            </div>
+                        </div>
+                        <div class="icon-block"
+                             ng-show="invoice.model.Patient.Insurances.length"
+                             ng-repeat="item in invoice.model.Patient.Insurances"
+                        >
+                            <md-icon  ng-if="item.PositionIndex == 1"
+                                      md-svg-src="assets/images/default/insurance-circle.svg"
+                                      class="icon-block-icon"></md-icon>
+                            <div class="flex-row" ng-if="item.PositionIndex == 1">
+                                <div class="info-block grow-1 insurance-block-title">
+                                    <div class="info-block-label">
+                                        Insurance:
+                                    </div>
+                                    <div class="info-block-body">{{::item.Name}}</div>
+                                </div>
+                                <div class="status-label insurance-status-label primary">Primary</div>
+                            </div>
+                        </div>
+                    </v-pane-content>
+                </v-pane>
+                <v-pane expanded="true" ng-if="invoice.model.Order">
+                    <v-pane-header class="sidebar-block-title flow-accordion-title">
+                        <span class="active-text">Order:</span>
+                        <div class="accordion-line"></div>
+                        <md-icon md-svg-src="assets/images/default/chevron.svg" class="sidebar-accordeon-icon"></md-icon>
+                    </v-pane-header>
+                    <v-pane-content>
+                        <div class="icon-block">
+                            <md-icon md-svg-src="assets/images/default/organization-circle.svg" class="icon-block-icon"></md-icon>
+                            <div class="info-block">
+                                <div class="info-block-label">Order:</div>
+                                <div class="info-block-body">
+                                    <a href="javascript:void(0);"
+                                       class="order-name-link"
+                                       ui-sref="root.orders.order.financial({ orderId: invoice.model.Order.Id })">
+                                        {{invoice.model.Order.DisplayId}}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="icon-block">
+                            <md-icon md-svg-src="assets/images/main-menu/calendar.svg" class="icon-block-icon"></md-icon>
+                            <div class="info-block">
+                                <div class="info-block-label">Created:</div>
+                                <div class="info-block-body">
+                                    {{invoice.model.Order.CreatedDate | localDateTime: "MM/DD/YYYY hh:mm A"}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="icon-block">
+                            <md-icon md-svg-src="assets/images/default/user-circle-new.svg" class="icon-block-icon"></md-icon>
+                            <div class="info-block">
+                                <div class="info-block-label">Ref. Provider:</div>
+                                <div class="info-block-body">
+                                    {{invoice.model.Order.ReferralCard.Physician.Id ? (invoice.model.Order.ReferralCard | referralDisplayName) : '-'}}
+                                </div>
+                            </div>
+                        </div>
+                    </v-pane-content>
+                </v-pane>
+
+                <v-pane expanded="true"
+                        ng-if="invoice.unappliedPayments.Items.length"
+                >
+                    <v-pane-header class="sidebar-block-title flow-accordion-title">
+                        <span class="active-text">Unapplied Payments:</span>
+                        <div class="accordion-line"></div>
+                        <md-icon md-svg-src="assets/images/default/chevron.svg"
+                                 class="sidebar-accordeon-icon"
+                        ></md-icon>
+                    </v-pane-header>
+                    <v-pane-content>
+                        <div ng-repeat="unappliedPayment in invoice.unappliedPayments.Items"
+                             ui-sref="root.paymentDetails({ paymentId: unappliedPayment.Id })"
+                             class="unapplied-item"
+                        >
+                            <div class="flex-row">
+                                <div class="icon-block">
+                                    <md-icon md-svg-src="assets/images/default/ic-pg-invoice.svg" class="icon-block-icon"></md-icon>
+                                    <div class="info-block">
+                                        <div class="info-block-label">Date:</div>
+                                        <div class="info-block-body">
+                                            {{ unappliedPayment.Date | amUtc | amDateFormat: 'MM/DD/YYYY hh:mm A' }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex-row">
+                                <div class="icon-block grow-1">
+                                    <div class="info-block block-width-50-percent">
+                                        <div class="info-block-label">Payment:</div>
+                                        <div class="info-block-body">
+                                            {{ unappliedPayment.PaymentAmount.Currency + ' ' + (unappliedPayment.PaymentAmount.Amount | absNumber:2) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="info-block unapplied-currency">
+                                        <div class="info-block-label">Unapplied:</div>
+                                        <div class="info-block-body">
+                                            {{ unappliedPayment.Unapplied.Currency + ' ' + (unappliedPayment.Unapplied.Amount | absNumber:2) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </v-pane-content>
+                </v-pane>
+
+            </v-accordion>
+
+        </div>
+
+        <div class="main-content">
+
+            <drowz-tabs items="invoice.tabs"></drowz-tabs>
+
+            <toolbar items="invoice.toolbarItems"
+                     ng-if="!invoice.model.isVoidInvoice && invoice.userPermissions.isAllow(invoice.permissionsCategoriesConstants.BILLING, invoice.billingPermissionsConstants.INVOICE_MODIFY)"
+            ></toolbar>
+
+            <div class="breadcrumbs">
+                <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+
+                <a href="javascript:void(0)"
+                   ui-sref="root.billing.invoices"
+                   ng-if="invoice.userPermissions.isAllow(invoice.permissionsCategoriesConstants.BILLING, invoice.billingPermissionsConstants.INVOICE_MODIFY)"
+                >
+                    Billing
+                </a>
+
+                <a href="javascript:void(0)"
+                   class="active"
+                   ng-if="!invoice.userPermissions.isAllow(invoice.permissionsCategoriesConstants.BILLING, invoice.billingPermissionsConstants.INVOICE_MODIFY)"
+                >
+                    Billing
+                </a>
+
+                <a href="javascript:void(0)" class="active">{{invoice.model.DisplayId}}</a>
+            </div>
+
+            <div ui-view></div>
+
+        </div>
+    </div>
+</div>

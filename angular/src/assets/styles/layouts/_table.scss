@@ -1,0 +1,60 @@
+.table {
+  border: 1px solid $light-gray-color;
+  width: 100%;
+  margin-bottom: 30px;
+  border-collapse: collapse;
+
+  > tbody {
+
+    > tr {
+
+      > th,
+      > td {
+        padding-left: 15px;
+        padding-right: 15px;
+        vertical-align: middle;
+      }
+
+      > th {
+        font-size: 11px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background-color: $light-gray-color;
+        font-weight: bold;
+        text-align: left;
+      }
+
+      > td {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        font-size: 13px;
+      }
+
+      + tr {
+        border-top: 1px solid $light-gray-color;
+      }
+
+      &:hover {
+        background-color: $lighter-gray-color;
+      }
+    }
+  }
+
+  .actions {
+    white-space: nowrap;
+
+    .mat-icon {
+      height: 20px;
+      width: 20px;
+      font-size: 20px;
+
+      + .mat-icon {
+        margin-left: 5px;
+      }
+    }
+  }
+
+  .counter {
+    text-align: center;
+  }
+}

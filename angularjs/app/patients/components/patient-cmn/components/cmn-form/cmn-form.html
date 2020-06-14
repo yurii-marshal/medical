@@ -1,0 +1,557 @@
+<div class="cmn-form-container"
+     ng-form="$ctrl.cmnForm">
+    <div class="flex-row">
+        <div class="info-block block-width-250">
+            <md-input-container>
+                <label>Document Type:</label>
+                <md-select ng-model="$ctrl.model.DocumentTypeId"
+                           ng-change="$ctrl.onChangeDocumentType();"
+                >
+                    <md-option ng-value="type.Id"
+                               ng-repeat="type in $ctrl.docTypes">
+                        {{type.Text}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div ng-if="$ctrl.isDocumentAttachAllowed"
+             class="info-block block-width-300">
+            <div class="flex-cont">
+                <md-input-container class="grow-1">
+                    <label>Document Name:</label>
+                    <input type="text"
+                           ng-model="$ctrl.uploadFile.name"
+                           name="fileName"
+                           ng-disabled="true"
+                           ng-required="true">
+                </md-input-container>
+                <input type="file"
+                       id="fileUploader"
+                       class="file-uploader-input"
+                       nv-file-select
+                       uploader="$ctrl.uploader"
+                       filters="documentFilter"
+                       ng-hide="true">
+                <button class="md-raised md-button md-ink-ripple small-btn"
+                        type="button"
+                        name="uploadFileInput"
+                        ng-click="$ctrl.browseFiles()">
+                    <span>Browse</span>
+                </button>
+            </div>
+        </div>
+        <div class="info-block block-width-180">
+            <md-input-container class="calendar_icon icon-right">
+                <label>Date Signed:</label>
+                <input datetimepicker
+                       format="MM/DD/YYYY"
+                       name="signedDate"
+                       ng-required="true"
+                       ng-model="$ctrl.model.Cmn.SignedDate">
+                <div ng-messages="$ctrl.cmnForm.signedDate.$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required">This field is required</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="info-block block-width-300">
+            <md-input-container>
+                <label>Certification Type:</label>
+                <md-select ng-model="$ctrl.model.Cmn.ReviewStatus"
+                           ng-change="$ctrl.onChangeCertificationType()"
+                >
+                    <md-option ng-value="type.Id"
+                               ng-repeat="type in $ctrl.certificationTypes">
+                        {{type.Name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div class="info-block block-width-300" ng-if="$ctrl.isRevisedCertType()">
+            <md-input-container>
+                <label>Revised For:</label>
+                <md-select ng-model="$ctrl.model.Cmn.CmnRevisionType"
+                           name="cmnRevisionType"
+                           ng-required="true"
+                >
+                    <md-option ng-value="type.Id"
+                               ng-repeat="type in $ctrl.revisionTypes"
+                    >
+                        {{ type.Name }}
+                    </md-option>
+                </md-select>
+                <div ng-messages="$ctrl.cmnForm.cmnRevisionType.$error" class="md-input-messages-nice">
+                    <div ng-message="required">This field is required</div>
+                </div>
+            </md-input-container>
+        </div>
+    </div>
+
+    <v-accordion class="flow-accordion" multiple>
+        <v-pane expanded="true">
+            <v-pane-header class="flow-accordion-title">
+                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                         class="flow-accordion-title-icon"></md-icon>
+                <span>Section A:</span>
+                <div class="accordion-line"></div>
+            </v-pane-header>
+
+            <v-pane-content>
+                <div class="flex-row">
+                    <div class="info-block block-width-250">
+                        <md-autocomplete-with-infinite-scroll
+                            md-no-cache="true"
+                            md-selected-item="$ctrl.model.Cmn.POS"
+                            md-search-text="posNameOrCode"
+                            md-items="item in $ctrl.getPOSDictionary(posNameOrCode, pageIndex)"
+                            md-item-text="item.Name"
+                            md-min-length="0"
+                            md-floating-label="Place of Service:"
+                            clear-on-click>
+                            <md-item-template>
+                                <div md-highlight-text="posNameOrCode"
+                                     md-highlight-flags="^i"
+                                     title="{{ item.Name }}">
+                                    {{ item.Name }}
+                                </div>
+                            </md-item-template>
+                            <md-not-found>
+                                No Places of Service were found.
+                            </md-not-found>
+                        </md-autocomplete-with-infinite-scroll>
+                    </div>
+                    <div class="info-block block-width-250">
+                        <md-input-container>
+                            <label>Name of Facility:</label>
+                            <input type="text"
+                                   name="facility"
+                                   ng-model="$ctrl.model.Cmn.FacilityName">
+                        </md-input-container>
+                    </div>
+                    <div class="info-block block-width-330">
+                        <md-input-container>
+                            <label>Address:</label>
+                            <input type="text"
+                                   name="address"
+                                   ng-model="$ctrl.model.Cmn.FacilityAddress">
+                        </md-input-container>
+                    </div>
+                    <div class="info-block block-width-150">
+                        <md-input-container class="calendar_icon icon-right">
+                            <label>Initial Date:</label>
+                            <input datetimepicker
+                                   format="MM/DD/YYYY"
+                                   name="initialDate"
+                                   ng-required="true"
+                                   ng-model="$ctrl.model.Cmn.InitialDate">
+                            <div ng-messages="$ctrl.cmnForm.initialDate.$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div class="info-block block-width-270">
+                        <md-input-container class="calendar_icon icon-right">
+                            <label>Revised/Recertification Date:</label>
+                            <input datetimepicker
+                                   format="MM/DD/YYYY"
+                                   name="revisedOrRecertificationDate"
+                                   ng-disabled="!$ctrl.isRevisedDateRequired()"
+                                   ng-required="$ctrl.isRevisedDateRequired()"
+                                   ng-model="$ctrl.model.Cmn.RevisedOrRecertificationDate">
+                            <div ng-messages="$ctrl.cmnForm.revisedOrRecertificationDate.$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </div>
+                <div class="flex-row marg-top-10">
+
+                    <div class="info-block info-block-hcpcs block-width-500">
+                        <span>Supply item/Service procedure code(c):</span>
+                        <md-autocomplete ng-repeat="field in $ctrl.model.Cmn.SupplyItemsHcpcs.fields"
+                          md-no-cache="true"
+                          md-selected-item="$ctrl.model.Cmn.SupplyItemsHcpcs[field]"
+                          md-selected-item-change="$ctrl.onSelectedHcpcsCodeChange()"
+                          md-search-text="$ctrl.searchModel[field]"
+                          md-items="item in $ctrl.getHcpcsCodes($ctrl.searchModel[field])"
+                          md-item-text="item.Text"
+                          md-min-length="1"
+                          md-floating-label="HCPCS:"
+                          md-input-name="{{ field }}"
+                          ng-required="$ctrl.isHcpcsRequired($index + 1)"
+                          md-require-match="true"
+                          md-menu-container-class="md-autocomplete-suggestions-width-500"
+                          clear-on-click>
+                            <md-item-template>
+                                <span md-highlight-flags="i" title="{{ item.Description }}">{{ item.Text + ' ' + item.Description }}</span>
+                            </md-item-template>
+                            <md-not-found>Not found</md-not-found>
+                            <div ng-messages="$ctrl.cmnForm[field].$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">Required</div>
+                                <div ng-message="md-require-match">Not valid</div>
+                            </div>
+                        </md-autocomplete>
+                    </div>
+
+                    <div class="info-block block-width-330">
+                        <md-autocomplete-with-infinite-scroll
+                            md-no-cache="true"
+                            md-selected-item="$ctrl.model.Cmn.ReferringProvider"
+                            md-search-text="searchReferringProvider"
+                            md-items="item in $ctrl.getReferringProviders(searchReferringProvider, pageIndex)"
+                            md-item-text="item.FullName"
+                            md-min-length="0"
+                            md-input-name="ReferringProvider"
+                            md-floating-label="Referring Provider:"
+                            ng-required="true"
+                            clear-on-click
+                            md-autocomplete-required>
+                            <md-item-template>
+                                <div md-highlight-text="searchReferringProvider"
+                                     md-highlight-flags="^i"
+                                     title="{{item.FullName}}">
+                                    {{item.FullName}}
+                                </div>
+                            </md-item-template>
+                            <md-not-found>
+                                No Referring Providers were found.
+                            </md-not-found>
+                            <div ng-messages="$ctrl.cmnForm.ReferringProvider.$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                                <div ng-message="md-require-match">Code is not valid</div>
+                            </div>
+                        </md-autocomplete-with-infinite-scroll>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+
+        <v-pane expanded="true">
+            <v-pane-header class="flow-accordion-title">
+                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                         class="flow-accordion-title-icon"></md-icon>
+                <span>Section B:</span>
+                <div class="accordion-line"></div>
+            </v-pane-header>
+
+            <v-pane-content>
+
+                <div class="flex-row">
+                    <div class="info-block block-width-280">
+                        <div class="info-block-body">
+                            <md-input-container class="number-container">
+                                <label>Length of need:</label>
+                                <input type="text"
+                                       ng-model="$ctrl.model.Cmn.LengthOfNeed"
+                                       only-digits-with-length
+                                       max="99"
+                                       min="1"
+                                       ng-required="true"
+                                       name="lengthOfNeed">
+                                <div ng-messages="$ctrl.cmnForm.lengthOfNeed.$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="required">Required</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div class="info-block flex-row diagnose-codes-wr">
+                        <div class="diagnose-codes-title">Diagnosis Codes:</div>
+                        <div>
+                            <diagnose-codes
+                                codes="$ctrl.model.Cmn.Diagnosis"
+                            ></diagnose-codes>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cmn-questionnaire-list">
+                    <div ng-repeat="questionItem in $ctrl.model.Cmn.sectionBQuestions">
+
+                        <div class="item"
+                             ng-if="questionItem.type === $ctrl.questionItemTypes.GROUP_FIELDS"
+                        >
+                            <div class="list-item-question">
+                                <span class="counter">{{ questionItem.order }}</span>
+                                <span>{{ questionItem.title }}</span>
+                            </div>
+
+                            <span ng-repeat="sectionFields in questionItem.groups"
+                                  class="flex-row list-item-input group-block"
+                            >
+                                <div ng-if="sectionFields.label">{{ sectionFields.label }}</div>
+
+                                <section-b-fields section-fields="sectionFields.fields"
+                                ></section-b-fields>
+                            </span>
+
+                        </div>
+
+                        <div class="item"
+                             ng-if="questionItem.type === $ctrl.questionItemTypes.FIELDS"
+                        >
+                            <div class="list-item-question">
+                                <span class="counter">{{ questionItem.order }}</span>
+                                <span>{{ questionItem.title }}</span>
+                            </div>
+
+                            <span class="flex-row list-item-input">
+                                <section-b-fields section-fields="questionItem.fields"
+                                ></section-b-fields>
+                            </span>
+                        </div>
+
+                        <div class="item"
+                             ng-if="questionItem.type === $ctrl.questionItemTypes.CHECKBOX"
+                        >
+                            <div class="list-item-question">
+                                <span class="counter">{{ questionItem.order }}</span>
+                                <span>{{ questionItem.title }}</span>
+                            </div>
+                            <div class="list-item-input flex-row">
+                                <div class="info-block">
+                                    <div class="info-block-body">
+                                        <md-checkbox ng-repeat="option in questionItem.options"
+                                                     class="md-primary"
+                                                     ng-model="option.isSelected"
+                                        >
+                                            {{ option.name }}
+                                        </md-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item"
+                             ng-if="questionItem.type === $ctrl.questionItemTypes.RADIO"
+                        >
+                            <div class="list-item-question">
+                                <span class="counter">{{ questionItem.order }}</span>
+                                <span>{{ questionItem.title }}</span>
+                            </div>
+                            <div class="list-item-input flex-row">
+                                <div class="info-block">
+                                    <div class="info-block-body">
+                                        <md-radio-group
+                                            class="flex-row"
+                                            ng-model="questionItem.value">
+                                            <md-radio-button class="md-primary"
+                                                             ng-repeat="option in questionItem.options"
+                                                             ng-value="option.id"
+                                                             aria-label="{{ option.name }}"
+                                                             ng-disabled="questionItem.disable"
+                                            >
+                                                <span ng-bind="option.name"></span>
+                                            </md-radio-button>
+                                        </md-radio-group>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item"
+                             ng-if="questionItem.type === $ctrl.questionItemTypes.TEXT"
+                        >
+                            <div class="list-item-question">
+                                <span class="counter">{{ questionItem.order }}</span>
+                                <span>{{ questionItem.title }}</span>
+                            </div>
+                            <div class="list-item-input flex-row">
+                                <div class="info-block block-width-250">
+                                    <div class="info-block-body">
+                                        <md-input-container>
+                                            <label>{{:: questionItem.label }}</label>
+                                            <input type="text"
+                                                   ng-model="questionItem.value"
+                                                   ng-required="questionItem.required"
+                                                   name="{{ 'q-text-field' + $index }}">
+                                            <div ng-messages="$ctrl.cmnForm['q-text-field' + $index].$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">Required</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="item"
+                             ng-if="questionItem.type === $ctrl.questionItemTypes.INT"
+                        >
+                            <div class="list-item-question">
+                                <span class="counter">{{ questionItem.order }}</span>
+                                <span>{{ questionItem.title }}</span>
+                            </div>
+                            <div class="list-item-input flex-row">
+                                <div class="info-block block-width-250">
+                                    <div class="info-block-body">
+                                        <md-input-container>
+                                            <label>{{:: questionItem.label }}</label>
+                                            <input type="text"
+                                                   ng-model="questionItem.value"
+                                                   ng-required="questionItem.required"
+                                                   name="{{ 'q-text-field' + $index }}"
+                                                   only-digits-with-length
+                                                   min="1"
+                                            >
+                                            <div ng-messages="$ctrl.cmnForm['q-text-field' + $index].$error"
+                                                 class="md-input-messages-nice">
+                                                <div ng-message="required">Required</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+
+        <v-pane expanded="true"
+                ng-if="$ctrl.showSectionC();"
+        >
+            <v-pane-header class="flow-accordion-title">
+                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                         class="flow-accordion-title-icon"></md-icon>
+                <span>Section C: Narrative description of items and cost</span>
+                <div class="accordion-line"></div>
+            </v-pane-header>
+
+            <v-pane-content>
+                <div class="flex-row narrative-desc-container">
+                    <div class="flex-column">
+                        <div class="flex-row">
+                            <div class="info-block block-width-600">Supply item/Service procedure code:</div>
+                        </div>
+                        <div class="flex-row narrative-desc"
+                             ng-if="$ctrl.model.Cmn.SupplyItemsHcpcs.selectedHcpcs"
+                             ng-repeat="item in $ctrl.model.Cmn.NarrativeDescriptionOfItemsAndCost">
+                            <div class="info-block block-width-150">
+                                <md-input-container md-no-float>
+                                    <label>HCPCS:</label>
+                                    <md-select ng-model="item.Hcpcs"
+                                               ng-required="true"
+                                               name="{{ 'narrativeDescriptionHcpcs' + $index }}"
+                                               ng-change="$ctrl.onNarrativeDescriptionItemChange(item)">
+                                        <md-option ng-repeat="option in $ctrl.model.Cmn.SupplyItemsHcpcs.selectedHcpcs"
+                                                   ng-disabled="$ctrl.isNarrativeDescriptionItemOptionDisabled(item, option)"
+                                                   ng-value="option.Id">
+                                            {{ option.Text }}
+                                        </md-option>
+                                    </md-select>
+                                    <div ng-messages="$ctrl.cmnForm['narrativeDescriptionHcpcs' + $index].$error" class="md-input-messages-nice">
+                                        <div ng-message="required">Required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="info-block block-width-700">
+                                <md-input-container md-no-float>
+                                    <label>Select HCPCS for a description:</label>
+                                    <textarea rows="1"
+                                              ng-required="true"
+                                              name="description"
+                                              ng-maxlength="$ctrl.notesMaxLength"
+                                              ng-model="item.Description">
+                                    </textarea>
+                                    <div ng-messages="$ctrl.cmnForm.description.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="maxlength">
+                                            <b>Text</b> is to long, max length is 1023 symbols.
+                                        </div>
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="info-block block-width-250">
+                                <md-input-container class="currency-container">
+                                    <div class="currency-icon">$</div>
+                                    <label>Charge Amount:</label>
+                                    <input type="number"
+                                           min="0"
+                                           step="0.01"
+                                           ng-required="true"
+                                           name="chargeAmount"
+                                           ng-model="item.Charge.Amount"
+                                           price-validator
+                                    >
+                                    <div ng-messages="$ctrl.cmnForm.chargeAmount.$error"
+                                         class="md-input-messages-nice">
+                                        <div ng-message="min">Min Charge Amount is 0</div>
+                                        <div ng-message="price">Max 2 digits after point</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="info-block block-width-250">
+                                <md-input-container class="currency-container">
+                                    <div class="currency-icon">$</div>
+                                    <label>Allowed Amount:</label>
+                                    <input type="number"
+                                           min="0"
+                                           step="0.01"
+                                           name="allowedAmount"
+                                           ng-model="item.Allowed.Amount"
+                                           price-validator
+                                    >
+                                    <div ng-messages="$ctrl.cmnForm.allowedAmount.$error"
+                                         class="md-input-messages-nice"
+                                    >
+                                        <div ng-message="min">Min Allowed Amount is 0</div>
+                                        <div ng-message="price">Max 2 digits after point</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="info-block block-width-150 action-btn-container">
+                                <md-button ng-if="$index !== 0"
+                                           class="delete-icon-btn"
+                                           aria-label="..."
+                                           ng-click="$ctrl.deleteNarrativeDescriptionItem($index)">
+                                    <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                </md-button>
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <div class="action-btn-container">
+                                <md-button ng-if="$ctrl.isAddNarrativeDescriptionItemButtonVisible()"
+                                           class="md-raised middle-btn add-new-contact"
+                                           aria-label="..."
+                                           ng-click="$ctrl.addNarrativeDescriptionItem()">
+                                    <md-icon md-svg-src="assets/images/default/plus.svg"></md-icon>
+                                    Add Item
+                                </md-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+    </v-accordion>
+
+    <div class="flex-row">
+        <div class="info-block grow-1">
+            <md-input-container>
+                <label>Notes:</label>
+                <textarea
+                    rows="1"
+                    ng-maxlength="$ctrl.notesMaxLength"
+                    ng-model="$ctrl.model.Description"
+                    name="notes"></textarea>
+                <div ng-messages="$ctrl.cmnForm.notes.$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="maxlength"
+                         class="md-input-message-animation">
+                        Additional info is too long, max length is
+                        {{$ctrl.notesMaxLength}} symbols
+                    </div>
+                </div>
+            </md-input-container>
+        </div>
+    </div>
+
+</div>

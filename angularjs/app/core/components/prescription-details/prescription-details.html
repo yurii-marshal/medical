@@ -1,0 +1,140 @@
+<div class="drowz-wizard-block no-float prescription-details-wrap"
+     ng-form="$ctrl.prescriptionForm"
+>
+    <div class="drowz-wizard-block-title">
+        <div class="wizard-title-text">Prescription Details:</div>
+    </div>
+    <div class="drowz-wizard-block-body">
+        <div class="drowz-wizard-block-row row"
+             bs-loading-overlay
+             bs-loading-overlay-reference-id="prescriptionSelection"
+             ng-if="$ctrl.addPrescriptionSelect == 'true'"
+        >
+            <div class="col-xs-4 info-block">
+                <md-input-container>
+                    <md-select ng-model="$ctrl.prescription"
+                               ng-model-options="{trackBy: '$value.Id', allowInvalid: true}"
+                               name="prescription"
+                               placeholder="{{ $ctrl.prescriptions.length > 0 ? 'Select prescription:' : 'No prescriptions available' }}"
+                               ng-change="$ctrl.onChangePrescription()"
+                               ng-disabled="!$ctrl.isPrescriptionActive || $ctrl.disablePrescriptionSelect"
+                               ng-required="$ctrl.isPrescriptionActive && !$ctrl.disablePrescriptionSelect"
+                    >
+                        <md-option ng-value="prescription"
+                                   ng-repeat="prescription in $ctrl.prescriptions"
+                        >
+                           by {{ prescription.TreatingProvider.PhysicianName.FullName ||  prescription.TreatingProvider.Practice }}
+                            | NPI: {{ prescription.TreatingProvider.Npi }}
+                            | Date: {{ prescription.EffectiveDate | amUtc | amDateFormat: 'MM/DD/YYYY' }}
+                        </md-option>
+                    </md-select>
+                    <div ng-messages="$ctrl.prescriptionForm.prescription.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+                <span ng-if="$ctrl.isPrescriptionActive && $ctrl.markRemovedPrescription"
+                      class="select-prescription-error"
+                >
+                    Existing prescription was removed, select new one to continue.
+                </span>
+            </div>
+
+            <div class="col-xs-2 info-block padding-top-15"
+                 ng-if="!$ctrl.disablePrescriptionSelect && $ctrl.prescriptions.length > 0"
+            >
+                <md-switch class="md-primary"
+                           ng-model="$ctrl.isPrescriptionActive"
+                           ng-change="$ctrl.onChangePrescriptionSwitcher()"
+                >
+                    Use existing prescription
+                </md-switch>
+            </div>
+        </div>
+        <div class="drowz-wizard-block-row row">
+            <div class="info-block col-xs-1">
+                <md-input-container>
+                    <label>Effective Date:</label>
+                    <input ng-model="$ctrl.effectiveDate"
+                           datetimepicker
+                           use-current="false"
+                           format="MM/DD/YYYY"
+                           show-today-button="false"
+                           aria-label="..."
+                           name="effectiveDate"
+                           ng-required="true"
+                    >
+                    <div ng-messages="$ctrl.prescriptionForm.effectiveDate.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div class="info-block col-xs-3">
+                <div class="flex-row">
+                    <div class="width-415">
+                        <md-autocomplete md-selected-item="$ctrl.prescriptionReferral"
+                                         md-selected-item-change="$ctrl.referralChanged($ctrl.prescriptionReferral)"
+                                         md-search-text="searchReferral"
+                                         md-items="referral in $ctrl.getReferrals(searchReferral)"
+                                         md-item-text="referral.displayName"
+                                         md-min-length="2"
+                                         md-delay="350"
+                                         md-floating-label="Ordering Provider:"
+                                         clear-on-click
+                                         ng-required="$ctrl.isReferralRequired"
+                                         md-input-name="referral"
+                    >
+                        <md-item-template>
+                            <span md-highlight-text="$ctrl.searchReferral"
+                                  md-highlight-flags="i"
+                                  class="item-title">
+                                {{referral.searchName}}
+                            </span>
+                        </md-item-template>
+                        <div ng-messages="$ctrl.prescriptionForm.referral.$error"
+                             class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                        </div>
+                        <md-not-found>No Referring Providers found</md-not-found>
+                    </md-autocomplete>
+                    </div>
+                    <div class="pad-top-5">
+                        <md-button class="md-primary md-raised small-btn"
+                                   ng-click="$ctrl.addReferral($event)">
+                            Add New
+                        </md-button>
+                    </div>
+                </div>
+            </div>
+            <div class="info-block col-xs-3">
+                <div class="info-block-label">Location:</div>
+                <div class="info-block-body">
+                    <span ng-if="!$ctrl.prescriptionReferral.Location.Address.AddressLine">
+                        {{$ctrl.prescriptionReferral.Location.Address || '-'}}
+                    </span>
+                    <span ng-if="$ctrl.prescriptionReferral.Location.Address.AddressLine">
+                        {{$ctrl.prescriptionReferral.Location.Address | addressToString}}
+                    </span>
+                    <md-input-container class="hidden-validation-input">
+                        <input type="text"
+                               ng-model="$ctrl.prescriptionReferral.Location.Address"
+                               ng-required="$ctrl.prescriptionReferral && !$ctrl.prescriptionReferral.Location && !$ctrl.isLocationsLoading"
+                               name="referralLocation"
+                        />
+                        <div ng-messages="$ctrl.prescriptionForm.referralLocation.$error" class="md-input-messages-nice">
+                            <div ng-message="required">Referring provider location is not selected</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+            <div ng-if="$ctrl.prescriptionReferral"
+                 class="info-block block-width-100 edit-referral-location-block">
+                <md-button class="md-raised small-btn"
+                           aria-label="..."
+                           ng-click="$ctrl.changeReferralLocation()"
+                >
+                    <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                </md-button>
+            </div>
+        </div>
+    </div>
+</div>

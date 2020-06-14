@@ -1,0 +1,205 @@
+<div class="inventory-details"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="detailsOverlay">
+
+    <div class="flex-row">
+        <div class="inventory-img"
+             ng-if="invPage.equipment.PictureUrl"
+             ng-style="{'background-image': 'url(' + invPage.equipment.PictureUrl + ')'}"
+             bs-loading-overlay
+             bs-loading-overlay-reference-id="imgLoadingOverlay">
+        </div>
+
+        <div class="inventory-info grow-1"
+             ng-form="invPage.detailsForm">
+            <div class="flex-row" ng-show="invPage.equipment.Description">
+                <div class="info-block grow-1">
+                    <div class="info-block-label">Description:</div>
+                    <div class="info-block-body with-line-breaks">{{invPage.equipment.Description}}</div>
+                </div>
+            </div>
+            <div class="flex-row" ng-show="!invPage.equipment.Bundle">
+                <div class="info-block block-width-50-percent" ng-show="invPage.equipment.SerialNumber">
+                    <div class="info-block-label">Serial Number:</div>
+                    <div class="info-block-body">{{invPage.equipment.SerialNumber}}</div>
+                </div>
+                <div class="info-block block-width-50-percent" ng-show="invPage.equipment.LotNumber">
+                    <div class="info-block-label">Lot Number:</div>
+                    <div class="info-block-body">{{invPage.equipment.LotNumber}}</div>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="info-block block-width-20-percent">
+                    <md-input-container>
+                        <label>Status:</label>
+                        <md-select ng-model="invPage.equipment.Status.Id"
+                                   ng-change="invPage.changeStatus(invPage.equipment.Status.Id)">
+                            <md-option ng-value="item.Id"
+                                       ng-repeat="item in invPage.statusesDic">
+                                {{item.Name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div class="info-block block-width-30-percent">
+                    <md-input-container>
+                        <label>Location:</label>
+                        <md-select ng-model="invPage.equipment.Location.StoreTypeId"
+                                   ng-change="invPage.changeType()">
+                            <md-option ng-value="item.Id"
+                                       ng-repeat="item in invPage.locationsDic">
+                                {{item.Name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div class="info-block block-width-50-percent">
+                    <!-- Patient -->
+                    <md-autocomplete-with-infinite-scroll
+                            ng-if="invPage.equipment.Location.StoreTypeId===invPage.inventoryEquipmentService.LOCATION_TYPE().PATIENT"
+                            md-no-cache="true"
+                            md-selected-item="invPage.equipment.Location.Patient"
+                            md-search-text="searchPatient"
+                            md-items="item in invPage.getPatients(searchPatient, pageIndex)"
+                            md-item-text="item.DisplayName"
+                            md-min-length="0"
+                            ng-required="true"
+                            md-floating-label="Patient Name:"
+                            clear-on-click
+                            md-autocomplete-required
+                            md-input-name="patient">
+                        <md-item-template>
+                            <span md-highlight-flags="^i" title="{{item.DisplayName}}">{{item.DisplayName}}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            No patients were found
+                        </md-not-found>
+                        <div ng-messages="invPage.detailsForm.patient.$error" class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                            <div ng-message="selected">Patient is not valid</div>
+                        </div>
+                    </md-autocomplete-with-infinite-scroll>
+                    <!-- Personnel -->
+                    <md-autocomplete-with-infinite-scroll
+                            ng-if="invPage.equipment.Location.StoreTypeId===invPage.inventoryEquipmentService.LOCATION_TYPE().PERSONNEL"
+                            md-no-cache="true"
+                            md-selected-item="invPage.equipment.Location.Personnel"
+                            md-search-text="searchPersonnel"
+                            md-items="item in invPage.getPersonnels(searchPersonnel, pageIndex)"
+                            md-item-text="item.DisplayName"
+                            md-min-length="0"
+                            ng-required="true"
+                            md-floating-label="Team Member Name:"
+                            clear-on-click
+                            md-autocomplete-required
+                            md-input-name="personnel">
+                        <md-item-template>
+                            <span md-highlight-flags="^i" title="{{item.DisplayName}}">{{item.DisplayName}}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            No team members were found
+                        </md-not-found>
+                        <div ng-messages="invPage.detailsForm.personnel.$error"
+                             class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                            <div ng-message="selected">Personnel is not valid</div>
+                        </div>
+                    </md-autocomplete-with-infinite-scroll>
+                    <!-- Location -->
+                    <md-autocomplete-with-infinite-scroll
+                            ng-if="invPage.equipment.Location.StoreTypeId===invPage.inventoryEquipmentService.LOCATION_TYPE().LOCATION"
+                            md-no-cache="true"
+                            md-selected-item="invPage.equipment.Location.Location"
+                            md-search-text="searchLocation"
+                            md-items="item in invPage.getLocations(searchLocation, pageIndex)"
+                            md-item-text="item.DisplayName"
+                            md-min-length="0"
+                            ng-required="true"
+                            md-floating-label="Location Name:"
+                            clear-on-click
+                            md-autocomplete-required
+                            md-input-name="location">
+                        <md-item-template>
+                            <span md-highlight-flags="^i" title="{{item.DisplayName}}">{{item.DisplayName}}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            No locations were found
+                        </md-not-found>
+                        <div ng-messages="invPage.detailsForm.location.$error"
+                             class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                            <div ng-message="selected">Location is not valid</div>
+                        </div>
+                    </md-autocomplete-with-infinite-scroll>
+
+                </div>
+            </div>
+            <div class="flex-row" ng-if="invPage.equipment.Status.Id === invPage.inventoryStatusConstants.INACTIVE_STATUS_ID">
+                <div class="info-block block-width-50-percent">
+                    <md-input-container>
+                        <label>Inactive Reason:</label>
+                        <input class="ellipsis"
+                               type="text"
+                               ng-maxlength="invPage.notesMaxLength"
+                               name="otherReason"
+                               ng-required="true"
+                               ng-model="invPage.equipment.InactiveReason">
+                        <div ng-messages="invPage.detailsForm.otherReason.$error" class="md-input-messages-nice">
+                            <div ng-message="required">This field is required</div>
+                            <div ng-message="maxlength" class="md-input-message-animation">
+                                Text is to long, max length is {{invPage.notesMaxLength}} symbols
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="inventory-info-footer">
+                <md-checkbox class="md-primary" ng-model="invPage.equipment.Refurbished">Refurbished Product</md-checkbox>
+                <md-button class="md-primary md-raised middle-btn"
+                           ng-disabled="!invPage.detailsForm.$valid || !invPage.updateEnabled"
+                           ng-click="invPage.updateEquipment()">
+                    Update
+                </md-button>
+            </div>
+        </div>
+    </div>
+    <div class="inventory-bundle-items" ng-if="invPage.equipment.Bundle">
+        <div class="active-title flow-body-active-title">Items:</div>
+        <div class="bundle-item" ng-repeat="comp in invPage.equipment.Components">
+            <div class="info-block grow-1">
+                <div class="info-block-label">Name:</div>
+                <div class="info-block-body">{{comp.Name}}</div>
+            </div>
+            <div class="info-block block-width-150 left-divider">
+                <div class="info-block-label">Part Number:</div>
+                <div class="info-block-body">{{comp.PartNumber}}</div>
+            </div>
+            <div class="info-block block-width-150 left-divider">
+                <div class="info-block-label">Manufacturer:</div>
+                <div class="info-block-body">{{comp.ManufacturerName}}</div>
+            </div>
+            <div class="info-block block-width-100 left-divider">
+                <div class="info-block-label">HCPCS:</div>
+                <div class="info-block-body">
+                    <div popover-directive="comp.allHcpcsCodes"
+                         hide-first-item="true"
+                         min-width="50"></div>
+                </div>
+            </div>
+            <div class="info-block block-width-270 left-divider">
+                <div class="info-block-label">Serial Number:</div>
+                <div class="info-block-body" ng-if="!comp.SerialNumber">-</div>
+                <div class="info-block-body" ng-if="comp.SerialNumber">{{comp.SerialNumber}}</div>
+            </div>
+            <div class="info-block block-width-200 left-divider">
+                <div class="info-block-label">Lot Number:</div>
+                <div class="info-block-body" ng-if="!comp.LotNumber">-</div>
+                <div class="info-block-body" ng-if="comp.LotNumber">{{comp.LotNumber}}</div>
+            </div>
+            <div class="info-block block-width-60 left-divider">
+                <div class="info-block-label">Qty:</div>
+                <div class="info-block-body">{{comp.Count}}</div>
+            </div>
+        </div>
+    </div>
+</div>

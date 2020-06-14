@@ -1,0 +1,19 @@
+<div class="modal-window select-practice-modal">
+    <md-toolbar class="modal-title">
+        <div class="md-toolbar-tools">
+            <h2>Select Order to Share:</h2>
+            <a href="javascript:void(0);" ng-click="share.close()" class="close-modal"></a>
+        </div>
+    </md-toolbar>
+    <md-dialog-content class="md-dialog-content" bs-loading-overlay bs-loading-overlay-reference-id="loading-orders">
+        <div class="select-practice">
+            <div class="select-practice-block clearfix">
+                <md-checkbox ng-model="order.checked" class="md-primary practice-checkbox" ng-repeat="order in share.orders">{{order.Text}}</md-checkbox>
+            </div>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter" layout="row" layout-align="end center">
+        <md-button class="md-raised" ng-click="share.close()">Cancel</md-button>
+        <md-button class="md-primary md-raised" ng-click="share.save()">Share</md-button>
+    </md-dialog-actions>
+</div>

@@ -1,0 +1,52 @@
+<div class="invoice-items-header">
+    <div class="info-block grow-1">Bill To:</div>
+    <div class="info-block block-width-140">Invoice:</div>
+    <div class="info-block block-width-140">Order:</div>
+    <div class="info-block block-width-120">Charge:</div>
+    <div class="info-block block-width-120">Balance:</div>
+    <div class="info-block block-width-230">Created:</div>
+</div>
+
+<div class="invoice-item" ng-repeat="item in $ctrl.invoices track by $index">
+    <div class="info-block grow-1">
+        <div>{{item.BillRecipient}}</div>
+        <div class="flex-cont">
+            <div class="status-label {{item.statusClass}}">{{item.Status.Name}}</div>
+            <div class="status-label dark-blue" ng-if="item.Purchase">Purchase</div>
+            <div class="status-label dark-blue" ng-if="item.Rental">Rental</div>
+            <md-icon class="action-required-icon"
+                     md-svg-src="assets/images/default/alert.svg"
+                     ng-if="item.ActionRequired"
+                     simple-tooltip="Action Required"
+                     tooltip-position="right">
+            </md-icon>
+        </div>
+    </div>
+    <div class="info-block block-width-140 left-divider">
+        <a href="javascript:void(0);"
+           class="underline-after-link"
+           ui-sref="root.invoice.details({ invoiceId: item.Id })">
+            {{item.DisplayId}}
+        </a>
+    </div>
+    <div class="info-block block-width-140 left-divider">
+        <a href="javascript:void(0);"
+           class="underline-after-link"
+           ng-if="item.OrderId"
+           ui-sref="root.orders.order.details({ orderId: item.OrderId })">
+            {{item.DisplayOrderId}}
+        </a>
+        <span ng-if="!item.OrderId">-</span>
+    </div>
+    <div class="info-block block-width-120 left-divider font-semibold dark-blue-text">
+        {{item.Charge.Currency}} {{item.Charge.Amount | number:2 | absNumber}}
+    </div>
+    <div class="info-block block-width-120 left-divider font-semibold dark-blue-text">
+        {{item.Balance.Currency}} {{item.Balance.Amount | number:2 | absNumber}}
+    </div>
+    <div class="info-block block-width-230 left-divider">
+        {{item.CreatedBy | fullname}} <br>
+        {{item.CreatedOn | localDateTime}}
+        <span class="active-text">{{item.CreatedOn | localDateTime: "h:mm A"}}</span>
+    </div>
+</div>

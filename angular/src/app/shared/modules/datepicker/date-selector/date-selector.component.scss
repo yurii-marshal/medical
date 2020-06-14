@@ -1,0 +1,14 @@
+:host {
+    width: 100%;
+
+    .date-selector {
+        line-height: 2em;
+        text-align: center;
+        vertical-align: middle;
+        width: 100%;
+    }
+
+    .date-set__dates {
+        padding: 20px;
+    }
+}

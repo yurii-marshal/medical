@@ -1,0 +1,10 @@
+<div class="sub-tabs">
+    <a href="javascript:void(0);"
+       class="sub-tabs-item"
+       [ngClass]="{'active': tab.isActive }"
+       (click)="navigate(tab)"
+       *ngFor="let tab of tabs"
+    >
+        {{ tab.text }}
+    </a>
+</div>

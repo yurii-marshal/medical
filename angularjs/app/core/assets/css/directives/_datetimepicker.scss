@@ -1,0 +1,565 @@
+body {
+    .bootstrap-datetimepicker-widget a[data-action="togglePicker"] {
+        position: relative;
+        display: block;
+        padding: 0;
+        height: 55px;
+
+        .glyphicon {
+            &::before {
+                width: 26px !important;
+                background-image: url('../assets/images/clock_icon.png') !important;
+            }
+
+            &::after {
+                box-shadow: none;
+            }
+        }
+
+        .datepicker-text  {
+            position: absolute;
+            left: 145px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 400;
+            font-size: 18px;
+            white-space: nowrap;
+            color: #1D1D1D;
+            cursor: pointer;
+            opacity: 1;
+            transition: .1s;
+
+            &.select-date {
+                opacity: 0;
+            }
+        }
+
+        &.timepicker-open {
+            .select-time {
+                opacity: 0;
+            }
+
+            .glyphicon {
+                &::before {
+                    width: 24px !important;
+                    background-image: url('../assets/images/calendar_icon.png') !important;
+                }
+            }
+
+            .select-date {
+                opacity: 1;
+            }
+        }
+
+
+    }
+}
+
+input[format="LT"] + .bootstrap-datetimepicker-widget {
+    border-top: 55px solid $wizard-title-color;
+    box-sizing: border-box;
+
+    &:after {
+        content: "";
+        left: 0 !important;
+        right: 0;
+        height: 10px;
+        display: block !important;
+        box-shadow: 0 3px 4px 0 $gray-color-main;
+        position: absolute;
+        z-index: 11;
+        top: -10px !important;
+        border: none !important;
+    }
+
+    .table-condensed tr:nth-child(2) {
+        height: 65px;
+        line-height: 1px;
+        margin-top: 15px;
+        width: 300px;
+        margin-left: 20px;
+
+        &:before {
+            content: "";
+            display: block;
+            height: 70px;
+            width: 340px;
+            position: absolute;
+            z-index: 129;
+            left: 0;
+            top: 77px !important;
+        }
+    }
+}
+
+.bootstrap-datetimepicker-widget {
+    padding: 0 !important;
+    border-radius: 2px;
+    width: 340px !important;
+
+    &:after, &:before {
+        display: none !important;
+    }
+
+    .today:before {
+        border: none !important;
+    }
+
+    table {
+        td {
+            &.old {
+                color: $gray-disabled;
+            }
+
+            .glyphicon-chevron-up, .glyphicon-chevron-down {
+                position: relative;
+
+                &::after {
+                    left: 50%;
+                    margin-left: -4px;
+                    transform: rotate(43deg);
+                }
+
+                &::before {
+                    right: 50%;
+                    margin-right: -4px;
+                    transform: rotate(-43deg);
+                }
+
+                &::before, &::after {
+                    content: "";
+                    position: absolute;
+                    top: 50%;
+                    margin-top: -4px;
+                    width: 3px;
+                    height: 10px;
+                    background-color: #9D9FA2;
+                    transition: .2s;
+                }
+
+                &:hover {
+                    &::before, &::after {
+                        background-color: #000;
+                    }
+                }
+            }
+
+            .glyphicon-chevron-up {
+                &::after {
+                    transform: rotate(43deg);
+                }
+
+                &::before {
+                    transform: rotate(-43deg);
+                }
+            }
+
+            .glyphicon-chevron-down {
+                &::after {
+                    transform: rotate(137deg);
+                }
+
+                &::before {
+                    transform: rotate(-137deg);
+                }
+            }
+        }
+    }
+
+    .btn, td {
+        & > span:hover {
+            background: transparent !important;
+        }
+    }
+
+    .btn {
+        display: inline-block !important;
+    }
+
+    .picker-switch {
+
+        td {
+            span {
+                margin-left: 0;
+                margin-right: 0;
+                font-family: "Roboto", sans-serif;
+                text-decoration: none;
+                text-transform: uppercase;
+                color: $main-active-color;
+
+                &::before {
+                    display: none;
+                }
+            }
+        }
+
+        .glyphicon.glyphicon-calendar, .glyphicon.glyphicon-time {
+            border-top: 55px solid $wizard-title-color;
+            position: relative;
+            box-sizing: border-box;
+            top: 0 !important;
+            margin: 0 !important;
+            border-radius: 0 !important;
+
+            &::before {
+                content: "";
+                background-position: center;
+                background-repeat: no-repeat;
+                display: block;
+                height: 26px;
+                position: absolute;
+                top: -41px;
+                left: 120px;
+                margin-left: -12px;
+            }
+
+            &::after {
+                content: "";
+                left: 0;
+                right: 0;
+                height: 10px;
+                display: block;
+                box-shadow: 0 3px 4px 0 $gray-color-main;
+                position: absolute;
+                z-index: 11;
+                top: -10px;
+            }
+        }
+
+        .glyphicon.glyphicon-time {
+            &::before {
+                width: 26px;
+                background-image: url('../assets/images/clock_icon.png');
+            }
+        }
+
+        .glyphicon.glyphicon-calendar {
+            &::before {
+                width: 24px;
+                background-image: url('../assets/images/calendar_icon.png');
+            }
+        }
+    }
+
+    .list-unstyled {
+        margin-bottom: 0;
+    }
+
+    .timepicker {
+        width: 340px;
+        height: 300px;
+
+        .timepicker-picker {
+            .timepicker-hour, .separator, .timepicker-minute {
+                font-size: 54px;
+            }
+
+            & > .table-condensed {
+                width: 100%;
+                height: 240px;
+
+                .separator:empty {
+                    display: none;
+                }
+
+                tr {
+                    display: block;
+                    width: 340px;
+
+                    &:first-child {
+                        height: 65px;
+                        padding-top: 13px;
+
+                        td {
+                            width: 50%;
+                            text-align: center;
+
+                            &:first-child {
+                                margin-left: 4px;
+                            }
+
+                            &:nth-child(3) {
+                                margin-left: -20px;
+                            }
+                        }
+                    }
+
+                    &:nth-child(2) {
+                        height: 65px;
+                        line-height: 1px;
+                        margin-top: 15px;
+                        width: 300px;
+                        margin-left: 20px;
+
+                        &:before {
+                            content: "";
+                            display: block;
+                            height: 70px;
+                            width: 340px;
+                            position: absolute;
+                            z-index: 129;
+                            left: 0;
+                            top: 137px;
+                        }
+
+                        td {
+                            width: 33.3%;
+                            text-align: center;
+
+                            &:nth-child(1) {
+                                padding-left: 30px;
+                            }
+
+                            &:nth-child(2) {
+                                margin-right: -13px;
+                                margin-left: -2px;
+                                margin-top: -5px;
+                            }
+
+                            &:nth-child(3) {
+                                padding-right: 41px;
+                            }
+                        }
+
+                        td:last-child {
+                            position: absolute;
+                            bottom: 25px;
+                            left: 50%;
+                            margin-left: -52px;
+
+                            .btn {
+                                background: $main-active-color;
+                                border: none;
+                                border-radius: 0;
+                                padding: 7px 23px;
+                                color: #FFF !important;
+                            }
+                        }
+                    }
+
+                    &:nth-child(3) {
+                        position : relative;
+                        z-index : 200;
+                        height: 65px;
+                        margin-top: -26px;
+
+                        td {
+                            width: 50%;
+                            text-align: center;
+
+                            &:first-child {
+                                margin-left: 4px;
+                                margin-right: -19px;
+                            }
+                        }
+                    }
+
+                    & > td {
+                        display: block;
+                        float: left;
+
+                        .btn {
+                            box-shadow: none !important;
+                            color: $wizard-title-color !important;
+
+                            &:hover {
+                                color: $font-color !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .datepicker-months, .datepicker-years, .datepicker-days, .datepicker-decades {
+
+        table {
+            width: 100%;
+            max-width: 340px;
+            overflow: hidden;
+
+            thead {
+                position: relative;
+                width: 100%;
+                font-size: 18px;
+                color: $dark-black-color;
+                letter-spacing: 1px;
+                background-color: $wizard-title-color;
+
+                tr {
+                    background-color: $wizard-title-color !important;
+                }
+
+                th {
+                    border-radius: 0;
+                    height: 54px;
+                    font-weight: 400;
+                    background-color: $wizard-title-color !important;
+
+                    &.prev, &.next {
+                        width: 50px;
+                        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAALCAYAAACzkJeoAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ppVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpDMkUwNTIwMEU4QTRFNTExQjNDQUE0MDE3NzRGMjFBQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoyMDEyODAyMEE3RjMxMUU1ODg5MkJENjE5OUZGRkM5NCIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoyMDEyODAxRkE3RjMxMUU1ODg5MkJENjE5OUZGRkM5NCIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxNSAoV2luZG93cykiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpGNTU2MEU5Mzc3QTVFNTExQjNDQUE0MDE3NzRGMjFBQyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpDMkUwNTIwMEU4QTRFNTExQjNDQUE0MDE3NzRGMjFBQyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pq2r/AwAAACZSURBVHjadI8xCgIxEEVnxdZ2QTCD4KrnEAtBG68qNja73kLEFYsoKHgFIb7VyRIEB15SvJn5Seac24rIFFbe+1qS6sDYqFR19CvX8ICBNQxbyaoj9xyeoLCnQeOk0HBIGprJXSutXhCSuO/BlglXCTncYPmRiMJE38SMmEuc3NhL700u4hxzunCFHiwQp/SfWQhB/tVbgAEAD3gsUOABR1EAAAAASUVORK5CYII=') center center no-repeat !important;
+                        font-size: 0;
+                    }
+
+                    &.next[style*=hidden] {
+                        visibility: visible !important;
+                        background: none;
+                        width: 0;
+                        height: 0;
+                        padding: 0;
+                        margin-left: 30px;
+                        display: block;
+
+                    }
+
+                    &.prev {
+                        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAALCAYAAACzkJeoAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ppVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpDMkUwNTIwMEU4QTRFNTExQjNDQUE0MDE3NzRGMjFBQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpDMENBQzczMUE3RjMxMUU1OUZEREM4MzVGQUFCQUUwNSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpDMENBQzczMEE3RjMxMUU1OUZEREM4MzVGQUFCQUUwNSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxNSAoV2luZG93cykiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpGNTU2MEU5Mzc3QTVFNTExQjNDQUE0MDE3NzRGMjFBQyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpDMkUwNTIwMEU4QTRFNTExQjNDQUE0MDE3NzRGMjFBQyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Puv39oUAAACZSURBVHjaYvz//z8DDMjJySkAqW1A/PjRo0fuLEgSskBqHxArAjEPSIwJKiEDpPZDJV4DsTdInFFWVlYKSB8AYlUgfgfEzkAjL8B0boJKfARiN5gETJIdyv4FxQzIkiDzHwCxKBDvBdqvBZcEGvMISDsB8SMkBepw1wLl70MVPAFiCahfIZJQBXehCkBWPAN7BTmE0AFAgAEAeS8v/r9WdoUAAAAASUVORK5CYII=') center center no-repeat !important;
+
+                    }
+                }
+
+                &:after {
+                    content: "";
+                    left: 0;
+                    right: 0;
+                    height: 10px;
+                    display: block;
+                    box-shadow: 0 3px 4px 0 $gray-color-main;
+                    position: absolute;
+                    z-index: 11;
+                    top: 43px;
+                }
+            }
+
+            tr {
+                td {
+                    padding: 5px 25px 25px;
+
+                    span {
+                        border: 10px solid #FFF !important;
+                        line-height: 36px;
+                        border-left-width: 15px;
+                        border-right-width: 15px;
+                        width: 31%;
+                        font-size: 14px;
+                        position: relative;
+                        background: #FFF !important;
+                        border-top-width: 20px !important;
+                        border-bottom-width: 0 !important;
+
+                        &:hover:after {
+                            position: absolute;
+                            display: block;
+                            height: 100%;
+                            width: 100%;
+                            top: 0;
+                            left: 0;
+                            background: transparent;
+                            border: 1px solid $main-active-color;
+                            content: "";
+                        }
+
+                        &.active {
+                            border-radius: 0;
+                            background: $main-active-color !important;
+                            color: #FFF;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .datepicker-days {
+        table {
+            overflow: visible;
+
+            thead {
+                &:after {
+                    top: 90px;
+                }
+
+                tr:last-child {
+                    th {
+                        height: 48px;
+                        width: 50px;
+                        font-size: 14px;
+                    }
+                }
+            }
+
+            tbody {
+                transform: scale(0.95);
+
+                td {
+                    padding: 0;
+                    line-height: 41px;
+                    position: relative;
+                    background: transparent !important;
+                    border-radius: 50% !important;
+                    box-sizing: border-box;
+                    border-width: 5px;
+                    border-style: solid;
+                    border-color: transparent !important;
+                    z-index: 3;
+                    width: 48px;
+                    height: 48px;
+
+                    &:hover:after {
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        z-index: 211;
+                        display: block;
+                        height: 100%;
+                        width: 100%;
+                        background: transparent;
+                        border: 1px solid $main-active-color !important;
+                        border-radius: 50%;
+                    }
+
+                    &.active {
+                        color: #FFF;
+
+                        &:before {
+                            content: "";
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            z-index: -1;
+                            display: block;
+                            height: 100%;
+                            width: 100%;
+                            background: transparent;
+                            border-radius: 50%;
+                            background: $main-active-color !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .datepicker-decades {
+        table.table-condensed {
+            > tbody {
+                > tr {
+                    > td {
+                        line-height: 1;
+
+                        > span {
+                            height: auto;
+
+                            &:empty {
+                                display: none !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

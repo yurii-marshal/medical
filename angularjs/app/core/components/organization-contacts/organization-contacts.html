@@ -1,0 +1,132 @@
+<div class="contacts-block" ng-form="$ctrl.contactsForm">
+    <div ng-repeat="contact in $ctrl.selectedContacts"
+         class="contact-form row">
+        <div class="col-xs-4 custom-contact-select">
+            <md-input-container>
+                <label></label>
+                <md-select ng-model="contact.newType"
+                           name="type-{{$index}}"
+                           placeholder="Select type"
+                           ng-change="$ctrl.contactTypeChanged(contact, $index)"
+                           ng-disabled="$ctrl.isDisabled"
+                           ng-required="$ctrl.minRequired !== undefined">
+                    <md-option ng-value="type.Id"
+                               ng-selected="$ctrl.getContactCategory(contact.type).TypeKey === type.TypeKey"
+                               ng-repeat="type in $ctrl.allContactTypes">
+                        {{type.Name || type.Text}}
+                    </md-option>
+                </md-select>
+                <div ng-messages="$ctrl.contactsForm['type-' + $index].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required">
+                        <b>Contact type</b> cannot be empty.
+                    </div>
+                    <div ng-message="notUnique">
+                        <b>Contact type</b> must be unique.
+                    </div>
+                </div>
+            </md-input-container>
+        </div>
+
+        <div class="col-xs-6">
+            <!--EMAIL-->
+            <div ng-if="$ctrl.checkContactType(contact, $ctrl.contactTypeConstants.EMAIL_ID)">
+                <input-email form-name="$ctrl.contactsForm"
+                             input-name="email"
+                             label="Email:"
+                             ng-required="true"
+                             ng-disabled="$ctrl.isDisabled"
+                             ng-model="contact.value">
+                </input-email>
+            </div>
+
+            <!--WEBSITE-->
+            <div ng-if="$ctrl.checkContactType(contact, $ctrl.contactTypeConstants.WEBSITE_ID)">
+                <md-input-container class="small-label">
+                    <label>Website</label>
+                    <input type="text"
+                           name="site-{{$index}}"
+                           ng-model="contact.value"
+                           ng-model-options="{ updateOn: 'blur' }"
+                           ng-pattern="/(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/"
+                           ng-required="true">
+                    <div ng-messages="$ctrl.contactsForm['site-' + $index].$error" class="md-input-messages-nice">
+                        <div ng-message="required"><b>Website</b> cannot be empty.</div>
+                        <div ng-message="pattern"><b>Website</b> is not valid.</div>
+                    </div>
+                </md-input-container>
+            </div>
+
+            <!--PHONE-->
+            <div ng-if="$ctrl.checkContactType(contact, $ctrl.contactTypeConstants.PHONE_ID)">
+                <input-phone-number class="small-label"
+                                    form-name="$ctrl.contactsForm"
+                                    input-name="phone"
+                                    label="{{$ctrl.getContactCategory(contact.type).Text}}"
+                                    ng-required="true"
+                                    ng-model="contact.value"
+                                    ng-disabled="$ctrl.isDisabled"
+                                    add-directives="input-phone-mask">
+                </input-phone-number>
+            </div>
+
+            <!--FAX-->
+            <div ng-if="$ctrl.checkContactType(contact, $ctrl.contactTypeConstants.FAX_ID)">
+                <input-phone-number class="small-label"
+                                    form-name="$ctrl.contactsForm"
+                                    input-name="fax"
+                                    label="{{$ctrl.getContactCategory(contact.type).Text}}"
+                                    ng-required="true"
+                                    ng-model="contact.value"
+                                    ng-disabled="$ctrl.isDisabled"
+                                    add-directives="input-phone-mask">
+                </input-phone-number>
+            </div>
+        </div>
+
+        <div class="col-xs-1 custom-contact-delete"
+             ng-if="contact.newType">
+            <md-button class="delete-icon-btn"
+                       ng-click="$ctrl.deleteContact($index)"
+                       ng-disabled="$ctrl.isDisabled"
+                       title="Delete Contact"
+                       aria-label="Delete Contact">
+                <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+            </md-button>
+        </div>
+
+    </div>
+
+    <md-input-container class="hidden-container"
+                        ng-if="$ctrl.minRequired !== undefined">
+        <input class="hide-this"
+               type="text"
+               ng-model="$ctrl.selectedContactsLength"
+               ng-required="true"
+               name="minRequiredCount"
+               aria-label="...">
+        <div ng-messages="$ctrl.contactsForm.minRequiredCount.$error"
+             class="md-input-messages-nice">
+            <div ng-message="required">There must be at least {{$ctrl.minRequired}} contact(s)</div>
+        </div>
+    </md-input-container>
+    <md-input-container class="hidden-container"
+                        ng-if="$ctrl.orgLocationRequired === 'true'">
+        <input class="hide-this"
+               type="text"
+               ng-model="$ctrl.locationContactsValidation"
+               ng-required="$ctrl.selectedLocationContactsValid < 1"
+               name="orgLocationRequired"
+               aria-label="...">
+        <div ng-messages="$ctrl.contactsForm.orgLocationRequired.$error"
+             class="md-input-messages-nice">
+            <div ng-message="required">At least one phone or one fax is required.</div>
+        </div>
+    </md-input-container>
+    <md-button class="add-new-contact md-raised middle-btn"
+               ng-click="$ctrl.addEventContact()"
+               ng-disabled="$ctrl.isDisabled"
+               ng-show="$ctrl.selectedContacts && $ctrl.addContactVisible">
+        <md-icon md-svg-src="assets/images/default/plus.svg"></md-icon>Add Contact
+    </md-button>
+</div>

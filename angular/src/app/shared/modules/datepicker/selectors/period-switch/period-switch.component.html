@@ -1,0 +1,15 @@
+<table class="table-condensed">
+    <thead>
+    <tr>
+        <th class="prev" data-action="previous" (click)="prev.emit($event)">
+            <span class="glyphicon glyphicon-chevron-left" title="Previous Month"></span>
+        </th>
+        <th class="picker-switch" data-action="pickerSwitch" colspan="5" title="Select Month">
+            <span (click)="modeChange.emit($event)">{{ period }}</span>
+        </th>
+        <th class="next" data-action="next" (click)="next.emit($event)">
+            <span class="glyphicon glyphicon-chevron-right" title="Next Month"></span>
+        </th>
+    </tr>
+    </thead>
+</table>

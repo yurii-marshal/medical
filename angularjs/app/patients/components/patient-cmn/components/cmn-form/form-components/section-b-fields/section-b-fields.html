@@ -1,0 +1,97 @@
+<div class="flex-row">
+    <div class="info-block"
+         ng-class="{ 'block-width-300': field.type === $ctrl.fieldTypes.GAS_MASK,
+                                                 'block-width-250': field.type === $ctrl.fieldTypes.INT_MASK,
+                                                 'block-width-180': field.type === $ctrl.fieldTypes.DATE }"
+         ng-repeat="field in $ctrl.sectionFields"
+    >
+        <div class="info-block-body"
+             ng-if="field.type === $ctrl.fieldTypes.GAS_MASK"
+        >
+            <md-input-container class="number-container">
+                <label>{{:: field.placeholder }}</label>
+                <input type="text"
+                       ng-model="field.value"
+                       ui-mask="99.99"
+                       ui-options="{addDefaultPlaceholder: false}"
+                       ui-mask-placeholder-char="x"
+                       model-view-value="true"
+                       name="{{ 'arterialBloodGasPo2' + $index }}"
+                >
+                <div ng-messages="$ctrl.cmnForm['arterialBloodGasPo2' + $index].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required">Required</div>
+                </div>
+            </md-input-container>
+        </div>
+
+        <div class="info-block-body"
+             ng-if="field.type === $ctrl.fieldTypes.INT_MASK"
+        >
+            <md-input-container class="number-container">
+                <label>{{:: field.placeholder }}</label>
+                <input type="text"
+                       ng-model="field.value"
+                       only-digits-with-length
+                       min="1"
+                       name="{{ 'oxygenSaturation' + $index }}"
+                >
+                <div ng-messages="$ctrl.cmnForm['oxygenSaturation' + $index].$error"
+                     class="md-input-messages-nice"
+                >
+                    <div ng-message="required">Required</div>
+                </div>
+            </md-input-container>
+        </div>
+
+        <div class="info-block-body"
+             ng-if="field.type === $ctrl.fieldTypes.DATE"
+        >
+            <md-input-container class="calendar_icon icon-right">
+                <label>{{:: field.placeholder }}</label>
+                <input datetimepicker
+                       format="MM/DD/YYYY"
+                       name="{{ 'dateOfTest1' + $index }}"
+                       ng-model="field.value"
+                >
+                <div ng-messages="$ctrl.cmnForm['dateOfTest1' + $index].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required">This field is required</div>
+                </div>
+            </md-input-container>
+        </div>
+
+        <div class="info-block-body"
+             ng-if="field.type === $ctrl.fieldTypes.RADIO"
+        >
+            <md-radio-group class="flex-row"
+                            ng-model="field.value"
+            >
+                <md-radio-button class="md-primary"
+                                 ng-repeat="option in field.options"
+                                 ng-disabled="field.disable"
+                                 ng-value="option.id"
+                                 aria-label="{{ option.name }}"
+                >
+                    <span ng-bind="option.name"></span>
+                </md-radio-button>
+            </md-radio-group>
+        </div>
+
+        <div class="info-block-body"
+             ng-if="field.type === $ctrl.fieldTypes.TEXT"
+        >
+            <md-input-container>
+                <label>{{:: field.placeholder }}</label>
+                <input type="text"
+                       ng-model="field.value"
+                       name="{{ 'q-text-field' + $index }}"
+                >
+                <div ng-messages="$ctrl.cmnForm['q-text-field' + $index].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required">Required</div>
+                </div>
+            </md-input-container>
+        </div>
+    </div>
+</div>

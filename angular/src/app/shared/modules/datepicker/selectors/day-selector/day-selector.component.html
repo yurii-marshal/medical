@@ -1,0 +1,37 @@
+<div class="datepicker-days" style="display: block;">
+    <app-period-switch [period]="date?.format('MMMM YYYY')"
+        (prev)="prev()"
+        (next)="next()"
+        (modeChange)="modeChanged.emit($event)"></app-period-switch>
+    <table class="table-condensed">
+        <thead>
+            <tr>
+                <th *ngFor="let dow of getDaysOfWeek()" class="dow">
+                    {{ dow }}
+                </th>
+            </tr>
+        </thead>
+    </table>
+    <ul class="day-selector__days-of-month">
+        <li *ngFor="let date of _value"
+
+            [ngClass]="{
+                selected: isSelected(date),
+                'invalid-date': !isValidDate(date),
+                'not-allowed': !isAllowedDate(date),
+                'day day-selector__day-of-month': true
+                }"
+            (mousedown)="onDateSelected(date)">
+            {{ date.format("D") }}
+        </li>
+    </ul>
+
+    <a *ngIf="showTodayButton"
+       data-action="today"
+       title="Go to today"
+       class="custom-today-btn"
+       (click)="todaySelected($event)">
+        Today
+    </a>
+
+</div>

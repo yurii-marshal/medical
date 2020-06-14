@@ -1,0 +1,69 @@
+<div class="drowz-wizard learn-barcodes-page drowz-subwizard-page"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="barcode-learn">
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+        <a href="javascript:void(0)" class="active">Learn Barcodes</a>
+    </div>
+
+    <div class="drowz-wizard-body">
+        <div ui-view class="drowz-subwizard-container"></div>
+
+        <div class="drowz-wizard-block no-float">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Product Lookup:</div>
+                <md-button class="md-primary md-raised small-btn add-lookup-btn"
+                           ui-sref="root.learn_barcodes.add">
+                    Add
+                </md-button>
+            </div>
+            <div class="drowz-wizard-block-body">
+
+                <no-records text="Product Lookup" is-fullpage="true" ng-if="bar.barcodes.length===0"></no-records>
+                <div class="product-lookup-list" ng-if="bar.barcodes.length>0">
+                    <div class="product-lookup-item" ng-repeat="item in bar.barcodes">
+                        <div class="info-block block-width-20-percent">
+                            <div class="info-block-label">Manufacturer Barcode:</div>
+                            <div class="info-block-body">{{item.barcodeId}}</div>
+                        </div>
+                        <div class="info-block block-width-40-percent left-divider">
+                            <div class="info-block-label">Product name:</div>
+                            <div class="info-block-body">{{item.productName}}</div>
+                        </div>
+                        <div class="info-block block-width-20-percent left-divider">
+                            <div class="info-block-label">Manufacturer:</div>
+                            <div class="info-block-body">{{item.manufacturer}}</div>
+                        </div>
+                        <div class="info-block block-width-25-percent left-divider">
+                            <div class="info-block-label">Part #:</div>
+                            <div class="info-block-body">{{item.partNumber}}</div>
+                        </div>
+                        <div class="info-block block-width-60">
+                            <div class="info-block-label">&nbsp;</div>
+                            <div class="info-block-body flex-cont align-end">
+                                <md-button class="delete-icon-btn" aria-label="..." ng-click="bar.removeBarecode($index)">
+                                    <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                </md-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="drowz-wizard-footer">
+        <md-button class="md-raised main-button drowz-wizard-footer-btn"
+                   ui-sref="root.management.inventory.products.list">
+            Cancel
+        </md-button>
+        <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                   ng-disabled="bar.barcodes.length===0"
+                   ng-click="bar.doLearnBarcodes()">
+            Finish
+        </md-button>
+    </div>
+
+</div>

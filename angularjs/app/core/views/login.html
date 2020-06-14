@@ -1,0 +1,54 @@
+﻿<div class="login">
+    <div ng-form="login.loginForm" class="login-block">
+        <div class="login-title">Enter your login and password to <span class="blue">sign in</span></div>
+        <div class="login-row row-with-icon">
+            <md-icon md-svg-src="assets/images/colored/user-circle.svg" class="login-row-icon"></md-icon>
+            <md-input-container>
+                <label>Login:</label>
+                <input type="text"
+                       name="userName"
+                       tabindex="1"
+                       ng-model="login.loginModel.username"
+                       ng-required="true"
+                       ng-disabled="login.isLoading"
+                       ng-keyup="login.submitForm($event)">
+                <div ng-messages="login.loginForm.userName.$error" class="md-input-messages-nice">
+                    <div ng-message="required"><b>Login</b> cannot be empty.</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="login-row row-with-icon">
+            <md-icon md-svg-src="assets/images/colored/lock-circle.svg" class="login-row-icon"></md-icon>
+            <input style="display:none" type="password" name="fakepasswordremembered"/>
+            <md-input-container>
+                <label>Password:</label>
+                <input type="password"
+                       name="password"
+                       tabindex="2"
+                       ng-model="login.loginModel.password"
+                       ng-required="true"
+                       autocomplete="new-password"
+                       ng-disabled="login.isLoading"
+                       ng-keyup="login.submitForm($event)">
+                <div ng-messages="login.loginForm.password.$error" class="md-input-messages-nice">
+                    <div ng-message="required"><b>Password</b> cannot be empty.</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="login-row">
+            <md-checkbox class="md-primary login-remember" ng-model="login.remember">Remember me</md-checkbox>
+        </div>
+        <div class="login-row">
+            <md-button class="md-raised md-primary login-btn"
+                       tabindex="3"
+                       ng-click="login.login()"
+                       ng-disabled="login.isLoading">
+                <icon-loading-white ng-if="login.isLoading"></icon-loading-white>
+                Log in
+            </md-button>
+        </div>
+        <div class="login-row">
+            <a href="javascript:void(0);" ui-sref="forgotpass" class="reset-login">Forgot Your Password?</a>
+        </div>
+    </div>
+</div>

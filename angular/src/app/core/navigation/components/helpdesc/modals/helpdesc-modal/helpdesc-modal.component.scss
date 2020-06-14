@@ -1,0 +1,41 @@
+@import "../../../../../../../assets/styles/base/variables";
+
+.send-btn-icon {
+  height: 22px;
+  width: 20px;
+  margin: 0 5px;
+}
+
+.upload-btn-icon {
+  height: 22px;
+  width: 20px;
+  margin: 0 5px 0 0;
+}
+
+.remove-chip-btn-icon {
+  cursor: pointer;
+  color: $red-color;
+  width: 14px;
+  height: 14px;
+}
+
+.file-upload-block {
+  position: relative;
+}
+
+.load-file-input::-webkit-file-upload-button {
+  cursor: pointer;
+}
+
+.load-file-input {
+  cursor: pointer;
+}
+
+.load-file-input {
+  position: absolute;
+  cursor: pointer;
+  height: 35px;
+  width: 130px;
+  z-index: 100;
+  opacity: 0;
+}

@@ -1,0 +1,47 @@
+.white-block {
+  display: block;
+  background-color: $white-color;
+  box-shadow: $box-shadow;
+  border-radius: 3px;
+
+  .white-block-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+    min-height: 50px;
+    padding: 0 20px;
+    border-bottom: 1px solid $calendar-gray-color;
+    text-transform: uppercase;
+    color: $dark-blue-color;
+    font-size: 16px;
+    font-weight: $font-weight-bold;
+    transition: .2s;
+  }
+
+  .white-block-body {
+    position: relative;
+    max-height: calc(100% - 50px);
+  }
+
+  .title-icon-btn {
+
+    .mat-icon {
+      @include size(14px, 18px);
+      line-height: 18px;
+      color: $dark-blue-color;
+
+      &:hover, &:focus {
+        color: $dark-blue-color;
+      }
+
+      &.chevron {
+        transform: rotate(90deg);
+
+        &.active {
+          transform: rotate(-90deg);
+        }
+      }
+    }
+  }
+}

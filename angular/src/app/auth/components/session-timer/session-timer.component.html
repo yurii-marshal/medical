@@ -1,0 +1,31 @@
+﻿﻿<div>
+    <div class="modal-body-custom">
+        <h2 class="modal-title-custom">Session Expired</h2>
+
+        <div>Your session will expire in:</div>
+
+        <div class="session-timer-content">
+            <div class="session-timer">
+                <mat-icon svgIcon="timer"
+                          class="timer-icon"></mat-icon>
+                <div>
+                    {{ timerCurrentVal }}
+                </div>
+            </div>
+        </div>
+
+        <div>
+            For continue working with the application click "Continue Working"
+        </div>
+    </div>
+
+    <mat-dialog-actions>
+        <button mat-raised-button
+                color="primary"
+                (click)="continueWorking()">
+            Continue Working
+        </button>
+    </mat-dialog-actions>
+
+</div>
+

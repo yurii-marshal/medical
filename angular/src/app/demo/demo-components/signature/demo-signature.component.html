@@ -1,0 +1,14 @@
+<div class="drowz-wizard-block patient-details-block no-float">
+    <div class="drowz-wizard-block-title">
+        <div class="wizard-title-text">Signature:</div>
+    </div>
+    <div class="drowz-wizard-block-body flex-row space-between">
+        <div class="signature-pad">
+            <form class="admin__edit-form" [formGroup]="form" (submit)="onSubmit()">
+                <app-signature formControlName="signature"></app-signature>
+                <mat-error *ngIf="form.controls.signature.hasError('required')">Signature is required</mat-error>
+                <button type="submit" mat-raised-button color="primary" class="btn-big">Send</button>
+            </form>
+        </div>
+    </div>
+</div>

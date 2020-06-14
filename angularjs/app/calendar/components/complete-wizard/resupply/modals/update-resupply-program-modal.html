@@ -1,0 +1,30 @@
+<div class="modal-window update-resupply-program-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/documents.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Update Program:</h2>
+        </div>
+
+        <div class="center-text">
+            Do you want to update Resupply Program with following item(s)?
+        </div>
+
+        <div class="flex-row" ng-repeat="item in $ctrl.items track by $index">
+            <div class="info-block grow-1">
+                {{$index + 1}}. {{item.Product.Name}}
+            </div>
+        </div>
+
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button" ng-click="$ctrl.update()">Update</md-button>
+    </md-dialog-actions>
+</div>

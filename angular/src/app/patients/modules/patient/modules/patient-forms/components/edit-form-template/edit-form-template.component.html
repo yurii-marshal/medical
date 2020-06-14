@@ -1,0 +1,174 @@
+<div class="drowz-wizard edit-form-template">
+    <app-loading [show]="loading"></app-loading>
+
+    <div class="breadcrumbs">
+        <a routerLink="/dashboard">Home</a>
+        <a routerLink="/patients">Patients</a>
+        <a href="javascript:void(0)" class="active">{{ isEdit ? 'Edit' : 'Add' }} Form</a>
+    </div>
+
+    <div class="drowz-wizard-body clearfix">
+        <form class="drowz-wizard-body-flex"
+              autocomplete="off"
+              novalidate
+              [formGroup]="form"
+        >
+            <div class="grow-1">
+                <div class="flex-row">
+                    <div class="drowz-wizard-block grow-1">
+                        <!--<div class="drowz-wizard-block-title">-->
+                            <!--<div class="wizard-title-text">Form Details:</div>-->
+                        <!--</div>-->
+                        <div class="drowz-wizard-block-body">
+
+                            <div class="drowz-wizard-block-row">
+
+                                <div class="info-block col-w-50 divider">
+                                    <div class="col-w-100" *ngIf="!isEdit">
+                                        <div class="drowz-wizard-block-row">
+                                            <div class="info-block grow-1">
+                                                <mat-form-field class="col-w-100">
+                                                    <input matInput
+                                                           autocomplete="off"
+                                                           placeholder="Template:"
+                                                           type="text"
+                                                           formControlName="template"
+                                                    />
+                                                    <mat-error *ngIf="form.get('template').invalid">
+                                                        <b>Template</b> cannot be empty.
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="w160px file-upload-block">
+                                                <button class="niko-mat-button"
+                                                        type="button"
+                                                        mat-raised-button
+                                                        (click)="fileUploaderInput.click()"
+                                                >
+                                                    <mat-icon svgIcon="upload" class="upload-btn-icon"></mat-icon>
+                                                    Attach a file
+                                                </button>
+
+                                                <input #fileUploaderInput
+                                                       type="file"
+                                                       (change)="onFileChange($event)"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <mat-form-field class="col-w-100">
+                                        <input matInput
+                                               autocomplete="off"
+                                               placeholder="Name:"
+                                               type="text"
+                                               formControlName="name"
+                                               required
+                                        />
+                                        <mat-error *ngIf="form.get('name').invalid">
+                                            <b>Name</b> cannot be empty.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="info-block col-w-50">
+                                    <mat-form-field class="col-w-100">
+                                        <textarea matInput
+                                                  rows="1"
+                                                  placeholder="Description:"
+                                                  type="text"
+                                                  formControlName="description"
+                                        ></textarea>
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-row" *ngIf="form.get('fields')['controls'].length">
+                    <div class="drowz-wizard-block grow-1">
+                        <!--<div class="drowz-wizard-block-title">-->
+                            <!--<div class="wizard-title-text">Field's Mapping:</div>-->
+                        <!--</div>-->
+                        <div class="drowz-wizard-block-body">
+                            <div class="drowz-wizard-block-row">
+                                <div class="info-block grow-1 fields-mapping-header">
+                                    Field's Mapping
+                                    <div class="fields-mapping-header-line"></div>
+                                </div>
+                            </div>
+
+                            <div class="drowz-wizard-block-row">
+
+                                <div class="info-block col-w-50">
+                                    <div formArrayName="fields" class="grow-1"
+                                         *ngFor="let field of form.get('fields')['controls']; let i = index;"
+                                    >
+                                        <div [formGroupName]="i">
+
+                                            <div class="drowz-wizard-block-row">
+                                                <div class="info-block w30px marg-top-20">{{ i + 1 }}.</div>
+                                                <div class="info-block grow-1">
+                                                    <mat-form-field class="col-w-100">
+                                                        <input matInput
+                                                               placeholder="PDF Field:"
+                                                               type="text"
+                                                               formControlName="name"
+                                                               readonly
+                                                        />
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+
+                                            <div class="drowz-wizard-block-row">
+                                                <div class="info-block w30px"></div>
+                                                <div class="info-block grow-1">
+                                                    <app-assign-pdf-field-form
+                                                        clickOutside
+                                                        (clickOutside)="onAssignFieldOutside(field.value.id)"
+                                                        (assignFieldFocus)="onAssignFieldFocus(field.value.id)"
+                                                        formControlName="value"
+                                                    ></app-assign-pdf-field-form>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="info-block col-w-50">
+                                    <app-pdf-form-review
+                                        [pages]="pdfInfo.Pages"
+                                    ></app-pdf-form-review>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="drowz-wizard-footer">
+        <button class="niko-mat-button drowz-wizard-footer-btn"
+                mat-raised-button
+                (click)="goToPatientForms()"
+        >Cancel
+        </button>
+
+        <button class="niko-mat-button drowz-wizard-footer-btn"
+                color="primary"
+                mat-raised-button
+                [disabled]="!form.valid"
+                (click)="onSubmit()"
+        >
+            {{ isEdit ? 'Update' : 'Create' }}
+        </button>
+    </div>
+
+</div>

@@ -1,0 +1,55 @@
+<div class="modal-window search-products-modal select-device-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="searchProduct">
+    <a href="javascript:void(0);" ng-click="modal.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/inventory.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Select Device:</h2>
+        </div>
+
+        <div class="search-products-table">
+            <div class="search-products-header">
+                <div class="select-col">Select:</div>
+                <div class="name-col">Name:</div>
+                <div class="location-col">Location:</div>
+                <div class="status-col">Status:</div>
+            </div>
+            <div class="products-container"
+                 scroll-bar
+                 scroll-bar-above-element="true">
+                <no-records text="Devices" ng-if="!modal.productList.length"></no-records>
+                <md-radio-group ng-model="modal.selectedItem">
+                    <md-radio-button ng-value="item"
+                                     class="md-primary search-product-row"
+                                     ng-repeat="item in modal.productList track by $index">
+                        <div class="search-products-row">
+                            <div class="name-col">{{item.Name}}</div>
+                            <div class="location-col">
+                                <div popover-directive="item.Location" min-width="50"></div>
+                            </div>
+                            <div class="status-col">
+                                <div class="status-label {{item.statusClass}}">{{item.Status.Name}}</div>
+                            </div>
+                        </div>
+                    </md-radio-button>
+                </md-radio-group>
+            </div>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button"
+                   aria-label="..."
+                   ng-click="modal.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button"
+                   aria-label="..."
+                   ng-click="modal.save()"
+                   ng-disabled="!modal.selectedItem">
+            OK
+        </md-button>
+    </md-dialog-actions>
+</div>

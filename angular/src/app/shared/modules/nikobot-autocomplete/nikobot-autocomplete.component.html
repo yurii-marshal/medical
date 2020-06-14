@@ -1,0 +1,29 @@
+<div class="custom-search-autocomplete-container">
+
+    <div *ngIf="currentListType === 'patient' && patientsState.patients.allIds.length">
+        <div class='item'
+             *ngFor="let itemId of patientsState.patients.allIds; let idx = index"
+             (click)="onItemClick($event, patientsState.patients.byId[itemId])">
+            <span>{{ patientsState.patients.byId[itemId].name }}</span>
+        </div>
+    </div>
+
+    <div *ngIf="currentListType === 'user' && usersState.users.allIds.length">
+        <div class='item'
+             *ngFor="let itemId of usersState.users.allIds; let idx = index"
+             (click)="onItemClick($event, usersState.users.byId[itemId])">
+            <span>{{ usersState.users.byId[itemId].name }}</span>
+        </div>
+    </div>
+
+    <div *ngIf="currentListType === 'action'">
+        <div class='item'
+             *ngFor="let item of actionsList"
+             (click)="onItemClick($event, item)">
+            <span class="font-bold">{{ item.name }}</span>
+            <span>{{ item.params }}</span><br>
+            <span>{{ item.description }}</span>
+        </div>
+    </div>
+
+</div>

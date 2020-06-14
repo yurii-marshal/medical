@@ -1,0 +1,15 @@
+<div class="no-records with-icon"
+     ng-class="{'fullpage-icon': $ctrl.isFullpage}">
+
+    <md-icon md-svg-src="assets/images/default/lens.svg"></md-icon>
+
+    <div class="no-records-text">
+        <div ng-if="$ctrl.isDefaultText">Sorry, there are no available</div>
+        <div ng-if="$ctrl.text">{{$ctrl.text}}</div>
+        <div ng-if="$ctrl.textArray">
+            <p style="margin-bottom: 0px;"
+               ng-repeat="item in $ctrl.textArray track by $index">{{item}}</p>
+        </div>
+    </div>
+
+</div>

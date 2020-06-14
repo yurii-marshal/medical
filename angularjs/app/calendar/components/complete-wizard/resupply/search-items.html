@@ -1,0 +1,16 @@
+<search-items items="resupply.model.ResupplyProgram.Items"
+              is-resupply-program-items="true"
+              selected-items-for-resupply-program="resupply.currentSelectedItems"
+              type="products"
+              is-hide-select-any-device-btn="true">
+</search-items>
+
+<div class="drowz-wizard-footer static-footer">
+    <md-button class="md-raised main-button drowz-wizard-footer-btn"
+               ng-click="resupply.cancelItems()">Cancel</md-button>
+    <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+               ng-click="resupply.saveItems()"
+               ng-disabled="!resupply.model.ResupplyProgram.Items.length">
+        Save
+    </md-button>
+</div>

@@ -1,0 +1,7 @@
+<div style="width: 850px">
+    <app-patient-contacts
+        [contacts]="demoContacts"
+        [sourceContacts]="contactsType"
+        (contactsUpdated)="onUpdateContact($event)">
+    </app-patient-contacts>
+</div>

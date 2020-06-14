@@ -1,0 +1,102 @@
+<div class="white-block">
+    <div class="white-block-block space-between flex-row">
+        <form [formGroup]="reportFilterForm" >
+            <div class="flex-row">
+                <div *ngFor="let filterParamId of paramsState.allIds ">
+                    <div class="flex-row"
+                         *ngIf="paramsState.byId[filterParamId].typeId === reportFilterFieldType.List"
+                    >
+                        <div class="mat-field-line-label">
+                            {{ paramsState.byId[filterParamId].label }}:
+                        </div>
+                        <mat-form-field>
+                            <mat-select [formControlName]="filterParamId"
+                                        (selectionChange)="onChangeStateValue()"
+                            >
+                                <mat-option *ngFor="let item of paramsState.byId[filterParamId].items"
+                                            [value]="item.id"
+                                >
+                                    {{ item.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex-row"
+                         [owlDateTimeTrigger]="datePicker"
+                         *ngIf="paramsState.byId[filterParamId].typeId === reportFilterFieldType.Date"
+                    >
+                        <div class="mat-field-line-label">
+                            {{ paramsState.byId[filterParamId].label }}:
+                        </div>
+
+                        <mat-form-field>
+                            <input matInput
+                                   [formControlName]="filterParamId"
+                                   [owlDateTime]="datePicker"
+                                   appClearOnClick
+                            >
+                            <owl-date-time [pickerType]="'calendar'"
+                                           #datePicker
+                            ></owl-date-time>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex-row"
+                         *ngIf="paramsState.byId[filterParamId].typeId === reportFilterFieldType.RemoteList"
+                    >
+                        <div class="mat-field-line-label ">
+                            {{ paramsState.byId[filterParamId].label }}:
+                        </div>
+
+                        <mat-form-field>
+                            <input type="text"
+                                   matInput
+                                   [matAutocomplete]="locationAutocomplete"
+                                   [formControlName]="filterParamId"
+                                   appClearOnClick
+                            >
+                        </mat-form-field>
+
+                        <mat-autocomplete #locationAutocomplete="matAutocomplete"
+                                          class="show-not-found-block"
+                                          [displayWith]="getAutocompleteText"
+                                          (optionSelected)="onChangeStateValue()"
+                        >
+                            <mat-option *ngFor="let option of remoteListOptions[filterParamId] | async"
+                                        [value]="option"
+                            >
+                                {{ option[paramsState.byId[filterParamId].remote.displayField] }}
+                            </mat-option>
+
+                            <div class="not-found-block"
+                                 *ngIf="(remoteListOptions[filterParamId] | async)?.length === 0"
+                            >
+                                Items not found
+                            </div>
+
+                        </mat-autocomplete>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form class="pad-h-20" [formGroup]="reportColumnForm">
+            <mat-form-field>
+                <mat-select multiple
+                            formControlName="selectedColumns"
+                            (openedChange)="onToggleColumnSelect($event)"
+                >
+                    <mat-select-trigger>
+                        Show / Hide fields
+                    </mat-select-trigger>
+
+                    <mat-option *ngFor="let columnId of columns.allIds"
+                                [value]="columns.byId[columnId].columnId"
+                    >
+                        {{ columns.byId[columnId].label }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </form>
+    </div>
+</div>

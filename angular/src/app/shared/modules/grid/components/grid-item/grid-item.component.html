@@ -1,0 +1,9 @@
+<div class="grid-item-container">
+    <ng-content></ng-content>
+
+    <div class="grid-loader-wrapper" *ngIf="!isAllItemsLoaded">
+        <app-loading [show]="true" [config]="loaderConfig"></app-loading>
+    </div>
+
+    <app-no-content *ngIf="!isAppNoContent"></app-no-content>
+</div>

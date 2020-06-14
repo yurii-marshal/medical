@@ -1,0 +1,33 @@
+@import "~assets/styles/base/variables";
+
+.sub-tabs {
+    display: flex;
+    height: 100%;
+    min-height: 40px;
+    align-items: center;
+    font-size: 14px;
+
+    .sub-tabs-item {
+        text-transform: uppercase;
+        padding: 0 10px;
+        font-weight: 500;
+        color: $gray-color;
+
+        &:hover {
+            text-decoration: none;
+            color: $main-active-color;
+        }
+
+        &:active {
+            text-decoration: none;
+        }
+
+        &:visited {
+            text-decoration: none;
+        }
+
+        &.active {
+            color: $main-active-color;
+        }
+    }
+}

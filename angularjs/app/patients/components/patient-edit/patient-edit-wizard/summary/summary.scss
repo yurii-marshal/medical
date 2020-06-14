@@ -1,0 +1,18 @@
+.patient-summary-step {
+    .edit-info-right-position {
+        position: absolute;
+        right: 10px;
+    }
+
+    .info-block.info-block-header {
+        padding-right: 45px;
+    }
+
+    .patient-summary-tag-title {
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: uppercase;
+        color: $main-active-color;
+    }
+}
+

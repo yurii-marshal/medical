@@ -1,0 +1,67 @@
+<div class="flex-row"
+     ng-class="{'subfilter' : $ctrl.options.subfilter}">
+
+    <div class="filters-block-label active-text font-semibold">
+        <span ng-if="!$ctrl.options.subfilter"
+              ng-bind="$ctrl.options.label + ':'"></span>
+    </div>
+    <div ng-form="$ctrl.selectDateRangeFilterForm" class="filters-block-body">
+        <div ng-if="$ctrl.options.subfilter"
+             class="filters-block-label">
+            <span ng-bind="$ctrl.options.label + ':'"></span>
+        </div>
+        <md-input-container class="select-filter">
+            <md-select ng-model="$ctrl.selectedFilter"
+                       placeholder="Select interval ..."
+                       ng-change="$ctrl.setSelection()"
+                       ng-disabled="$ctrl.options.isDisabled"
+                       clear-on-click>
+                <md-option ng-value="item" ng-repeat="item in $ctrl.options.items track by $index">
+                    {{::item.displayName}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+
+        <div class="date-range-filter" ng-if="$ctrl.selectedFilter.isCustom">
+            <md-input-container class="calendar_icon range-calendar-icon left-input-icon">
+                <label>From:</label>
+                <input ng-model="$ctrl.selectedFilter.filterStart.filterValue"
+                       name="date-range-from"
+                       datetimepicker
+                       use-current="false"
+                       format="MM/DD/YYYY"
+                       start-date-validator
+                       end-date="$ctrl.selectedFilter.filterEnd.filterValue"
+                       ng-required="$ctrl.selectedFilter.isCustom"
+                       ng-disabled="$ctrl.options.isDisabled"
+                       clear-on-click>
+                <div ng-messages="$ctrl.selectDateRangeFilterForm['date-range-from'].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required">This field is required for custom date filter</div>
+                    <div ng-message="startDate">Date from has to be equal or less than date to</div>
+                </div>
+            </md-input-container>
+            <span>&#8212;</span>
+            <md-input-container class="calendar_icon range-calendar-icon left-input-icon">
+                <label>To:</label>
+                <input ng-model="$ctrl.selectedFilter.filterEnd.filterValue"
+                       name="date-range-to"
+                       datetimepicker
+                       use-current="false"
+                       format="MM/DD/YYYY"
+                       end-date-validator
+                       start-date="$ctrl.selectedFilter.filterStart.filterValue"
+                       ng-required="$ctrl.selectedFilter.isCustom"
+                       ng-disabled="$ctrl.options.isDisabled"
+                       clear-on-click>
+                <div ng-messages="$ctrl.selectDateRangeFilterForm['date-range-to'].$error"
+                     class="md-input-messages-nice">
+                     <div ng-message="required">This field is required for custom date filter</div>
+                     <div ng-message="endDate">Date to has to be equal or bigger than date from</div>
+                </div>
+            </md-input-container>
+        </div>
+
+
+    </div>
+</div>

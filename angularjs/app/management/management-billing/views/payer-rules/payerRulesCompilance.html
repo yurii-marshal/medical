@@ -1,0 +1,199 @@
+<div ng-if="payerRules.showRuleView">
+    <div class="flex-row space-between payer-rules-row">
+        <div class="payer-rules-search">
+            <md-input-container class="search-field">
+                <label>Search HCPCS:</label>
+                <input type="text"
+                       ng-change="payerRules.searchChanged()"
+                       ng-model="payerRules.searchRulesHcpcs.HcpcsCodes"
+                       clear-on-click>
+                <md-icon class="search-icon" md-svg-src="assets/images/default/search.svg"></md-icon>
+            </md-input-container>
+        </div>
+
+        <md-button class="md-raised add-new-contact middle-btn"
+                   ng-click="payerRules.addCompilanceRule()">
+            <md-icon md-svg-src="assets/images/default/plus.svg"></md-icon>
+            <span>Add Rule</span>
+        </md-button>
+    </div>
+
+    <div class="payer-rules-flex-row"
+         ng-repeat="rule in payerRules.model.Restrictions.ComplianceRules | filter: payerRules.searchRulesHcpcs:strict track by $index">
+
+        <div class="w600px">
+            <div class="flex-row">
+                <div class="info-block add-autocomplete block-width-155">
+                <md-autocomplete
+                        class="autocomplete-with-addBtn"
+                        md-no-cache="true"
+                        md-selected-item="rule.selectedCode"
+                        md-search-text="rule.searchHcpcs"
+                        md-items="item in payerRules.getHcpcsCodes(rule.searchHcpcs)"
+                        md-item-text="item.Text"
+                        md-min-length="0"
+                        md-floating-label="HCPCS:"
+                        md-menu-container-class="hcpcs-decorator"
+                        ng-required="!rule.HcpcsCodes.length"
+                        md-input-name="ruleHcpcsCompliance-{{$index}}"
+                        md-autocomplete-required>
+                    <md-item-template>
+                        <span md-highlight-flags="^i"
+                              title="{{item.Description}}">{{item.Text + ' ' + item.Description}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                        No hcpcs codes were found.
+                    </md-not-found>
+                    <md-icon md-svg-src="assets/images/default/plus-square.svg"
+                             ng-click="payerRules.addHcpcsCode(rule)"
+                             ng-class="{'disabled': !rule.selectedCode}"
+                             class="add-item-btn">
+                    </md-icon>
+                    <div ng-messages="payerRules.RulesForm['ruleHcpcsCompliance-' + $index].$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="selected">HCPCS must be selected.</div>
+                    </div>
+                </md-autocomplete>
+            </div>
+
+                <div class="info-block selected-hcpcs-codes">
+                <div class="round-chip-block"
+                     ng-repeat="item in rule.HcpcsCodes track by $index">
+                    <span ng-bind="item"></span>
+                    <div class="delete-chip"
+                         ng-click="payerRules.removeComplianceCode(rule.HcpcsCodes, item)"></div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="grow-1 left-divider">
+            <div class="flex-row">
+                <div class="info-block block-width-140">
+                    <div class="info-block-label">Evaluation Period: *</div>
+                    <div class="info-block-body flex-cont">
+                        <md-input-container>
+                            <label></label>
+                            <input type="text"
+                                   only-digits-with-length
+                                   min="1"
+                                   name="ruleEvaluationPeriod-{{$index}}"
+                                   ng-model="rule.EvaluationPeriod"
+                                   ng-required="true">
+                            <div ng-messages="payerRules.RulesForm['ruleEvaluationPeriod-' + $index].$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">Required</div>
+                            </div>
+                        </md-input-container>
+                        <span class="addition-info">day(s)</span>
+                    </div>
+                </div>
+
+                <div class="info-block block-width-140">
+                    <div class="info-block-label">Best Usage Period: *</div>
+                    <div class="info-block-body flex-cont">
+                        <md-input-container>
+                            <label></label>
+                            <input type="text"
+                                   only-digits-with-length
+                                   min="1"
+                                   name="ruleBestUsagePeriod-{{$index}}"
+                                   ng-model="rule.BestUsagePeriod"
+                                   ng-required="true">
+                            <div ng-messages="payerRules.RulesForm['ruleBestUsagePeriod-' + $index].$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">Required</div>
+                            </div>
+                        </md-input-container>
+                        <span class="addition-info">day(s)</span>
+                    </div>
+                </div>
+
+                <div class="info-block block-width-140">
+                    <div class="info-block-label">Min Usage Per Day: *</div>
+                    <div class="info-block-body flex-cont">
+                        <md-input-container>
+                            <label></label>
+                            <input type="text"
+                                   only-digits-with-length
+                                   min="1"
+                                   name="ruleMinUsagePerDay-{{$index}}"
+                                   ng-model="rule.MinUsagePerDay"
+                                   ng-required="true">
+                            <div ng-messages="payerRules.RulesForm['ruleMinUsagePerDay-' + $index].$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">Required</div>
+                            </div>
+                        </md-input-container>
+                        <span class="addition-info">hour(s)</span>
+                    </div>
+                </div>
+
+                <div class="info-block block-width-100">
+                    <div class="info-block-label">Percentage: *</div>
+                    <div class="info-block-body flex-cont">
+                        <md-input-container>
+                            <label></label>
+                            <input type="text"
+                                   only-digits-with-length
+                                   min="1"
+                                   name="rulePersentage-{{$index}}"
+                                   ng-model="rule.Percentage"
+                                   ng-required="true">
+                            <div ng-messages="payerRules.RulesForm['rulePersentage-' + $index].$error"
+                                 class="md-input-messages-nice">
+                                <div ng-message="required">Required</div>
+                            </div>
+                        </md-input-container>
+                        <span class="addition-info">%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-row marg-top-10">
+                <div class="info-block grow-1">
+                    <md-input-container class="fix-label-for-chips">
+                        <md-chips  class="customize-chips-style"
+                                   ng-model="rule.Plans"
+                                   placeholder="Select Plan"
+                        >
+                            <md-autocomplete
+                                class="w300px"
+                                md-no-cache="true"
+                                md-items="item in payerRules.getPlans(searchText, rule.Plans)"
+                                md-search-text="searchText"
+                                md-selected-item="item.Name"
+                                md-item-text="item.Name"
+                                md-selected-item="item.Name"
+                                md-min-length="0"
+                                placeholder="{{ payerRules.getPlaceholderForPlanChips(rule.Plans) }}"
+                            >
+                                <md-item-template>
+                           <span title="{{ item.Name }}">
+                           {{ item.Name }}
+                           </span>
+                                </md-item-template>
+                                <md-not-found>Not found</md-not-found>
+                            </md-autocomplete>
+                            <md-chip-template>
+                        <span title="{{ $chip.Name }}">
+                        {{ $chip.Name }}
+                        </span>
+                            </md-chip-template>
+                        </md-chips>
+                    </md-input-container>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-block block-width-20">
+            <a href="javascript:void(0);"
+               class="delete-icon-btn resupply-rules-delete-btn"
+               ng-click="payerRules.deleteRule(payerRules.model.Restrictions.ComplianceRules, $index, 'compliance')">
+                <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+            </a>
+        </div>
+    </div>
+</div>
+
+

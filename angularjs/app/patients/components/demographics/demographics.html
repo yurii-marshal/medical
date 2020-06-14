@@ -1,0 +1,399 @@
+<div class="patient-demographics">
+    <div class="flex-row">
+        <div class="info-block grow-1 block-max-width-450">
+            <div class="info-block-label">Location:</div>
+            <div class="info-block-body">
+                <div popover-directive="demographics.patientInfo.LocationFullName"
+                     ng-if="demographics.patientInfo.Location.Id"
+                ></div>
+                <span ng-if="!demographics.patientInfo.Location.Id">-</span>
+            </div>
+        </div>
+        <div class="info-block block-width-200 left-divider">
+            <div class="info-block-label">Created Date:</div>
+            <div class="info-block-body">
+                <span ng-if="!demographics.patientInfo.StatusDate">-</span>
+                {{demographics.patientInfo.StatusDate | localDateTime: 'MM/DD/YYYY'}}
+            </div>
+        </div>
+        <div class="info-block block-width-200 left-divider" ng-if="demographics.patientInfo.InactiveStatus.Text">
+            <div class="info-block-label">Reason of Inactive:</div>
+            <div class="info-block-body">{{demographics.patientInfo.InactiveStatus.Text || '-'}}</div>
+        </div>
+        <div class="info-block block-width-200 left-divider" ng-if="demographics.patientInfo.DcDate">
+            <div class="info-block-label">DC Date:</div>
+            <div class="info-block-body">{{demographics.patientInfo.DcDate | amUtc | amDateFormat: 'MM/DD/YYYY'}}</div>
+        </div>
+        <div class="info-block grow-1 flex-cont align-end">
+            <md-button class="md-raised edit-text-btn small-btn" ng-click="demographics.editPatient()">
+                <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                <span>Edit Demographics</span>
+            </md-button>
+        </div>
+    </div>
+
+    <div class="marg-bottom-15 flex-row"
+         ng-if="demographics.patientInfo.Facility">
+        <div class="info-block grow-1 block-max-width-450">
+            <div class="info-block-label">Facility:</div>
+            <div class="info-block-body">
+                {{demographics.patientInfo.Facility.Name}}
+            </div>
+        </div>
+
+        <div class="info-block grow-1 block-max-width-450">
+            <div class="info-block-label">Facility Location:</div>
+            <div class="info-block-body">
+                <div popover-directive="demographics.patientInfo.FacilityLocation.FullAddress"></div>
+            </div>
+        </div>
+    </div>
+
+    <v-accordion class="vAccordion--default flow-accordion" multiple>
+        <v-pane expanded="true">
+            <v-pane-header class="flow-accordion-title">
+                <div class="demographics-main-width">
+                    <md-icon md-svg-src="assets/images/default/chevron.svg"
+                             class="flow-accordion-title-icon"></md-icon>
+                    <span>Patient Information:</span>
+                    <div class="accordion-line"></div>
+                </div>
+                <div class="demographics-contacts-width">
+                    <span>Contacts:</span>
+                    <div class="accordion-line"></div>
+                </div>
+            </v-pane-header>
+
+            <v-pane-content>
+                <div class="flex-cont stretch">
+                    <div class="demographics-main-width patient-information-block">
+                        <div class="row">
+                            <div class="info-block col-xs-2">
+                                <div class="info-block-label">Patient ID:</div>
+                                <div class="info-block-body font-bold">{{demographics.patientInfo.DisplayId}}</div>
+                            </div>
+
+                            <div class="col-xs-10">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <div class="flex-row">
+                                            <div class="info-block col-xs-2 left-divider">
+                                                <div class="info-block-label">Prefix:</div>
+                                                <div class="info-block-body">{{demographics.patientInfo.Prefix.Text || '-'}}</div>
+                                            </div>
+                                            <div class="info-block col-xs-5 left-divider">
+                                                <div class="info-block-label">First Name:</div>
+                                                <div class="info-block-body">
+                                                    {{demographics.patientInfo.Name.First}}
+                                                </div>
+                                            </div>
+                                            <div class="info-block col-xs-5 left-divider">
+                                                <div class="info-block-label">Middle Name:</div>
+                                                <div class="info-block-body">
+                                                    {{demographics.patientInfo.Name.Middle}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex-row">
+                                            <div class="info-block col-xs-2 left-divider">
+                                                <div class="info-block-label">Age:</div>
+                                                <div class="info-block-body">{{demographics.patientAge}}</div>
+                                            </div>
+                                            <div class="info-block col-xs-5 left-divider">
+                                                <div class="info-block-label">DOB:</div>
+                                                <div class="info-block-body">
+                                                    {{demographics.patientInfo.DateOfBirthday | amUtc | amDateFormat: 'MM/DD/YYYY'}}
+                                                </div>
+                                            </div>
+                                            <div class="info-block col-xs-5 left-divider">
+                                                <div class="info-block-label">SSN:</div>
+                                                <div class="info-block-body">{{demographics.patientInfo.Ssn || '-'}}</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex-row">
+                                            <div class="info-block grow-1 left-divider">
+                                                <div class="info-block-label">Patient Address:</div>
+                                                <div class="info-block-body">{{demographics.patientInfo.Address.FullAddress}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <div class="flex-row">
+                                            <div class="info-block col-xs-6 left-divider">
+                                                <div class="info-block-label">Last Name:</div>
+                                                <div class="info-block-body">{{demographics.patientInfo.Name.Last}}</div>
+                                            </div>
+                                            <div class="info-block col-xs-3 left-divider">
+                                                <div class="info-block-label">Nickname:</div>
+                                                <div class="info-block-body">{{ demographics.patientInfo.NickName || '-' }}</div>
+                                            </div>
+                                            <div class="info-block col-xs-3 left-divider">
+                                                <div class="info-block-label">Gender:</div>
+                                                <div class="info-block-body">{{demographics.patientInfo.Gender.Text || '-'}}</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex-row">
+                                            <div class="info-block col-xs-6 left-divider">
+                                                <div class="info-block-label">Weight (lb):</div>
+                                                <div class="info-block-body">{{demographics.patientInfo.Weight || '-'}}</div>
+                                            </div>
+                                            <div class="info-block col-xs-6 left-divider">
+                                                <div class="info-block-label">Height (in):</div>
+                                                <div class="info-block-body">{{demographics.patientInfo.Height || '-'}}</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex-row">
+                                            <div class="info-block col-xs-6 left-divider">
+                                                <div class="info-block-label">Marital Status:</div>
+                                                <div class="info-block-body">
+                                                    {{demographics.patientInfo.MaritalStatus.Text || '-'}}
+                                                </div>
+                                            </div>
+                                            <div class="info-block grow-1 left-divider">
+                                                <div class="info-block-label">Patient Signature on File:</div>
+                                                <div class="info-block-body">
+                                                    <span>{{demographics.patientInfo.SignatureOnFile.IsSigned ? 'Yes' : 'No'}}</span>
+                                                    <span ng-if="demographics.patientInfo.SignatureOnFile.IsSigned">
+                                                        ({{demographics.patientInfo.SignatureOnFile.SignedDate | amUtc | amDateFormat: 'MM/DD/YYYY'}})
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex-row">
+                                            <div class="info-block grow-1 left-divider"
+                                                 ng-if="demographics.patientInfo.DeliveryAddress">
+                                                <div class="info-block-label">Delivery Address:</div>
+                                                <div class="info-block-body">{{demographics.patientInfo.DeliveryAddress.FullAddress}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="demographics-contacts-width">
+                        <patient-contacts contacts="demographics.patientInfo.PatientContacts" readonly="true"></patient-contacts>
+
+                        <div class="row">
+                            <div class="info-block col-xs-6">
+                                <div class="info-block-label">Preferred Phone Type:</div>
+                                <div class="info-block-body">{{demographics.patientInfo.PreferredPatientPhoneType.Text || '-'}}</div>
+                            </div>
+
+                            <div class="info-block col-xs-6 left-divider">
+                                <div class="info-block-label">Preferred Call Time:</div>
+                                <div class="info-block-body">{{demographics.patientInfo.PreferredCallTime.Text || '-'}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+
+        <v-pane expanded="false">
+            <v-pane-header class="flow-accordion-title">
+                <div class="demographics-main-width">
+                    <md-icon md-svg-src="assets/images/default/chevron.svg" class="flow-accordion-title-icon"></md-icon>
+                    <span>Emergency Contact:</span>
+                    <div class="accordion-line"></div>
+                </div>
+                <div class="demographics-contacts-width">
+                    <span>Contacts:</span>
+                    <div class="accordion-line"></div>
+                </div>
+            </v-pane-header>
+
+            <v-pane-content>
+                <div class="flex-cont stretch">
+                    <div class="demographics-main-width">
+                        <div class="flex-row">
+                            <div class="info-block block-width-33-percent">
+                                <div class="info-block-label">First Name:</div>
+                                <div class="info-block-body">
+                                    <span ng-if="!demographics.patientInfo.EmergencyContact.EmergencyPerson.First">-</span>
+                                    {{demographics.patientInfo.EmergencyContact.EmergencyPerson.First}}
+                                </div>
+                            </div>
+                            <div class="info-block block-width-33-percent left-divider">
+                                <div class="info-block-label">Last Name:</div>
+                                <div class="info-block-body">
+                                    <span ng-if="!demographics.patientInfo.EmergencyContact.EmergencyPerson.Last">-</span>
+                                    {{demographics.patientInfo.EmergencyContact.EmergencyPerson.Last}}
+                                </div>
+                            </div>
+                            <div class="info-block block-width-33-percent left-divider">
+                                <div class="info-block-label">Relationship:</div>
+                                <div class="info-block-body">
+                                    <span ng-if="!demographics.patientInfo.EmergencyContact.EmergencyRelationship.Text">-</span>
+                                    {{demographics.patientInfo.EmergencyContact.EmergencyRelationship.Text}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <div class="info-block grow-1">
+                                <div class="info-block-label">Address:</div>
+                                <div class="info-block-body">
+                                    <span ng-if="!demographics.patientInfo.EmergencyContact.EmergencyAddress">-</span>
+                                    {{demographics.patientInfo.EmergencyContact.EmergencyAddress.FullAddress}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="demographics-contacts-width">
+                        <patient-contacts
+                                contacts="demographics.patientInfo.EmergencyContact.EmergencyContacts"
+                                readonly="true"
+                                no-records-text="Emergency Contacts">
+                        </patient-contacts>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+
+        <v-pane expanded="false">
+            <v-pane-header class="flow-accordion-title">
+                <div class="demographics-main-width">
+                    <md-icon md-svg-src="assets/images/default/chevron.svg" class="flow-accordion-title-icon"></md-icon>
+                    <span>Employer Info:</span>
+                    <div class="accordion-line"></div>
+                </div>
+                <div class="demographics-contacts-width">
+                    <span>Contacts:</span>
+                    <div class="accordion-line"></div>
+                </div>
+            </v-pane-header>
+
+            <v-pane-content>
+                <div class="flex-cont stretch">
+                    <div class="demographics-main-width">
+                        <div class="flex-row">
+                            <div class="info-block block-width-33-percent">
+                                <div class="info-block-label">Employed By:</div>
+                                <div class="info-block-body">
+                                    <span ng-if="!demographics.patientInfo.EmployerContact.Employer">-</span>
+                                    {{demographics.patientInfo.EmployerContact.Employer}}
+                                </div>
+                            </div>
+                            <div class="info-block grow-1 left-divider">
+                                <div class="info-block-label">Address:</div>
+                                <div class="info-block-body">
+                                    <span ng-if="!demographics.patientInfo.EmployerContact.BusinessAddress">-</span>
+                                    {{demographics.patientInfo.EmployerContact.BusinessAddress.FullAddress}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="demographics-contacts-width">
+                        <patient-contacts
+                                contacts="demographics.patientInfo.EmployerContact.EmployerContacts"
+                                readonly="true"
+                                no-records-text="Employer Contacts">
+                        </patient-contacts>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+
+        <v-pane expanded="false">
+            <v-pane-header class="flow-accordion-title">
+                <div class="demographics-main-width">
+                    <md-icon md-svg-src="assets/images/default/chevron.svg" class="flow-accordion-title-icon"></md-icon>
+                    <span>Responsible Party:</span>
+                    <div class="accordion-line"></div>
+                </div>
+                <div class="demographics-contacts-width">
+                    <span>Contacts:</span>
+                    <div class="accordion-line"></div>
+                </div>
+            </v-pane-header>
+
+            <v-pane-content>
+                <div class="flex-cont stretch">
+                    <div class="demographics-main-width">
+                        <div class="flex-row">
+                            <div class="info-block block-width-33-percent">
+                                <div class="info-block-label">First Name:</div>
+                                <div class="info-block-body">
+                                    <span ng-if="!demographics.patientInfo.ResponsibleContact.ResponsiblePerson.First">-</span>
+                                    {{demographics.patientInfo.ResponsibleContact.ResponsiblePerson.First}}
+                                </div>
+                            </div>
+                            <div class="info-block block-width-33-percent left-divider">
+                                <div class="info-block-label">Last Name:</div>
+                                <div class="info-block-body">
+                                    <span ng-if="!demographics.patientInfo.ResponsibleContact.ResponsiblePerson.Last">-</span>
+                                    {{demographics.patientInfo.ResponsibleContact.ResponsiblePerson.Last}}
+                                </div>
+                            </div>
+                            <div class="info-block block-width-33-percent left-divider">
+                                <div class="info-block-label">Relationship Party Type:</div>
+                                <div class="info-block-body">
+                                    <span ng-if="!demographics.patientInfo.ResponsibleContact.ResponsibleType.Text">-</span>
+                                    {{demographics.patientInfo.ResponsibleContact.ResponsibleType.Text}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <div class="info-block grow-1">
+                                <div class="info-block-label">Address:</div>
+                                <div class="info-block-body">
+                                    <span ng-if="!demographics.patientInfo.ResponsibleContact.ResponsibleAddress">-</span>
+                                    {{demographics.patientInfo.ResponsibleContact.ResponsibleAddress.FullAddress}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="demographics-contacts-width">
+                        <patient-contacts
+                                contacts="demographics.patientInfo.ResponsibleContact.ResponsibleContacts"
+                                available-contact-type-ids="[1, 2, 3, 5, 6]"
+                                readonly="true"
+                                no-records-text="Responsible Contacts">
+                        </patient-contacts>
+                    </div>
+                </div>
+            </v-pane-content>
+        </v-pane>
+
+        <v-pane expanded="false">
+            <v-pane-header class="flow-accordion-title">
+                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                         class="flow-accordion-title-icon"></md-icon>
+                <span>Medical Info Release:</span>
+                <div class="accordion-line"></div>
+            </v-pane-header>
+
+            <v-pane-content>
+                <div class="medical-info-release-row"
+                     ng-repeat="medInfo in demographics.patientInfo.MedicalReleaseInfo track by $index">
+                    <div class="info-block block-width-25-percent">
+                        <div class="info-block-label">Relation Type:</div>
+                        <div class="info-block-body">{{medInfo.RelationType.Text}}</div>
+                    </div>
+                    <div class="info-block block-width-25-percent left-divider">
+                        <div class="info-block-label">Name:</div>
+                        <div class="info-block-body">{{medInfo.Name.FullName}}</div>
+                    </div>
+                    <div class="info-block block-width-25-percent left-divider">
+                        <div class="info-block-label">Phone:</div>
+                        <div class="info-block-body">{{medInfo.Phone ? (medInfo.Phone | tel) : '-'}}</div>
+                    </div>
+                    <div class="info-block block-width-25-percent left-divider">
+                        <div class="info-block-label">Email:</div>
+                        <div class="info-block-body">{{medInfo.Email || '-'}}</div>
+                    </div>
+                </div>
+
+                <no-records text="No available records on medical information release"
+                            is-default-text="false"
+                            class="no-records-small"
+                            ng-if="!demographics.patientInfo.MedicalReleaseInfo.length">
+                </no-records>
+            </v-pane-content>
+        </v-pane>
+    </v-accordion>
+</div>

@@ -1,0 +1,956 @@
+.invoice-page {
+    .sidebar-padding-block {
+        .name-status-block {
+            margin-bottom: 5px;
+
+            .sidebar-title {
+                margin-bottom: 25px;
+            }
+        }
+         &.invoice-restrictions {
+             padding-top: 0;
+             margin-bottom: 10px;
+         }
+    }
+
+    .status-and-gender {
+        .status-label {
+            margin: 0 0 10px 0;
+            min-width: 73px;
+        }
+
+        &.two-line-status {
+            display: block;
+
+            .status-label {
+                margin: 1px 10px 1px 0;
+                text-overflow: ellipsis;
+
+                + .status-label {
+                    margin: 1px 10px 1px 0;
+                }
+            }
+        }
+    }
+
+    .sidebar-padding-block {
+        .info-block.status-block {
+            width: 70px;
+            min-width: 70px;
+            padding-right: 0;
+            padding-left: 0;
+        }
+    }
+
+    .order-name-link, .patient-name-link {
+        display: inline-block;
+        font-size: 15px;
+        color: $main-active-color;
+        text-decoration: underline;
+
+        &:hover, &:focus {
+            color: $main-active-hover-color;
+            text-decoration: none;
+        }
+    }
+
+    .insurances-list {
+        padding-top: 15px;
+    }
+}
+
+.name-status-block {
+    max-width: 100%;
+    width: 100%;
+}
+
+.two-line-status {
+    max-width: 100%;
+
+    .status-label {
+        height: 17px;
+        line-height: 17px;
+        margin: 1px 10px 1px 0;
+        vertical-align: middle;
+
+        + .status-label {
+            margin: 1px 10px 1px 0;
+        }
+    }
+
+    .insignificant-label{
+        font-size: 12px;
+        margin: 0px 15px -5px 5px;
+    }
+}
+
+.invoice-page, .invoice-payment-tab, .invoice-modify-content {
+    .flow-accordion {
+        .flow-accordion-title {
+            .flow-body {
+                > div:first-child {
+                    padding-left: 20px;
+                    padding-right: 10px;
+                }
+            }
+        }
+    }
+}
+
+.invoice-modify-content {
+    .flow-accordion-title {
+        .attr-label {
+            margin-left: 10px;
+            margin-bottom: 0;
+        }
+    }
+
+    .blue-border-block {
+        padding: 15px 15px 10px 20px;
+        margin-bottom: 20px;
+
+        md-input-container {
+            width: 100%;
+        }
+
+        .md-select-value {
+            background: transparent;
+        }
+    }
+}
+
+.loading-transactions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 90px;
+    padding: 15px 30px;
+    font-size: 16px;
+    color: $gray-color-main;
+}
+
+.diagnoses-inputs.info-block {
+    counter-reset: diagnose;
+
+    .info-block-label {
+        margin-bottom: 0;
+    }
+
+    .info-block-body {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+
+        md-autocomplete {
+            width: 100%;
+            padding-left: 40px;
+
+            md-input-container {
+                &::before {
+                    content: counter(diagnose) '.';
+                    counter-increment: diagnose;
+                    position: absolute;
+                    top: 10px;
+                    left: -40px;
+                    width: 22px;
+                    text-align: center;
+                }
+
+                &.md-input-focused, &.md-input-has-value {
+                    label {
+                        opacity: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.invoice-details {
+    padding: 40px 20px 20px 30px;
+}
+
+.blue-border-block {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 90px;
+    padding: 13px 10px 10px 16px;
+    margin-right: 20px;
+    margin-bottom: 0;
+    font-size: 14px;
+    line-height: 22px;
+    background-color: $lighter-gray-color;
+    border: 1px solid $main-active-color;
+    border-radius: 3px;
+
+    .active-title.flow-body-active-title {
+        margin: 0 0 7px;
+        line-height: 1;
+    }
+
+    .info-block {
+        max-height: 100%;
+        min-height: 100%;
+        line-height: 22px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        margin-bottom: 2px;
+
+        .active-title {
+            margin: 4px 7px 4px 0;
+        }
+
+        > span:not(.status-label) {
+            overflow: hidden;
+            line-height: 20px;
+            font-size: 15px;
+        }
+
+        &.block-width-100 {
+            padding-right: 0;
+            padding-left: 10px;
+
+            &:after {
+                content: "";
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                width: 1px;
+                background-color: $calendar-gray-color;
+            }
+        }
+
+        .payer-name {
+            max-width: 100%;
+
+            span {
+                display: inline-block;
+                margin: 0 2px;
+            }
+        }
+    }
+}
+
+.invoice-accordion {
+    .invoice-accordion-header {
+        display: flex;
+        align-items: stretch;
+        border: 1px solid $calendar-gray-color;
+        border-radius: 3px;
+
+        .invoice-accordion-icon {
+            position: absolute;
+            top: 24px;
+            left: 20px;
+            bottom: auto;
+            z-index: 2;
+            margin: 0;
+            color: #5e5e5e;
+        }
+
+        .price-container {
+            &.first-container {
+                .top-price-block, .bottom-price-block {
+                    padding-left: 60px;
+                }
+            }
+
+            &.last-container {
+                min-width: 620px;
+
+                .add-transaction-btn {
+                    align-self: center;
+                    margin: 0 10px 0 0;
+                }
+            }
+
+            .top-price-block {
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+                height: 60px;
+
+                .price-text {
+                    height: auto;
+                    font-size: $font-size-sm;
+                    white-space: nowrap;
+                }
+
+                .price-number {
+                    font-size: 18px;
+                    line-height: 22px;
+
+                    @include respond-to(bigScreens) {
+                        font-size: 16px;
+                    }
+
+                    @include respond-to(appMinWidth) {
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.price-container {
+    min-width: 150px;
+    max-width: 400px;
+    flex-grow: 1;
+    color: $dark-blue-color;
+    background-color: $light-gray-color;
+
+    &.accordeon-chevron {
+        min-width: 50px;
+        max-width: 50px;
+
+        .top-price-block {
+            justify-content: flex-start;
+        }
+    }
+
+    &.adjust-btn {
+        max-width: 170px;
+    }
+
+    .top-price-container {
+        display: flex;
+        align-items: stretch;
+        justify-content: flex-start;
+
+        > .top-price-block {
+            flex-grow: 1;
+            max-width: 50%;
+        }
+    }
+
+    .top-price-block {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        height: 90px;
+        padding: 10px 15px;
+        background-color: $light-gray-color;
+        font-weight: $font-weight-semibold;
+
+        &.with-divider::before {
+            content: "";
+            position: absolute;
+            left: -1px;
+            top: 12px;
+            bottom: 12px;
+            width: 2px;
+            background-color: rgba($wizard-title-color, 0.5);
+        }
+
+        .price-text {
+            height: 26px;
+            margin-right: 10px;
+        }
+
+        .price-number {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            font-size: 30px;
+            line-height: 26px;
+            white-space: nowrap;
+            overflow: hidden;
+
+            @include respond-to(bigScreens) {
+                font-size: 24px;
+            }
+
+            @include respond-to(appMinWidth) {
+                font-size: 22px;
+            }
+
+            .price-icon {
+                width: 20px;
+                height: 20px;
+                min-width: 20px;
+                min-height: 20px;
+                margin: 0 10px 0 0;
+                color: $dark-blue-color;
+            }
+        }
+    }
+
+    .bottom-price-block {
+        position: relative;
+        height: 40px;
+        padding: 10px 15px;
+        font-size: 12px;
+        background-color: $gray-color-eee;
+
+        > .bottom-price-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-left: 5px;
+            font-size: 14px;
+            font-weight: $font-weight-semibold;
+        }
+
+        &.with-divider::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            bottom: 8px;
+            width: 1px;
+            background-color: $gray-color-main;
+        }
+    }
+
+    .active-text-color {
+        color: $main-active-color;
+    }
+}
+
+.invoice-price-block {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 90px;
+    min-width: 250px;
+    width: 25%;
+    padding: 15px 20px;
+    color: $dark-blue-color;
+    font-weight: $font-weight-semibold;
+    background-color: $light-gray-color;
+
+    &:not(:last-of-type) {
+        &::after {
+            content: "";
+            position: absolute;
+            top: 10px;
+            bottom: 10px;
+            right: -1px;
+            width: 2px;
+            background-color: $calendar-gray-color;
+        }
+    }
+
+    .price-text {
+        height: 26px;
+        margin-right: 10px;
+    }
+
+    .price-number {
+        font-size: 30px;
+        line-height: 26px;
+
+        @include respond-to(bigScreens) {
+            font-size: 24px;
+        }
+
+        @include respond-to(appMinWidth) {
+            font-size: 22px;
+        }
+    }
+
+    .price-icon {
+        width: 20px;
+        height: 20px;
+        min-width: 20px;
+        min-height: 20px;
+        margin: 0 10px 0 0;
+        color: $dark-blue-color;
+    }
+}
+
+.invoice-details-info {
+    padding: 0 0 20px;
+
+    .blue-border-block {
+        min-width: 0;
+        width: 100%;
+        min-height: 80px;
+        margin-bottom: 35px;
+        align-items: center;
+
+        .in-arreas-status {
+            height: 50px;
+            justify-content: center;
+
+            &:after {
+                width: 2px;
+            }
+        }
+    }
+
+    .transactions-accordeon {
+        margin-bottom: 20px;
+
+        .transactions-accordeon-title {
+            border-bottom: 0;
+            margin-bottom: 0;
+            padding: 0;
+
+            &:before, &:after {
+                content: none;
+            }
+
+            .transactions-accordeon-icon {
+                margin: 12px auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                @include size(18px, 18px);
+                color: #5e5e5e;
+                transition: .2s;
+                transform: rotate(180deg);
+            }
+        }
+
+        .is-expanded {
+            .transactions-accordeon-icon {
+                transform: rotate(0deg);
+            }
+        }
+
+        .invoice-details-prices {
+            display: flex;
+            align-items: stretch;
+            box-shadow: $box-shadow;
+        }
+    }
+
+    .claim-options-block {
+        position: relative;
+        display: flex;
+        align-items: stretch;
+        justify-content: space-between;
+        padding-right: 15px;
+
+        .left-border {
+            position: relative;
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 0px;
+                bottom: 10px;
+                right: -1px;
+                width: 2px;
+                background-color: $lighter-gray-color;
+            }
+        }
+
+        > .flex-row {
+            margin-left: -15px;
+            margin-right: -15px;
+        }
+
+        .info-block-body {
+            font-size: 14px;
+        }
+    }
+
+}
+
+.service-line {
+    padding: 20px 0 15px;
+
+    > .flex-row {
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+
+    > .invoice-accordion {
+        margin-top: 20px;
+        position: relative;
+
+        v-pane-content {
+            no-records {
+                min-height: 90px;
+
+                .no-records.with-icon {
+                    min-height: 90px;
+                    font-size: 16px;
+                    line-height: 20px;
+
+                    > md-icon {
+                        width: 50px;
+                        height: 51px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.invoice-balance-block {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    height: 60px;
+    padding: 10px;
+    background-color: $light-gray-color;
+    border: 1px solid $calendar-gray-color;
+    border-radius: 3px;
+
+    .left-side {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-grow: 1;
+    }
+
+    .invoice-balance-price {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 25%;
+        padding: 5px 3px 5px 15px;
+        color: $label-color;
+        font-size: 12px;
+        line-height: 18px;
+
+        &.align-center {
+            justify-content: center;
+            flex-grow: 1;
+        }
+
+        &.charge-block {
+            width: 22%;
+        }
+
+        &.adjustments-block {
+            width: 28%;
+        }
+
+        &:not(:last-of-type) {
+            &::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                width: 1px;
+                background-color: $calendar-gray-color;
+            }
+        }
+
+        .price-number {
+            display: flex;
+            margin-left: 12px;
+            color: $font-color;
+            font-weight: $font-weight-bold;
+            font-size: 18px;
+            white-space: nowrap;
+        }
+
+        .currency-icon {
+            margin-right: 3px;
+            margin-left: 10px;
+            color: $font-color;
+            font-weight: $font-weight-bold;
+            font-size: 18px;
+
+            &.active-text {
+                color: $main-active-color;
+            }
+
+            + .price-number {
+                margin-left: 0;
+            }
+        }
+
+        .invoice-balance-container {
+            width: 100px;
+            margin: 0 10px 0 0;
+
+            .md-input {
+                font-size: 18px;
+                color: $main-active-color;
+            }
+
+            .md-input-messages-nice {
+                width: 130px;
+            }
+        }
+    }
+
+    .md-button {
+        margin: 0;
+
+        + .md-button {
+            margin-left: 10px;
+        }
+    }
+}
+
+.invoice-insurances {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    min-height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height});
+    padding: 20px 15px 20px 30px;
+
+    @include respond-to(appMinWidth) {
+        min-height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height} - 20px);
+    }
+
+    .insurances-buttons {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding-bottom: 5px;
+
+        .update-insurances {
+            margin: 0 10px 0 0;
+
+            md-icon {
+                display: block;
+                width: 16px;
+                height: 22px;
+                margin: 0 7px 0 0;
+                color: #fff;
+                transform: rotate(90deg) scale(1, -1);
+            }
+        }
+    }
+
+    .insurances-list {
+        .insurance-actions {
+            margin-left: 15px;
+        }
+    }
+}
+
+.insurance-gender-block {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    > md-icon {
+        display: block;
+        min-width: 14px;
+        width: 14px;
+        height: 14px;
+        margin: 0 0 0 8px;
+    }
+}
+
+.sortable-items-block {
+    counter-reset: item;
+
+    &.as-sortable-dragging {
+        .sortable-insurance {
+            box-shadow: $box-shadow;
+            border-radius: 3px;
+
+            .priority-number {
+                &::before {
+                    content: '-';
+                }
+            }
+        }
+    }
+}
+
+.as-sortable-drag {
+    .sortable-insurance {
+        border: 2px dashed $gray-color;
+    }
+}
+
+.sortable-insurance {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    margin: 15px 0;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 2px dashed transparent;
+    transition: .2s;
+
+    &:not(:last-of-type) {
+        margin-bottom: 30px;
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: -17px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: $lighter-gray-color;
+        }
+    }
+
+    &:hover {
+        border-color: $gray-color;
+    }
+
+    .drag-icon {
+        display: block;
+        width: 20px;
+        height: 20px;
+        margin: 0 20px 0 0;
+        color: $gray-color;
+    }
+
+    .priority-number {
+        &::before {
+            content: counter(item);
+            counter-increment: item;
+        }
+    }
+
+    .as-sortable-item-handle {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        width: 100%;
+        padding: 20px 15px 10px;
+    }
+}
+
+.related-invoices {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    min-height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height});
+    padding: 25px 23px 25px 30px;
+
+    @include respond-to(appMinWidth) {
+        min-height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height} - 20px);
+    }
+
+    .related-invoice-item {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: 23px 0 18px;
+
+        &:not(:last-of-type) {
+            border-bottom: 1px solid $lighter-gray-color;
+        }
+
+        .status-col {
+            width: 110px;
+            min-width: 110px;
+            padding-right: 30px;
+
+            .status-label {
+                display: block;
+                width: 100%;
+
+                &:not(:last-of-type) {
+                    margin: 0 0 11px 0;
+                }
+
+                &:last-of-type {
+                    margin: 0;
+                }
+            }
+        }
+
+        .info-block {
+            margin-bottom: 5px;
+            padding-bottom: 5px;
+        }
+    }
+}
+
+.invoice-name-status{
+    md-icon {
+        margin: 0 10px 0 0;
+        height: 18px;
+        width: 18px;
+        color: $gray-color;
+
+        &.rental-btn-icon {
+            width: 22px;
+        }
+    }
+}
+
+.edit-invoice-attrs-modal {
+    .flex-row > .info-block.autocomplete-chips-container {
+        padding: 0;
+    }
+}
+
+.transaction-modal {
+    .mask-currency-container {
+        position: relative;
+
+        input {
+            color: transparent;
+
+            &:focus {
+                color: inherit;
+
+                & + .md-errors-spacer + .amount-mask {
+                    color: transparent;
+                }
+            }
+        }
+
+        .amount-mask {
+            display: inline-block;
+            padding-left: 12px;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            z-index: -1;
+        }
+    }
+}
+
+.invoice-signature-block {
+    position: relative;
+    top: -2px;
+
+    &.info-block {
+        > .info-block-label {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.invoice-signature-date {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    md-input-container {
+        margin: 0;
+    }
+
+    .calendar_icon {
+        margin-left: 10px;
+        width: 105px;
+        min-width: 105px;
+
+        &::before {
+            background-image: url(../assets/images/calendar.png);
+        }
+
+        .md-input {
+            padding-left: 21px;
+            font-size: 14px;
+        }
+    }
+}

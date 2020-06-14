@@ -1,0 +1,24 @@
+<mat-form-field>
+    <input type="text"
+           placeholder="ZIP"
+           aria-label="ZIP"
+           matInput
+           [formControl]="zipInputFormControl"
+           [matAutocomplete]="auto"
+           (blur)="onMatAutocompleteClosed()"
+           required
+    >
+    <mat-autocomplete #auto
+                      (optionSelected)="onZipSelected($event)"
+                      [displayWith]="displayFn"
+                      appInfiniteScroll
+                      (scrollBottom)="getNextPage()"
+    >
+        <mat-option *ngFor="let zipData of (zipDictionaries$ | async)"
+                    [value]="zipData"
+        >
+            {{ zipData.text }}
+        </mat-option>
+    </mat-autocomplete>
+    <mat-error>This field is required</mat-error>
+</mat-form-field>

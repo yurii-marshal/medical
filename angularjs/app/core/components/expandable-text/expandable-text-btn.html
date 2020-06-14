@@ -1,0 +1,10 @@
+﻿<div>
+    <format-string-by-paragraphs text="$ctrl.displayText"></format-string-by-paragraphs>
+</div>
+<div class="show-more-btn"
+     ng-if="$ctrl.expandable"
+     ng-class="{'opened': $ctrl.isExpanded}"
+     ng-click="$ctrl.toggleExpand($event)">
+    <span ng-if="!$ctrl.isExpanded">more</span>
+    <span ng-if="$ctrl.isExpanded">less</span>
+</div>

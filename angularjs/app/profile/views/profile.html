@@ -1,0 +1,14 @@
+<profile-calendar
+    personnel-id="profileCtrl.profile.PersonnelId"
+    permissions="profileCtrl.permissions"
+    personnel-schedule-able="profileCtrl.profile.ScheduleAble"
+>
+    <div class="profile_info">
+        <div class="profile_img"
+             ng-style="{'background-image': 'url(data:image/JPEG;base64,'+profileCtrl.profile.ProfilePicture.Data+')'}"></div>
+        <div class="profile_name"
+             ng-cloak>{{profileCtrl.profile.Name.FullName}}</div>
+        <md-button class="md-raised md-primary edit_profile"
+                   ui-sref="root.profile.edit">Edit Profile</md-button>
+    </div>
+</profile-calendar>

@@ -1,0 +1,601 @@
+<div class="drowz-wizard-body-flex align-stretch order-wizard-step-7">
+    <div class="flex-50-percent flex-cont stretch flex-column">
+        <div class="drowz-wizard-block">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Info:</div>
+                <md-button class="edit-step-btn" aria-label="..." ng-click="step.goToStep(1)">
+                    <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                </md-button>
+            </div>
+            <div class="drowz-wizard-block-body">
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block block-width-300">
+                        <div class="info-block-label">Patient Name:</div>
+                        <div class="info-block-body">{{step.model.patient.Name.FullName}}</div>
+                    </div>
+
+                    <div class="info-block date-block">
+                        <div class="info-block-label">Patient DOB:</div>
+                        <div class="info-block-body">
+                            {{step.model.patient.DateOfBirthday ? (step.model.patient.DateOfBirthday | amUtc | amDateFormat: "MM/DD/YYYY") : "-"}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block block-width-300">
+                        <div class="info-block-label">Priority Level:</div>
+                        <div class="info-block-body">{{step.model.priorityLevel.Text}}</div>
+                    </div>
+
+                    <div class="info-block">
+                        <div class="info-block-label">Scheduled date:</div>
+                        <div class="info-block-body">{{step.model.startDate}}</div>
+                    </div>
+                </div>
+
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block">
+                        <div class="info-block-label">Notes:</div>
+                        <div class="info-block-body">{{step.model.info || '-'}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex-50-percent flex-cont stretch flex-column"
+         ng-if="step.model.referral"
+    >
+        <div class="drowz-wizard-block">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">REFERRING PROVIDER:</div>
+                <md-button class="edit-step-btn" aria-label="..." ng-click="step.goToStep(1)">
+                    <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                </md-button>
+            </div>
+            <div class="drowz-wizard-block-body">
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block block-width-400"
+                         ng-if="step.model.referral"
+                    >
+                        <div class="info-block-label">Referring Provider:</div>
+                        <div class="info-block-body">
+                            {{ step.model.referral.displayName }}
+                        </div>
+                    </div>
+                    <div class="info-block block-width-200">
+                        <div class="info-block-label">NPI:</div>
+                        <div class="info-block-body">{{step.model.referral.Physician.Npi || step.model.referral.ReferralCardSource.Npi || '-'}}</div>
+                    </div>
+                    <div class="info-block block-width-200">
+                        <div class="info-block-label">Referral Date:</div>
+                        <div class="info-block-body">
+                            {{step.model.referralDate | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="drowz-wizard-block-row referring-provider-note-block-row"
+                     ng-repeat="item in step.referringProviderNotes"
+                     ng-class="{'last-item': $last}"
+                >
+                    <div class="drowz-message with-icon">
+                        <md-icon class="info-icon" md-svg-src="assets/images/default/alert.svg"></md-icon>
+                        <div class="drowz-message-content">
+                            <span class="status-label {{:: item.labelClass }}">{{:: item.label }}</span>
+                            <span>{{:: item.note }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block block-width-400">
+                        <div class="info-block-label">Practice:</div>
+                        <div class="info-block-body">
+                            {{step.model.referral.Location.Practice || step.model.referral.Practice || step.model.referral.ReferralCardSource.Practice || step.model.referral.Physician.Practice || '-'}}
+                        </div>
+                    </div>
+                    <div class="info-block grow-1">
+                        <div class="info-block-label">Office Address:</div>
+                        <div class="info-block-body">
+                            <div ng-if="!step.model.referral.Location.Address.AddressLine">
+                                {{step.model.referral.Location.Address}}
+                            </div>
+                            <div ng-if="step.model.referral.Location.Address.AddressLine">
+                                {{step.model.referral.Location.Address | addressToString}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block block-width-200">
+                        <div class="info-block-label">Phone:</div>
+                        <div class="info-block-body">
+                            {{step.model.referral.Location.Phone ? (step.model.referral.Location.Phone | tel) : '-'}}
+                        </div>
+                    </div>
+                    <div class="info-block block-width-200">
+                        <div class="info-block-label">Fax:</div>
+                        <div class="info-block-body">
+                            {{step.model.referral.Location.Fax ? (step.model.referral.Location.Fax | tel) : '-'}}
+                        </div>
+                    </div>
+                    <div class="info-block grow-1">
+                        <div class="info-block-label">Email:</div>
+                        <div class="info-block-body">{{step.model.referral.Location.Email || '-'}}</div>
+                    </div>
+                    <div class="info-block grow-1">
+                        <div class="info-block-label">Contact Person:</div>
+                        <div class="info-block-body">{{step.model.referral.ContactPerson || '-'}}</div>
+                    </div>
+                    <div class="info-block grow-1">
+                        <div class="info-block-label">Sales Rep:</div>
+                        <div class="info-block-body">
+                            {{ step.model.referral.SalesAgent.Name.FullName ||
+                               step.model.referral.SalesAgent.FullName ||
+                               step.model.referral.SalesAgent || '-' }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="drowz-wizard-body-flex align-stretch">
+    <div class="flex-cont stretch flex-column grow-1">
+        <div class="drowz-wizard-block"
+             ng-if="step.model.hasReferringProvider && step.model.hospitalDischarge.isEnabled"
+        >
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Hospital Discharge:</div>
+                <md-button class="edit-step-btn" aria-label="..." ng-click="step.goToStep(1)">
+                    <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                </md-button>
+            </div>
+            <div class="drowz-wizard-block-body">
+                <div class="drowz-wizard-block-row">
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">Discharge Date:</div>
+                            <div class="info-block-body">
+                                {{step.model.hospitalDischarge.dischargeDate | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                            </div>
+                        </div>
+                        <div class="info-block grow-1" ng-if="step.model.hospitalDischarge.isTimeUnknown">
+                            <div class="info-block-label">Time:</div>
+                            <div class="info-block-body">Time is Unknown</div>
+                        </div>
+                        <div class="info-block grow-1" ng-if="!step.model.hospitalDischarge.isTimeUnknown">
+                            <div class="info-block-label">From:</div>
+                            <div class="info-block-body">{{step.model.hospitalDischarge.from}}</div>
+                        </div>
+                        <div class="info-block grow-1" ng-if="!step.model.hospitalDischarge.isTimeUnknown">
+                            <div class="info-block-label">To:</div>
+                            <div class="info-block-body">{{step.model.hospitalDischarge.to}}</div>
+                        </div>
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">Hospital:</div>
+                            <div class="info-block-body">
+                                {{step.model.hospitalDischarge.hospital ? step.model.hospitalDischarge.hospital.Name : step.model.hospitalDischarge.hospitalName}}
+                            </div>
+                        </div>
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">Hospital Address:</div>
+                            <div class="info-block-body">{{step.model.hospitalDischarge.hospitalAddress}}</div>
+                        </div>
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">Hospital Contact:</div>
+                            <div class="info-block-body">{{step.model.hospitalDischarge.hospitalContact | tel}}</div>
+                        </div>
+                        <div class="info-block grow-1">
+                            <div class="info-block-label">Hospital Room:</div>
+                            <div class="info-block-body">{{step.model.hospitalDischarge.room || '-'}}</div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="drowz-wizard-body-flex align-stretch">
+    <div class="flex-50-percent flex-cont stretch flex-column">
+        <div class="drowz-wizard-block"
+             ng-if="step.model.hasReferringProvider && step.model.diagnoses.length"
+        >
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Diagnosis:</div>
+                <md-button class="edit-step-btn" aria-label="..." ng-click="step.goToStep(2)">
+                    <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                </md-button>
+            </div>
+            <div class="drowz-wizard-block-body drowz-wizard-block-body-table">
+                <table class="drowz-table">
+                    <tr class="drowz-table-header">
+                        <th>Code</th>
+                        <th>Diagnosis</th>
+                        <th>Addition Date</th>
+                    </tr>
+                    <tr class="drowz-table-row" ng-repeat="diagnosis in step.model.diagnoses">
+                        <td>{{ diagnosis.text }}</td>
+                        <td>{{ diagnosis.description }}</td>
+                        <td>{{ diagnosis.AdditionDate | amUtc | amDateFormat: 'MM/DD/YYYY' }}</td>
+                    </tr>
+                </table>
+                <no-records text="Sorry, there are no added Diagnosis"
+                            is-default-text="false"
+                            class="no-records-small"
+                            ng-if="!step.model.diagnoses.length">
+                </no-records>
+            </div>
+        </div>
+    </div>
+    <div class="flex-50-percent flex-cont stretch flex-column">
+        <div class="drowz-wizard-block"
+             ng-if="step.model.hasReferringProvider && step.model.medications.length"
+        >
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Medications:</div>
+                <md-button class="edit-step-btn" aria-label="..." ng-click="step.goToStep(2)">
+                    <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                </md-button>
+            </div>
+            <div class="drowz-wizard-block-body drowz-wizard-block-body-table">
+                <table class="drowz-table">
+                    <tr class="drowz-table-header">
+                        <th>Medication</th>
+                        <th>Addition Date</th>
+                    </tr>
+                    <tr class="drowz-table-row" ng-repeat="medication in step.model.medications">
+                        <td>{{ medication.text }}</td>
+                        <td>{{ medication.AdditionDate | amUtc | amDateFormat: 'MM/DD/YYYY' }}</td>
+                    </tr>
+                </table>
+
+                <no-records text="Sorry, there are no added Medications"
+                            is-default-text="false"
+                            class="no-records-small"
+                            ng-if="!step.model.medications.length">
+                </no-records>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="drowz-wizard-body-flex align-stretch"
+     ng-if="step.model.hasReferringProvider && step.model.admissions.length"
+>
+    <div class="flex-cont stretch flex-column grow-1">
+        <div class="drowz-wizard-block">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Hospital admission:</div>
+                <md-button class="edit-step-btn" aria-label="..." ng-click="step.goToStep(2)">
+                    <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                </md-button>
+            </div>
+            <div class="drowz-wizard-block-body drowz-wizard-block-body-table">
+
+                <table class="drowz-table">
+                    <tr class="drowz-table-header">
+                        <th>Reason</th>
+                        <th>Hospital</th>
+                        <th>Hospital Address</th>
+                        <th class="show-date-cell">Admission Date</th>
+                        <th class="show-date-cell">Discharge Date</th>
+                    </tr>
+                    <tr class="drowz-table-row" ng-repeat="admission in step.model.admissions">
+                        <td>
+                            <div ng-repeat="reason in admission.Diagnoses">{{reason.CodeWithDescription}}</div>
+                        </td>
+                        <td>{{admission.Hospital}}</td>
+                        <td>{{admission.HospitalAddress}}</td>
+                        <td class="show-date-cell">{{admission.AdmissionDate}}</td>
+                        <td class="show-date-cell">{{admission.DischargeDate}}</td>
+                    </tr>
+                </table>
+
+                <no-records text="Sorry, there are no added Hospital Admissions"
+                            is-default-text="false"
+                            class="no-records-small"
+                            ng-if="!step.model.admissions.length">
+                </no-records>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="drowz-wizard-body-flex align-stretch"
+     ng-if="step.model.hasReferringProvider"
+>
+    <div class="flex-cont stretch flex-column grow-1">
+        <div class="drowz-wizard-block">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Prescription Details:</div>
+                <md-button class="edit-step-btn" aria-label="..."
+                           ng-click="step.goToStep(4)"
+                >
+                    <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                </md-button>
+            </div>
+
+            <div class="drowz-wizard-block-body">
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block grow-1">
+                        <div class="info-block-label">Effective Date:</div>
+                        <div class="info-block-body">{{step.model.effectiveDate | amUtc | amDateFormat: "MM/DD/YYYY"}}</div>
+                    </div>
+                    <div class="info-block grow-1" ng-if="step.model.prescription.Id">
+                        <div class="info-block-label">Prescription:</div>
+                        <div class="info-block-body">
+                            by {{ step.model.prescription.CreatedBy.FullName }}
+                            | NPI: {{ step.model.prescription.TreatingProvider.Npi }}
+                            | Date: {{ step.model.prescription.EffectiveDate | amUtc | amDateFormat: 'YYYY/MM/DD' }}
+                        </div>
+                    </div>
+                    <div class="info-block grow-1" ng-if="step.model.prescriptionReferral.displayName">
+                        <div class="info-block-label">Ordering Provider:</div>
+                        <div class="info-block-body">
+                            {{step.model.prescriptionReferral.displayName || '-'}}
+                        </div>
+                    </div>
+                    <div class="info-block grow-1">
+                        <div class="info-block-label">Location:</div>
+                        <div class="info-block-body">
+                            <div ng-if="!step.model.prescriptionReferral.Location.Address.AddressLine">
+                                {{step.model.prescriptionReferral.Location.Address}}
+                            </div>
+                            <div ng-if="step.model.prescriptionReferral.Location.Address.AddressLine">
+                                {{step.model.prescriptionReferral.Location.Address | addressToString}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="drowz-wizard-block no-float">
+    <div class="drowz-wizard-block-title">
+        <div class="wizard-title-text">Items:</div>
+        <md-button class="edit-step-btn" aria-label="..." ng-click="step.goToStep(3)">
+            <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+        </md-button>
+    </div>
+    <div class="drowz-wizard-block-body max-height-with-btn opened">
+        <div class="wizard-list">
+            <div class="wizard-list-item"
+                 ng-repeat="model in step.model.newItems track by $index"
+                 ng-hide="!step.isModelsExpanded && $index > 5"
+            >
+                <div class="wizard-list-item-info">
+                    <div class="info-block grow-1" ng-if="model.isAny">
+                        <div class="info-block-label">&nbsp;</div>
+                        <div class="info-block-body">
+                            <div class="any-device-block">
+                                <span>Generic Item</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-block block-width-100 left-divider" ng-if="model.isAny">
+                        <div class="info-block-label">HCPCS:</div>
+                        <div class="info-block-body">
+                            {{model.HcpcsCode.Id || model.HcpcsCode || '-'}}
+                        </div>
+                    </div>
+                    <div class="info-block grow-1" ng-if="!model.isAny">
+                        <div class="info-block-label">Name:</div>
+                        <div class="info-block-body">{{model.Name}}</div>
+                    </div>
+                    <div class="info-block block-width-200 left-divider" ng-if="!model.isAny">
+                        <div class="info-block-label">Manufacturer:</div>
+                        <div class="info-block-body">{{model.Manufacturer || '-'}}</div>
+                    </div>
+                    <div class="info-block block-width-150 left-divider" ng-if="!model.isAny">
+                        <div class="info-block-label">ID/Part #:</div>
+                        <div class="info-block-body">{{model.PartNumber || '-'}}</div>
+                    </div>
+                    <div class="info-block block-width-100 left-divider" ng-if="!model.isAny">
+                        <div class="info-block-label">HCPCS:</div>
+                        <div class="info-block-body">
+                            <div popover-directive="model.allHcpcsCodes"
+                                 hide-first-item="true"
+                                 min-width="50"></div>
+                        </div>
+                    </div>
+                    <div class="info-block block-width-120 left-divider"
+                         ng-if="step.model.hasReferringProvider && !model.Bundle"
+                    >
+                        <div class="info-block-label">Length of need:</div>
+                        <div class="info-block-body">{{model.LengthOfNeed || '-'}}</div>
+                    </div>
+
+                    <div class="info-block left-divider"
+                         ng-if="step.model.hasReferringProvider && !model.Bundle"
+                    >
+                        <div class="info-block-label">Diagnosis</div>
+                        <div class="info-block-body">
+                            <div class="flex-row order-summary-diagnosis">
+                                <div class="diagnose-code"
+                                     ng-repeat="diagnose in model.Diagnosis track by $index"
+                                >
+                                    {{ (diagnose && diagnose.Code) || '-' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-block block-width-80 left-divider">
+                        <div class="info-block-label">Qty:</div>
+                        <div class="info-block-body">{{model.Count}}</div>
+                    </div>
+                    <div class="info-block block-width-80"
+                         ng-if="step.model.referral"
+                    >
+                        <div class="status-label orange expired-item-label"
+                             ng-if="step.isItemExpired(model)"
+                        >
+                            Expired
+                        </div>
+                    </div>
+
+                </div>
+                <div class="wizard-list-item-info"
+                     ng-if="model.Bundle"
+                >
+                    <v-accordion class="flow-accordion" style="width:100%">
+                        <v-pane expanded="false">
+
+                            <v-pane-header class="flow-accordion-title">
+                                <md-icon md-svg-src="assets/images/default/chevron.svg"
+                                         class="flow-accordion-title-icon"></md-icon>
+                                <span>Items:</span>
+                                <div class="accordion-line"></div>
+                            </v-pane-header>
+
+                            <v-pane-content>
+                                <table class="drowz-table regular-table">
+                                    <tr class="drowz-table-header">
+                                        <th class="number-cell" width="45">#</th>
+                                        <th>Name:</th>
+                                        <th>Manufacturer:</th>
+                                        <th>ID/Part #:</th>
+                                        <th>HCPCS:</th>
+                                        <th width="130" ng-if="step.model.hasReferringProvider">Length of need:</th>
+                                        <th ng-if="step.model.hasReferringProvider">Diagnosis:</th>
+                                        <th class="cell-50px">Qty</th>
+                                    </tr>
+                                    <tr class="drowz-table-row" ng-repeat="component in model.Components">
+                                        <td class="number-cell">{{$index + 1}}.</td>
+                                        <td>{{component.Name}}</td>
+                                        <td>{{component.Manufacturer}}</td>
+                                        <td>{{component.PartNumber}}</td>
+                                        <td>
+                                            <div class="w70px">
+                                                <div ng-if="component.allHcpcsCodes.length && !component.HcpcsCodes.length"
+                                                     popover-directive="component.allHcpcsCodes"
+                                                     hide-first-item="true"
+                                                     min-width="50"
+                                                ></div>
+
+                                                <div ng-if="component.HcpcsCodes.length"
+                                                     popover-directive="component.HcpcsCodes"
+                                                     hide-first-item="true"
+                                                     min-width="50"
+                                                ></div>
+
+                                                <div ng-if="!component.allHcpcsCodes.length && !component.HcpcsCodes.length"> - </div>
+                                            </div>
+                                        </td>
+                                        <td ng-if="step.model.hasReferringProvider" >{{component.LengthOfNeed}}</td>
+                                        <td ng-if="step.model.hasReferringProvider">
+                                            <div class="flex-row order-summary-diagnosis">
+                                                <div class="diagnose-code"
+                                                    ng-repeat="diagnose in component.Diagnosis track by $index"
+                                                >
+                                                    {{ (diagnose && diagnose.Code) || '-' }}
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                        <td class="cell-50px">{{component.Count}}</td>
+                                    </tr>
+                                </table>
+                            </v-pane-content>
+                        </v-pane>
+                    </v-accordion>
+                </div>
+
+                <div class="flex-row align-center">
+                    <div class="grow-1">
+                        <div class="info-block-body" ng-if="model.Notes">
+                            <span class="note-label">Note: </span> {{model.Notes}}
+                        </div>
+                    </div>
+
+                    <div class="info-block" ng-if="step.model.referral">
+                        <div class="info-block-body">
+                            Expiration date: <b>{{ step.getExpirationDate(model) }}</b>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <no-records text="No Items Selected"
+                        is-default-text="false"
+                        class="no-records-small"
+                        ng-if="!step.model.newItems.length">
+            </no-records>
+        </div>
+
+        <a href="javascript:void(0);"
+           class="show-more-btn"
+           ng-click="step.isModelsExpanded = !step.isModelsExpanded"
+           ng-show="step.model.newItems.length > 6"
+        >
+            <md-icon md-svg-src="assets/images/default/chevron-circle.svg"></md-icon>
+            <div class="show-more-text">Show All {{ step.model.newItems.length }} Items</div>
+        </a>
+
+    </div>
+</div>
+
+<div class="drowz-wizard-block no-float"
+     ng-if="step.model.Tags.length"
+>
+    <div class="drowz-wizard-block-title">
+        <div class="wizard-title-text">Tags:</div>
+        <md-button class="edit-step-btn" aria-label="..." ng-click="step.goToStep(5)">
+            <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+        </md-button>
+    </div>
+    <div class="drowz-wizard-block-body">
+        <div ng-repeat="item in step.model.Tags" class="attr-label {{item.attrClass}}">
+            <md-icon md-svg-src="assets/images/default/tag.svg"></md-icon>
+            <span ng-bind="item.Name"></span>
+        </div>
+        <no-records text="Sorry, there are no added Order Tags"
+                    ng-if="!step.model.Tags.length" is-default-text="false"
+                    class="no-records-small"></no-records>
+    </div>
+</div>
+
+<div class="drowz-wizard-body-flex align-stretch">
+    <div class="drowz-wizard-block half-size-block"
+         ng-if="step.model.patientDocuments.length"
+    >
+        <div class="drowz-wizard-block-title">
+            <div class="wizard-title-text">Documents:</div>
+            <md-button class="edit-step-btn" aria-label="..." ng-click="step.goToStep(6)">
+                <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+            </md-button>
+        </div>
+        <div class="drowz-wizard-block-body">
+            <div class="document-summary-item" ng-repeat="document in step.model.patientDocuments">
+                <div class="info-block block-width-40-percent">
+                    <div class="info-block-label">Type:</div>
+                    <div class="info-block-body">{{document.DocumentType.Name || document.DocumentType.Text}}</div>
+                </div>
+                <div class="info-block block-width-40-percent left-divider">
+                    <div class="info-block-label">Uploaded:</div>
+                    <div class="info-block-body">
+                        {{document.CreatedDate | localDateTime: "MM/DD/YYYY"}}
+                        <span class="active-text">{{document.CreatedDate | localDateTime: "hh:mm A"}}</span>
+                    </div>
+                </div>
+                <div class="info-block block-width-20-percent left-divider">
+                    <div class="info-block-label" ng-if="document.ExpiredDate">Expiration Date:</div>
+                    <div class="info-block-body" ng-if="document.ExpiredDate">
+                        {{document.ExpiredDate | localDateTime: "MM/DD/YYYY"}}
+                    </div>
+                </div>
+            </div>
+            <no-records text="Sorry, there are no assigned Documents"
+                        is-default-text="false"
+                        class="no-records-small"
+                        ng-if="!step.model.patientDocuments.length">
+            </no-records>
+        </div>
+    </div>
+</div>

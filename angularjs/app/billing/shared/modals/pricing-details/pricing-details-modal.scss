@@ -1,0 +1,19 @@
+.pricing-details-modal {
+    .purchase-after-wrap {
+        border: 1px solid $main-active-color;
+        border-radius: 3px;
+        padding-top: 10px;
+        margin-top: 15px;
+    }
+
+    .purchase-after {
+        display: flex;
+        align-items: flex-end;
+
+        .checked-icon {
+            @include size(16px, 10px);
+            margin: 0 5px 5px 0;
+            color: $main-active-color;
+        }
+    }
+}

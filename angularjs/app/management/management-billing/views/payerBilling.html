@@ -1,0 +1,103 @@
+<div class="payer-billing-tab full-height-with-footer"
+        ng-form="payerBilling.billingForm"
+        bs-loading-overlay
+        bs-loading-overlay-reference-id="payerBilling">
+
+    <div class="payer-billing-content">
+        <div class="flex-row payer-billing-options">
+            <div class="info-block block-width-320 flex-cont">
+                <md-icon ng-if="payerBilling.model.fieldRules.acceptElectronicClaims"
+                         md-svg-src="assets/images/default/check.svg"
+                         class="icon-block-icon method-icon-yes"></md-icon>
+                <md-icon ng-if="!payerBilling.model.fieldRules.acceptElectronicClaims"
+                         md-svg-src="assets/images/default/clear.svg"
+                         class="icon-block-icon method-icon-no"></md-icon>
+                Accepts electronic claims
+            </div>
+            <div class="info-block block-width-320 flex-cont">
+                <md-icon ng-if="payerBilling.model.fieldRules.supportElectronicEligibility"
+                         md-svg-src="assets/images/default/check.svg"
+                         class="icon-block-icon method-icon-yes"></md-icon>
+                <md-icon ng-if="!payerBilling.model.fieldRules.supportElectronicEligibility"
+                         md-svg-src="assets/images/default/clear.svg"
+                         class="icon-block-icon method-icon-no"></md-icon>
+                Supports electronic eligibility
+            </div>
+        </div>
+        <hr class="drowz-line">
+        <div class="flex-row payer-billing-switches">
+            <md-switch class="md-primary" ng-model="payerBilling.model.BillingOptions.IsAutoSubmitRental">
+                Automatically Submit Recurring Invoices
+            </md-switch>
+            <md-switch class="md-primary" ng-model="payerBilling.model.BillingOptions.AdjustmentsAutoPost">
+                Auto Post EOB/ERA
+            </md-switch>
+            <md-switch class="md-primary" ng-model="payerBilling.model.BillingOptions.BalanceAutoTransfer">
+                Auto Balance Transfer to Patient
+            </md-switch>
+        </div>
+
+        <div class="flex-row align-stretch">
+
+            <div class="payer-main-width">
+
+                <div class="flex-row">
+                    <div class="info-block block-width-90-percent">
+                        <md-input-container>
+                            <label>Claim Filling Indicator:</label>
+                            <md-select ng-model="payerBilling.model.BillingOptions.ClaimFillingIndicator"
+                                       ng-required="payerBilling.model.fieldRules.acceptElectronicClaims"
+                                       name="indicator"
+                                       clear-on-click>
+                                <md-option ng-value="item.Id"
+                                           ng-repeat="item in payerBilling.dictionaries.ClaimFillingIndicatorDictionary track by $index">
+                                    {{item.Text}}
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="payerBilling.billingForm.indicator.$error" class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="payer-contacts-width">
+
+                <div class="active-title flow-body-active-title">CMS-1500 Form Settings</div>
+
+                <div class="flex-row">
+                        <md-input-container>
+                            <label>Box 1:</label>
+                            <md-select ng-model="payerBilling.model.BillingOptions.CMS1500FormSettingsBox1"
+                                       name="box"
+                                       ng-required="payerBilling.model.fieldRules.acceptElectronicClaims"
+                                       clear-on-click>
+                                <md-option ng-value="item.Id"
+                                           ng-repeat="item in payerBilling.dictionaries.CmnBoxTypeDictionary track by $index">
+                                    {{item.Text}}
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="payerBilling.billingForm.box.$error" class="md-input-messages-nice">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </md-input-container>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="flow-body-footer">
+
+        <md-button class="md-raised main-button" ng-click="payerBilling.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                    scroll-to
+                    disabled-scroll="payerBilling.billingForm.$invalid"
+                    ng-click="payerBilling.save()">
+            Save
+        </md-button>
+    </div>
+</div>

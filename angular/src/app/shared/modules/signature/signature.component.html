@@ -1,0 +1,10 @@
+<div class="signature-pad-body" #canvasContainer>
+    <canvas #canvas></canvas>
+</div>
+<div class="flex-cont">
+    <ng-container *ngIf="!this.setSigned">
+        <button mat-raised-button class="btn-big" (click)="clear()">Clear</button>
+        <button mat-raised-button color="primary" class="btn-big" (click)="apply()">Apply</button>
+    </ng-container>
+    <button mat-raised-button class="btn-big" (click)="reset()" *ngIf="this.setSigned">Reset</button>
+</div>

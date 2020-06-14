@@ -1,0 +1,72 @@
+.invoice-status-block {
+
+    position: relative;
+    line-height: 38px;
+
+    .edit-tags-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        @include size(38px, 38px);
+        padding: 0;
+        margin: 0;
+
+        md-icon.gray-icon {
+            @include size(17px, 17px);
+            color: $gray-color;
+        }
+    }
+}
+
+.bill-to-block {
+    border: 1px solid $main-active-color;
+    border-radius: 3px;
+    margin: 0 0 25px -10px;
+    padding: 15px 10px 5px 15px;
+
+    > .info-block:first-child {
+        margin-bottom: 5px;
+    }
+
+    .payer-name {
+        display: block;
+        color: $dark-blue-color;
+        font-weight: 500;
+        margin-top: 5px;
+        font-size: 17px;
+    }
+}
+
+.unapplied-item {
+    border-bottom: 1px solid $lighter-gray-color;
+    padding: 10px 0 5px 0;
+    position: relative;
+
+    &:hover {
+        position: relative;
+        cursor: pointer;
+
+        &:before {
+            content: '';
+            background-color: $light-gray-color;
+            position: absolute;
+            left: -20px;
+            right: -10px;
+            top: 0;
+            bottom: 0;
+        }
+    }
+
+    .icon-block {
+        padding: 0 15px 0 40px;
+    }
+
+    .unapplied-currency {
+
+        .info-block-body {
+            color: $red-color;
+            text-decoration: none;
+            font-weight: 500;
+        }
+    }
+}

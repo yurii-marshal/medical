@@ -1,0 +1,33 @@
+<profile-calendar
+    personnel-id="personnelCalendar.personnelId"
+    permissions="personnelCalendar.permissions"
+    personnel-schedule-able="personnelCalendar.ScheduleAble"
+    split-inner-events="true">
+
+    <div class="profile_info" ng-form="personnelCalendar.calendarForm">
+        <md-autocomplete
+            md-floating-label="Team Member:"
+            md-no-cache="true"
+            md-selected-item="personnelCalendar.selectedPersonnel"
+            md-search-text="searchTextPersonnel"
+            md-selected-item-change="personnelCalendar.setPersonnel(item)"
+            ng-model-options="{ debounce: 300 }"
+            md-items="item in personnelCalendar.getPersonnelByName(searchTextPersonnel)"
+            md-item-text="item.Name.FullName"
+            md-min-length="0"
+            md-input-name="personnel"
+            ng-required="true"
+            md-require-match="true"
+            clear-on-click>
+            <md-item-template>
+                <div md-highlight-text="searchTextPersonnel" md-highlight-flags="i">{{item.Name.FullName}}</div>
+            </md-item-template>
+            <md-not-found>No data was found</md-not-found>
+            <div ng-messages="personnelCalendar.calendarForm.personnel.$error" class="md-input-messages-nice">
+                <div ng-message="required">This field is required.</div>
+                <div ng-message="md-require-match">Team must be selected.</div>
+            </div>
+        </md-autocomplete>
+
+    </div>
+</profile-calendar>

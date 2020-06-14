@@ -1,0 +1,89 @@
+<infinity-table
+        load-items-promise="lookups.getProductsLookupsPromise"
+        page-size="24"
+        item-alias="item"
+        filters-obj="lookups.filter"
+        sort-obj="lookups.sortExpr">
+
+    <infinity-table-sort>
+        <div class="number-td">#</div>
+        <div class="w250px">
+            <md-icon md-svg-src="assets/images/default/inventory.svg" class="main-sort-icon inventory-icon"></md-icon>
+            Product Lookup:
+        </div>
+        <div class="w250px">
+            <md-icon md-svg-src="assets/images/default/inventory.svg" class="main-sort-icon inventory-icon"></md-icon>
+            Product ID:
+        </div>
+        <div class="w160px">
+            <md-icon md-svg-src="assets/images/default/tasks.svg" class="main-sort-icon tasks-icon"></md-icon>
+            Lot Id:
+        </div>
+        <div class="no-divider">
+            <md-icon md-svg-src="assets/images/default/tasks.svg" class="main-sort-icon tasks-icon"></md-icon>
+            Notes:
+        </div>
+        <div class="setup-center-btns-cell no-divider">&nbsp;</div>
+    </infinity-table-sort>
+
+    <infinity-table-filters class="drowz-infinite-row-filter">
+        <div class="number-td">
+            <inftbl-filter-reset-btn></inftbl-filter-reset-btn>
+        </div>
+        <div class="w250px">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search</label>
+                <input type="text" ng-model="lookupId" clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="w250px">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search id</label>
+                <input type="text" ng-model="productId" clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="w160px">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search id</label>
+                <input type="text" ng-model="lotId" clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="no-divider">
+            <md-input-container class="drowz-infinite-input-container">
+                <label>search notes</label>
+                <input type="text" ng-model="notes" clear-on-click>
+            </md-input-container>
+        </div>
+        <div class="setup-center-btns-cell no-divider">&nbsp;</div>
+    </infinity-table-filters>
+
+    <infinity-table-row class="drowz-infinite-row hide-btns-row">
+        <div class="number-td" ng-bind="item.index + '.'"></div>
+        <div class="w250px" ng-bind="item.Id"></div>
+        <div class="w250px" ng-bind="item.productId"></div>
+        <div class="w160px" ng-bind="item.lotId"></div>
+        <div class="no-divider">
+            <div popover-directive="item.notes"></div>
+        </div>
+        <div class="setup-center-btns-cell no-divider">
+            <div class="flex-cont space-around">
+                <md-button class="edit-info-icon"
+                           aria-label="..."
+                           ng-click="$parent.lookups.showModal($event, item.Id)">
+                    <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                </md-button>
+                <md-button class="delete-icon-btn"
+                           aria-label="..."
+                           confirm-ng-click="$parent.lookups.deleteProduct(item.Id)"
+                           confirm-msg="'Are you sure you want to delete Product Lookup?'"
+                           confirm-title="Delete Product Lookup">
+                    <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                </md-button>
+            </div>
+        </div>
+    </infinity-table-row>
+
+    <infinity-table-no-items>
+        <no-records text="Product Lookups" is-fullpage="true"></no-records>
+    </infinity-table-no-items>
+</infinity-table>

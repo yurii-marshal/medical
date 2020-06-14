@@ -1,0 +1,224 @@
+<div class="modal-window referral-modal"
+     ng-form="$ctrl.addReferralForm"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="addReferral">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/organization.svg"></md-icon>
+
+        <div class="modal-title">New referring provider:</div>
+
+        <div class="flex-row">
+            <div class="info-block block-width-33-percent">
+                <md-input-container>
+                    <label>First Name:</label>
+                    <input type="text"
+                           ng-model="$ctrl.referral.Physician.Name.First"
+                           name="firstName"
+                           ng-required="$ctrl.referral.Physician.Name.Last || $ctrl.setProviderFieldsRequired()">
+                    <div ng-messages="$ctrl.addReferralForm.firstName.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+
+            <div class="info-block block-width-33-percent">
+                <md-input-container>
+                    <label>Last Name:</label>
+                    <input type="text"
+                           ng-model="$ctrl.referral.Physician.Name.Last"
+                           name="lastName"
+                           ng-required="$ctrl.referral.Physician.Name.First || $ctrl.setProviderFieldsRequired()">
+                    <div ng-messages="$ctrl.addReferralForm.lastName.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+
+            <div class="info-block grow-1">
+                <md-input-container>
+                    <label>NPI:</label>
+                    <input type="text"
+                           ng-model="$ctrl.referral.Physician.Npi"
+                           name="npi"
+                           ng-maxlength="10"
+                           ng-minlength="10"
+                           ng-pattern="/^[0-9]*$/"
+                           ng-required="true">
+                    <div ng-messages="$ctrl.addReferralForm.npi.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="pattern">NPI number consists only from numbers</div>
+                        <div ng-message="maxlength, minlength">Value should consist of 10 digits.</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block">
+                <md-button class="md-raised middle-btn marg-left-0"
+                           ng-click="$ctrl.npiLookup($ctrl.referral)"
+                >
+                    NPI Lookup
+                </md-button>
+                <md-button class="md-raised middle-btn"
+                           ng-click="$ctrl.populateNPI($ctrl.referral.Physician.Npi)">
+                    Populate NPI data
+                </md-button>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <md-input-container>
+                    <label>Practice:</label>
+                    <input type="text"
+                           ng-model="$ctrl.referral.Practice"
+                           ng-required="$ctrl.setProviderFieldsRequired()"
+                           name="practice">
+                    <div ng-messages="$ctrl.addReferralForm.practice.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block block-width-33-percent">
+                <input-phone-number
+                        class="small-label"
+                        form-name="$ctrl.addReferralForm"
+                        input-name="phone"
+                        label="Phone"
+                        ng-required="$ctrl.isRequiredContacts()"
+                        ng-model="$ctrl.referral.Location.Phone"
+                        add-directives="input-phone-mask">
+                </input-phone-number>
+            </div>
+
+            <div class="info-block block-width-33-percent">
+                <input-phone-number
+                        class="small-label"
+                        form-name="$ctrl.addReferralForm"
+                        input-name="fax"
+                        label="Fax"
+                        ng-required="$ctrl.isRequiredContacts()"
+                        ng-model="$ctrl.referral.Location.Fax"
+                        add-directives="input-phone-mask">
+                </input-phone-number>
+            </div>
+
+            <div class="info-block block-width-33-percent">
+                <md-input-container>
+                    <label>Email:</label>
+                    <input type="email"
+                           name="email"
+                           ng-model="$ctrl.referral.Location.Email"
+                           ng-required="$ctrl.isRequiredContacts()">
+                    <div ng-messages="$ctrl.addReferralForm.email.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="email">Email is not valid</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <md-input-container>
+                    <label>Address (line 1):</label>
+                    <input type="text"
+                           ng-model="$ctrl.referral.Location.Address.AddressLine"
+                           name="addressLine"
+                           ng-required="true">
+                    <div ng-messages="$ctrl.addReferralForm.addressLine.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+
+            <div class="info-block block-width-33-percent">
+                <md-input-container>
+                    <label>Address (line 2):</label>
+                    <input type="text" ng-model="$ctrl.referral.Location.Address.AddressLine2">
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block block-width-33-percent">
+                <md-input-container>
+                    <label>City:</label>
+                    <input type="text"
+                           ng-model="$ctrl.referral.Location.Address.City"
+                           name="city"
+                           ng-required="true">
+                    <div ng-messages="$ctrl.addReferralForm.city.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+
+            <div class="info-block block-width-33-percent">
+                <input-state-string
+                        selected-item="$ctrl.referral.Location.Address.State"
+                        form-name="$ctrl.addReferralForm"
+                        input-name="state"
+                        ng-required="true">
+                </input-state-string>
+            </div>
+
+            <div class="info-block block-width-33-percent">
+
+                <input-zip-string
+                        selected-item="$ctrl.referral.Location.Address.Zip"
+                        form-name="$ctrl.addReferralForm"
+                        input-name="zip"
+                        ng-required="true">
+                </input-zip-string>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block block-width-33-percent">
+                <md-input-container>
+                    <label>Contact Person:</label>
+                    <input type="text"
+                           ng-model="$ctrl.referral.ContactPerson"
+                           name="contactPerson">
+                </md-input-container>
+            </div>
+            <div class="info-block block-width-33-percent">
+                <md-autocomplete-with-infinite-scroll md-no-cache="true"
+                                                      md-selected-item="$ctrl.referral.SalesAgent"
+                                                      md-search-text="searchSalesAgent"
+                                                      md-items="item in $ctrl.getUsers(searchSalesAgent, pageIndex)"
+                                                      md-item-text="item.FullName"
+                                                      md-min-length="0"
+                                                      md-floating-label="Sales Rep:"
+                                                      clear-on-click
+                                                      md-input-name="salesAgent">
+                    <md-item-template>
+                        <span md-highlight-flags="^i" title="{{ item.FullName }}">{{ item.FullName }}</span>
+                    </md-item-template>
+                    <md-not-found>
+                        No sales agents were found
+                    </md-not-found>
+                    <div ng-messages="$ctrl.addReferralForma.salesAgent.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="selected">Selected Sales Agent is not valid</div>
+                    </div>
+                </md-autocomplete-with-infinite-scroll>
+            </div>
+        </div>
+
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button" ng-click="$ctrl.save()">Create</md-button>
+    </md-dialog-actions>
+</div>

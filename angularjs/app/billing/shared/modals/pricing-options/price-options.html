@@ -1,0 +1,47 @@
+<div class="modal-window price-options-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="priceOptions">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/billing.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Price options:</h2>
+        </div>
+
+        <div class="active-title flow-body-active-title small-title-text">
+            HCPCS: {{$ctrl.serviceLine.HcpcsCode.Id}}
+            <span ng-if="$ctrl.BillRecipient.Name">
+               &nbsp;|&nbsp;Payer: {{$ctrl.BillRecipient.Name}}</span>
+
+            <span ng-if="$ctrl.BillRecipient.PayerPlan && $ctrl.BillRecipient.PayerPlan.Name">
+               &nbsp;|&nbsp;Payer Plan: {{$ctrl.BillRecipient.PayerPlan.Name}}</span>
+        </div>
+
+        <md-radio-group ng-model="$ctrl.selectedPriceOption.Id">
+            <md-radio-button ng-value="item.Id"
+                             class="md-primary price-option-item"
+                             ng-repeat="item in $ctrl.items | orderBy:'Name'"
+                             ng-click="$ctrl.selectPriceOption(item)">
+                <price-option item="item"></price-option>
+            </md-radio-button>
+        </md-radio-group>
+        <no-records text="Price options"
+                    ng-if="$ctrl.items && !$ctrl.items.length">
+        </no-records>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.save()"
+                   ng-disabled="$ctrl.serviceLine.PriceOption.Id == $ctrl.selectedPriceOption.Id">
+            Submit
+        </md-button>
+    </md-dialog-actions>
+
+</div>

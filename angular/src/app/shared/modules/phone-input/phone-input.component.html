@@ -1,0 +1,13 @@
+<mat-form-field class="phone-input-field">
+      <input matInput
+             placeholder="Phone"
+             mask="(000) 000-0000"
+             #phoneInput
+             [(ngModel)]="inputValue"
+             (change)="onInputChange(inputValue)"
+             (blur)="onTouched()"
+      >
+      <span class="custom-errors-wrap">
+        <ng-content></ng-content>
+      </span>
+</mat-form-field>

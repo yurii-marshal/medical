@@ -1,0 +1,137 @@
+<div class="search-service-lines-overlay"></div>
+<div class="drowz-wizard-block search-service-lines no-float">
+    <div class="drowz-wizard-block-title">
+        <div class="wizard-title-text">Search:</div>
+    </div>
+    <div class="drowz-wizard-block-body"
+         bs-loading-overlay
+         bs-loading-overlay-reference-id="searchServiceLines">
+
+        <div class="search-service-lines-header">
+            <div class="info-block block-width-20-percent">
+                <md-autocomplete class="drowz-infinite-autocomplete"
+                                 md-no-cache="true"
+                                 md-selected-item="$ctrl.filtersObj.Patient"
+                                 md-search-text="searchPatient"
+                                 md-items="item in $ctrl.getPatients(searchPatient)"
+                                 md-item-text="item.Name.FullName"
+                                 md-min-length="0"
+                                 md-floating-label="Patient:"
+                                 ng-model-options="{debounce: 450}"
+                                 md-menu-class="order-id-autocomplete"
+                                 clear-on-click
+                                 drowz-clear-value>
+                    <md-item-template>
+                        <span md-highlight-text="searchPatient"
+                              md-highlight-flags="^i">{{item.Name.FullName}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                        No patient was found
+                    </md-not-found>
+                </md-autocomplete>
+            </div>
+            <div class="info-block block-width-20-percent">
+                <md-input-container>
+                    <label>Payer:</label>
+                    <input type="text" ng-model="$ctrl.filtersObj.Payer">
+                </md-input-container>
+            </div>
+            <div class="info-block block-width-200 calendar_icon icon-right">
+                <md-input-container>
+                    <label>From:</label>
+                    <input datetimepicker format="MM/DD/YYYY"
+                           ng-model="$ctrl.filtersObj['Dos.From']">
+                </md-input-container>
+            </div>
+            <div class="info-block block-width-200 calendar_icon icon-right">
+                <md-input-container>
+                    <label>To:</label>
+                    <input datetimepicker format="MM/DD/YYYY"
+                           ng-model="$ctrl.filtersObj['Dos.To']">
+                </md-input-container>
+            </div>
+            <div class="info-block block-width-200"
+                 ng-if="$ctrl.type === 'checkbox'">
+                <md-autocomplete-with-infinite-scroll
+                        md-no-cache="true"
+                        md-selected-item="$ctrl.filtersObj.HcpcsItem"
+                        md-search-text="$ctrl.searchHcpcsCode"
+                        md-items="item in $ctrl.getHcpcsCodes($ctrl.searchHcpcsCode, pageIndex)"
+                        md-item-text="item.Text"
+                        md-min-length="2"
+                        md-floating-label="Search HCPCS:"
+                        md-menu-class="order-id-autocomplete"
+                        ng-model-options="{debounce: 450}">
+                    <md-item-template>
+                        <span md-highlight-flags="^i"
+                              title="{{item.Description}}">{{item.Text + ' ' + item.Description}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                        No hcpcs codes were found
+                    </md-not-found>
+                </md-autocomplete-with-infinite-scroll>
+            </div>
+            <div class="info-block block-width-120">
+                <md-input-container class="currency-container">
+                    <div class="currency-icon">$</div>
+                    <label>Balance:</label>
+                    <input type="number"
+                           min="0"
+                           step="0.01"
+                           ng-model="$ctrl.filtersObj.Balance">
+                </md-input-container>
+            </div>
+            <div class="grow-1 flex-row flex-end">
+                <md-button class="md-raised middle-btn"
+                           ng-click="$ctrl.clearFilters()">Clear Filters</md-button>
+                <md-button class="md-raised md-primary middle-btn"
+                           ng-click="$ctrl.search()">Search</md-button>
+            </div>
+
+        </div>
+
+        <hr class="drowz-line">
+
+        <div class="search-service-lines-container"
+             scroll-bar
+             scroll-bar-above-element="true">
+
+            <md-checkbox class="md-primary search-service-line"
+                         ng-if="$ctrl.type === 'checkbox'"
+                         ng-checked="$ctrl.isSelected(line)"
+                         ng-click="$ctrl.toggleItem(line)"
+                         ng-repeat="line in $ctrl.serviceLineList track by $index">
+                <service-line-container line="line"></service-line-container>
+            </md-checkbox>
+
+            <md-radio-group ng-model="$ctrl.selectedServiceLines[0]"
+                            ng-if="$ctrl.type === 'radio'">
+                <md-radio-button ng-value="line.ServiceLineId"
+                                 class="md-primary search-service-line"
+                                 ng-repeat="line in $ctrl.serviceLineList track by $index">
+                    <service-line-container line="line"></service-line-container>
+                </md-radio-button>
+            </md-radio-group>
+
+            <div class="flex-cont center" ng-show="$ctrl.showMoreButton">
+                <div ng-click="$ctrl.showMore()" class="show-more-btn"> show more </div>
+            </div>
+        </div>
+
+        <no-records text="Service Lines"
+                    is-fullpage="true"
+                    ng-if="!$ctrl.serviceLineList.length">
+        </no-records>
+
+        <div class="drowz-subwizard-footer">
+            <md-button class="md-raised main-button"
+                       ng-click="$ctrl.cancelSearch()">Cancel</md-button>
+            <md-button class="md-raised md-primary main-button"
+                       ng-click="$ctrl.select()"
+                       ng-disabled="$ctrl.type === 'radio' && $ctrl.selectedServiceLines.length !== 1">
+                OK
+            </md-button>
+        </div>
+
+    </div>
+</div>

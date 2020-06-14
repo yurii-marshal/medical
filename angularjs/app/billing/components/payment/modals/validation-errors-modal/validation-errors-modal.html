@@ -1,0 +1,31 @@
+<div class="modal-window w450px payment-validations-error-modal">
+
+    <a href="javascript:void(0);"
+       ng-click="$ctrl.close()"
+       class="close-modal"
+    ></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon modal-icon-red"
+                 md-svg-src="assets/images/default/alert.svg"
+        ></md-icon>
+
+        <div class="modal-title">
+            <h2>Payment Error:</h2>
+        </div>
+
+        <div class="text-center">
+            Please review details for payment error information.
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.close()"
+        >
+            OK
+        </md-button>
+    </md-dialog-actions>
+</div>

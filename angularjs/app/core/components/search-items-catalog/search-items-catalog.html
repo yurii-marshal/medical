@@ -1,0 +1,324 @@
+<div class="drowz-wizard-body-flex">
+
+    <div class="flex-300" ng-form="$ctrl.searchForm">
+
+        <div class="drowz-wizard-block no-float">
+            <div class="drowz-wizard-block-title active-color-title">
+                <div class="wizard-title-text">Selected Items:</div>
+            </div>
+            <div class="drowz-wizard-block-body">
+                <div class="big-number-block">
+                    <div class="big-number">{{$ctrl.items.length}}</div>items prescribed
+                </div>
+                <div class="flex-cont align-end">
+                    <md-button class="md-raised md-primary search-equipment-btn"
+                               ng-click="$ctrl.showSelectedItems($event)"
+                               ng-disabled="!$ctrl.items.length"
+                    >
+                        <md-icon md-svg-src="assets/images/default/search.svg"></md-icon>
+                        View All
+                    </md-button>
+                </div>
+            </div>
+        </div>
+
+        <div class="drowz-wizard-block no-float" ng-if="$ctrl.type === 'products_catalog'">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Search:</div>
+            </div>
+            <div class="drowz-wizard-block-body">
+                <div class="info-block">
+                    <md-autocomplete md-selected-item="$ctrl.searchModel.aspect"
+                                     md-search-text="$ctrl.searchModel.searchAspect"
+                                     md-items="aspect in $ctrl.getAspects($ctrl.searchModel.searchAspect)"
+                                     md-item-text="aspect"
+                                     md-min-length="2"
+                                     md-floating-label="Search:"
+                                     md-input-name="aspect"
+                                     clear-on-click>
+                        <md-item-template>
+                            <span md-highlight-text="$ctrl.searchModel.searchAspect" md-highlight-flags="i" title="{{aspect}}">
+                                {{aspect}}
+                            </span>
+                        </md-item-template>
+                    </md-autocomplete>
+                </div>
+                <div class="info-block">
+                    <md-autocomplete
+                            class="ellipsis"
+                            md-selected-item="$ctrl.searchModel.HcpcsCode"
+                            md-search-text="$ctrl.searchModel.searchHcpcsCode"
+                            md-items="code in $ctrl.getHcpcsCodes($ctrl.searchModel.searchHcpcsCode)"
+                            md-search-text-change="$ctrl.changeSelectedHcpcsCode($ctrl.searchModel.searchHcpcsCode)"
+                            md-selected-item-change="$ctrl.changeSelectedHcpcsCode($ctrl.searchModel.HcpcsCode)"
+                            md-item-text="code.Text"
+                            md-min-length="1"
+                            md-floating-label="Search by HCPCS:"
+                            md-input-name="hcpcsCode"
+                            md-require-match="true"
+                            clear-on-click>
+                        <md-item-template>
+                            <span md-highlight-text="$ctrl.searchModel.searchHcpcsCode"
+                                  md-highlight-flags="i"
+                                  title="{{code.Description}}">
+                                {{code.Text + ' ' + code.Description}}
+                            </span>
+                        </md-item-template>
+                        <md-not-found>Not found</md-not-found>
+                        <div ng-messages="$ctrl.searchForm.hcpcsCode.$error"
+                             class="md-input-messages-nice">
+                            <div ng-message="md-require-match">Select HCPCS Code from the list</div>
+                        </div>
+                    </md-autocomplete>
+                </div>
+
+                <div class="info-block">
+                    <md-chips ng-model="$ctrl.searchModel.searchGroups"
+                              class="autocomplete-chips-block"
+                              md-require-match="true"
+                              chips-autocomplete-required
+                    >
+                        <md-autocomplete md-no-cache="true"
+                                         md-menu-container-class="autocomplete-chips-dropdown"
+                                         md-selected-item="$ctrl.searchModel.group"
+                                         md-search-text="searchGroup"
+                                         md-items="item in $ctrl.getEquipmentGroups(searchGroup)"
+                                         md-item-text="item.Name"
+                                         placeholder="Group:"
+                                         ng-required-match="true"
+                                         md-input-name="groupsFilter"
+                        >
+                            <md-item-template>
+                                            <span md-highlight-text="searchText" md-highlight-flags="i" title="{{ item.Name }}">
+                                                {{ item.Name }}
+                                            </span>
+                            </md-item-template>
+                            <md-not-found>Nothing was found</md-not-found>
+                        </md-autocomplete>
+
+                        <md-chip-template>
+                                        <span title="{{ $chip.Name }}">
+                                            {{ $chip.Name }}
+                                        </span>
+                        </md-chip-template>
+
+                    </md-chips>
+                </div>
+
+                <div class="info-block">
+                    <md-chips ng-model="$ctrl.searchModel.searchCategories"
+                              class="autocomplete-chips-block"
+                              md-require-match="true"
+                              chips-autocomplete-required
+                    >
+                        <md-autocomplete md-no-cache="true"
+                                         md-menu-container-class="autocomplete-chips-dropdown"
+                                         md-selected-item="$ctrl.searchModel.category"
+                                         md-search-text="searchCategory"
+                                         md-items="item in $ctrl.getEquipmentCategories(searchCategory)"
+                                         md-item-text="item.Name"
+                                         placeholder="Category:"
+                                         ng-required-match="true"
+                                         md-input-name="categoriesFilter"
+                        >
+                            <md-item-template>
+                                            <span md-highlight-text="searchText" md-highlight-flags="i" title="{{ item.Name }}">
+                                                {{ item.Name }}
+                                            </span>
+                            </md-item-template>
+                            <md-not-found>Nothing was found</md-not-found>
+                        </md-autocomplete>
+
+                        <md-chip-template>
+                                        <span title="{{ $chip.Name }}">
+                                            {{ $chip.Name }}
+                                        </span>
+                        </md-chip-template>
+
+                    </md-chips>
+                </div>
+
+                <div class="info-block">
+                    <md-chips ng-model="$ctrl.searchModel.searchManufacturers"
+                              class="autocomplete-chips-block"
+                              md-require-match="true"
+                              chips-autocomplete-required
+                    >
+                        <md-autocomplete md-no-cache="true"
+                                         md-menu-container-class="autocomplete-chips-dropdown"
+                                         md-selected-item="item.Name"
+                                         md-search-text="searchText"
+                                         md-items="item in $ctrl.getEquipmentManufacturers(searchText)"
+                                         md-item-text="item.Name"
+                                         placeholder="Manufacturer:"
+                                         ng-required-match="true"
+                                         md-input-name="manufacturersFilter"
+                        >
+                            <md-item-template>
+                                                <span md-highlight-text="searchText"
+                                                      md-highlight-flags="i"
+                                                      title="{{item.Name}}">
+                                                    {{item.Name}}
+                                                </span>
+                            </md-item-template>
+                            <md-not-found>Nothing was found</md-not-found>
+
+                        </md-autocomplete>
+
+                        <md-chip-template>
+                                            <span title="{{$chip.Name || $chip.Text}}">
+                                                {{$chip.Name || $chip.Text}}
+                                            </span>
+                        </md-chip-template>
+
+                    </md-chips>
+                </div>
+
+                <div class="flex-cont align-end">
+                    <md-button class="md-raised grow-1" ng-click="$ctrl.clear()">
+                        Clear
+                    </md-button>
+                    <md-button class="md-raised search-equipment-btn" ng-click="$ctrl.search()">
+                        <md-icon md-svg-src="assets/images/default/search.svg" class="gray-search-icon"></md-icon>
+                        Search
+                    </md-button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="grow-1"
+         bs-loading-overlay
+         bs-loading-overlay-reference-id="searchResult">
+        <div class="drowz-wizard-block no-float">
+            <div class="drowz-wizard-block-title">
+                <div  class="wizard-title-text">Search Result:</div>
+                <div>
+                    <a class="underline-after-link marg-h-30" ng-click="$ctrl.selectAll()">Select all</a>
+                    <a class="underline-after-link" ng-click="$ctrl.selectNone()">Select None</a>
+                </div>
+
+            </div>
+            <div class="drowz-wizard-block-body pagination-body equipment-grid-content">
+                <md-button class="md-raised md-primary middle-btn prescribe-btn"
+                           ng-show="$ctrl.isPrescribeAnyShow && $ctrl.equipmentList.length"
+                           ng-if="!$ctrl.isHideSelectAnyDeviceBtn && $ctrl.type === 'products'"
+                           ng-click="$ctrl.prescribeAnyEquipment()">
+                    <md-icon md-svg-src="assets/images/default/download-prescribe.svg"></md-icon>
+                    Select Any Device of this Category
+                </md-button>
+                <div class="equipment-grid clearfix"
+                     ng-if="$ctrl.equipmentList.length">
+                    <div class="equipment-item"
+                         ng-repeat="item in $ctrl.equipmentList track by item.Id"
+                         ng-class="{
+                            'equipment-search': $ctrl.type === 'equipment',
+                            'selected' : $ctrl.isItemAdded(item, $ctrl.items),
+                            'has-statuses': $ctrl.type === 'equipment',
+                            'with-locations': $ctrl.searchByAllLocations
+                            }">
+                        <div class="equipment-item-img"
+                             ng-style="{'background-image':'url(' + item.PictureUrl + ')'}">
+                        </div>
+                        <!--<div class="equipment-item-title">-->
+                            <!--<div class="equipment-item-title-text" title="{{item.Name}}">{{item.Name}}</div>-->
+                            <!--<div class="equipment-item-row max-h20">-->
+                                <!--<div class="equipment-item-row-text">-->
+                                    <!--<div class="status-label gray" ng-if="item.Refurbished">Refurbished</div>-->
+                                    <!--&lt;!&ndash;<div class="status-label {{item.statusClass}}">{{item.Status.Name}}</div>&ndash;&gt;-->
+                                    <!--<div class="status-label blue" ng-if="item.Type == 'Bundle'">Bundle</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="equipment-item-title flex-cont align-top space-between" ng-if="$ctrl.type == 'products_catalog'">
+                            <span title="{{item.Name}}">{{item.Name}}</span>
+                            <div class="status-label blue" ng-if="item.Type == 'Bundle'">Bundle</div>
+                        </div>
+                        <div class="equipment-item-row max-h20">
+                            <div class="equipment-item-row-title">Manufacturer:</div>
+                            <div class="equipment-item-row-text">{{item.Manufacturer}}</div>
+                        </div>
+                        <div class="equipment-item-row max-h20" ng-if="$ctrl.searchByAllLocations">
+                            <div class="equipment-item-row-title">Location:</div>
+                            <div class="equipment-item-row-text">
+                                <span ng-if="!item.LocationName">-</span>
+                                <div popover-directive="item.LocationName" min-width="50" ng-if="item.LocationName"></div>
+                            </div>
+                        </div>
+                        <div class="equipment-item-row max-h20" ng-if="$ctrl.type === 'equipment'">
+                            <div class="equipment-item-row-title">Serial/Lot #:</div>
+                            <div class="equipment-item-row-text">
+                                <span ng-if="!item.SerialNumber">-</span>
+                                <span class="equipment-item-row-text" ng-if="item.SerialNumber">{{item.SerialNumber}}</span>
+                                <span> / </span>
+                                <span ng-if="!item.LotNumber">-</span>
+                                <span class="equipment-item-row-text" ng-if="item.LotNumber">{{item.LotNumber}}</span>
+                            </div>
+                        </div>
+                        <div class="equipment-item-row max-h40">
+                            <div class="equipment-item-row-title">ID/Part #:</div>
+                            <div class="equipment-item-row-text">{{item.PartNumber}}</div>
+                        </div>
+                        <div class="equipment-item-row max-h20">
+                            <div class="equipment-item-row-title">HCPCS:</div>
+                            <div class="equipment-item-row-text">
+                                <div popover-directive="item.Hcpcs"
+                                     hide-first-item="true"
+                                     min-width="50"></div>
+                            </div>
+                        </div>
+                        <div class="equipment-item-row max-h40">
+                            <div class="equipment-item-row-title">Group:</div>
+                            <div class="equipment-item-row-text">{{item.Group || '-'}}</div>
+                        </div>
+                        <div class="equipment-item-row max-h40">
+                            <div class="equipment-item-row-title">Category:</div>
+                            <div class="equipment-item-row-text">{{item.Category || '-'}}</div>
+                        </div>
+                        <div class="equipment-item-btns">
+                            <md-button class="md-raised middle-btn details-btn"
+                                       ng-click="$ctrl.showItemDetails($event, item)">
+                                <md-icon md-svg-src="assets/images/default/documents.svg"></md-icon>
+                                Details
+                            </md-button>
+                            <md-button ng-if="!$ctrl.isItemAdded(item, $ctrl.items)"
+                                       class="md-raised middle-btn prescribe-btn"
+                                       ng-click="$ctrl.addItem(item)"
+                                       ng-disabled="$ctrl.isSameResupplyCodeSelected(item, $ctrl.items)">
+                                <md-icon md-svg-src="assets/images/default/download-prescribe.svg"></md-icon>
+                                Select
+                            </md-button>
+                            <md-button ng-if="$ctrl.isItemAdded(item, $ctrl.items)"
+                                       class="md-raised middle-btn prescribe-btn md-primary"
+                                       ng-click="$ctrl.removeItem(item)">
+                                <md-icon md-svg-src="assets/images/default/download-prescribe.svg"></md-icon>
+                                Remove
+                            </md-button>
+                        </div>
+                    </div>
+
+                </div>
+                <no-records text="No items were found"
+                            ng-if="!$ctrl.equipmentList.length && $ctrl.isSearchDataLoaded"
+                            is-default-text="false"
+                            class="no-records-small"></no-records>
+
+            </div>
+
+            <ul uib-pagination
+                total-items="$ctrl.totalCount"
+                ng-model="$ctrl.searchModel.pageIndex"
+                items-per-page="$ctrl.searchModel.pageSize"
+                ng-change="$ctrl.getData()"
+                max-size="3"
+                class="pagination-sm"
+                boundary-link-numbers="true"
+                previous-text="&lsaquo;"
+                next-text="&rsaquo;"
+                ng-hide="!$ctrl.equipmentList.length"></ul>
+        </div>
+
+    </div>
+
+</div>

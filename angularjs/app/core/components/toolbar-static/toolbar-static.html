@@ -1,0 +1,18 @@
+<a href="javascript:void(0)"
+   class="toolbar-link"
+   ng-repeat="link in $ctrl.items track by $index"
+   ng-hide="link.isHidden"
+   ng-click="link.clickFunction($event)">
+
+    <md-icon md-svg-src="{{link.icon.url}}"
+             class="{{link.icon.className}}"
+             ng-style="{
+                'width': link.icon.w + 'px',
+                'height': link.icon.h + 'px',
+                'min-width': link.icon.w + 'px',
+                'min-height': link.icon.h + 'px'
+             }">
+    </md-icon>
+    <span>{{link.text}}</span>
+
+</a>

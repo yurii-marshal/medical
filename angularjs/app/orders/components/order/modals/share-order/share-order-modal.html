@@ -1,0 +1,83 @@
+﻿<!--TODO delete later, if not used anymore. Related to portal-->
+<div class="modal-window share-order-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay"
+     ng-form="$ctrl.Form">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.close()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/share.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Share:</h2>
+        </div>
+
+        <div class="flex-row">
+            <div class="info-block grow-1">
+                <md-autocomplete md-selected-item="$ctrl.referralCard"
+                                 md-search-text="searchReferral"
+                                 md-items="card in $ctrl.getExtReferralCards(searchReferral)"
+                                 md-item-text="card.displayName"
+                                 md-min-length="0"
+                                 md-delay="350"
+                                 md-floating-label="Search Referring Provider:"
+                                 clear-on-click
+                                 ng-required="true"
+                                 md-require-match="true"
+                                 md-input-name="card">
+                    <md-item-template>
+                        <span md-highlight-text="searchReferral" md-highlight-flags="i" class="item-title">
+                            {{card.searchName}}
+                        </span>
+                    </md-item-template>
+                    <div ng-messages="$ctrl.Form.card.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="md-require-match">Referral Provider is not valid</div>
+                    </div>
+                    <md-not-found>No Referring Providers found</md-not-found>
+                </md-autocomplete>
+            </div>
+        </div>
+
+        <div class="flex-row" ng-if="$ctrl.referralCard">
+            <div class="info-block col-xs-8">
+                <div class="info-block-label">Referral Provider:</div>
+                <div class="info-block-body">
+                    {{$ctrl.referralCard.ReferralCardSource.Name.FullName || $ctrl.referralCard.ReferralCardSource.Practice}}
+                </div>
+            </div>
+            <div class="info-block left-divider col-xs-4">
+                <div class="info-block-label">NPI:</div>
+                <div class="info-block-body">{{$ctrl.referralCard.ReferralCardSource.Npi}}</div>
+            </div>
+        </div>
+
+        <div class="flex-row" ng-if="$ctrl.referralCard">
+            <div class="info-block col-xs-8">
+                <div class="info-block-label">Office Address:</div>
+                <div class="info-block-body">{{$ctrl.referralCard.Location.Address}}</div>
+            </div>
+            <div class="info-block left-divider col-xs-4">
+                <div class="info-block-label">Office Contact:</div>
+                <div class="info-block-body">{{$ctrl.referralCard.Location.Phone | tel}}</div>
+            </div>
+        </div>
+
+        <div class="flex-row" ng-if="$ctrl.referralCard">
+            <div class="info-block col-xs-8"></div>
+            <div class="info-block left-divider col-xs-4">
+                <div class="info-block-label">Office Fax:</div>
+                <div class="info-block-body">{{$ctrl.referralCard.Location.Fax | tel}}</div>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.close()">Cancel</md-button>
+        <md-button class="md-primary md-raised main-button" ng-click="$ctrl.save()">Share</md-button>
+    </md-dialog-actions>
+
+</div>

@@ -1,0 +1,76 @@
+<div class="modal-window modal-report"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="save_report"
+     ng-form="vm.reportForm">
+
+    <a href="javascript:void(0);" ng-click="vm.closeSaveView()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/save.svg"></md-icon>
+
+        <div class="modal-title">Save Report:</div>
+
+        <div class="row report-border-row">
+            <div class="col-xs-5">
+                <md-input-container class="db">
+                    <label>Report name:</label>
+                    <input type="text"
+                           name="reportName"
+                           ng-model="vm.saveReportName"
+                           ng-required="true">
+                    <div ng-messages="vm.reportForm.reportName.$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">
+                            Report name cannot be empty.
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-checkbox ng-model="vm.shareForAll"
+                             class="md-primary share-checkbox">Share for all</md-checkbox>
+            </div>
+        </div>
+
+        <div class="row report-border-row">
+            <div class="col-xs-5">
+                <div class="active-title flow-body-active-title">Add Filter:</div>
+                <report-add-filter
+                    filters="vm.filters"
+                    add-filter="vm.addFilter"
+                ></report-add-filter>
+            </div>
+            <div class="col-xs-12">
+                <div ng-if="!vm.filtersBlock.length"
+                     class="no-records no-side-padding-records">
+                    No filters added
+                </div>
+                <div class="flow_info small_padding_info"
+                     ng-if="vm.filtersBlock.length">
+                    <div class="report-filter"
+                         ng-repeat="block in vm.filtersBlock"
+                         report-filter-row-inner></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="report-border-row">
+            <div class="active-title flow-body-active-title">Options:</div>
+            <div class="custom-options-select"
+                 report-side-by-side-select
+                 report-model="vm.selected.options"
+                 items="vm.options">
+            </div>
+
+            <div ng-if="vm.saveBlockError"
+                 class="err-msg">{{vm.saveBlockError}}</div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="vm.closeSaveView()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button" ng-click="vm.save_report()">Save</md-button>
+    </md-dialog-actions>
+
+</div>
+

@@ -1,0 +1,66 @@
+﻿<div class="modal-window resupply-program-details-modal"
+     ng-cloak
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="modalOverlay">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.close()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/documents.svg"></md-icon>
+        <div class="modal-title">
+            <h2>RESUPPLY PROGRAM DETAILS:</h2>
+        </div>
+
+        <div class="flex-row">
+            <div class="col-xs-2 info-block">
+                <div class="info-block-label">Effective Date:</div>
+                <div class="info-block-body">{{$ctrl.model.EffectiveDate | amUtc | amDateFormat: "MM/DD/YYYY"}}</div>
+            </div>
+            <div class="col-xs-2 info-block">
+                <div class="info-block-label">Group items for Delivery:</div>
+                <div class="info-block-body">{{$ctrl.model.DeliveryGroupingDays > 0 ? 'Yes' : 'No'}}</div>
+            </div>
+            <div class="col-xs-2 info-block" ng-if="$ctrl.model.DeliveryGroupingDays > 0">
+                <div class="info-block-label">Eligible Dates:</div>
+                <div class="info-block-body">{{$ctrl.model.DeliveryGroupingDays}} day(s)</div>
+            </div>
+        </div>
+
+        <div class="order-details-modal-table" ng-show="$ctrl.model.Items.length">
+            <div class="table-title">Items:</div>
+            <table class="drowz-table">
+                <tr class="drowz-table-header">
+                    <th class="number-cell">#</th>
+                    <th width="270">Name:</th>
+                    <th>Manufacturer:</th>
+                    <th width="100">ID/Part #:</th>
+                    <th width="90">HCPCS:</th>
+                    <th>Frequency:</th>
+                    <th>Resupply Period:</th>
+                    <th>Length of need:</th>
+                    <th>Next Eligible Date:</th>
+                    <th width="50">Qty</th>
+                </tr>
+                <tr class="drowz-table-row valign-top" ng-repeat="product in $ctrl.model.Items">
+                    <td class="number-cell">{{$index + 1}}.</td>
+                    <td>{{product.Name}}</td>
+                    <td>{{product.Manufacturer}}</td>
+                    <td>{{product.PartNumber}}</td>
+                    <td >
+                        <div min-width="50">{{product.HcpcsCodes.Primary}}</div>
+                    </td>
+                    <td>{{product.Frequency}}</td>
+                    <td>{{product.ResupplyPeriod}}</td>
+                    <td>{{product.LengthOfNeed}} month(s)</td>
+                    <td>{{product.NextEligibleDate | amUtc | amDateFormat: "MM/DD/YYYY"}}</td>
+                    <td>{{product.Count}}</td>
+                </tr>
+            </table>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.close()">Close</md-button>
+    </md-dialog-actions>
+
+</div>

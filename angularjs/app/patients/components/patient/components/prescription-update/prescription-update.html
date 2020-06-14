@@ -1,0 +1,19 @@
+<div id="scrollHere"
+     class="drowz-wizard"
+     ng-form="prUpdate.updatePrescriptionForm"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="updatePrescription">
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.orders.list">Patients</a>
+        <a href="javascript:void(0)"
+           ui-sref="root.patient.prescription({ patientId: prUpdate.patientId })">
+            {{prUpdate.patientShortInfo.Name ? prUpdate.patientShortInfo.Name.FullName : ''}}
+        </a>
+        <a href="javascript:void(0)" class="active">{{prUpdate.isNewPrescription ? 'New Prescription' : 'Update Prescription'}}</a>
+    </div>
+
+    <ui-view></ui-view>
+
+</div>

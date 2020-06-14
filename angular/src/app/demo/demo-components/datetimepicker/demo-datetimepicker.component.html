@@ -1,0 +1,71 @@
+<div class="datetimepicker">
+    <div class="datetimepicker-options">
+        <div class="opt-item">
+            <mat-form-field>
+                <mat-select placeholder="Mode" [(ngModel)]="dtPickerType">
+                    <mat-option value="date">Date</mat-option>
+                    <mat-option value="time">Time</mat-option>
+                    <mat-option value="datetime">DateTime</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="opt-item">
+            <app-datetimepicker [(ngModel)]="minRange" placeholder="minRange" mode="date"></app-datetimepicker>
+        </div>
+        <div class="opt-item">
+            <app-datetimepicker [(ngModel)]="maxRange" placeholder="maxRange" mode="date"></app-datetimepicker>
+        </div>
+        <div class="opt-item">
+            <mat-form-field class="example-full-width">
+                <input matInput placeholder="Minute interval" [(ngModel)]="interval" type="number">
+            </mat-form-field>
+        </div>
+        <div class="opt-item">
+            <mat-checkbox [(ngModel)]="dtPickerTodayBtn">Display 'Today' Button</mat-checkbox>
+        </div>
+        <div class="opt-item">
+            <mat-checkbox [(ngModel)]="displayClearButton">Display 'Clear' button</mat-checkbox>
+        </div>
+        <div class="opt-item">
+            <mat-checkbox [(ngModel)]="displayImage">Display Image</mat-checkbox>
+        </div>
+        <div class="opt-item">
+            <mat-form-field>
+                <mat-select placeholder="imagePosition" [(ngModel)]="imagePosition">
+                    <mat-option value="left">Left</mat-option>
+                    <mat-option value="right">Right</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="opt-item">
+            <mat-form-field class="example-full-width">
+                <input matInput placeholder="dateFormat" [(ngModel)]="dateFormat" type="text">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="picker-demo">
+        <span class="select-date-label">Example:</span>
+        <app-datetimepicker ngModel
+                     placeholder="search date"
+                     [mode]="dtPickerType"
+                     [showTodayButton]="dtPickerTodayBtn"
+                     [interval]="interval"
+                     [minRange]="minRange"
+                     [maxRange]="maxRange"
+                     [displayImage]="displayImage"
+                     [imagePosition]="imagePosition"
+                     [displayClearButton]="displayClearButton"
+                     [dateFormat]="dateFormat"></app-datetimepicker>
+    </div>
+</div>
+<app-datetimepicker ngModel
+                    placeholder="search date"
+                    [mode]="dtPickerType"
+                    [showTodayButton]="dtPickerTodayBtn"
+                    [interval]="interval"
+                    [minRange]="minRange"
+                    [maxRange]="maxRange"
+                    [displayImage]="displayImage"
+                    [imagePosition]="imagePosition"
+                    [displayClearButton]="displayClearButton"
+                    [dateFormat]="dateFormat"></app-datetimepicker>

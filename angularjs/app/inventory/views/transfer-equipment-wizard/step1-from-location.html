@@ -1,0 +1,27 @@
+<div class="flex-row"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="step1">
+    <div class="col-xs-6 subwizard-container-block with-additional-text">
+        <div class="additional-text-title active-title flow-body-active-title">Select Location FROM:</div>
+        <md-icon md-svg-src="assets/images/default/location.svg"
+                 class="subwizard-container-icon location-icon"></md-icon>
+        <md-input-container class="subwizard-container">
+            <label>Scan or Enter Location Barcode, Use Search for Location Lookup or Leave Empty:</label>
+            <input type="text"
+                   auto-focus
+                   ng-model="wiz.pairCurrent.locationFrom.Id"
+                   on-press-enter="wiz.searchLocationById('from')"/>
+        </md-input-container>
+        <div class="subwizard-container-btns">
+            <md-button class="md-raised small-btn"
+                       ng-click="wiz.searchLocationFromModal($event, true)">
+                Search
+            </md-button>
+            <md-button class="md-primary md-raised small-btn enter-barcode-btn"
+                       ng-click="wiz.searchLocationById('from')">
+                Enter
+            </md-button>
+        </div>
+        <div class="additional-text-footer">you can skip location selection</div>
+    </div>
+</div>

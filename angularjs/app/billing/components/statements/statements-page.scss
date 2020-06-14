@@ -1,0 +1,237 @@
+.statements-page {
+    .search-block-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        > .md-button {
+            width: calc(50% - 10px);
+
+            &:first-of-type {
+                margin-left: 0;
+            }
+
+            &:last-of-type {
+                margin-right: 0;
+            }
+        }
+    }
+
+    .select-all-block {
+        display: flex;
+        width: calc(100% - 40px);
+        padding-right: 0;
+    }
+
+    .statements-toollbar-container {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 20px 15px 20px;
+
+        &.show-progress {
+            .statements-toollbar {
+                display: none;
+            }
+
+            .statements-progress {
+                display: flex;
+            }
+        }
+
+        .control-block {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+
+    .statements-toollbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 50%;
+        height: 70px;
+        padding: 10px 25px;
+        box-shadow: $box-shadow;
+        border-radius: 3px;
+        background-color: #fff;
+
+        &:first-child {
+            margin-right: 20px;
+        }
+
+        &:last-child {
+            margin-left: 20px;
+        }
+
+        .filter-block {
+            display: flex;
+            align-items: center;
+        }
+
+        .filter-label {
+            margin-right: 15px;
+        }
+
+        .currency-container {
+            width: 90px;
+        }
+
+        .ages-container {
+            width: 200px;
+        }
+
+        .reset-filters {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            @include size(32px, 32px);
+            min-width: 32px;
+            padding: 0;
+            color: $gray-color;
+            border-radius: 50%;
+            background-color: #fff;
+
+            &:hover, &:focus {
+                color: $main-active-hover-color;
+            }
+
+            .reset-filters-icon {
+                display: block;
+                @include size(16px, 16px);
+                margin: 0;
+                color: currentColor;
+            }
+        }
+
+        .select-all-block-left {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+
+            > md-icon {
+                display: block;
+                width: 18px;
+                height: 20px;
+                margin: 0 20px 0 0;
+                color: $dark-blue-color;
+            }
+
+            a.select-all-link {
+                position: relative;
+                display: inline-block;
+                color: $main-active-color;
+                font-weight: $font-weight-semibold;
+                text-decoration: none;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    height: 1px;
+                    background-color: $main-active-color;
+                    transition: opacity .2s;
+                }
+
+                &:hover {
+                    &::after {
+                        opacity: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    .statements-progress {
+        position: relative;
+        display: none;
+        width: 100%;
+        height: 70px;
+        padding: 10px 25px;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #fff;
+        border: 1px solid $main-active-color;
+        border-radius: 3px;
+
+        .progress-process {
+            display: flex;
+
+            .progress-circular {
+                @include size(22px, 22px);
+                display: inline-flex;
+
+                md-progress-circular {
+                    path {
+                        stroke: $main-active-color;
+                    }
+                }
+            }
+
+            .counter {
+                color: $main-active-color;
+            }
+        }
+
+        .cancel-process {
+            text-decoration: underline;
+        }
+    }
+}
+
+.select-all-block {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+    margin-left: 20px;
+    padding: 5px 20px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid $main-active-color;
+    border-radius: 3px;
+
+    .select-all-block-left {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        > md-icon {
+            display: block;
+            width: 18px;
+            height: 20px;
+            margin: 0 20px 0 0;
+            color: $dark-blue-color;
+        }
+
+        a.select-all-link {
+            position: relative;
+            display: inline-block;
+            color: $main-active-color;
+            font-weight: $font-weight-semibold;
+            text-decoration: none;
+
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background-color: $main-active-color;
+                transition: opacity .2s;
+            }
+
+            &:hover {
+                &::after {
+                    opacity: 0;
+                }
+            }
+        }
+    }
+}
+
+

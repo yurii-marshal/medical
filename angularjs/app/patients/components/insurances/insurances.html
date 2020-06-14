@@ -1,0 +1,17 @@
+<div class="patient-insurances">
+    <div class="insurances-buttons">
+        <md-button class="round-btn active-insurances"
+                   aria-label="..."
+                   ui-sref="root.patient.insurances.insurances-list"
+                   ng-class="{'active': insurances.isActive('insurances-list')}">
+            Insurance
+        </md-button>
+        <md-button class="round-btn"
+                   aria-label="..."
+                   ui-sref="root.patient.insurances.authorizations-list"
+                   ng-class="{'active': insurances.isActive('authorizations-list')}">
+            Authorizations
+        </md-button>
+    </div>
+    <div ui-view class="patient-insurances-container"></div>
+</div>

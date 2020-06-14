@@ -1,0 +1,45 @@
+<div class="flex-row"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="receiveStep1PO">
+    <div class="col-xs-6 subwizard-container-block with-additional-text">
+        <md-icon md-svg-src="assets/images/default/ic-packingslip-blue.svg" class="subwizard-container-icon po-icon"></md-icon>
+        <md-input-container class="subwizard-container">
+            <label>Scan or Enter Purchase Order Barcode or Use Search for Purchase Order Lookup:</label>
+            <input type="text"
+                   auto-focus
+                   ng-model="recWiz.pairCurrent.purchaseOrder.Id"
+                   on-press-enter="recWiz.searchPurchaseOrderBarcode()"/>
+        </md-input-container>
+        <div class="subwizard-container-btns">
+            <md-button class="md-raised small-btn" ng-click="recWiz.selectPurchaseOrderModal($event)">
+                Search
+            </md-button>
+            <md-button class="md-primary md-raised small-btn enter-barcode-btn"
+                       ng-click="recWiz.searchPurchaseOrderBarcode()"
+                       ng-disabled="!recWiz.pairCurrent.location.Id">
+                Enter
+            </md-button>
+        </div>
+        <div class="additional-text-footer">you can skip purchase order selection</div>
+    </div>
+    <div class="col-xs-6 with-blue-border">
+        <div class="flex-row subwizard-container-block clear-info-block-padding">
+            <md-icon md-svg-src="assets/images/default/location.svg"
+                     class="subwizard-container-icon"
+            ></md-icon>
+            <div class="flex-row grow-1">
+                <div class="grow-1 info-block">
+                    <div class="info-block-label">Destination Location:</div>
+                    <div class="info-block-body">
+                        {{recWiz.pairCurrent.location.Name + ", " + recWiz.pairCurrent.location.Description}}
+                    </div>
+                </div>
+                <div class="subwizard-container-btns">
+                    <md-button class="md-raised small-btn" ng-click="recWiz.searchLocationModal($event)">
+                        Change
+                    </md-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

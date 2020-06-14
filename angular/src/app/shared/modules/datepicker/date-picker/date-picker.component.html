@@ -1,0 +1,27 @@
+<span class='datepicker-actions' #datePickerContainer (clickOutside)="closePopup()" [ngClass]='getCSSClasses()'>
+    <mat-form-field class="datepicker-input-block" [formGroup]="form">
+        <input matInput #dateTimeInput
+               [appClearOnClick]="displayClearButton"
+               [placeholder]="placeholder"
+               formControlName="input"
+               (focus)='openPopup()'
+               (blur)='onTouched($event.target.value)'
+               (change)='raiseOnChange($event.target.value)'
+               (keyup.tab)='closePopup()'
+               (keyup.esc)='closePopup()'
+               type='text'/>
+    </mat-form-field>
+    <app-datepicker-panel [isPopup]="isPopup"
+                      [type]="mode"
+                      [displayDateMode]="displayDateMode"
+                      [showTodayButton]="showTodayButton"
+                      (dateChange)="raiseOnChange($event)"
+                      (finishEditing)="closePopup()"
+                      [minRange]="minRange"
+                      [maxRange]="maxRange"
+                      [ngStyle]="{
+                        'margin-top.px': positionTop,
+                        'margin-left.px': positionLeft
+                      }"
+                      [interval]="interval"></app-datepicker-panel>
+</span>

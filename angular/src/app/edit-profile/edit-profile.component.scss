@@ -1,0 +1,36 @@
+@import "~assets/styles/base/variables";
+@import "~assets/styles/utils/mixins";
+
+.edit-profile {
+    .change-password {
+        .mat-form-field {
+            &.new-password-error {
+                padding-bottom: 70px;
+            }
+        }
+    }
+
+    .profile-picture-container {
+        position: relative;
+
+        .profile-picture {
+            @include size(260px, 260px);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin-bottom: 15px;
+        }
+
+        .file-uploader-input {
+            @include size(0, 0);
+            visibility: hidden;
+            overflow: hidden;
+        }
+
+        .delete-icon-btn {
+            margin-right: 5px;
+        }
+    }
+}
+
+

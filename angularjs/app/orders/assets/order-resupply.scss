@@ -1,0 +1,297 @@
+.order-resupply-program {
+    padding: 30px 20px 25px 30px;
+
+    .pending-orders-section {
+        margin-top: 15px;
+
+        .show-history.md-raised {
+            margin: 0;
+        }
+
+        .flow-accordion-title > div {
+            height: 34px;
+        }
+    }
+}
+
+.order-resupply-program, .resupply-program {
+    .resupply-main-col, .resupply-frequency-col, .resupply-delivery-col {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding-bottom: 10px;
+        padding-top: 25px;
+
+        .accordion-line {
+            margin-right: 0;
+        }
+    }
+
+    .block-resupply-item-name {
+        width: 250px;
+    }
+
+    .resupply-item-container {
+        position: relative;
+        display: flex;
+        align-items: stretch;
+        justify-content: flex-start;
+
+        &:first-of-type {
+            .resupply-main-col, .resupply-frequency-col, .resupply-delivery-col {
+                padding-top: 10px;
+            }
+
+            &::before {
+                top: 25px;
+            }
+        }
+
+        &:not(:last-of-type) {
+            .resupply-main-col, .resupply-frequency-col, .resupply-delivery-col {
+                border-bottom: 1px solid $lighter-gray-color;
+            }
+        }
+
+        &:last-of-type {
+            .resupply-main-col, .resupply-frequency-col, .resupply-delivery-col {
+                padding-bottom: 0;
+            }
+        }
+
+        .resupply-main-col {
+            padding-left: 27px;
+        }
+
+        .resupply-frequency-col, .resupply-delivery-col {
+            &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: -20px;
+                width: 2px;
+                background-color: $lighter-gray-color;
+            }
+        }
+
+        .resupply-delivery-col {
+            .grow-1 {
+                padding-right: 0;
+            }
+        }
+
+        .action-required-icon {
+            margin: 0 0 0 12px;
+        }
+    }
+
+    .resupply-main-col {
+        margin-right: 20px;
+        flex-grow: 1;
+    }
+
+    .resupply-frequency-col {
+        margin-right: 20px;
+        margin-left: 20px;
+        width: 230px;
+        min-width: 230px;
+    }
+
+    .resupply-delivery-col {
+        margin-left: 20px;
+        width: 540px;
+    }
+
+    .resupply-program-item {
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+
+    .flow-accordion > v-pane {
+
+        v-pane-header {
+            .resupply-frequency-col, .resupply-delivery-col {
+                &::before {
+                    display: none;
+                }
+            }
+        }
+
+        &:not(.is-expanded) {
+            v-pane-header {
+                .resupply-main-col {
+                    margin-right: 0;
+                }
+
+                .resupply-frequency-col, .resupply-delivery-col {
+                    display: none;
+                }
+            }
+        }
+
+        > v-pane-content {
+            counter-reset: item;
+
+            > div {
+                padding-top: 0;
+            }
+        }
+    }
+}
+
+.order-resupply-header, .resupply-program-header {
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+
+    > .info-block:first-child {
+        padding-left: 0;
+    }
+
+    .confirmation-required-switch {
+        margin-left: 20px;
+    }
+}
+
+.order-resupply-header {
+    margin-bottom: 25px;
+
+    .resupply-frequency-col, .resupply-delivery-col {
+        padding: 0;
+
+        &::before {
+            display: none;
+        }
+    }
+
+    .info-block {
+        margin: 0;
+    }
+
+    .checked-delivery-icon {
+        @include size(16px, 10px);
+        margin: 0 13px 0 0;
+        color: $main-active-color;
+    }
+
+    .delivery-date-days {
+        font-weight: $font-weight-semibold;
+        display: inline-block;
+        padding: 0 7px;
+    }
+
+    .edit-text-btn {
+        margin: 0;
+    }
+}
+
+.resupply-item-title{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 30px;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 500;
+    color: $main-active-color;
+    width: 100%;
+}
+
+.resupply-frequency-col, .resupply-delivery-col {
+     padding-bottom: 10px;
+     padding-top: 10px;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: -10px;
+        bottom: 0;
+        left: -20px;
+        width: 2px;
+        background-color: $light-gray-color;
+    }
+}
+
+.resupply-program {
+    padding: 30px 20px 25px 30px;
+
+    .resupply-item-container {
+        md-input-container {
+            margin: 0;
+        }
+    }
+
+    .resupply-main-col, .resupply-frequency-col, .resupply-delivery-col {
+        align-items: flex-start;
+    }
+
+    .resupply-frequency-col {
+        min-width: 320px;
+    }
+
+    .resupply-delivery-col {
+        min-width: 330px;
+    }
+
+    .resupply-program-header {
+        padding: 0 15px;
+        margin-bottom: 40px;
+
+        .eligible-days-container {
+            width: 53px;
+            margin: 0 8px 0 15px;
+        }
+    }
+
+    .resupply-program-list-header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 0;
+
+        .resupply-main-col, .resupply-frequency-col, .resupply-delivery-col {
+            padding: 0;
+
+            &::before {
+                display: none;
+            }
+        }
+    }
+
+    .resupply-item-container {
+        .delete-icon-btn {
+            opacity: 0;
+            margin-top: 4px;
+        }
+
+        &:hover {
+            .delete-icon-btn {
+                opacity: 1;
+            }
+        }
+    }
+
+    .resupply-item-title {
+        height: auto;
+    }
+
+    .wizard-list {
+        counter-reset: item;
+
+        .flex-cont.resupply-item-container {
+            &::before {
+                display: block;
+            }
+        }
+    }
+
+    .button-cell {
+        width: 50px;
+        height: 50px;
+    }
+}

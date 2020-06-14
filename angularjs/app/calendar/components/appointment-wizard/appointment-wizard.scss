@@ -1,0 +1,35 @@
+.appointment-wizard {
+    .patient-details-block {
+        .insurances {
+            &.left-divider {
+                position: relative;
+                padding-left: 30px;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    bottom: 0;
+                    width: 2px;
+                    background-color: $lighter-gray-color;
+                }
+            }
+
+            .active-title {
+                color: $main-active-color;
+                font-size: 12px;
+                font-weight: 500;
+                text-transform: uppercase;
+                padding-top: 7px;
+            }
+        }
+    }
+
+    .patient-contacts {
+        .contact-item {
+            width: 100%;
+        }
+    }
+
+}

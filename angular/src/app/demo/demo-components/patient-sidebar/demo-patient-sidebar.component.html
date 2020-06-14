@@ -1,0 +1,18 @@
+<div class="main-app-container">
+
+    <app-sidebar>
+
+        <div class="breadcrumbs"></div>
+
+        <app-patient-short-info-sidebar
+            [patientId]="patientId"
+        >
+        </app-patient-short-info-sidebar>
+
+    </app-sidebar>
+
+    <main class="main-app-view">
+        <router-outlet></router-outlet>
+    </main>
+
+</div>

@@ -1,0 +1,75 @@
+.order-details {
+    padding: 25px 20px 25px 30px;
+
+    > .flex-row {
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+
+    .order-details-aside {
+        position: relative;
+        padding-left: 30px;
+
+        &:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background-color: $lighter-gray-color;
+        }
+
+        > .flex-row {
+            margin-left: -15px;
+            margin-right: -15px;
+        }
+    }
+
+    .order-product {
+        padding: 17px 0px;
+        border-bottom: 1px solid $lighter-gray-color;
+
+        .item-img-container {
+            display: inline-block;
+            max-height: 40px;
+            max-width: 86px;
+            border: 1px solid $wizard-title-color;
+            border-radius: 2px;
+            overflow: hidden;
+            vertical-align: middle;
+
+            > .item-img {
+                display: block;
+                height: 38px;
+                max-width: 100%;
+            }
+        }
+
+        .item-components {
+            padding-left: 45px;
+        }
+    }
+
+    .referring-provider-note-block-row {
+        padding: 0 25px 0 15px;
+        margin-bottom: 10px;
+
+        &.last-item {
+            margin-bottom: 20px;
+        }
+
+        .drowz-message {
+            margin: 0;
+
+            .status-label {
+                min-width: 75px;
+                padding: 0;
+                margin-right: 5px;
+                text-transform: none;
+                margin-top: 1px;
+                vertical-align: top;
+            }
+        }
+    }
+}

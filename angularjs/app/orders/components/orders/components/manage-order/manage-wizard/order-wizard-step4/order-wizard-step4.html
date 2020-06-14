@@ -1,0 +1,56 @@
+<div ng-form="step4Form">
+    <prescription-details
+            effective-date="step.model.effectiveDate"
+            is-referral-required="true"
+            prescription-referral="step.model.prescriptionReferral"
+            add-prescription-select="true"
+            prescription="step.model.prescription"
+            patient="step.model.patient"
+            is-prescription-active="step.model.isPrescriptionActive"
+            mark-removed-prescription="step.model.showRemovedPrescriptionAlert"
+            ng-if="step.model.hasReferringProvider"
+    >
+    </prescription-details>
+
+    <prescription-items
+        items="step.model.currentItems"
+        delete-item="step.deletePrescriptionItem"
+        prescription-items-title="current items:"
+        effective-date="step.getEffectiveDate()"
+        patient-diagnosis="step.model.diagnosis"
+        ng-if="step.model.isPrescriptionActive && step.model.referral"
+    >
+        <div class="drowz-message drowz-message-flat with-icon"
+             ng-if="!step.model.wizardIsEdit"
+        >
+            <md-icon class="info-icon"
+                     md-svg-src="assets/images/default/alert.svg"
+            ></md-icon>
+            <div class="drowz-message-content">
+                Please select an existing prescription.
+            </div>
+        </div>
+
+        <no-records text="Items Selected"
+                    class="no-records-small"
+                    no-default-text="true"
+                    ng-if="step.model.wizardIsEdit"
+        >
+        </no-records>
+    </prescription-items>
+
+    <prescription-items
+            items="step.model.newItems"
+            delete-item="step.deleteItem"
+            prescription-items-title="new items:"
+            effective-date="step.getEffectiveDate()"
+            patient-diagnosis="step.model.diagnosis"
+            disable-diagnosis="!step.model.hasReferringProvider"
+            disable-length-of-need="!step.model.hasReferringProvider"
+    >
+        <no-records text="Items Selected"
+                    class="no-records-small"
+                    no-default-text="true">
+        </no-records>
+    </prescription-items>
+</div>

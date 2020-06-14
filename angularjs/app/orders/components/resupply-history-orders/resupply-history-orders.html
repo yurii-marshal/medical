@@ -1,0 +1,22 @@
+<div class="resupply-history-order"
+     ng-repeat="item in $ctrl.items track by $index">
+    <div class="info-block block-width-120">
+        <div class="status-label {{item.StatusClass}}">
+            {{item.StatusText}}
+        </div>
+    </div>
+    <div class="info-block block-width-200">
+        <div class="info-block-label">Order:</div>
+        <div class="info-block-body">
+            <a href="javascript:void(0);"
+               ui-sref="root.orders.order.details({ orderId: item.Id })"
+               class="underline-after-link">
+                {{item.DisplayId}}
+            </a>
+        </div>
+    </div>
+    <div class="info-block block-width-200 left-divider">
+        <div class="info-block-label">Order Scheduled Date:</div>
+        <div class="info-block-body">{{item.StartDate | localDateTime: "MM/DD/YYYY"}}</div>
+    </div>
+</div>

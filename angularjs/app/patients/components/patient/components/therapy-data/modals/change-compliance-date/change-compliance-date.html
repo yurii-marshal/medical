@@ -1,0 +1,48 @@
+<div class="modal-window compliance-date-modal"
+     ng-form="$ctrl.complianceDateForm"
+>
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/calendar-new.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>COMPLIANCE START DATE:</h2>
+        </div>
+
+        <p class="text-center">
+            <md-icon class="info-icon" md-svg-src="assets/images/default/info.svg"></md-icon>
+            <span class="dialog-text">Therapy data values will be recalculated</span>
+        </p>
+
+        <md-input-container class="calendar_icon w150px margin-auto">
+            <label></label>
+            <input ng-model="$ctrl.complianceDate"
+                   datetimepicker
+                   use-current="false"
+                   format="MM/DD/YYYY"
+                   show-today-button="false"
+                   aria-label="complianceDate"
+                   name="startDate"
+                   ng-required="true"
+                   min-date="{{ $ctrl.registeredDate }}"
+                   max-date="{{ $ctrl.todayDate }}"
+                   end-date-validator
+            />
+            <div ng-messages="$ctrl.complianceDateForm.complianceDate.$error"
+                 class="md-input-messages-nice"
+            >
+                <div ng-message="required">This field is required</div>
+            </div>
+        </md-input-container>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter align-center">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button" ng-click="$ctrl.save()">Save</md-button>
+    </md-dialog-actions>
+
+</div>

@@ -1,0 +1,162 @@
+<div class="drowz-wizard print-product-labels">
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+        <a href="javascript:void(0)" ui-sref="root.management.inventory.locations">Inventory</a>
+        <a href="javascript:void(0)" ui-sref="root.management.inventory.locations">Locations</a>
+        <a href="javascript:void(0)" class="active">Print Labels</a>
+    </div>
+
+    <div ng-form="locationLabels.form" class="drowz-wizard-body">
+        <div class="select-all-block">
+            <div class="select-all-block-left">
+                <md-icon md-svg-src="assets/images/default/task-success.svg"></md-icon>
+                <div>
+                    <span>
+                        <span ng-bind="locationLabels.getSelectedItemsCount()"></span> locations are selected.
+                        <a ng-if="locationLabels.getSelectedItemsCount()!== locationLabels.getTotalCount()"
+                           ng-click="locationLabels.selectAllFn()"
+                           href="javascript:void(0);">
+                            Select all <span ng-bind="locationLabels.getTotalCount() || 0"></span> locations
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="drowz-wizard-body-flex inf-table-container">
+            <infinity-table load-items-promise="locationLabels.searchLocations"
+                            page-size="24"
+                            item-alias="item"
+                            parent-container=".inf-table-container"
+                            filters-obj="locationLabels.filterObj"
+                            sort-obj="locationLabels.sortExpr"
+                            default-sort-field="'Name'">
+                <infinity-table-sort>
+                    <div class="number-td">&nbsp;</div>
+                    <div>
+                        <md-icon md-svg-src="assets/images/default/organization.svg" class="main-sort-icon organization-icon"></md-icon>
+                        <inftbl-sort-list param-name="Name">Name:</inftbl-sort-list>
+                    </div>
+                    <div>
+                        <md-icon md-svg-src="assets/images/default/location2.svg" class="main-sort-icon location-icon"></md-icon>
+                        Address:
+                    </div>
+                    <div class="phones-td">
+                        <md-icon md-svg-src="assets/images/default/phone-default.svg" class="main-sort-icon phone-icon"></md-icon>
+                        Contacts:
+                    </div>
+                    <div class="long-id-td">
+                        <md-icon md-svg-src="assets/images/default/inventory.svg" class="main-sort-icon phone-icon"></md-icon>
+                        Location ID:
+                    </div>
+                    <div class="status-td no-divider">
+                        <md-icon md-svg-src="assets/images/default/star-half.svg" class="main-sort-icon status-icon"></md-icon>
+                        Default:
+                    </div>
+                    <div class="number-td">&nbsp;</div>
+                </infinity-table-sort>
+
+                <infinity-table-filters class="drowz-infinite-row-filter">
+                    <div class="number-td">
+                        <md-checkbox class="md-primary"
+                            aria-label="..."
+                            ng-click="$ctrl.selectAllFn()"
+                            ng-checked="$ctrl.isSelectAll">
+                        </md-checkbox>
+                    </div>
+                    <div>
+                        <md-input-container class="drowz-infinite-input-container">
+                            <label>search name</label>
+                            <input type="text"
+                                   ng-model="$ctrl.filtersObj.Name"
+                                   ng-model-options="{debounce: 450}"
+                                   clear-on-click/>
+                        </md-input-container>
+                    </div>
+                    <div>
+                        <md-input-container class="drowz-infinite-input-container">
+                            <label>search address</label>
+                            <input type="text"
+                                   ng-model="$ctrl.filtersObj.Address"
+                                   ng-model-options="{debounce: 450}"
+                                   clear-on-click/>
+                        </md-input-container>
+                    </div>
+                    <div class="phones-td">
+                        <md-input-container class="drowz-infinite-input-container">
+                            <label>search phone</label>
+                            <input type="text"
+                                   ng-model="$ctrl.filtersObj.Contact"
+                                   ng-model-options="{debounce: 450}"
+                                   clear-on-click/>
+                        </md-input-container>
+                    </div>
+                    <div class="long-id-td">
+                        <md-input-container class="drowz-infinite-input-container">
+                            <label>search id</label>
+                            <input type="text"
+                                   ng-model="$ctrl.filtersObj.Id"
+                                   ng-model-options="{debounce: 450}"
+                                   clear-on-click/>
+                        </md-input-container>
+                    </div>
+                    <div class="status-td no-divider">
+                        <md-input-container class="drowz-infinite-input-container">
+                            <label>select</label>
+                            <md-select ng-model="$ctrl.filtersObj.Default"
+                                       clear-on-click>
+                                <md-option ng-value="status.value" ng-repeat="status in $parent.locationLabels.statuses">
+                                    {{::status.text}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <div class="number-td filter-reset-btn">
+                        <inftbl-filter-reset-btn></inftbl-filter-reset-btn>
+                    </div>
+                </infinity-table-filters>
+
+                <infinity-table-row class="drowz-infinite-row hide-btns-row"
+                                    ng-click="$parent.locationLabels.toggleItem(item)">
+                    <div class="number-td">
+                        <md-checkbox class="md-primary"
+                                     aria-label="..."
+                                     ng-checked="item.isSelected">
+                        </md-checkbox>
+                    </div>
+                    <div ng-bind="item.Name"></div>
+                    <div>
+                        <div popover-directive="item.Address"></div>
+                    </div>
+                    <div class="phones-td">
+                        <div popover-directive="item.Contacts" is-array-with-type="true"></div>
+                    </div>
+                    <div class="long-id-td" ng-bind="item.Id"></div>
+                    <div class="status-td no-divider">
+                        <div class="status-label {{item.statusClass}}" ng-bind="item.statusText"></div>
+                    </div>
+                    <div class="number-td">&nbsp;</div>
+                </infinity-table-row>
+
+                <infinity-table-no-items>
+                    <no-records text="Locations" is-fullpage="true"></no-records>
+                </infinity-table-no-items>
+            </infinity-table>
+
+        </div>
+    </div>
+
+    <div class="drowz-wizard-footer">
+        <md-button class="md-raised main-button drowz-wizard-footer-btn"
+                   ng-click="locationLabels.cancel()">
+            Cancel
+        </md-button>
+        <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                   ng-disabled="!locationLabels.getSelectedItemsCount()"
+                   ng-click="locationLabels.done()">
+            Print
+        </md-button>
+    </div>
+
+</div>

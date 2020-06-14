@@ -1,0 +1,436 @@
+<div class="drowz-wizard-body-flex align-stretch patient-summary-step">
+    <div class="grow-1 flex-cont stretch flex-column">
+        <div class="drowz-wizard-block">
+            <div class="drowz-wizard-block-body">
+                <div class="drowz-wizard-block-row">
+                    <div class="info-block grow-1 right-bold-divider">
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block flex-33-percent">
+                                <div class="drowz-wizard-block-row">
+                                    <div class="pad-left-15">
+                                        <div class="flex-cont">
+                                            <span class="pad-h-10">
+                                                <div class="status-label {{ summary.patientInfo.Status.StatusClass }}">
+                                                    {{ summary.patientInfo.Status.Text }}
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="info-block grow-1">
+                                        <div class="info-block-label">Organization:</div>
+                                        <div class="info-block-body">{{ summary.patientInfo.Organization.Text }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-block flex-33-percent left-divider">
+                                <div class="info-block-label">Location:</div>
+                                <div class="info-block-body">{{ summary.patientInfo.Location.Text }}</div>
+                            </div>
+                            <div class="info-block flex-33-percent left-divider">
+                                <div class="info-block-label">
+                                    Date:
+                                    <a href="javascript:void(0);"
+                                       class="edit-info-icon action-block edit-info-right-position"
+                                       ng-click="summary.goToStep(1)"
+                                    >
+                                        <md-icon md-svg-src="assets/images/default/edit.svg"
+                                                 class="flow-accordion-title-icon"
+                                        ></md-icon>
+                                    </a>
+                                </div>
+                                <div class="info-block-body">
+                                    {{ summary.patientInfo.StatusDate }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row"
+                             ng-if="summary.patientInfo.Facility"
+                        >
+                            <div class="info-block flex-33-percent"></div>
+                            <div class="info-block flex-33-percent left-divider">
+                                <div class="info-block-label">Facility:</div>
+                                <div class="info-block-body">{{ summary.patientInfo.Facility.Name }}</div>
+
+                            </div>
+                            <div class="info-block flex-33-percent left-divider">
+                                <div class="info-block-label">Facility Location:</div>
+                                <div class="info-block-body">{{ summary.patientInfo.FacilityLocation.FullAddress }}</div>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1 info-block-header">
+                                <span class="header-text">patient information:</span>
+                                <div class="accordion-line"></div>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block block-width-150">
+                                <div class="info-block-label">Patient ID:</div>
+                                <div class="info-block-body">
+                                    <b>{{ summary.patientInfo.DisplayId || '-' }}</b>
+                                </div>
+                            </div>
+                            <div class="info-block block-width-100 left-divider">
+                                <div class="info-block-label">Prefix:</div>
+                                <div class="info-block-body">{{ summary.patientInfo.Prefix.Text || '-'}}</div>
+                            </div>
+                            <div class="info-block block-width-150 left-divider">
+                                <div class="info-block-label">First Name:</div>
+                                <div class="info-block-body">{{ summary.patientInfo.Name.First }}</div>
+                            </div>
+                            <div class="info-block block-width-150 left-divider">
+                                <div class="info-block-label">Middle Name:</div>
+                                <div class="info-block-body">{{ summary.patientInfo.Name.Middle || '-' }}</div>
+                            </div>
+                            <div class="info-block block-width-150 left-divider">
+                                <div class="info-block-label">Last Name:</div>
+                                <div class="info-block-body">{{ summary.patientInfo.Name.Last }}</div>
+                            </div>
+                            <div class="info-block block-width-150 left-divider">
+                                <div class="info-block-label">Gender:</div>
+                                <div class="info-block-body">{{ summary.patientInfo.Gender.Text }}</div>
+                            </div>
+                            <div class="info-block grow-1 left-divider">
+                                <div class="info-block-label">Nickname:</div>
+                                <div class="info-block-body">{{ summary.patientInfo.NickName || '-' }}</div>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block block-width-150"></div>
+                            <div class="info-block block-width-100 left-divider">
+                                <div class="info-block-label">Age:</div>
+                                <div class="info-block-body">{{ summary.patientInfo.patientAge }}</div>
+                            </div>
+                            <div class="info-block block-width-150 left-divider">
+                                <div class="info-block-label">DOB:</div>
+                                <div class="info-block-body">{{ summary.patientInfo.DateOfBirthday }}</div>
+                            </div>
+                            <div class="info-block block-width-150 left-divider">
+                                <div class="info-block-label">Marital Status:</div>
+                                <div class="info-block-body">{{ summary.patientInfo.MaritalStatus.Text || '-' }}</div>
+                            </div>
+                            <div class="info-block block-width-150 left-divider">
+                                <div class="info-block-label">SSN:</div>
+                                <div class="info-block-body">{{ summary.patientInfo.Ssn || '-' }}</div>
+                            </div>
+                            <div class="info-block grow-1 left-divider">
+                                <div class="info-block-label">Patient Signature on File:</div>
+                                <div class="info-block-body">
+                                    {{ summary.patientInfo.SignatureOnFile.IsSigned }}
+
+                                    <span ng-if="summary.patientInfo.SignatureOnFile.IsSigned === patient.patientSignatureOnFileConstants.YES_ID">
+                                        ({{ summary.patientInfo.SignatureOnFile.SignedDate }})
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block block-width-150"></div>
+                            <div class="info-block block-width-100 left-divider">
+                                <div class="info-block-label">Weight (lb):</div>
+                                <div class="info-block-body">{{ summary.patientInfo.Weight || '-' }}</div>
+                            </div>
+                            <div class="info-block block-width-200 left-divider">
+                                <div class="info-block-label">Height (in):</div>
+                                <div class="info-block-body">{{ summary.patientInfo.Height || '-' }}</div>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block">
+                                <div class="patient-summary-tag-title">Tags:</div>
+                            </div>
+                            <div class="info-block grow-1">
+                                <div ng-repeat="item in summary.patientInfo.Tags" class="attr-label {{ item.attrClass }}">
+                                    <md-icon md-svg-src="assets/images/default/tag.svg"></md-icon>
+                                    <span ng-bind="item.Name"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1 info-block-header">
+                                <span class="header-text">employer info:</span>
+                                <div class="accordion-line"></div>
+                                <a href="javascript:void(0);"
+                                   class="edit-info-icon action-block edit-info-right-position"
+                                >
+                                    <md-icon md-svg-src="assets/images/default/edit.svg"
+                                             class="flow-accordion-title-icon"
+                                             ng-click="summary.goToStep(2)"
+                                    ></md-icon>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block block-width-350">
+                                <div class="info-block-label">Employed By:</div>
+                                <div class="info-block-body">
+                                    {{ summary.patientInfo.EmployerContact.Employer || '-' }}
+                                </div>
+                            </div>
+
+                            <div class="info-block block-width-350 left-divider">
+                                <div class="info-block-label">Address:</div>
+                                <div class="info-block-body">
+                                    {{ (summary.patientInfo.EmployerContact.BusinessAddress | addressToString) || '-' }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row"
+                             ng-repeat="contact in summary.patientInfo.EmployerContact.EmployerContacts"
+                             ng-if="contact.Value"
+                        >
+                            <div class="info-block block-width-350">
+                                <div class="drowz-wizard-block-row">
+                                    <div class="info-block block-width-250">
+                                        <div class="info-block-label">{{ contact.Type.Text }}:</div>
+                                        <div class="info-block-body">{{contact.Value | tel}}</div>
+                                    </div>
+                                    <div class="info-block left-divider" ng-if="contact.Type.Id.toString() === patient.contactTypes.WORK_ID && contact.PhoneExtension">
+                                        <div class="info-block-label">Ext.:</div>
+                                        <div class="info-block-body">{{contact.PhoneExtension}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1 info-block-header">
+                                <span class="header-text">responsible party:</span>
+                                <div class="accordion-line"></div>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block block-width-200">
+                                <div class="info-block-label">First Name:</div>
+                                <div class="info-block-body">
+                                    {{ summary.patientInfo.ResponsibleContact.ResponsiblePerson.First || '-' }}
+                                </div>
+                            </div>
+                            <div class="info-block block-width-200 left-divider">
+                                <div class="info-block-label">Middle Name:</div>
+                                <div class="info-block-body">
+                                    {{ summary.patientInfo.ResponsibleContact.ResponsiblePerson.Middle || '-' }}
+                                </div>
+                            </div>
+                            <div class="info-block block-width-200 left-divider">
+                                <div class="info-block-label">Last Name:</div>
+                                <div class="info-block-body">
+                                    {{ summary.patientInfo.ResponsibleContact.ResponsiblePerson.Last || '-' }}
+                                </div>
+                            </div>
+                            <div class="info-block block-width-200 left-divider">
+                                <div class="info-block-label">Relationship Party Type:</div>
+                                <div class="info-block-body">
+                                    {{ summary.patientInfo.ResponsibleContact.ResponsibleType.Text || '-' }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1">
+                                <div class="info-block-label">Address:</div>
+                                <div class="info-block-body">
+                                    {{ (summary.patientInfo.ResponsibleContact.ResponsibleAddress | addressToString) || '-' }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row"
+                             ng-repeat="contact in summary.patientInfo.ResponsibleContact.ResponsibleContacts"
+                             ng-if="contact.Value"
+                        >
+                            <div class="info-block grow-1">
+                                <div class="drowz-wizard-block-row">
+                                    <div class="info-block block-width-150">
+                                        <div class="info-block-label">{{contact.Type.Text}}:</div>
+                                        <div class="info-block-body">{{contact.Value | tel}}</div>
+                                    </div>
+                                    <div class="info-block left-divider"
+                                         ng-if="contact.Type.Id.toString() === patient.contactTypes.WORK_ID && contact.PhoneExtension"
+                                    >
+                                        <div class="info-block-label">Ext.:</div>
+                                        <div class="info-block-body">{{contact.PhoneExtension}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1 info-block-header">
+                                <span class="header-text">medical info release:</span>
+                                <div class="accordion-line"></div>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row"
+                             ng-repeat="medicalReleaseItem in summary.patientInfo.MedicalReleaseInfo"
+                        >
+                            <div class="info-block block-width-200">
+                                <div class="info-block-label">Relation Type:</div>
+                                <div class="info-block-body">
+                                    {{ medicalReleaseItem.RelationType.Text}}
+                                </div>
+                            </div>
+
+                            <div class="info-block block-width-200 left-divider">
+                                <div class="info-block-label">Name:</div>
+                                <div class="info-block-body">
+                                    {{ medicalReleaseItem.Name | fullname }}
+                                </div>
+                            </div>
+
+                            <div class="info-block block-width-200 left-divider">
+                                <div class="info-block-label">Phone:</div>
+                                <div class="info-block-body">
+                                    {{ medicalReleaseItem.Phone | tel }}
+                                </div>
+                            </div>
+
+                            <div class="info-block block-width-200 left-divider">
+                                <div class="info-block-label">Email:</div>
+                                <div class="info-block-body">
+                                    {{ medicalReleaseItem.Email }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <no-records text="No available records on medical information release"
+                                    is-default-text="false"
+                                    class="no-records-small"
+                                    ng-if="!summary.patientInfo.MedicalReleaseInfo.length"
+                        >
+                        </no-records>
+                    </div>
+
+                    <div class="info-block flex-min-40-percent">
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1 info-block-header">
+                                <span class="header-text">contacts:</span>
+                                <div class="accordion-line"></div>
+                                <a href="javascript:void(0);" class="edit-info-icon action-block edit-info-right-position">
+                                    <md-icon md-svg-src="assets/images/default/edit.svg"
+                                             class="flow-accordion-title-icon"
+                                             ng-click="summary.goToStep(1)"
+                                    ></md-icon>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row"
+                             ng-repeat="contact in summary.patientInfo.PatientContacts"
+                             ng-if="contact.Value"
+                        >
+                            <div class="info-block grow-1">
+                                <div class="drowz-wizard-block-row">
+                                    <div class="info-block block-width-150">
+                                        <div class="info-block-label">{{contact.Type.Text}}:</div>
+                                        <div class="info-block-body">{{contact.Value | tel}}</div>
+                                    </div>
+                                    <div class="info-block left-divider"
+                                         ng-if="contact.Type.Id.toString() === patient.contactTypes.WORK_ID && contact.PhoneExtension"
+                                    >
+                                        <div class="info-block-label">Ext.:</div>
+                                        <div class="info-block-body">{{contact.PhoneExtension}}</div>
+                                    </div>
+                                    <div class="padding-top-15"
+                                         ng-if="contact.Type.Id.toString() === patient.patientInfo.PreferredPatientPhoneType.Id.toString()"
+                                    >
+                                        <div class="status-label primary">
+                                            {{ patient.getPreferredText() }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1 info-block-header">
+                                <span class="header-text">address:</span>
+                                <div class="accordion-line"></div>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1">
+                                <div class="info-block-label">Patient Address:</div>
+                                <div class="info-block-body">
+                                    {{ (summary.patientInfo.Address | addressToString) || '-'}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1">
+                                <div class="info-block-label">Delivery Address:</div>
+                                <div class="info-block-body">
+                                    {{ (summary.patientInfo.DeliveryAddress | addressToString) || '-' }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1 info-block-header">
+                                <span class="header-text">emergency contact:</span>
+                                <div class="accordion-line"></div>
+                                <a href="javascript:void(0);"
+                                   class="edit-info-icon action-block edit-info-right-position"
+                                >
+                                    <md-icon md-svg-src="assets/images/default/edit.svg"
+                                             class="flow-accordion-title-icon"
+                                             ng-click="summary.goToStep(2)"
+                                    ></md-icon>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1">
+                                <div class="info-block-label">First Name:</div>
+                                <div class="info-block-body">
+                                    {{ summary.patientInfo.EmergencyContact.EmergencyPerson.First || '-' }}
+                                </div>
+                            </div>
+                            <div class="info-block grow-1 left-divider">
+                                <div class="info-block-label">Middle Name:</div>
+                                <div class="info-block-body">
+                                    {{ summary.patientInfo.EmergencyContact.EmergencyPerson.Middle || '-' }}
+                                </div>
+                            </div>
+                            <div class="info-block grow-1 left-divider">
+                                <div class="info-block-label">Last Name:</div>
+                                <div class="info-block-body">
+                                    {{ summary.patientInfo.EmergencyContact.EmergencyPerson.Last || '-' }}
+                                </div>
+                             </div>
+                            <div class="info-block grow-1 left-divider">
+                                <div class="info-block-label">Relationship:</div>
+                                <div class="info-block-body">
+                                    {{ summary.patientInfo.EmergencyContact.EmergencyRelationship.Text || '-' }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="drowz-wizard-block-row">
+                            <div class="info-block grow-1">
+                                <div class="info-block-label">Address:</div>
+                                <div class="info-block-body">
+                                    {{ (summary.patientInfo.EmergencyContact.EmergencyAddress | addressToString) || '-' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

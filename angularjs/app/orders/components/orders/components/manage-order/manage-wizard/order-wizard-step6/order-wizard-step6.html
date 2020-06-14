@@ -1,0 +1,65 @@
+<div class="drowz-wizard-body-flex" ng-form="step6Form">
+    <div class="grow-1">
+
+        <div class="drowz-wizard-block no-float">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Select Patient documents:</div>
+            </div>
+            <div class="drowz-wizard-block-body">
+                <div class="add-autocomplete">
+                    <md-autocomplete
+                        class="autocomplete-with-addBtn"
+                        md-no-cache="true"
+                        md-selected-item="step.selectedDocument"
+                        md-search-text="step.searchDocument"
+                        md-items="document in step.getPatientDocuments(step.searchDocument)"
+                        md-item-text="document.DocumentType.Text"
+                        md-min-length="0"
+                        md-floating-label="Document Type:">
+                        <md-item-template>
+                            <span md-highlight-text="searchAccessory" md-highlight-flags="^i">{{document.DocumentType.Text}} - {{document.CreatedDate | amUtc | amDateFormat: "MM/DD/YYYY"}}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            No documents were found
+                        </md-not-found>
+                        <md-icon md-svg-src="assets/images/default/plus-square.svg"
+                                 class="add-item-btn"
+                                 ng-click="step.addPatientDocument()"></md-icon>
+                    </md-autocomplete>
+                </div>
+                <div class="wizard-list">
+                    <div class="wizard-list-item" ng-repeat="document in step.model.patientDocuments">
+                        <div class="wizard-list-item-info">
+                            <div class="info-block block-width-40-percent">
+                                <div class="info-block-label">Documet Type:</div>
+                                <div class="info-block-body">{{document.DocumentType.Name || document.DocumentType.Text}}</div>
+                            </div>
+                            <div class="info-block left-divider block-width-40-percent">
+                                <div class="info-block-label">Uploaded:</div>
+                                <div class="info-block-body">
+                                    {{document.CreatedDate | localDateTime:"MM/DD/YYYY"}}
+                                    <span class="active-text">{{document.CreatedDate | localDateTime:"hh:mm A"}}</span>
+                                </div>
+                            </div>
+                            <div class="info-block left-divider block-width-20-percent">
+                                <div class="info-block-label" ng-if="document.ExpiredDate">Expiration Date:</div>
+                                <div class="info-block-body" ng-if="document.ExpiredDate">
+                                    {{document.ExpiredDate | localDateTime:"MM/DD/YYYY"}}
+                                </div>
+                            </div>
+                            <div class="info-block button-cell">
+                                <div class="info-block-label">&nbsp;</div>
+                                <div class="info-block-body">
+                                    <a href="javascript:void(0);" class="delete-icon-btn" ng-click="step.deletePatientDocument($index)">
+                                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

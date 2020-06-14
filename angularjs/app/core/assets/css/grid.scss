@@ -1,0 +1,253 @@
+// row for grid content
+.flex-row {
+    display: flex;
+    flex-direction: row;
+
+    > .info-block {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    &.space-between {
+        justify-content: space-between;
+    }
+
+    &.align-center {
+        align-items: center;
+    }
+
+    &.align-stretch {
+        align-items: stretch;
+    }
+
+    &.align-start {
+        align-items: flex-start;
+    }
+
+    &.align-end {
+        align-items: flex-end;
+    }
+
+    &.flex-end {
+        justify-content: flex-end;
+    }
+
+    &.flex-center {
+        justify-content: center;
+    }
+
+    + .flex-row {
+        padding-top: 5px;
+    }
+
+    .flex-50-percent {
+        width: 50%;
+    }
+}
+
+// container for internal small layout actions
+.flex-cont {
+    display: flex;
+    align-items: center;
+
+    &.inline {
+        display: inline-flex;
+    }
+
+    &:not(.info-block) {
+        &::before, &::after {
+            display: none;
+        }
+    }
+
+    &.stretch {
+        align-items: stretch;
+    }
+
+    &.center {
+        justify-content: center;
+    }
+
+    &.space-between {
+        justify-content: space-between;
+    }
+
+    &.space-around {
+        justify-content: space-around;
+    }
+
+    &.align-end {
+        justify-content: flex-end;
+    }
+
+    &.align-top {
+        align-items: flex-start;
+    }
+
+    &.align-bottom {
+        align-items: flex-end;
+    }
+}
+
+// layout block
+
+.info-block {
+    position: relative;
+    max-width: 100%;
+    margin-bottom: 10px;
+    padding-top: 1px;
+    padding-right: 10px;
+
+    &.info-block-header {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding-top: 15px;
+
+        .header-text {
+            text-transform: uppercase;
+            color: $main-active-color;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .action-block {
+            margin-right: 10px;
+        }
+    }
+
+    > .flex-row {
+        margin-left: -15px;
+        margin-right: -15px;
+
+        > .info-block {
+            margin-bottom: 0;
+        }
+    }
+
+    @each $w in $list-of-width {
+        &.block-width-#{$w} {
+            width: #{$w}px;
+            max-width: #{$w}px;
+            min-width: #{$w}px;
+        }
+    }
+
+    @each $w in $list-of-percent-width {
+        &.block-width-#{$w}-percent {
+            width: percentage($w/100);
+            max-width: percentage($w/100);
+        }
+    }
+
+    &.block-max-width-450 {
+        max-width: 450px;
+    }
+
+    &.min-width-20-percent {
+        min-width: 20%;
+    }
+
+    &.max-width-33-percent {
+        max-width: 33%;
+    }
+
+    &.max-width-1000 {
+        max-width: 1000px;
+    }
+
+    &.w100-percent {
+        width: 100%;
+    }
+
+    &.left-divider {
+        position: relative;
+        padding-left: 10px;
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background-color: $lighter-gray-color;
+        }
+    }
+
+    &.left-bold-divider {
+        position: relative;
+        padding-left: 10px;
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: $lighter-gray-color;
+        }
+    }
+
+    &.right-bold-divider {
+        position: relative;
+        padding-left: 10px;
+
+        &::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background-color: $lighter-gray-color;
+        }
+    }
+
+    .info-block-label {
+        position: relative;
+        display: block;
+        margin-bottom: 7px;
+        color: $label-color;
+        font-size: $font-size-xs;
+        line-height: $font-size-xs;
+        font-weight: 400;
+
+        &.uppercase-label {
+            text-transform: uppercase;
+        }
+    }
+
+    .info-block-body {
+        font-size: 16px;
+        word-wrap: break-word;
+
+        &.marg-bottom-0 {
+            margin-bottom: 0;
+        }
+    }
+}
+
+// BLOCK WIDTH (for width 100% use this way class="col-w-100")
+@each $w in $list-of-percent-width {
+    .col-w-#{round($w)} {
+        width: percentage($w/100);
+    }
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.grow-1 {
+    flex-grow: 1;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.align-top {
+    align-items: flex-start;
+}

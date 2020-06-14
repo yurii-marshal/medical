@@ -1,0 +1,461 @@
+<div class="info-block block-width-100-percent">
+    <div class="white-block">
+        <div class="white-block-body pad-15">
+
+            <div class="flex-row"
+                 ng-if="$ctrl.paymentModel.invalid"
+            >
+                <div class="info-block grow-1"
+                     ng-repeat="message in $ctrl.paymentModel.errorMessagas"
+                >
+                    <div class="block-warning-msg warn-icon">
+                        <span> {{ message }} </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-row"
+                 ng-if="$ctrl.readOnly"
+            >
+                <div class="grow-1">
+                    <div class="flex-row">
+                        <div class="info-block w300px readonly-info-block">
+                            <md-input-container>
+                                <div class="info-block-label">Source:</div>
+                                <div class="info-block-body">
+                                    {{ $ctrl.paymentModel.Source.SourceType.Id === $ctrl.paymentTypeConstants.PATIENT_TYPE_ID ? 'Patient' : 'Payer' }}
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block grow-1 left-divider readonly-info-block"
+                             ng-if="$ctrl.paymentTypeConstants.PATIENT_TYPE_ID === $ctrl.paymentModel.Source.SourceType.Id"
+                        >
+                            <md-input-container>
+                                <div class="info-block-label">Patient:</div>
+                                <div class="info-block-body">
+                                    {{:: $ctrl.paymentModel.Source.Patient.Name | fullname }}, {{:: $ctrl.paymentModel.Source.Patient.DateOfBirth | amUtc | amDateFormat: "MM/DD/YYYY" }}
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block grow-1 left-divider readonly-info-block"
+                             ng-if="$ctrl.paymentTypeConstants.PAYER_TYPE_ID === $ctrl.paymentModel.Source.SourceType.Id"
+                        >
+                            <md-input-container>
+                                <div class="info-block-label">Payer:</div>
+                                <div class="info-block-body">
+                                    {{:: $ctrl.paymentModel.Source.Insurance.Name }}
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block w150px left-divider readonly-info-block">
+                            <md-input-container>
+                                <div class="info-block-label">Remittance Date:</div>
+                                <div class="info-block-body">
+                                    {{ $ctrl.paymentModel.Date | amUtc | amDateFormat: "MM/DD/YYYY" }}
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block w200px left-divider readonly-info-block">
+                            <md-input-container>
+                                <div class="info-block-label">Method:</div>
+                                <div class="info-block-body">
+                                    {{:: $ctrl.paymentModel.Method.Name }}
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block w200px left-divider readonly-info-block">
+                            <md-input-container>
+                                <div class="info-block-label">Payment Amount:</div>
+                                <div class="info-block-body">
+                                    {{:: $ctrl.paymentModel.PaymentAmount.Currency }} {{:: $ctrl.paymentModel.PaymentAmount.Amount | absNumber:2 }}
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w500px">
+                    <div class="flex-row flex-end">
+                        <div class="info-block w150px readonly-info-block"
+                             ng-if="$ctrl.paymentTypeConstants.PAYER_TYPE_ID === $ctrl.paymentModel.Source.SourceType.Id"
+                        >
+                            <md-input-container>
+                                <div class="info-block-label">Adjustment Amount:</div>
+                                <div class="info-block-body">
+                                    <span ng-if="$ctrl.paymentModel.ProviderLevelAdjustments.length">
+                                        {{:: $ctrl.paymentModel.AdjustmentAmount.Currency }}
+                                        <b>{{:: $ctrl.paymentModel.AdjustmentAmount.Amount | absNumber:2 }}</b>
+                                    </span>
+                                    <span ng-if="!$ctrl.paymentModel.ProviderLevelAdjustments.length">
+                                        <b>-</b>
+                                    </span>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block w130px readonly-info-block">
+                            <md-input-container>
+                                <div class="info-block-label">Total Amount:</div>
+                                <div class="info-block-body">
+                                    {{:: $ctrl.paymentModel.Total.Currency }} <b>{{:: $ctrl.paymentModel.Total.Amount | absNumber:2 }}</b>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div class="info-block w150px readonly-info-block">
+                            <md-input-container>
+                                <div class="info-block-label">Unapplied:</div>
+                                <div class="info-block-body red-color">
+                                    {{:: $ctrl.paymentModel.Unapplied.Currency }}
+                                    <b>{{:: !$ctrl.paymentModel.Legacy ? ($ctrl.paymentModel.Unapplied.Amount | absNumber:2) : '0.00' }}</b>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-row"
+                 ng-if="!$ctrl.readOnly"
+            >
+                <div class="grow-1">
+                    <div class="flex-row">
+                        <div class="info-block w300px">
+                            <md-input-container>
+                                <label>Source:</label>
+                                <md-select name="source"
+                                           ng-change="$ctrl.changeSource($ctrl.paymentModel.Source.SourceType.Id, '{{ $ctrl.paymentModel.Source.SourceType.Id }}')"
+                                           ng-model="$ctrl.paymentModel.Source.SourceType"
+                                           ng-required="true"
+                                           ng-disabled="$ctrl.disableEditSource"
+                                >
+                                    <md-option ng-value="source"
+                                               ng-selected="source.Id === $ctrl.paymentModel.Source.SourceType.Id"
+                                               ng-repeat="source in $ctrl.sourceDictionary"
+                                    >
+                                        {{:: source.Text }}
+                                    </md-option>
+                                </md-select>
+
+                                <div ng-messages="$ctrl.parentForm.source.$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+
+                            </md-input-container>
+                        </div>
+
+                        <div class="info-block grow-1"
+                             ng-if="$ctrl.paymentModel.Source.SourceType.Id"
+                        >
+                            <md-autocomplete ng-show="$ctrl.paymentModel.Source.SourceType.Id === $ctrl.paymentTypeConstants.PATIENT_TYPE_ID"
+                                             md-no-cache="true"
+                                             md-selected-item="$ctrl.paymentModel.Source.Patient"
+                                             md-search-text="searchPatient"
+                                             md-items="item in $ctrl.searchPatient(searchPatient)"
+                                             md-item-text="item.Name | fullname"
+                                             md-min-length="2"
+                                             md-floating-label="Patient:"
+                                             md-input-name="patient"
+                                             ng-required="$ctrl.paymentModel.Source.SourceType.Id === $ctrl.paymentTypeConstants.PATIENT_TYPE_ID"
+                                             md-selected-item-change="$ctrl.onChangePatient($ctrl.paymentModel.Source.Patient)"
+                                             clear-on-click
+                                             ng-disabled="$ctrl.disableEditSource"
+                            >
+                                <md-item-template>
+                                    <span md-highlight-flags="^i"
+                                          title="{{ item.Name | fullname }}"
+                                    >
+                                        {{ item.Name | fullname }}, {{ item.DateOfBirthday | amUtc | amDateFormat: "MM/DD/YYYY" }}
+                                    </span>
+                                </md-item-template>
+                                <md-not-found>
+                                    No Patients were found
+                                </md-not-found>
+                                <div ng-messages="$ctrl.parentForm.patient.$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="required">This field is required</div>
+                                    <div ng-message="md-require-match">Patient must be selected.</div>
+                                </div>
+                            </md-autocomplete>
+                            <md-autocomplete ng-show="$ctrl.paymentModel.Source.SourceType.Id === $ctrl.paymentTypeConstants.PAYER_TYPE_ID"
+                                             md-no-cache="true"
+                                             md-selected-item="$ctrl.paymentModel.Source.Insurance"
+                                             md-search-text="searchPayer"
+                                             md-items="item in $ctrl.searchPayerSource(searchPayer)"
+                                             md-item-text="item.Name"
+                                             md-min-length="2"
+                                             md-floating-label="Payer:"
+                                             md-input-name="payer"
+                                             ng-required="$ctrl.paymentModel.Source.SourceType.Id === $ctrl.paymentTypeConstants.PAYER_TYPE_ID"
+                                             ng-disabled="$ctrl.disableEditSource"
+                                             md-selected-item-change="$ctrl.onChangePayer($ctrl.paymentModel.Source.Insurance)"
+                                             clear-on-click
+                            >
+                                <md-item-template>
+                                    <span md-highlight-flags="^i" title="{{ item.Name }}">{{ item.Name }}</span>
+                                </md-item-template>
+                                <md-not-found>
+                                    No Payers were found
+                                </md-not-found>
+                                <div ng-messages="$ctrl.parentForm.payer.$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="required">This field is required</div>
+                                    <div ng-message="md-require-match">Payer must be selected.</div>
+                                </div>
+                            </md-autocomplete>
+                        </div>
+
+                        <div class="info-block w150px">
+                            <md-input-container>
+                                <label>Remittance Date:</label>
+                                <input name="date"
+                                       datetimepicker
+                                       format="MM/DD/YYYY"
+                                       ng-model="$ctrl.paymentModel.Date"
+                                       ng-required="true"
+                                >
+                                <div ng-messages="$ctrl.parentForm.date.$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+
+                        <div class="info-block w200px">
+                            <md-input-container>
+                                <label>Method:</label>
+                                <md-select name="method"
+                                           ng-model="$ctrl.paymentModel.Method"
+                                           ng-required="true"
+                                >
+                                    <md-option ng-value="method"
+                                               ng-selected="method.Id === $ctrl.paymentModel.Method.Id"
+                                               ng-repeat="method in $ctrl.methodsDictionary"
+                                    >
+                                        {{:: method.Name }}
+                                    </md-option>
+                                </md-select>
+
+                                <div ng-messages="$ctrl.parentForm.method.$error"
+                                     class="md-input-messages-nice">
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+
+                        <div class="info-block w200px">
+                            <md-input-container class="currency-container">
+                                <div class="currency-icon">{{:: $ctrl.paymentModel.PaymentAmount.Currency }}</div>
+                                <label>Payment Amount:</label>
+                                <input type="number"
+                                       step="0.01"
+                                       name="amount"
+                                       ng-required="true"
+                                       ng-model="$ctrl.paymentModel.PaymentAmount.Amount"
+                                       price-validator
+                                >
+                                <div ng-messages="$ctrl.parentForm.amount.$error"
+                                     class="md-input-messages-nice"
+                                >
+                                    <div ng-message="price">Max 2 digits after point</div>
+                                    <div ng-message="required">This field is required</div>
+                                    <div ng-message="min">Minimum is $ 0</div>
+                                    <div ng-message="greatUnapplied">Payment amount has to be equal or bigger than Applied amount.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w500px">
+                    <div class="flex-row flex-end">
+                        <div class="info-block w150px readonly-info-block"
+                              ng-if="$ctrl.paymentTypeConstants.PAYER_TYPE_ID === $ctrl.paymentModel.Source.SourceType.Id"
+                        >
+                            <md-input-container>
+                                <div class="info-block-label">Adjustment Amount:</div>
+                                <div class="info-block-body">
+                                    {{:: $ctrl.paymentModel.AdjustmentAmount.Currency }} <b>{{:: $ctrl.paymentModel.AdjustmentAmount.Amount | absNumber:2 }}</b>
+                                </div>
+                            </md-input-container>
+                        </div>
+
+                        <div class="info-block w130px readonly-info-block">
+                            <md-input-container>
+                                <div class="info-block-label">Total Amount:</div>
+                                <div class="info-block-body">
+                                    {{:: $ctrl.paymentModel.Total.Currency }} <b>{{ $ctrl.getTotalAmount() | absNumber:2 }}</b>
+                                </div>
+                            </md-input-container>
+                        </div>
+
+                        <div class="info-block w130px readonly-info-block">
+                            <md-input-container>
+                                <div class="info-block-label">Unapplied:</div>
+                                <div class="info-block-body red-color">
+                                    {{:: $ctrl.paymentModel.Unapplied.Currency }}
+                                    <b>{{ !$ctrl.paymentModel.Legacy ? ($ctrl.getUnappliedAmount() | absNumber:2) : '0.00' }}</b>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-row marg-top-15 marg-bottom-20"
+                 ng-if="$ctrl.readOnly"
+            >
+                <div class="info-block w300px readonly-info-block">
+                    <md-input-container>
+                        <div class="info-block-label">Ref. Number:</div>
+                        <div class="info-block-body">
+                            {{ $ctrl.paymentModel.Reference || '-' }}
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div class="info-block grow-1 left-divider readonly-info-block">
+                    <md-input-container>
+                        <div class="info-block-label">Note:</div>
+                        <div class="info-block-body">
+                            {{ $ctrl.paymentModel.Notes || '-' }}
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div class="info-block flex-row readonly-info-block"
+                     ng-class="{ 'w250px': $ctrl.paymentModel.Legacy, 'w150px': !$ctrl.paymentModel.Legacy }"
+                >
+                    <md-input-container>
+                        <div class="info-block-label"></div>
+                        <div class="info-block-body">
+                            <div class="status-label {{ $ctrl.paymentModel.Status.statusClass }}">
+                                {{:: $ctrl.paymentModel.Status.Name }}
+                            </div>
+                            <span class="pad-left-10"
+                                  ng-if="$ctrl.paymentModel.Legacy"
+                            >
+                                <div class="status-label blue">
+                                    Legacy
+                                </div>
+                            </span>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div class="flex-row"
+                 ng-if="!$ctrl.readOnly"
+            >
+                <div class="info-block w300px">
+                    <md-input-container>
+                        <label>Ref. Number</label>
+                        <input type="text"
+                               name="refNumber"
+                               ng-model="$ctrl.paymentModel.Reference"
+                        >
+                    </md-input-container>
+                </div>
+
+                <div class="info-block grow-1">
+                    <md-input-container>
+                        <label>Note:</label>
+                        <input type="text"
+                               name="note"
+                               ng-model="$ctrl.paymentModel.Notes"
+                        >
+                    </md-input-container>
+                </div>
+                <div class="info-block w500px flex-row flex-end">
+                    <md-input-container>
+                        <label></label>
+                        <md-checkbox  class="md-primary"
+                                      aria-label="Mark as Completed"
+                                      ng-model="$ctrl.paymentModel.Completed"
+                                      ng-disabled="$ctrl.paymentModel.Status.Id === $ctrl.paymentStatusConstants.COMPLETED_STATUS_ID"
+                        >
+                            Mark as Completed
+                        </md-checkbox>
+                    </md-input-container>
+
+                    <md-input-container class="legacy-payment-checkbox">
+                        <label></label>
+                        <md-checkbox  class="md-primary"
+                                      aria-label="Legacy Payment"
+                                      ng-model="$ctrl.paymentModel.Legacy"
+                        >
+                            Legacy Payment
+                        </md-checkbox>
+                    </md-input-container>
+                    <div popover-directive="$ctrl.legacyPaymentHint"
+                         class="legacy-payment-hint"
+                         is-only-icon="true"
+                         min-width="700"
+                    ></div>
+                </div>
+            </div>
+
+            <div class="gray-line"></div>
+
+            <div class="flex-row pad-5"
+                 ng-if="$ctrl.paymentTypeConstants.PAYER_TYPE_ID === $ctrl.paymentModel.Source.SourceType.Id"
+            >
+                <div class="table-wrap">
+                    <div class="flex-row space-between align-end">
+                        <div class="adjust-table-title">
+                            Provider level adjustments (PLB):
+                            <span class="plb-info-wrap">
+                                <div popover-directive="$ctrl.providerLevelHint" is-only-icon="true" min-width="700"></div>
+                            </span>
+                        </div>
+
+                        <div class="pad-right-10"
+                             ng-if="!$ctrl.readOnly"
+                        >
+                            <md-button class="md-raised md-primary"
+                                       ng-click="$ctrl.showAdjustModal()"
+                            >
+                                Add
+                            </md-button>
+                        </div>
+                    </div>
+                    <table class="drowz-table marg-top-10"
+                           ng-if="$ctrl.paymentModel.ProviderLevelAdjustments.length"
+                    >
+                        <tr class="drowz-table-header">
+                            <th>Amount</th>
+                            <th>Provider Ref Id:</th>
+                            <th>Date:</th>
+                            <th>Adjustment:</th>
+                            <th></th>
+                        </tr>
+                        <tr class="drowz-table-row"
+                            ng-repeat="adjustment in $ctrl.paymentModel.ProviderLevelAdjustments track by $index"
+                        >
+                            <td class="w300px">{{ adjustment.Amount.Currency }} {{ adjustment.Amount.Amount | absNumber:2 }}</td>
+                            <td class="w300px">{{ adjustment.ProviderRefId || '-' }}</td>
+                            <td class="w300px">{{ adjustment.Date | amUtc | amDateFormat: 'MM/DD/YYYY' }}</td>
+                            <td>{{ adjustment.PLBCode.Name + ' - ' + adjustment.PLBCode.Description  }}</td>
+                            <td>
+                                <div class="flex-row flex-end"
+                                     ng-if="!$ctrl.readOnly"
+                                >
+                                    <md-button class="edit-info-icon" aria-label="..."
+                                               ng-click="$ctrl.showAdjustModal($index)">
+                                        <md-icon md-svg-src="assets/images/default/edit.svg"></md-icon>
+                                    </md-button>
+                                    <md-button class="delete-icon-btn" aria-label="..."
+                                               confirm-ng-click="$ctrl.deleteAdjustment($index)"
+                                               confirm-msg="'This adjustment will be deleted from payment. Are you sure you want to delete this adjustment?'"
+                                               confirm-title="Delete adjustment"
+                                    >
+                                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                                    </md-button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

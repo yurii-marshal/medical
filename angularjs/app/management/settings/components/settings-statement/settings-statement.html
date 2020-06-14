@@ -1,0 +1,224 @@
+<div class="infinite-scroll-bg management-settings-statements full-height-with-footer"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="settingsStatement"
+     ng-form="statement.statementForm">
+
+  <div class="top-block">
+    <div class="breadcrumbs transparent-bg">
+      <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+      <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+      <a href="javascript:void(0)" ui-sref="root.management.settings">Application Settings</a>
+      <a href="javascript:void(0)" class="active">Statements</a>
+    </div>
+
+    <div class="drowz-wizard-body-flex">
+
+      <div class="grow-1">
+        <div class="flex-row">
+          <div class="drowz-wizard-block no-float grow-1">
+            <div class="drowz-wizard-block-title">
+              <div class="wizard-title-text">Provider custom text 1 (displayed after patient name):</div>
+            </div>
+            <div class="drowz-wizard-block-body">
+              <div class="drowz-wizard-block-row">
+                <div class="col-xs-12">
+                  <md-input-container>
+                    <label>Text:</label>
+                    <textarea ng-model="statement.model.TextAfterPatientName"
+                              ng-maxlength="statement.textAfterPatientNameMaxLength"
+                              name="TextAfterPatientName"
+                              >
+                    </textarea>
+                    <div ng-messages="statement.statementForm.TextAfterPatientName.$error" class="md-input-messages-nice">
+                      <div ng-message="maxlength">Text is to long, max length is {{statement.textAfterPatientNameMaxLength}} symbols.</div>
+                    </div>
+                  </md-input-container>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="drowz-wizard-block no-float grow-1">
+            <div class="drowz-wizard-block-title">
+              <div class="wizard-title-text">Provider custom text 2 (displayed after payment options):</div>
+            </div>
+            <div class="drowz-wizard-block-body">
+              <div class="drowz-wizard-block-row">
+                <div class="col-xs-12">
+                  <md-input-container>
+                    <label>Header:</label>
+                    <textarea ng-model="statement.model.HeaderAfterPaymentOption"
+                              ng-maxlength="statement.headerAfterPaymentOptionMaxLength"
+                              name="HeaderAfterPaymentOption"
+                    >
+                    </textarea>
+                    <div ng-messages="statement.statementForm.HeaderAfterPaymentOption.$error" class="md-input-messages-nice">
+                      <div ng-message="maxlength">Header is to long, max length is {{statement.headerAfterPaymentOptionMaxLength}} symbols.</div>
+                    </div>
+                  </md-input-container>
+                </div>
+              </div>
+              <div class="drowz-wizard-block-row">
+                <div class="col-xs-12">
+                  <md-input-container>
+                    <label>Text:</label>
+                    <textarea ng-model="statement.model.TextAfterPaymentOption"
+                              ng-maxlength="statement.textAfterPaymentOptionMaxLength"
+                              name="TextAfterPaymentOption"
+                              >
+                    </textarea>
+                    <div ng-messages="statement.statementForm.TextAfterPaymentOption.$error" class="md-input-messages-nice">
+                      <div ng-message="maxlength">Text is to long, max length is {{statement.textAfterPaymentOptionMaxLength}} symbols.</div>
+                    </div>
+                  </md-input-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex-row">
+          <div class="grow-1">
+            <div class="drowz-wizard-block no-float payment-method">
+              <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Payment Method:</div>
+              </div>
+              <div class="drowz-wizard-block-body">
+                <div class="drowz-wizard-block-row">
+                  <div class="info-block block-width-250 flex-cont">
+                    <md-switch class="md-primary"
+                               ng-model="statement.model.isPayOnline"
+                               ng-change="statement.onPayOnlineChange()"
+                    >
+                      Pay Online
+                    </md-switch>
+                  </div>
+                </div>
+                <div class="drowz-wizard-block-row">
+                  <div class="col-xs-12">
+                    <md-input-container>
+                      <label>Online Payment link:</label>
+                      <textarea ng-model="statement.model.PayOnlineLink"
+                                ng-pattern="/(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/"
+                                ng-disabled="!statement.model.isPayOnline"
+                                ng-required="statement.model.isPayOnline"
+                                name="PayOnlineLink">
+                      </textarea>
+                      <div ng-messages="statement.statementForm.PayOnlineLink.$error" class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="pattern">Link is not valid.</div>
+                      </div>
+                    </md-input-container>
+                  </div>
+                </div>
+                <div class="drowz-wizard-block-row">
+                  <div class="info-block block-width-250 flex-cont">
+                    <md-switch class="md-primary"
+                               ng-model="statement.model.isPayByPhone"
+                               ng-change="statement.onPayByPhoneChange()"
+                    >
+                      Pay by Phone
+                    </md-switch>
+                  </div>
+                </div>
+                <div class="drowz-wizard-block-row">
+                  <div class="col-xs-12">
+                    <input-phone-number class="small-label"
+                                        form-name="statement.statementForm"
+                                        input-name="PayByPhone"
+                                        label="Phone Number"
+                                        ng-model="statement.model.PayByPhone"
+                                        ng-disabled="!statement.model.isPayByPhone"
+                                        ng-required="statement.model.isPayByPhone"
+                                        add-directives="input-phone-mask">
+                    </input-phone-number>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grow-1">
+            <div class="drowz-wizard-block no-float grow-1 credit-cards">
+              <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Credit Cards:</div>
+              </div>
+              <div class="drowz-wizard-block-body">
+                <div class="drowz-wizard-block-row info-block">
+                  <div class="col-xs-6">
+                    <div class="drowz-wizard-block-row">
+                      <md-checkbox class="md-primary"
+                                   ng-model="statement.model.CreditCards.Visa"
+                      ><md-icon md-svg-src="assets/images/default/credit-card/visa.svg"
+                      ></md-icon>Visa</md-checkbox>
+                    </div>
+                    <div class="drowz-wizard-block-row">
+                      <md-checkbox class="md-primary"
+                                   ng-model="statement.model.CreditCards.Mastercard"
+                      ><md-icon md-svg-src="assets/images/default/credit-card/mastercard.svg"
+                      ></md-icon>Mastercard</md-checkbox>
+                    </div>
+                  </div>
+                  <div class="col-xs-6">
+                    <div class="drowz-wizard-block-row">
+                      <md-checkbox class="md-primary"
+                                   ng-model="statement.model.CreditCards.AmericanExpress"
+                      ><md-icon md-svg-src="assets/images/default/credit-card/amex.svg"
+                      ></md-icon>American Express</md-checkbox>
+                    </div>
+                      <div class="drowz-wizard-block-row">
+                      <md-checkbox class="md-primary"
+                                   ng-model="statement.model.CreditCards.Discover"
+                      ><md-icon md-svg-src="assets/images/default/credit-card/discover.svg"
+                      ></md-icon>Discover</md-checkbox>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grow-1">
+            <div class="drowz-wizard-block no-float grow-1">
+              <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Balance:</div>
+              </div>
+              <div class="drowz-wizard-block-body">
+                <div class="drowz-wizard-block-row">
+                  <div class="info-block block-width-250 flex-cont">
+                    <md-switch class="md-primary"
+                               ng-model="statement.model.IncludeDetailedSummary"
+                    >
+                      Include detailed summary
+                    </md-switch>
+                  </div>
+                </div>
+                <div class="drowz-wizard-block-row">
+                  <div class="col-xs-12">
+                    <md-input-container>
+                      <label>Balance Due Date:</label>
+                      <input type="text"
+                             only-digits-with-length
+                             min="1"
+                             max="99"
+                             ng-model="statement.model.BalanceDueDate"
+                             name="BalanceDueDate" />
+                    </md-input-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="flow-body-footer">
+    <md-button class="md-raised main-button"
+               ng-click="statement.cancel()">Cancel</md-button>
+    <md-button class="md-raised md-primary main-button"
+               ng-click="statement.save()">
+      Save
+    </md-button>
+  </div>
+
+</div>

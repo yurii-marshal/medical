@@ -1,0 +1,87 @@
+<div class="flex-row">
+    <div class="info-block block-width-20-percent">
+        <div class="info-block-label">Patient:</div>
+        <div class="info-block-body">{{$ctrl.line.Patient | fullname}}</div>
+    </div>
+    <div class="info-block block-width-20-percent left-divider">
+        <div class="info-block-label">Payer:</div>
+        <div class="info-block-body">{{$ctrl.line.Payer}}</div>
+    </div>
+
+    <div class="info-block block-width-180 left-divider">
+        <div class="info-block-label">Invoice:</div>
+        <div class="info-block-body">
+            <a href="javascript:void(0);"
+               class="underline-after-link"
+               ui-sref="root.invoice.details({ invoiceId: $ctrl.line.ClaimId })">
+                {{$ctrl.line.ClaimDisplayId || '-'}}
+            </a>
+        </div>
+    </div>
+    <div class="info-block block-width-230 left-divider">
+        <div class="info-block-label">DOS:</div>
+        <div class="info-block-body">
+            {{$ctrl.line.ServicePeriod.From | amUtc | amDateFormat: "MM/DD/YYYY" }} -
+            {{$ctrl.line.ServicePeriod.To | amUtc | amDateFormat: "MM/DD/YYYY" }}
+        </div>
+    </div>
+    <div class="info-block block-width-80 left-divider">
+        <div class="info-block-label">POS:</div>
+        <div class="info-block-body">{{$ctrl.line.PlaceOfService.Id || '-'}}</div>
+    </div>
+    <div class="info-block block-width-120 left-divider">
+        <div class="info-block-label">HCPCS:</div>
+        <div class="info-block-body">{{$ctrl.line.HcpcsCode.Id || '-'}}</div>
+    </div>
+    <div class="info-block grow-1 left-divider">
+        <div class="info-block-label">Modifiers:</div>
+        <div class="info-block-body">
+            <div class="code-with-slash"
+                 ng-repeat="modifier in $ctrl.line.Modifiers"
+                 title="{{modifier.Description}}">
+                {{modifier.Name || '-'}}
+            </div>
+        </div>
+    </div>
+    <div class="info-block block-width-120">
+        <div class="info-block-label">&nbsp;</div>
+        <div class="info-block-body flex-cont align-end">
+            <div class="status-label dark-blue">{{$ctrl.line.PriceType.Name}}</div>
+        </div>
+    </div>
+</div>
+
+<div class="flex-row">
+    <div class="info-block block-width-20-percent">
+        <div class="info-block-label">Service:</div>
+        <div class="info-block-body">
+            <div popover-directive="$ctrl.line.Name"></div>
+        </div>
+    </div>
+    <div class="info-block block-width-20-percent left-divider">
+        <div class="info-block-label">Item:</div>
+        <div class="info-block-body">
+            <div popover-directive="$ctrl.line.ProductName || '-'"></div>
+        </div>
+    </div>
+    <div class="info-block block-width-180 left-divider">
+        <div class="info-block-label">Diagnosis:</div>
+        <div class="info-block-body">
+            <div class="code-with-slash"
+                 ng-repeat="diagnose in $ctrl.line.Diagnosis"
+                 title="{{diagnose.Description}}">
+                {{diagnose.Name || '-'}}
+            </div>
+        </div>
+    </div>
+    <div class="info-block block-width-230 left-divider">
+        <div class="info-block-label">Balance:</div>
+        <div class="info-block-body">
+            {{$ctrl.line.TotalAmounts.Balance.Currency}} {{$ctrl.line.TotalAmounts.Balance.Amount | absNumber}}
+        </div>
+    </div>
+    <div class="info-block grow-1 left-divider">
+        <div class="info-block-label">Qty:</div>
+        <div class="info-block-body">{{$ctrl.line.Quantity || '-'}}</div>
+    </div>
+</div>

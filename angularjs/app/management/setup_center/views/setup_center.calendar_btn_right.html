@@ -1,0 +1,30 @@
+<div class="button_container">
+    <md-button class="setup_header_btn"
+               ng-click="setup_center.showAddSchedule($event)">
+        Add Schedule
+    </md-button>
+</div>
+<div class="button_container">
+    <md-button class="setup_header_btn"
+               ng-click="setup_center.showAppointPersonnelModal($event, setup_center.setupCenterId)">
+        Appoint Team Member
+    </md-button>
+</div>
+
+<div class="button_container">
+    <md-button class="pf_copy_to setup_header_btn"
+               calendar-popup="copy"
+               action-type="setup_center"
+               action-id="setup_center.setupCenterId">
+        Copy to
+    </md-button>
+</div>
+<div class="button_container">
+    <md-button class="pf_clear setup_header_btn"
+               calendar-popup="clear"
+               action-type="setup_center"
+               action-id="setup_center.setupCenterId">
+        Clear
+    </md-button>
+</div>
+

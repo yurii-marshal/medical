@@ -1,0 +1,118 @@
+.order-item-container {
+    counter-reset: item;
+}
+
+.order-item {
+    position: relative;
+    padding: 20px 0 10px 0;
+
+    &:not(:last-of-type) {
+        border-bottom: 1px solid $lighter-gray-color;
+    }
+
+    &:first-of-type {
+        padding-top: 10px;
+
+        &::before {
+            top: 26px;
+        }
+    }
+
+    .order-item-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+
+        .item-img-container {
+            display: inline-block;
+            height: 40px;
+            max-width: 86px;
+            margin-right: 15px;
+            border: 1px solid $lighter-gray-color;
+            border-radius: 2px;
+            overflow: hidden;
+
+            > .item-img {
+                display: block;
+                height: 38px;
+                max-width: 100%;
+            }
+        }
+
+        .equipment-arrow {
+            display: block;
+            width: 24px;
+            height: 16px;
+            margin: 0 0 0 6px;
+            color: $main-active-color;
+        }
+
+        .info-block > .flex-row  + .flex-row {
+            padding-top: 20px;
+        }
+
+        .delete-icon-btn.md-button, .dropdown-dotted-btn.md-button {
+            margin-left: 13px;
+        }
+    }
+
+    .vAccordion--default {
+        margin-top: 0;
+        padding-left: 0;
+    }
+
+    .drowz-table {
+        tr.drowz-table-row {
+            td {
+                box-shadow: none;
+
+                &.item-img-cell {
+                    padding-top: 5px;
+                    padding-bottom: 5px;
+                }
+
+                .item-img-container {
+                    display: inline-block;
+                    max-height: 40px;
+                    max-width: 86px;
+                    border: 1px solid $wizard-title-color;
+                    border-radius: 2px;
+                    overflow: hidden;
+                    vertical-align: middle;
+
+                    > .item-img {
+                        display: block;
+                        height: 38px;
+                        max-width: 100%;
+                    }
+                }
+            }
+        }
+    }
+
+    .bundle-icon {
+        width: 26px;
+        min-width: 26px;
+        height: 22px;
+        margin: 0 0 0 10px;
+        color: $main-active-color;
+        cursor:pointer;
+    }
+}
+
+.item-img-container {
+    display: inline-block;
+    height: 40px;
+    max-width: 86px;
+    margin-right: 15px;
+    border: 1px solid $lighter-gray-color;
+    border-radius: 2px;
+    overflow: hidden;
+
+    > .item-img {
+        display: block;
+        height: 38px;
+        max-width: 100%;
+    }
+}
+

@@ -1,0 +1,23 @@
+<div *ngIf="popoverItems && popoverItems.length" 
+     class="popover-wrapper"
+>
+    <div *ngIf="isShowPopoverIcon; else noPopoverIcon" 
+         [ngClass]="{'only-icon': showOnlyIcon}"
+         class="popover"
+         appPopover 
+         [popoverOptions]="popoverOptions"
+    >
+        <div *ngIf="isEllipsisMode" 
+             class="hidden-item" 
+             #hiddenItem
+        >{{ popoverItem }}</div>
+
+        <div [ngClass]="{'ellipsis-item': isEllipsisMode}" 
+             #visibleItem
+        >{{ popoverItem }}</div>
+    </div>
+
+    <ng-template class="no-popover" #noPopoverIcon>
+        <div>{{ popoverItems }}</div>
+    </ng-template>
+</div>

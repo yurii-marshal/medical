@@ -1,0 +1,408 @@
+.orders-list-page {
+    position: relative;
+    width: 100%;
+
+    .toolbar-single-action {
+        position: fixed;
+        top: calc(#{$main-menu-height} + #{$breadscrumbs-height} - 19px);
+        right: 62px;
+    }
+
+    .orders-list.double-row-table {
+        .patient-name-td {
+            width: 250px;
+            min-width: 250px;
+        }
+
+        .order-id-table-td {
+            width: 150px;
+            min-width: 150px;
+        }
+
+        .datetime-td {
+            width: 190px;
+            min-width: 190px;
+
+            @include respond-to(bigScreens) {
+                width: 170px;
+                min-width: 170px;
+            }
+        }
+
+        .location-td {
+            @include respond-to(bigScreens) {
+                width: 160px;
+                min-width: 160px;
+            }
+        }
+
+        .delivery-method-td {
+            width: 130px;
+            min-width: 130px;
+
+            @include respond-to(bigScreens) {
+                width: 120px;
+                min-width: 120px;
+            }
+        }
+
+        .status-td {
+            width: 140px;
+            min-width: 140px;
+        }
+
+        infinity-table-row {
+            & > div {
+                height: auto;
+            }
+
+            .delivery-method-td {
+                justify-content: center;
+            }
+        }
+
+        .attributes {
+            & > div {
+                flex-wrap: wrap;
+            }
+
+            attr-label {
+                span {
+                    white-space: nowrap;
+                }
+            }
+        }
+    }
+}
+
+.initial-details-document {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 25px 0 15px;
+
+    &:first-of-type {
+        padding-top: 5px;
+    }
+
+    &:not(:last-of-type) {
+        border-bottom: 1px solid $lighter-gray-color;
+    }
+}
+
+.order {
+    .sidebar {
+        padding-top: 7px;
+    }
+
+    .sidebar-title {
+        margin-bottom: 15px;
+    }
+
+    .name-status-block {
+        position: relative;
+
+        .edit-doc.md-button {
+            position: absolute;
+            bottom: -8px;
+            right: 0;
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            margin: 0;
+
+            md-icon {
+                width: 17px;
+                height: 17px;
+                color: $gray-color;
+            }
+        }
+    }
+}
+
+.sidebar-order-status {
+    .flex-row {
+        padding-right: 25px;
+    }
+
+    .md-primary.small-btn {
+        margin: 0;
+    }
+
+    .status-select {
+        .md-select-value {
+            font-weight: $font-weight-semibold;
+            transition: color .2s;
+        }
+    }
+
+    &.blue {
+        .status-select .md-select-value {
+            color: $main-active-color;
+        }
+    }
+
+    &.orange {
+        .status-select .md-select-value {
+            color: $orange-label;
+        }
+    }
+
+    &.green {
+        .status-select .md-select-value {
+            color: $bright-green-label;
+        }
+    }
+
+    &.gray {
+        .status-select .md-select-value {
+            color: $middle-gray-color;
+        }
+    }
+
+    &.dark-gray {
+        .status-select .md-select-value {
+            color: $dark-gray-color;
+        }
+    }
+}
+
+.order-items-tab {
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    flex-direction: column;
+    min-height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height});
+    padding: 20px 23px 20px 30px;
+    overflow-y: auto;
+
+    @include respond-to(appMinWidth) {
+        min-height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height} - 20px);
+    }
+
+    &.no-records {
+        height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height});
+
+        @include respond-to(appMinWidth) {
+            height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height} - 20px);
+        }
+    }
+}
+
+.order-items-tab, .patient-orders, .patient-items {
+    .order-items-filters {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: 10px 0 20px;
+
+        .item-number {
+            min-width: 9px;
+            margin-right: 20px;
+            padding-top: 10px;
+        }
+
+        .clear-filters {
+            margin: 9px 6px 0 0;
+            padding: 0;
+            height: 22px;
+            width: 22px;
+            min-width: 22px;
+
+            md-icon {
+                margin: 0;
+                width: 16px;
+                height: 16px;
+                transform: scale(-1, 1);
+                color: $main-active-color;
+            }
+
+            &:hover, &:focus {
+                background-color: transparent;
+
+                md-icon {
+                    color: $main-active-hover-color;
+                }
+            }
+        }
+
+        .search-field {
+            margin: 0 10px;
+            flex-grow: 1;
+        }
+
+        .content-header-select {
+            margin: 0 10px;
+            width: 300px;
+            min-width: 300px;
+        }
+
+        md-input-container.content-header-timepicker.calendar_icon {
+            width: 140px;
+            min-width: 140px;
+            margin: 0 10px 0 10px;
+
+            .md-input-messages-nice {
+                position: relative;
+                z-index: 2;
+                margin-bottom: -36px;
+                font-size: 11px;
+                line-height: 11px;
+                letter-spacing: -0.9px;
+            }
+        }
+
+        .append-tracking-item {
+            margin: 0 0 0 10px;
+
+            md-icon {
+                width: 15px;
+                height: 16px;
+                margin: 0 10px 0 0;
+                color: #fff;
+            }
+        }
+    }
+}
+
+.patient-items {
+    .order-items-filters {
+        .search-field {
+            max-width: 700px;
+        }
+    }
+}
+
+.order-details-table {
+    .radio-cell {
+        width: 140px;
+    }
+
+    .radio-cell-group, .radio-cell-group-header {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+
+        md-radio-button {
+            margin-bottom: 0;
+
+            .md-label {
+                margin-left: 20px;
+            }
+        }
+    }
+
+    &.drowz-table {
+        tr.drowz-table-row {
+            > td {
+                box-shadow: none;
+
+                &.datepicker-cell {
+                    width: 190px;
+                    padding-left: 40px;
+                    padding-top: 3px;
+                    padding-bottom: 3px;
+
+                    > md-input-container {
+                        margin: 0;
+                        width: 100px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.order-wizard-dwo {
+    .order-details-table {
+        .drowz-table-header, .drowz-table-row {
+            > td, > th {
+                &:first-of-type {
+                    padding-left: 20px;
+                }
+            }
+        }
+
+        .radio-cell {
+            width: 200px;
+        }
+
+        &.drowz-table {
+            tr.drowz-table-row {
+                > td {
+                    &.datepicker-cell {
+                        width: 260px;
+                        padding-left: 80px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.readonly-dwo {
+    .datepicker-cell {
+        md-input-container input.md-input {
+            border-bottom-color: transparent;
+            background: none;
+        }
+    }
+
+    &.small-dwo {
+        .drowz-table {
+            tr.drowz-table-row, tr.drowz-table-header {
+
+                > .radio-cell {
+                    width: 140px;
+                }
+            }
+
+            tr.drowz-table-row {
+                > td {
+                    padding-top: 5px;
+                    padding-bottom: 5px;
+                    font-size: 14px;
+
+                    &.datepicker-cell {
+                        padding-left: 20px;
+                        width: 135px;
+                    }
+
+                    .md-container {
+                        width: 16px;
+                        height: 16px;
+
+                        .md-off, .md-on {
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+
+                    .md-checked {
+                        .md-on {
+                            transform: scale(0.4);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.drowz-message.with-icon.warning-icon {
+    max-height: 42px;
+
+    > md-icon.info-icon {
+        color: $orange-color;
+    }
+
+    .drowz-message-content {
+        color: #000;
+    }
+}
+
+.info-block.block-width-330 {
+    max-width: 330px;
+    width: 330px;
+    min-width: 330px;
+}

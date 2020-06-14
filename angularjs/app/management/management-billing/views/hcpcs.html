@@ -1,0 +1,101 @@
+<div class="infinite-scroll-bg">
+
+    <a href="javascript:void(0);"
+       class="toolbar-single-action"
+       simple-tooltip="Add new HCPCS/CPT code"
+       tooltip-position="left"
+       ng-click="hcpcs.showModal($event, undefined)"
+    ></a>
+
+    <div class="breadcrumbs transparent-bg">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+        <a href="javascript:void(0)" ui-sref="root.management.billing">Billing</a>
+        <a href="javascript:void(0)" class="active">HCPCS/CPT</a>
+    </div>
+
+    <infinity-table load-items-promise="hcpcs.getHcpcsList"
+                    page-size="24"
+                    item-alias="item"
+                    filters-obj="hcpcs.filter"
+                    sort-obj="hcpcs.sortExpr"
+                    cache-filters-key="hcpcs.cacheFiltersKey"
+    >
+        <infinity-table-sort>
+            <div class="w250px">
+                <md-icon md-svg-src="assets/images/default/tasks.svg" class="main-sort-icon tasks-icon"></md-icon>
+                <inftbl-sort-list param-name="Code">HCPCS/CPT:</inftbl-sort-list>
+            </div>
+            <div class="short-description-td">
+                <md-icon md-svg-src="assets/images/default/documents.svg" class="main-sort-icon document-icon"></md-icon>
+                Short Description:
+            </div>
+            <div class="no-divider">
+                <md-icon md-svg-src="assets/images/default/documents.svg" class="main-sort-icon document-icon"></md-icon>
+                Long Description:
+            </div>
+            <div class="cell-50px no-divider">&nbsp;</div>
+        </infinity-table-sort>
+
+        <infinity-table-filters class="drowz-infinite-row-filter">
+            <div class="w250px">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>search</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.code"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click />
+                </md-input-container>
+            </div>
+            <div class="short-description-td">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>search</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.ShortDescription"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click />
+                </md-input-container>
+            </div>
+            <div class="no-divider">
+                <md-input-container class="drowz-infinite-input-container">
+                    <label>search</label>
+                    <input type="text"
+                           ng-model="$ctrl.filtersObj.LongDescription"
+                           ng-model-options="{debounce: 450}"
+                           clear-on-click />
+                </md-input-container>
+            </div>
+            <div class="cell-50px filter-reset-btn">
+                <inftbl-filter-reset-btn></inftbl-filter-reset-btn>
+            </div>
+        </infinity-table-filters>
+
+        <infinity-table-row class="drowz-infinite-row hide-btns-row"
+                            role="button"
+                            ng-click="$parent.hcpcs.showModal($event, item)">
+            <div class="w250px" ng-bind="item.Code"></div>
+            <div class="short-description-td">
+                <div popover-directive="item.ShortDescription" is-paragraphs-text="true"></div>
+            </div>
+            <div class="no-divider">
+                <div popover-directive="item.LongDescription" is-paragraphs-text="true"></div>
+            </div>
+            <div class="cell-50px no-divider">
+                <div class="flex-cont space-around">
+                    <md-button class="delete-icon-btn"
+                               aria-label="..."
+                               confirm-ng-click="$parent.hcpcs.deleteHcpcs(item)"
+                               confirm-msg="'Are you sure you want to delete {0} code?'.format(item.Code)"
+                               confirm-title="Delete Hcpcs">
+                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                    </md-button>
+                </div>
+            </div>
+        </infinity-table-row>
+
+        <infinity-table-no-items>
+            <no-records text="HCPCS codes" is-fullpage="true"></no-records>
+        </infinity-table-no-items>
+    </infinity-table>
+
+</div>

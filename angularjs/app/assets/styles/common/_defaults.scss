@@ -1,0 +1,292 @@
+*, *::before, *::after {
+    outline: none;
+    box-sizing: border-box;
+}
+
+u {
+    text-decoration: none;
+}
+
+@font-face {
+    font-family: "Roboto", sans-serif;
+}
+
+body {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    font-family: "Roboto";
+    color: $font-color;
+    overflow-x: visible !important;
+    -ms-overflow-style: scrollbar;
+    // Tooltipster script adding inline style "overflow-x: hidden",
+    // i overwrite it with toimportant prevent white backdrop for select and other material dropdowns
+
+    &.hidescrollbar:not(.confirm-dialog-is-showing)::-webkit-scrollbar {
+        visibility: hidden;
+    }
+
+    &.confirm-dialog-is-showing {
+        &.md-dialog-is-showing {
+            .drwz-confirm-overlay {
+                display: none;
+            }
+            .md-dialog-container {
+                display: none;
+            }
+        }
+    }
+}
+
+.main-app-container {
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding-top: $main-menu-height;
+    height: 100%;
+    width: 100%;
+
+    > .main-app-view {
+        flex-grow: 1;
+        width: 100%;
+
+        .root-view {
+            display: flex;
+            align-items: stretch;
+            justify-content: flex-start;
+            min-height: 100%;
+            width: 100%;
+            min-width: 1600px;
+
+            > div {
+                flex-grow: 1;
+                width: 100%;
+                min-width: 1600px;
+            }
+
+            > ui-view, > [ui-view] {
+                flex-grow: 1;
+                display: flex;
+                align-items: stretch;
+                justify-content: flex-start;
+                min-height: 100%;
+                min-width: 1600px;
+                width: 100%;
+            }
+        }
+    }
+}
+
+.nicescroll-cursors {
+    cursor: pointer;
+}
+
+input::-ms-clear {
+    display: none !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+a {
+    color: $main-active-color;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover, &:focus {
+        color: $main-active-hover-color;
+        text-decoration: underline;
+    }
+
+    &:active, &:hover {
+        outline: none;
+    }
+
+    &.link-with-underline {
+        text-decoration: underline;
+        line-height: 1.5em;
+    }
+
+    &.underline-after-link {
+        position: relative;
+        display: inline-block;
+        color: $main-active-color;
+        text-decoration: none;
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: currentColor;
+            transition: opacity .2s;
+        }
+
+        &:hover, &:focus {
+            &::after {
+                opacity: 0;
+            }
+        }
+
+        & + .status-label {
+            margin-left: 15px;
+        }
+    }
+}
+
+.clear {
+    clear: both;
+}
+
+.clearfix {
+    &::after {
+        content:"";
+        clear: both;
+        display: block;
+    }
+}
+
+.overflow-hidden {
+    overflow: hidden !important;
+}
+
+.overflow-x-hidden {
+    overflow-x: hidden;
+}
+
+.hide-this {
+    height: 0 !important;
+    width: 0 !important;
+    visibility: hidden !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+}
+
+.hidden-container {
+    margin: 0 !important;
+}
+
+.w100 {
+    width: 100%;
+}
+
+.width-415 {
+    width: 415px;
+}
+
+.infinite-scroll-bg {
+    position: relative;
+    min-height: calc(100vh - #{$main-menu-height});
+    background-color: $lighter-gray-color;
+}
+
+.not-found-text-color {
+    color: rgba(0,0,0,0.38);
+    pointer-events: none;
+    font-size: 14px;
+}
+
+.active-text {
+    color: $main-active-color;
+}
+
+.dark-blue-text {
+    color: $dark-blue-color;
+}
+
+.gray-text {
+    color: $gray-color;
+}
+
+.red-color {
+    color: $red-color;
+}
+
+.orange-color {
+    color: $orange-color;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.font-italic {
+    font-style: italic;
+}
+
+.font-normal {
+    font-weight: $font-weight-normal;
+}
+
+.font-semibold {
+    font-weight: $font-weight-semibold;
+}
+
+.font-bold {
+    font-weight: $font-weight-bold;
+}
+
+.vertical-divider {
+    color: $gray-color;
+}
+
+.ellipsis-only {
+    text-overflow: ellipsis;
+}
+
+.ellipsis {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.break-word {
+    word-break: break-all;
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.overflow-initial {
+    overflow: initial;
+}
+
+.light-gray-bg {
+    background-color: $light-gray-color;
+}
+
+.border-top {
+    border: 1px solid rgba(204, 204, 204, 0.4);
+}
+
+.hidden-from-1400 {
+    @media all and (min-width: 1400px) {
+        display: none;
+    }
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.padding-top-15, .info-block.padding-top-15 {
+    padding-top: 15px;
+}
+
+.padding-top-10, .info-block.padding-top-10 {
+    padding-top: 10px;
+}
+

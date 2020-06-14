@@ -1,0 +1,230 @@
+// Calendar sidebar
+
+.reports-sidebar {
+    .filterrow, .filterrow.readonly-filter {
+        cursor: pointer;
+
+        .filter-name {
+            max-width: calc(100% - 36px);
+            cursor: pointer;
+        }
+    }
+}
+
+.filterrow {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 0;
+
+    &:hover {
+        .filterrow-controls {
+            .edit-filter-btn, .delete-filter {
+                opacity: 1;
+            }
+        }
+    }
+
+    &.readonly-filter {
+        .filter-name {
+            cursor: default;
+        }
+    }
+
+    &.editing {
+        .edit-filter-input {
+            display: block;
+        }
+        .filter-name {
+            position: absolute;
+            opacity: 0;
+            z-index: -100;
+        }
+
+        .filterrow-controls {
+            .delete-filter {
+                opacity: 1;
+            }
+
+            .save-filter-btn {
+                position: static;
+                opacity: 1;
+                z-index: 2;
+            }
+
+            .edit-filter-btn {
+                position: absolute;
+                opacity: 0;
+                z-index: -1;
+            }
+        }
+
+        &:hover {
+            .filterrow-controls {
+                .edit-filter-btn {
+                    opacity: 0;
+                }
+            }
+        }
+    }
+
+    .filter-name {
+        display: block;
+        padding-left: 2px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 22px;
+        color: $font-color;
+        cursor: pointer;
+        transition: 0s;
+        outline: none;
+        position: relative;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: calc(100% - 57px);
+
+        &:hover, &:focus {
+            text-decoration: none;
+        }
+
+        &::before {
+            content: ">";
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            opacity: 0;
+            z-index: -100;
+            line-height: 22px;
+            font-size: 10px;
+        }
+
+        &.selected {
+            padding-left: 15px;
+
+            &::before {
+                z-index: 1;
+                opacity: 1;
+                content: "";
+                position: absolute;
+                width: 6px;
+                height: 6px;
+                top: 8px;
+                left: 0;
+                background-color: $main-active-color;
+                border-radius: 50%;
+            }
+        }
+    }
+
+    .edit-filter-input {
+        display: none;
+        padding: 0 0 0 1px;
+        transition: none;
+        border: 1px solid gainsboro;
+        flex: 1 1 auto;
+        color: $font-color;
+        max-width: calc(100% - 57px);
+    }
+
+    .filterrow-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-left: 10px;
+
+        .edit-filter-btn, .save-filter-btn, .delete-filter {
+            display: block;
+            outline: none;
+            opacity: 0;
+            transition: .2s;
+
+            .edit-filter-icon, .save-filter-icon, .delete-filter-icon {
+                margin: 0;
+                width: 18px;
+                height: 18px;
+                display: block;
+            }
+        }
+
+        .edit-filter-btn {
+            z-index: 1;
+
+            .edit-filter-icon {
+                width: 18px;
+                height: 17px;
+                color: $gray-color;
+            }
+        }
+
+        .save-filter-btn {
+            position: absolute;
+            z-index: 0;
+        }
+
+        .delete-filter {
+            margin-left: 10px;
+
+            .delete-filter-icon {
+                width: 14px;
+                height: 18px;
+                color: $red-color;
+            }
+        }
+    }
+}
+
+.apply-autocomplete {
+    padding-top: 15px;
+    margin-bottom: 8px;
+
+    md-input-container {
+        margin-bottom: 10px;
+    }
+
+    .clear-filters {
+        display: inline-block;
+        margin-top: 3px;
+        float: right;
+        color: $dark-blue-color;
+        font-size: 12px;
+        transition: .2s;
+
+        &:hover, &:focus {
+            text-decoration: underline;
+        }
+    }
+}
+
+md-input-container.save-filter {
+    display: block;
+    margin-top: 18px;
+
+    .save-filter-btn {
+        position: absolute;
+        right: 0;
+        top: 0;
+        margin: 0;
+        padding: 0 10px;
+        height: 32px;
+        line-height: 32px;
+        min-height: inherit;
+        min-width: inherit;
+        border-radius: 0;
+        background-color: transparent;
+        box-shadow: none;
+        color: $main-active-color;
+        transition: .2s;
+
+        &:hover {
+            color: #fff;
+            background-color: $main-active-hover-color;
+        }
+    }
+
+    > input.md-input {
+        padding-right: 60px;
+    }
+}

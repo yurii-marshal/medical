@@ -1,0 +1,109 @@
+<div class="modal-window w700px helpdesc-modal"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="helpDescModal"
+     ng-form="$ctrl.form"
+>
+    <a href="javascript:void(0);" ng-click="$ctrl.close()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon"
+                 md-svg-src="assets/images/default/question-fill.svg"></md-icon>
+
+        <div class="modal-title marg-v-20">
+            <h2>HAVE A QUESTION? DROP US A NOTE…</h2>
+        </div>
+
+        <div class="info-block">
+            <md-input-container>
+                <label>Subject:</label>
+                <input type="text"
+                       name="Subject"
+                       ng-model="$ctrl.model.subject"
+                       ng-required="true"
+                >
+                <div ng-messages="$ctrl.form.Subject.$error"
+                     class="md-input-messages-nice"
+                >
+                    <div ng-message="required">This field is required</div>
+                </div>
+            </md-input-container>
+        </div>
+
+        <div class="info-block">
+            <md-input-container>
+                <label>Description:</label>
+                <textarea name="Description"
+                          ng-model="$ctrl.model.description"
+                          rows="3"
+                          ng-required="true"
+                ></textarea>
+                <div ng-messages="$ctrl.form.Description.$error"
+                     class="md-input-messages-nice"
+                >
+                    <div ng-message="required">This field is required</div>
+                </div>
+            </md-input-container>
+        </div>
+
+        <div class="info-block">
+
+            <div class="pad-bottom-10"
+                 ng-if="$ctrl.filesCollections.length"
+            >
+                <div ng-repeat="file in $ctrl.filesCollections"
+                     class="custom-chip"
+                >
+                   {{ file.name }}
+
+                    <span class="delete-chip-btn"
+                          ng-click="$ctrl.onRemoveFileItem($index)"
+                    >
+                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                    </span>
+                </div>
+            </div>
+
+            <md-button class="md-raised attach-file-btn"
+                       ngf-select="$ctrl.onFileSelected()"
+                       ng-model="$ctrl.selectedFiles"
+                       ngf-max-size="5MB"
+                       multiple="multiple"
+            >
+                <md-icon md-svg-src="assets/images/default/upload.svg"></md-icon>
+                Attach a file
+            </md-button>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter confirm-footer space-between"
+                       layout="row"
+                       layout-align="space-between center">
+
+        <md-checkbox class="md-primary marg-0"
+                     ng-model="$ctrl.model.agree"
+                     name="Agree"
+        >
+            I am not including any protected health information
+        </md-checkbox>
+
+        <div>
+            <md-button class="md-raised main-button"
+                       ng-click="$ctrl.close()"
+            >
+                Cancel
+            </md-button>
+
+            <md-button class="md-primary md-raised main-button"
+                       ng-click="$ctrl.send()"
+                       ng-disabled="!$ctrl.model.agree"
+            >
+                <md-icon class="send-btn-icon marg-h-10"
+                         md-svg-src="assets/images/default/send.svg"></md-icon>
+                Send
+            </md-button>
+        </div>
+    </md-dialog-actions>
+
+</div>

@@ -1,0 +1,106 @@
+{
+  "name": "drowz-web",
+  "description": "Drowz Web Portal",
+  "version": "0.1.0",
+  "homepage": "https://drowz.net",
+  "private": true,
+  "dependencies": {
+    "jquery": "2.1.4",
+    "angular": "1.5.3",
+    "lodash": "4.6.1",
+    "angular-mocke2e-maydelay": "1.0.0",
+    "angular-mocks": "1.5.3",
+    "angular-bootstrap": "2.2.0",
+    "angular-animate": "1.5.3",
+    "angular-cookies": "1.4.2",
+    "angular-route": "1.5.3",
+    "angular-touch": "1.4.2",
+    "angular-sanitize": "1.4.7",
+    "angular-messages": "1.5.0",
+    "angular-aria": "1.4.2",
+    "angular-resource": "1.4.2",
+    "angular-ui-router": "0.2.15",
+    "angular-material": "1.1.19",
+    "material-design-iconfont": "0.0.2",
+    "malarkey": "yuanqing/malarkey#1.3.1",
+    "moment": "2.10.6",
+    "eonasdan-bootstrap-datetimepicker": "4.17.37",
+    "ui-select": "angular-ui-select#0.16.0",
+    "ngToast": "ngtoast#2.0.0",
+    "v-accordion": "1.5.2",
+    "install": "1.0.4",
+    "font-awesome": "4.5.0",
+    "sc-date-time": "1.1.6",
+    "angular-file-upload": "2.2.0",
+    "angular-moment": "1.0.0-beta.3",
+    "downloadjs": "1.4.2",
+    "ui-router-extras": "0.1.2",
+    "angular-ui-calendar": "1.0.1",
+    "malihu-custom-scrollbar-plugin": "3.1.3",
+    "signature_pad": "2.3.0",
+    "tooltipster": "4.1.6",
+    "ngInfiniteScroll": "1.2.2",
+    "ng-idle": "1.2.2",
+    "angular-timer": "1.3.4",
+    "ng-sortable": "1.3.6",
+    "ng-file-upload": "12.2.13",
+    "angular-ui-mask": "1.8.7",
+    "showdown": "^1.7.4"
+  },
+  "appPath": "app",
+  "moduleName": "drowzApp",
+  "resolutions": {
+    "angular": "1.5.3",
+    "moment": "2.10.6",
+    "angular-animate": "1.4.2",
+    "angular-aria": "1.4.2",
+    "pdfjs-dist": "^1.7.351"
+  },
+  "overrides": {
+    "v-accordion": {
+      "main": [
+        "dist/v-accordion.css"
+      ]
+    },
+    "font-awesome": {
+      "main": [
+        "css/font-awesome.min.css"
+      ]
+    },
+    "angular-bootstrap": {
+      "main": [
+        "ui-bootstrap.js",
+        "ui-bootstrap-tpls.js"
+      ]
+    },
+    "jquery.nicescroll": {
+      "main": [
+        "jquery.nicescroll.min.js"
+      ]
+    },
+    "fullcalendar": {
+      "main": [
+        "dist/fullcalendar.min.css"
+      ]
+    },
+    "tooltipster": {
+      "main": [
+        "dist/js/tooltipster.bundle.min.js",
+        "dist/css/tooltipster.bundle.min.css",
+        "dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css",
+        "dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-shadow.min.css"
+      ]
+    },
+    "ngInfiniteScroll": {
+      "main": [
+        "build/ng-infinite-scroll.min.js"
+      ]
+    },
+    "malihu-custom-scrollbar-plugin": {
+      "main": []
+    }
+  },
+  "devDependencies": {
+    "angular-file-upload": "2.5.0"
+  }
+}

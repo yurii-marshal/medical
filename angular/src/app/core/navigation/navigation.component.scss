@@ -1,0 +1,104 @@
+@import "../../../assets/styles/base/variables";
+@import "../../../assets/styles/utils/mixins";
+
+:host {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: $max-content-width;
+    height: $main-menu-height;
+    background-color: $dark-blue-color;
+    transform: translateZ(0);
+    z-index: 9999;
+
+    @include respond-to(appMinWidth) {
+        position: absolute;
+        right: auto;
+    }
+
+    .main-navigation-container {
+        display: flex;
+        align-items: center;
+        height: 100%;
+
+        .hide {
+            display: none!important;
+        }
+
+        .main-logo {
+            margin: 0 50px 5px 15px;
+            @include size(174px, 39px);
+            cursor: pointer;
+        }
+
+        .main-link {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding: 4px 15px 0;
+            margin: 0 1px 0 0;
+            color: $dark-gray-color;
+            font-size: 14px;
+            text-transform: uppercase;
+            font-weight: 700;
+            white-space: nowrap;
+            border-bottom: 4px solid transparent;
+            transition: 0s;
+
+            &:hover, &:focus, &.active {
+                color: $main-active-color;
+                text-decoration: none;
+                border-bottom-color: $main-active-color;
+
+                .main-link-icon {
+                    color: $main-active-color;
+                }
+            }
+
+            .main-link-icon {
+                display: block;
+                margin: 0 10px 0 0;
+                @include size(22px, 22px);
+                max-width: 22px;
+                max-height: 22px;
+                color: $dark-gray-color;
+                transition: .2s;
+            }
+
+            .main-link-text {
+                transition: .2s;
+            }
+        }
+    }
+
+    .main-menu-info {
+        display: flex;
+        align-items: center;
+        height: 100%;
+
+        .logout-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            @include size(60px, 100%);
+
+            &:hover, &:focus {
+                .logout-link-icon {
+                    color: $lighter-gray-color;
+                }
+            }
+
+            .logout-link-icon {
+                display: block;
+                margin: 0;
+                @include size(25px, 20px);
+                color: $dark-gray-color;
+                transition: .2s;
+            }
+        }
+    }
+}

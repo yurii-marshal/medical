@@ -1,0 +1,199 @@
+<div class="patient-notes">
+    <div class="flow-body">
+        <div class="notes-content">
+            <div class="notes-content-header" ng-form="$ctrl.filtersForm">
+                <div class="flex-cont">
+                    <div class="note-number">#</div>
+                    <md-button class="clear-filters"
+                               aria-label="..."
+                               ng-click="$ctrl.clearFilters()"
+                               simple-tooltip="Refresh Notes">
+                        <md-icon md-svg-src="assets/images/default/clear-filters.svg"></md-icon>
+                    </md-button>
+                </div>
+                <div class="flex-cont">
+                    <md-input-container class="search-field"
+                                        ng-class="{'two-fields' : !$ctrl.hasSubject}">
+                        <label></label>
+                        <input type="text"
+                               ng-model="$ctrl.searchText"
+                               ng-keydown="$ctrl.searchByText($event)"
+                               ng-change="$ctrl.clearSearchByText()"
+                               placeholder="Search note"
+                               clear-on-click>
+                        <md-button class="search-btn"
+                                   ng-click="$ctrl.searchByText($event)"
+                                   aria-label="...">
+                            <md-icon md-svg-src="assets/images/default/search.svg"></md-icon>
+                        </md-button>
+                    </md-input-container>
+                    <md-input-container class="content-header-select"
+                                        ng-if="!$ctrl.isUsersAutocomplete">
+                        <label></label>
+                        <md-select ng-model="$ctrl.searchUser"
+                                   ng-change="$ctrl.searchByFilter()"
+                                   placeholder="Select User"
+                                   ng-disabled="$ctrl.isUsersFieldDisabled"
+                                   clear-on-click>
+                            <md-option ng-value="noteUser.Id"
+                                       ng-repeat="noteUser in $ctrl.notesUsers">
+                                {{ noteUser.FullName }}
+                            </md-option>
+                            <md-option ng-if="!$ctrl.notesUsers.length"
+                                       ng-value="null"
+                                       ng-selected="!$ctrl.notesUsers.length">
+                                No Users were found
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-autocomplete class="notes-autocomplete-block"
+                                     ng-if="$ctrl.isUsersAutocomplete"
+                                     md-selected-item="$ctrl.searchUser"
+                                     md-selected-item-change="$ctrl.searchByFilter()"
+                                     md-search-text="searchUserText"
+                                     md-items="user in $ctrl.getAutocompleteUsers(searchUserText)"
+                                     md-item-text="user.FullName"
+                                     md-min-length="2"
+                                     md-delay="350"
+                                     ng-disabled="$ctrl.isUsersFieldDisabled"
+                                     md-floating-label="Search User"
+                                     clear-on-click>
+                        <md-item-template>
+                            <span md-highlight-text="searchUserText" md-highlight-flags="i">
+                                {{ user.FullName }}
+                            </span>
+                        </md-item-template>
+                        <md-not-found>No users found</md-not-found>
+                    </md-autocomplete>
+                    <md-input-container class="content-header-select"
+                                        ng-if="$ctrl.hasSubject">
+                        <label></label>
+                        <md-select ng-model="$ctrl.searchSubject"
+                                   ng-change="$ctrl.searchByFilter()"
+                                   placeholder="Select Subject"
+                                   clear-on-click>
+                            <md-option ng-value="noteSubject.Id"
+                                       ng-repeat="noteSubject in $ctrl.notesSubjects">
+                                {{noteSubject.Text}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="content-header-timepicker calendar_icon left-input-icon">
+                        <label></label>
+                        <input type="text"
+                               name="fromDate"
+                               placeholder="From:"
+                               datetimepicker
+                               format="MM/DD/YYYY"
+                               max-date="today"
+                               use-current="false"
+                               ng-change="$ctrl.searchByFilter()"
+                               ng-model="$ctrl.fromDate"
+                               ng-required="false"
+                               start-date-validator
+                               end-date="$ctrl.toDate"
+                               clear-on-click>
+                        <div ng-messages="$ctrl.filtersForm.fromDate.$error" class="md-input-messages-nice">
+                            <div ng-message="startDate">Date <b>"From"</b> must be less than date <b>"To"</b></div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container class="content-header-timepicker calendar_icon left-input-icon">
+                        <label></label>
+                        <input type="text"
+                               name="toDate"
+                               placeholder="To:"
+                               datetimepicker
+                               format="MM/DD/YYYY"
+                               use-current="false"
+                               end-date-validator
+                               start-date="$ctrl.fromDate"
+                               ng-required="false"
+                               ng-model="$ctrl.toDate"
+                               ng-change="$ctrl.searchByFilter()"
+                               clear-on-click>
+                        <div ng-messages="$ctrl.filtersForm.toDate.$error" class="md-input-messages-nice">
+                            <div ng-message="endDate">Date <b>"To"</b> must be greater than date <b>"From"</b></div>
+                        </div>
+                    </md-input-container>
+                    <!--TODO find out conflict in click on FORM element and last input focus-->
+                    <div style="overflow:hidden; width:0px;">
+                        <input type="text"/>
+                    </div>
+                </div>
+            </div>
+            <md-virtual-repeat-container md-top-index="$ctrl.topIndex"
+                                         ng-if="$ctrl.notesCount || !$ctrl.notesLoaded"
+                                         class="notes-content-body"
+                                         ng-class="{ 'no-footer': $ctrl.isVoidInvoice }"
+                                         bs-loading-overlay
+                                         bs-loading-overlay-reference-id="notesList">
+                <div class="note-item"
+                     md-virtual-repeat="note in $ctrl.notesList"
+                     md-on-demand
+                     ng-class="{'addedClass': note.addedClass}">
+                    <div class="note-index">{{note.index}}</div>
+                    <div class="note-header">
+                        <div class="flex-cont">
+                            <div class="note-autor"
+                                 ng-class="{'no-subject' : !$ctrl.hasSubject}">
+                                {{note.CreatedByUser.Name.FullName}}
+                            </div>
+                            <div class="note-subject" ng-if="$ctrl.hasSubject">
+                                {{note.Subject.Text}}
+                            </div>
+                        </div>
+                        <div class="note-date">
+                            {{note.CreatedDate | localDateTime:"D MMM YYYY[,] h:mm A"}}
+                        </div>
+                    </div>
+                    <div class="note-content">
+                        <format-string-by-paragraphs text="note.Description"></format-string-by-paragraphs>
+                    </div>
+                </div>
+            </md-virtual-repeat-container>
+
+            <no-records text="Notes" is-fullpage="true"
+                        ng-if="$ctrl.notesCount === 0 && $ctrl.notesLoaded" class="grow-1"></no-records>
+
+            <div class="note-content-footer" ng-form="$ctrl.createForm"
+                 ng-if="!$ctrl.isVoidInvoice && !$ctrl.isDisableCreate"
+            >
+                <div class="content-footer-select"
+                     ng-if="$ctrl.hasSubject"
+                >
+                    <md-input-container class="grow-1">
+                        <label>Select Subject</label>
+                        <md-select name="newNoteSubject"
+                                   ng-model="$ctrl.newNoteSubject"
+                                   ng-required="true">
+                            <md-option ng-value="noteSubject.Id"
+                                       ng-repeat="noteSubject in $ctrl.notesSubjects">{{noteSubject.Text}}</md-option>
+                        </md-select>
+                        <div ng-messages="$ctrl.createForm.newNoteSubject.$error"
+                             class="md-input-messages-nice">
+                            <div ng-message="required"><b>Subject</b> must be chosen.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <md-input-container class="note-input">
+                    <label>Type your note here...</label>
+                    <textarea ng-model="$ctrl.newNoteText"
+                              name="newNoteText"
+                              ng-maxlength="$ctrl.newNoteMaxLength"
+                              ng-required="true"></textarea>
+                    <div ng-messages="$ctrl.createForm.newNoteText.$error" class="md-input-messages-nice">
+                        <div ng-message="required"><b>Text</b> must be filled.</div>
+                        <div ng-message="maxlength"><b>Text</b> is to long, max length is {{$ctrl.newNoteMaxLength}} symbols.</div>
+                    </div>
+                </md-input-container>
+                <md-button class="md-primary md-raised middle-btn send-note"
+                           aria-label="..."
+                           ng-click="$ctrl.createNote()"
+                           ng-disabled="$ctrl.isLoading">
+                    <icon-loading-white ng-if="$ctrl.isLoading"></icon-loading-white>
+                    Submit
+                </md-button>
+            </div>
+        </div>
+    </div>
+</div>

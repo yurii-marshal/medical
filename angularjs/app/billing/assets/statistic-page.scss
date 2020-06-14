@@ -1,0 +1,189 @@
+.statistic-page {
+    padding: 13px 25px 20px;
+}
+
+.statistic-page-header {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    margin-bottom: 20px;
+
+    .header-item {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 25%;
+        min-width: 25%;
+        padding: 10px;
+
+        &:not(:last-of-type) {
+            &::after {
+                content: "";
+                position: absolute;
+                right: 1px;
+                top: 0;
+                bottom: 0;
+                width: 2px;
+                background-color: $wizard-title-color;
+            }
+        }
+
+        .header-item-icon {
+            display: block;
+            width: 52px;
+            height: 52px;
+            margin: 0 20px 0 0;
+            color: $gray-color;
+
+            &.list-icon {
+                width: 36px;
+                height: 54px;
+            }
+
+            &.days-icon {
+                width: 46px;
+            }
+        }
+
+        .header-item-number {
+            margin-right: 10px;
+            font-size: 44px;
+            font-weight: $font-weight-semibold;
+            line-height: 32px;
+
+            &.green {
+                color: $green-color;
+            }
+
+            &.orange {
+                color: $orange-color;
+            }
+
+            &.blue {
+                color: $main-active-color;
+            }
+
+            &.red {
+                color: $red-color;
+            }
+        }
+
+        .header-item-text {
+            min-height: 40px;
+            line-height: 20px;
+            color: $dark-blue-color;
+            font-weight: $font-weight-bold;
+            font-size: 15px;
+        }
+    }
+}
+
+.statistic-cont {
+    .dashboard-block .dashboard-block-title {
+        padding-right: 40px;
+        border-width: 2px;
+
+        span {
+            white-space: nowrap;
+
+            &:first-child {
+                margin-right: 50px;
+            }
+        }
+
+        &::after {
+            position: absolute;
+            right: 13px;
+        }
+
+        .dashboard-block-title-description {
+            text-transform: lowercase;
+            font-weight: $font-weight-semibold;
+        }
+
+        .dashboard-block-title-number {
+            color: $main-active-color;
+            font-weight: $font-weight-semibold;
+            font-size: 25px;
+            margin-right: 15px;
+        }
+    }
+
+    .flex-row {
+        .statistic-block {
+            display: flex;
+            align-items: stretch;
+            margin-right: 15px;
+            margin-left: 15px;
+
+            &:first-child {
+                margin-left: 0;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            .custom-no-records-icon > md-icon {
+                width: 108px;
+            }
+        }
+    }
+
+    .expirations-info {
+        display: flex;
+        justify-content: space-between;
+
+        .info-block {
+            width: 33%;
+            position: relative;
+
+            &:not(:last-child){
+                &::after {
+                    position: absolute;
+                    content: '';
+                    height: 100%;
+                    width: 2px;
+                    background-color: $calendar-gray-color;
+                    top: 0;
+                    right: 0;
+                }
+            }
+
+            .prescriptions-icon {
+                margin: 0 15px 0 0;
+                display: block;
+                width: 40px;
+                height: 40px;
+                color: $gray-color;
+            }
+        }
+    }
+
+    .statistic-item-number {
+        color: $main-active-color;
+        font-weight: $font-weight-semibold;
+        font-size: 50px;
+        margin-right: 10px;
+    }
+
+    .statistic-item-text {
+        font-size: $font-size-sm;
+        margin-right: 55px;
+
+        span {
+            font-size: $font-size-md;
+            font-weight: $font-weight-semibold;
+        }
+
+        p {
+            margin-bottom: 0;
+
+            &.statistic-item-name {
+                font-weight: $font-weight-semibold;
+                font-size: $font-size-md;
+            }
+        }
+    }
+}

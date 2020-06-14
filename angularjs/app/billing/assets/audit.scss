@@ -1,0 +1,107 @@
+.audit-tab {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    min-height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height});
+    padding: 20px 15px 30px 30px;
+
+    @include respond-to(appMinWidth) {
+        min-height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height} - 20px);
+    }
+
+    .audit-tab-item {
+        display: flex;
+        align-items: stretch;
+        justify-content: space-between;
+        padding: 25px 0 15px 0;
+
+        &:not(:last-of-type) {
+            border-bottom: 1px solid $lighter-gray-color;
+        }
+
+        .details-btn {
+            .warning-icon {
+                position: relative;
+
+                &:before {
+                    position: absolute;
+                    left: 12px;
+                    top: 4px;
+                    content: '';
+                    display: inline-block;
+                    @include size(8px, 8px);
+                    border-radius: 50%;
+                    background-color: $red-error-color;
+                }
+            }
+        }
+    }
+}
+
+.audit-details {
+    padding: 20px 30px 30px 30px;
+
+    .exit {
+        margin-bottom: 30px;
+
+        .md-button {
+            margin-left: 0;
+        }
+    }
+
+    .details-header {
+        .tax-id {
+            font-size: 16px;
+        }
+
+        .total-results {
+            .transparent-bordered-block {
+                display: inline-block;
+            }
+        }
+
+        .error-description {
+            margin-bottom: 30px;
+        }
+
+        .datetime {
+            border-bottom: 1px solid $lighter-gray-color;
+        }
+
+        .details-message {
+            .msg-code {
+                font-size: 16px;
+            }
+
+            .transparent-bordered-block {
+                display: inline-block;
+
+            }
+        }
+    }
+
+    .operations-list {
+        border-top: 1px solid $lighter-gray-color;
+        padding-top: 20px;
+
+        .item {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            .info-block {
+                &:first-of-type {
+                    padding-left: 0;
+                }
+            }
+
+            .error-message {
+                margin-bottom: 10px;
+            }
+        }
+    }
+}
+
+

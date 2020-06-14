@@ -1,0 +1,34 @@
+helpdesc-widget {
+
+    .helpdesc-toggle-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include size(48px, 100%);
+        cursor: pointer;
+        user-select: none;
+
+         > md-icon {
+            fill: $dark-gray-color;
+        }
+
+
+        &:hover {
+            > md-icon {
+                fill: lighten($dark-gray-color, 20%);
+            }
+        }
+
+        &.btn {
+
+            &:focus {
+                outline: none;
+            }
+
+            &:active {
+                outline: none;
+                box-shadow: none;
+            }
+        }
+    }
+}

@@ -1,0 +1,41 @@
+.drowz-material-tabs {
+    md-ink-bar {
+        display: none !important;
+    }
+
+    md-tabs-canvas {
+        background: none;
+    }
+
+    md-pagination-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        width: 100% !important;
+
+        .md-tab {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 30px;
+            line-height: 30px;
+            padding: 0 12px;
+            margin: 0 10px;
+            font-size: 14px;
+            font-weight: 400;
+            color: $font-color;
+            text-transform: none;
+            border-radius: 14px;
+            background-color: $lighter-gray-color;
+            border: 1px solid $main-active-color;
+            transition: .2s;
+            flex-grow: 1;
+            max-width: 170px;
+
+            &.md-active, &:hover {
+                color: #fff;
+                background-color: $main-active-color;
+            }
+        }
+    }
+}

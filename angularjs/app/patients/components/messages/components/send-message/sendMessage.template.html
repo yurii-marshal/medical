@@ -1,0 +1,63 @@
+<div class="messages-content-footer"
+     ng-form="$ctrl.sengMsgForm">
+    <div class="messages-content-footer-select clearfix">
+        <div class="col-xs-7">
+            <md-input-container>
+                <label>Select Order</label>
+                <md-select ng-model="$ctrl.newMsg.orderId"
+                           ng-required="true"
+                           name="order">
+                    <md-option ng-value="order.Id"
+                               ng-repeat="order in $ctrl._orders track by order.Id">
+                        Id:{{order.DisplayId}}
+                        Date: {{order.Date | localDateTime: "MM/DD/YYYY"}}
+                        Physician: {{order.Physician}}
+                    </md-option>
+                </md-select>
+                <div ng-messages="$ctrl.sengMsgForm.order.$error" class="md-input-messages-nice">
+                    <div ng-message="required">This field is required</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="col-xs-5">
+            <md-input-container>
+                <label>Select Subject</label>
+                <md-select ng-model="$ctrl.newMsg.SubjectType"
+                           ng-required="true"
+                           name="subject">
+                    <md-option ng-value="subject.Id"
+                               ng-repeat="subject in $ctrl._subjTypes track by subject.Id">
+                        {{subject.Text}}
+                    </md-option>
+                </md-select>
+                <div ng-messages="$ctrl.sengMsgForm.subject.$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="required">This field is required</div>
+                </div>
+            </md-input-container>
+        </div>
+    </div>
+    <div class="messages-content-footer-textarea">
+        <md-input-container class="message-input">
+            <label>Type your message here...</label>
+            <textarea ng-model="$ctrl.newMsg.Text"
+                      rows="2"
+                      ng-required="true"
+                      name="msgText"></textarea>
+            <div ng-messages="$ctrl.sengMsgForm.msgText.$error"
+                 class="md-input-messages-nice">
+                <div ng-message="required">This field is required</div>
+            </div>
+        </md-input-container>
+        <md-button class="send-message"
+                   ng-click="$ctrl.sendMsg()"
+                   aria-label="...">
+            <md-icon md-svg-src="assets/images/default/send.svg" class="wave"></md-icon>
+        </md-button>
+    </div>
+    <md-checkbox class="md-primary send-as-alert"
+                 ng-if="$ctrl.messageType == 'all'"
+                 ng-model="$ctrl.sendAsAlert"
+                 ng-disabled="$ctrl.typeByDefault === 'alert'">Send as Alert</md-checkbox>
+</div>
+

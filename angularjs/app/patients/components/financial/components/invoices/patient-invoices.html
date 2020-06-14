@@ -1,0 +1,307 @@
+<div class="patient-financial-invoices-wrap"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="patientInvoicesWrap"
+>
+
+    <div class="flex-row filters-wrap align-center">
+        <div class="clear-filters-btn">
+            <md-button class="clear-filters"
+                       aria-label="..."
+                       simple-tooltip="Refresh Items"
+                       ng-click="invoiceCtrl.onClearFilter()"
+            >
+                <md-icon md-svg-src="assets/images/default/clear-filters.svg"></md-icon>
+            </md-button>
+        </div>
+
+        <div class="filter-field w160px">
+            <md-autocomplete class="drowz-infinite-autocomplete"
+                             md-no-cache="true"
+                             md-selected-item="invoiceCtrl.filters['Invoice']"
+                             md-selected-item-change="invoiceCtrl.changedFilters()"
+                             md-search-text="searchInvoicesId"
+                             md-items="item in invoiceCtrl.getInvoicesDictionary(searchInvoicesId)"
+                             md-item-text="item.Name"
+                             md-min-length="0"
+                             md-floating-label="Search id"
+                             ng-model-options="{debounce: 450}"
+                             md-menu-class="order-id-autocomplete"
+                             clear-on-click
+                             drowz-clear-value>
+                <md-item-template>
+                    <span md-highlight-text="searchInvoicesId"
+                          md-highlight-flags="^i">{{::item.Name}}</span>
+                </md-item-template>
+                <md-not-found>
+                    No Id was found
+                </md-not-found>
+            </md-autocomplete>
+        </div>
+
+        <div class="filter-field w160px">
+            <md-input-container>
+                <label>Bill to</label>
+                <input type="text"
+                       ng-model="invoiceCtrl.filters['BillRecipient']"
+                       ng-model-options="{debounce: 450}"
+                       ng-change="invoiceCtrl.changedFilters()"
+                       clear-on-click
+                >
+            </md-input-container>
+        </div>
+
+        <div class="filter-field w100px">
+            <md-autocomplete class="hcpcscode-autocomplete-block"
+                             md-selected-item="invoiceCtrl.filters['Hcpcs']"
+                             md-selected-item-change="invoiceCtrl.changedFilters()"
+                             md-search-text="searchHcpcsCode"
+                             md-items="code in invoiceCtrl.getHcpcsCodes(searchHcpcsCode)"
+                             md-item-text="code.Text || code.Name"
+                             md-input-name="hcpcs"
+                             md-min-length="2"
+                             md-delay="350"
+                             md-menu-container-class="hcpcs-decorator"
+                             md-floating-label="HCPCS"
+                             clear-on-click
+            >
+                    <md-item-template>
+                        <div title="{{code.Description}}">{{code.Text + ' ' + code.Description}}</div>
+                    </md-item-template>
+                    <md-not-found>Not found</md-not-found>
+                    <div ng-messages="modify.form['hcpcs-' + $index].$error"
+                         class="md-input-messages-nice">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="md-require-match">Code is not valid</div>
+                    </div>
+            </md-autocomplete>
+        </div>
+
+        <div class="filter-field w160px">
+            <md-input-container>
+                <label>Service</label>
+                <input type="text"
+                       ng-model="invoiceCtrl.filters['Service']"
+                       ng-model-options="{debounce: 450}"
+                       ng-change="invoiceCtrl.changedFilters()"
+                       clear-on-click
+                >
+            </md-input-container>
+        </div>
+
+        <div class="filter-field filter-field-autocomplete grow-1">
+            <md-autocomplete-with-infinite-scroll
+                md-no-cache="true"
+                md-selected-item-change="invoiceCtrl.changedFilters()"
+                md-selected-item="invoiceCtrl.filters['Item']"
+                md-search-text="invoiceCtrl.selectedItemName"
+                md-items="item in invoiceCtrl.getProducts(invoiceCtrl.selectedItemName, pageIndex)"
+                md-item-text="item.Name"
+                md-min-length="0"
+                md-floating-label="Item"
+                md-menu-container-class="autocomplete-scroll-min-width-500"
+                clear-on-click
+                class="fix-autocomplete-position"
+                md-input-name="Item"
+            >
+                <md-item-template>
+                    <div md-highlight-text="line.nameAndPartNumber" md-highlight-flags="i" title="{{item.nameAndPartNumber || item.Name}}">
+                        {{item.nameAndPartNumber || item.Name}}
+                    </div>
+                </md-item-template>
+                <md-not-found>No items were found</md-not-found>
+            </md-autocomplete-with-infinite-scroll>
+        </div>
+
+        <div class="filter-field w110px">
+            <md-input-container>
+                <label>Charge</label>
+                <input type="text"
+                       ng-model="invoiceCtrl.filters['Charge']"
+                       ng-model-options="{debounce: 450}"
+                       ng-change="invoiceCtrl.changedFilters()"
+                       clear-on-click
+                >
+            </md-input-container>
+        </div>
+
+        <div class="filter-field w110px">
+            <md-input-container>
+                <label>Balance</label>
+                <input type="text"
+                       ng-model="invoiceCtrl.filters['Balance']"
+                       ng-model-options="{debounce: 450}"
+                       ng-change="invoiceCtrl.changedFilters()"
+                       clear-on-click
+                >
+            </md-input-container>
+        </div>
+
+        <div class="filter-field w120px">
+            <md-input-container>
+                <label>From</label>
+                <input type="text"
+                       ng-model="invoiceCtrl.filters['From']"
+                       datetimepicker
+                       use-current="false"
+                       format="MM/DD/YYYY"
+                       show-today-button="false"
+                       ng-change="invoiceCtrl.changedFilters()"
+                       clear-on-click
+                >
+            </md-input-container>
+        </div>
+
+        <div class="filter-field w120px">
+            <md-input-container>
+                <label>To</label>
+                <input type="text"
+                       ng-model="invoiceCtrl.filters['To']"
+                       datetimepicker
+                       use-current="false"
+                       format="MM/DD/YYYY"
+                       show-today-button="false"
+                       ng-change="invoiceCtrl.changedFilters()"
+                       clear-on-click
+                >
+            </md-input-container>
+        </div>
+    </div>
+
+    <div class="patient-service-item"
+         ng-repeat="serviceLine in invoiceCtrl.financialData.Items"
+         ng-if="invoiceCtrl.financialData.Items.length"
+    >
+        <div class="flex-row">
+            <div class="info-block w190px pad-right-10">
+                <md-input-container>
+                    <div class="info-block-label">
+                        Invoice ID:
+                    </div>
+                    <div class="info-block-body">
+
+                        <a href="javascript:void(0)"
+                           class="underline-after-link"
+                           ui-sref="root.invoice.details({ invoiceId: serviceLine.InvoiceId })"
+                           ng-bind="serviceLine.InvoiceDisplayId">
+                        </a>
+
+                        <div class="pad-top-10">
+                            <div class="status-label {{ serviceLine.invoiceStatusClassName }}">
+                                {{ serviceLine.Status.Name }}
+                            </div>
+
+                            <div class="status-label dark-blue marg-h-5"
+                                 ng-if="serviceLine.PriceType.Name"
+                            >
+                                {{ serviceLine.PriceType.Name }}
+                            </div>
+                        </div>
+                    </div>
+                </md-input-container>
+            </div>
+
+            <div class="info-block w160px left-divider">
+                <md-input-container>
+                    <div class="info-block-label">
+                        Bill to:
+                    </div>
+                    <div class="info-block-body">
+                        {{ serviceLine.BillTo.Type.Id === invoiceCtrl.billToTypes.PAYER_TYPE_ID ? serviceLine.BillTo.PayerName : 'Patient' }}
+                        <div>
+                            <span class="status-label bordered-label overflow-initial"
+                                  ng-if="serviceLine.BillTo.PriorityOrder.Name"
+                                  ng-bind="serviceLine.BillTo.PriorityOrder.Name"
+                            >
+                            </span>
+                        </div>
+                    </div>
+                </md-input-container>
+            </div>
+
+            <div class="info-block w100px left-divider">
+                <md-input-container>
+                    <div class="info-block-label">
+                        HCPCS:
+                    </div>
+                    <div class="info-block-body">
+                      {{ serviceLine.Hcpcs }}
+                    </div>
+                </md-input-container>
+            </div>
+
+            <div class="info-block w160px left-divider">
+                <md-input-container>
+                    <div class="info-block-label">
+                        Service:
+                    </div>
+                    <div class="info-block-body">
+                        {{ serviceLine.Name }}
+                    </div>
+                </md-input-container>
+            </div>
+
+            <div class="info-block grow-1 left-divider correct-grow-item">
+                <md-input-container class="block-item-name">
+                    <div class="info-block-label">
+                        Item:
+                    </div>
+                    <div class="info-block-body">
+                        {{ serviceLine.Item || '-' }}
+                    </div>
+                </md-input-container>
+            </div>
+
+            <div class="info-block w110px left-divider">
+                <md-input-container>
+                    <div class="info-block-label">
+                        Charge:
+                    </div>
+                    <div class="info-block-body">
+                        {{ serviceLine.Charge.Currency }} {{ serviceLine.Charge.Amount | absNumber:2 }}
+                    </div>
+                </md-input-container>
+            </div>
+
+            <div class="info-block w110px left-divider">
+                <md-input-container>
+                    <div class="info-block-label">
+                        Balance:
+                    </div>
+                    <div class="info-block-body">
+                        {{ serviceLine.Balance.Currency }} {{ serviceLine.Balance.Amount | absNumber:2 }}
+                    </div>
+                </md-input-container>
+            </div>
+
+            <div class="info-block w250px left-divider">
+                <md-input-container>
+                    <div class="info-block-label">
+                        DOS:
+                    </div>
+                    <div class="info-block-body">
+                        {{ serviceLine.Dos.From | amUtc | amDateFormat: "MM/DD/YYYY" }} - {{ serviceLine.Dos.To | amUtc | amDateFormat: "MM/DD/YYYY" }}
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+    </div>
+    <no-records
+            text="Invoices"
+            is-fullpage="true"
+            ng-if="!invoiceCtrl.financialData.Items.length"
+    >
+    </no-records>
+
+    <ul uib-pagination
+        total-items="invoiceCtrl.financialData.Count"
+        ng-model="invoiceCtrl.paginationParams.pageIndex"
+        items-per-page="invoiceCtrl.paginationParams.pageSize"
+        ng-change="invoiceCtrl.getItems()"
+        max-size="invoiceCtrl.paginationParams.pageSize"
+        class="pagination-sm tab-pagination patient-invoices-pagination"
+        boundary-link-numbers="false"
+        previous-text="&lsaquo;"
+        next-text="&rsaquo;">
+    </ul>
+
+</div>

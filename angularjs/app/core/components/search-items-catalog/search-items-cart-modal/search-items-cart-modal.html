@@ -1,0 +1,73 @@
+<div class="modal-window search-items-cart-modal">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/documents.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Selected Items List:</h2>
+        </div>
+
+        <div class="search-items-modal-body"
+             scroll-bar
+             scroll-bar-above-element="true">
+
+            <table class="drowz-table">
+                <tr class="drowz-table-header">
+                    <th class="number-cell" width="45">#</th>
+                    <th>Name:</th>
+                    <th>Manufacturer:</th>
+                    <th width="75">ID/Part #:</th>
+                    <th width="95">HCPCS:</th>
+                    <th width="45" ng-if="!$ctrl.isCompleteWizard">Qty:</th>
+                    <th width="40">&nbsp;</th>
+                </tr>
+                <tr class="drowz-table-row" ng-repeat="item in $ctrl.items track by $index">
+                    <td class="number-cell">{{$index + 1}}.</td>
+                    <td ng-if="!item.isAny">{{item.Name}}</td>
+                    <td ng-if="!item.isAny">{{item.Manufacturer}}</td>
+                    <td ng-if="!item.isAny">{{item.PartNumber}}</td>
+                    <td colspan="3" ng-if="item.isAny">
+                        <div class="any-device-block">
+                            <span>Any Device of this Category</span>
+                        </div>
+                    </td>
+                    <td ng-if="item.isAny">
+                        <div>{{item.HcpcsCode.Id}}</div>
+                    </td>
+                    <td ng-if="!item.isAny">
+                        <div popover-directive="item.Hcpcs"
+                             hide-first-item="true"
+                             min-width="50"></div>
+                    </td>
+
+                    <td ng-if="!$ctrl.isCompleteWizard">{{item.Count}}</td>
+                    <td align="center">
+                        <md-button aria-label="..."
+                                   class="delete-icon-btn"
+                                   confirm-ng-click="$ctrl.delete(item)"
+                                   confirm-msg="'Are you sure you want to remove item <span class=\'active-text\'>{0}</span> ?'.format(item.Name)"
+                                   confirm-btn-ok="Remove"
+                                   confirm-btn-cancel="Cancel"
+                                   confirm-title="Remove Item"
+                                   confirm-class-name="max-width-450">
+                            <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                        </md-button>
+                    </td>
+                </tr>
+                <tr ng-if="!$ctrl.items.length">
+                    <td colspan="7">
+                        <div class="no-records" style="text-align:center;">No equipment selected</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button" ng-click="$ctrl.cancel()">Close</md-button>
+    </md-dialog-actions>
+</div>

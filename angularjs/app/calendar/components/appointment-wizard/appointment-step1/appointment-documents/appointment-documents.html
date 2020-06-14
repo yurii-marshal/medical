@@ -1,0 +1,54 @@
+<no-records text="Documents"
+            class="no-records-small"
+            ng-if="!$ctrl.model.patientDocuments.length"></no-records>
+
+<div class="appointment-documents"
+     ng-form="$ctrl.documentsForm"
+     ng-if="$ctrl.model.patientDocuments.length">
+    <div class="drowz-wizard-block-row" ng-repeat="selectedDocument in $ctrl.model.event.Documents track by $index">
+
+        <div class="info-block grow-1">
+            <md-input-container>
+                <label>Select Document:</label>
+                <md-select ng-model="selectedDocument"
+                           name="document{{$index}}"
+                           ng-change="$ctrl.changeDocument(selectedDocument, $index)">
+                    <md-option ng-repeat="(key, document) in $ctrl.model.patientDocuments"
+                               ng-value="document"
+                               ng-selected="document.Id === selectedDocument.Id">
+                        {{document.DocumentType.Text}}
+                    </md-option>
+                </md-select>
+                <div ng-messages="$ctrl.documentsForm['document' + $index].$error"
+                     class="md-input-messages-nice">
+                    <div ng-message="notUnique"><b>Document</b> must be unique.</div>
+                </div>
+            </md-input-container>
+        </div>
+
+        <div class="info-block select-document-btns">
+
+            <md-button class="md-raised small-btn eye-details-btn"
+                       ng-if="selectedDocument.Id"
+                       ng-click="$ctrl.openPreview(selectedDocument.AccessToken)">
+                <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon> Open
+            </md-button>
+
+            <a href="javascript:void(0);"
+               class="delete-icon-btn"
+               ng-click="$ctrl.deleteDocument($index)"
+               ng-if="selectedDocument.Id">
+                <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+            </a>
+
+        </div>
+    </div>
+
+    <md-button class="md-raised middle-btn add-new-contact"
+               ng-click="$ctrl.addDocument()"
+               ng-hide="$ctrl.model.event.Documents.length === $ctrl.model.patientDocuments.length || $ctrl.model.event.Documents.length === 3">
+        <md-icon md-svg-src="assets/images/default/plus.svg"></md-icon>Add Document
+    </md-button>
+
+</div>
+

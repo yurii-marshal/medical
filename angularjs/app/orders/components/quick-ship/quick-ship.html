@@ -1,0 +1,17 @@
+<div class="drowz-wizard quick-ship-details bs-loading-overlay-fullscreen"
+     ng-form="quickShip.mainForm"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="quickShipDetails">
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.orders.list">Orders</a>
+        <a href="javascript:void(0)" ng-click="quickShip.cancel()">
+            {{quickShip.orderShortInfo.orderDisplayId}}
+        </a>
+        <a href="javascript:void(0)" class="active">Shipment Details</a>
+    </div>
+
+    <div class="clearfix" ui-view></div>
+
+</div>

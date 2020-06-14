@@ -1,0 +1,75 @@
+<div class="payer small-sidebar bs-loading-overlay-fullscreen"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="payerPage">
+
+    <div id="row"
+         class="sidebar-container no-fold-sidebar"
+         drowz-sidebar
+         drowz-sidebar-name="payer">
+
+        <div class="sidebar"
+             scroll-bar
+             scroll-bar-above-element="true">
+
+            <div class="sidebar-padding-block flex-cont stretch">
+                <div class="name-status-block">
+                    <div class="sidebar-title">{{payer.vm.Name}}</div>
+                </div>
+            </div>
+
+            <div class="sidebar-padding-block">
+
+                <div class="sidebar-block-title">Short Details:</div>
+
+                <div class="icon-block">
+                    <md-icon md-svg-src="assets/images/default/user-circle-new.svg" class="icon-block-icon"></md-icon>
+                    <div class="info-block">
+                        <div class="info-block-label uppercase-label">Payer ID:</div>
+                        <div class="info-block-body ellipsis">{{payer.vm.PayerId || payer.vm.ClaimCode || '-'}}</div>
+                    </div>
+                </div>
+                <div class="icon-block" ng-if="payer.vm.CreatedBy">
+                    <md-icon md-svg-src="assets/images/default/address.svg" class="icon-block-icon"></md-icon>
+                    <div class="info-block">
+                        <div class="info-block-label uppercase-label">Created by:</div>
+                        <div class="info-block-body">
+                            {{payer.vm.CreatedBy.Name.FullName}} <br>
+                            {{payer.vm.CreatedOn | localDateTime:'MM/DD/YYYY'}}
+                            <span class="active-text">{{payer.vm.CreatedOn | localDateTime:'hh:mm A'}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="icon-block" ng-if="payer.vm.ModifiedBy">
+                    <md-icon md-svg-src="assets/images/default/address.svg" class="icon-block-icon"></md-icon>
+                    <div class="info-block">
+                        <div class="info-block-label uppercase-label">Modified by:</div>
+                        <div class="info-block-body">
+                            {{payer.vm.ModifiedBy.Name.FullName}} <br>
+                            {{payer.vm.ModifiedOn | localDateTime: 'MM/DD/YYYY'}}
+                            <span class="active-text">{{payer.vm.ModifiedOn | localDateTime: 'hh:mm A'}}</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="main-content">
+
+            <drowz-tabs items="payer.tabs"></drowz-tabs>
+
+            <div class="breadcrumbs">
+                <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+                <a href="javascript:void(0)" ui-sref="root.management">Management</a>
+                <a href="javascript:void(0)" ui-sref="root.management.billing">Billing</a>
+                <a href="javascript:void(0)" class="penultimate-bread-crumb" ui-sref="root.management.billing.payers">Payers</a>
+                <a href="javascript:void(0)" class="active penultimate-bread-crumb" ng-if="!payer.isNew">Edit Payer</a>
+                <a href="javascript:void(0)" class="active" ng-if="payer.isNew">New Payer</a>
+            </div>
+
+            <div ng-form="payer.main" ui-view></div>
+
+        </div>
+    </div>
+</div>

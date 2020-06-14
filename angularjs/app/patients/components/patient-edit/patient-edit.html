@@ -1,0 +1,57 @@
+<div class="patient bs-loading-overlay-fullscreen drowz-wizard add-edit-patient"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="patientEdit"
+>
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.patients.list">Patients</a>
+        <a href="javascript:void(0)" class="active">{{patient.breadcrumbName}}</a>
+    </div>
+
+    <div drowz-wizard-tabnames
+         steps="patient.steps"
+         class="drowz-wizard-tabnames">
+        <a href="javascript:void(0);"
+           class="drowz-wizard-tab"
+           ng-repeat="tab in patient.tabs"
+           ng-class="{'active': patient.isActive(tab.state), 'finished': tab.isFinished}">
+            {{tab.name}}
+        </a>
+    </div>
+    <div ng-form="patient.mainForm">
+        <div class="drowz-wizard-body clearfix" ui-view></div>
+    </div>
+
+    <div class="drowz-wizard-footer">
+        <md-button class="md-raised main-button drowz-wizard-footer-btn"
+                   ng-click="patient.cancel()"
+        >
+            Cancel
+        </md-button>
+
+        <md-button class="md-raised main-button drowz-wizard-footer-btn"
+                   ng-click="patient.previous()"
+                   disabled-scroll="patient.patientCurrentFormInvalid()"
+                   scroll-to
+                   ng-disabled="patient.isPreviousDisabled()"
+        >
+            Previous
+        </md-button>
+
+        <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                   ng-click="patient.next()"
+                   ng-hide="patient.isSaveShown()"
+                   ng-disabled="patient.isNextDisabled()"
+                   disabled-scroll="patient.patientCurrentFormInvalid()"
+                   scroll-to
+        >
+            Next
+        </md-button>
+
+        <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                   ng-click="patient.save()" ng-show="patient.isSaveShown()"
+        >
+            Save
+        </md-button>
+    </div>
+</div>

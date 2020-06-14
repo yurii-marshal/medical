@@ -1,0 +1,301 @@
+<v-accordion class="flow-accordion"
+             multiple>
+    <v-pane expanded="true"
+            ng-repeat="line in $ctrl.lines track by $index"
+            scroll-if-anchor="($ctrl.anchorServiceLine === line.ServiceLineId) && $ctrl.invoiceDetailsLoaded">
+        <v-pane-header class="flow-accordion-title">
+            <md-icon md-svg-src="assets/images/default/chevron.svg"
+                     class="flow-accordion-title-icon"></md-icon>
+            <div class="flow-title-text">
+                <span>Service Line {{$index + 1}}:</span>
+
+                <!--TODO - make normal color class mapping inside service or controller-->
+                <div class="status-label dark-blue marg-h-5"
+                     ng-if="line.PriceType.Name">{{line.PriceType.Name}}</div>
+                <div class="status-label red marg-h-5"
+                     ng-if="line.IsDenied">Denied</div>
+                <div class="status-label blue marg-h-5"
+                     ng-if="line.Status.Name === 'Applied'">Applied</div>
+                <div class="status-label red marg-h-5"
+                     ng-if="line.Status.Name === 'Failed'">Failed</div>
+                <div class="status-label blue marg-h-5"
+                     ng-if="line.BillInArrears">In Arrears</div>
+
+                <div class="attr-label {{attr.AttrClass}}"
+                      ng-class="{'allowable-label': attr.Category.Name === 'Allowable'}"
+                      ng-repeat="attr in line.Attributes | unique: 'Code'"
+                      simple-tooltip="{{attr.Description}}">
+                    <md-icon md-svg-src="assets/images/default/tag.svg"
+                             ng-hide="attr.Category.Name === 'Allowable'"></md-icon>
+                    <span ng-bind="attr.Name"></span>
+                </div>
+
+            </div>
+            <div class="accordion-line"></div>
+            <div ng-if="$ctrl.isPeriodVisible(line)"
+                 ng-click="$ctrl.goToRental($event, line.RentProgramId)"
+                 class="line-period-options">
+                Period&nbsp;{{line.Period}}&nbsp;|&nbsp;{{line.Cycle.Name}}
+            </div>
+
+        </v-pane-header>
+
+        <v-pane-content>
+            <div class="service-line">
+                <div class="flex-row">
+                    <div class="info-block block-width-270"
+                         ng-if="line.Patient">
+                        <div class="info-block-label">Patient:</div>
+                        <div class="info-block-body">
+                            {{line.Patient.FirstName}} {{line.Patient.LastName}}
+                        </div>
+                    </div>
+                    <div class="info-block block-width-230"
+                         ng-if="line.ClaimDisplayId"
+                         ng-class="{ 'left-divider': line.Patient }">
+                        <div class="info-block-label">Invoice:</div>
+                        <div class="info-block-body">
+                            <a href="javascript:void(0);"
+                               class="underline-after-link"
+                               ui-sref="root.invoice.details({ invoiceId: line.ClaimId })">
+                                {{line.ClaimDisplayId}}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="info-block block-width-250"
+                         ng-class="{ 'left-divider': line.Patient || line.ClaimDisplayId }">
+                        <div class="info-block-label">DOS:</div>
+                        <div class="info-block-body">
+                            {{line.ServicePeriod.From | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                            &nbsp;-&nbsp;
+                            {{line.ServicePeriod.To | amUtc | amDateFormat: "MM/DD/YYYY"}}
+                        </div>
+                    </div>
+                    <div class="info-block block-width-100 left-divider">
+                        <div class="info-block-label">POS:</div>
+                        <div class="info-block-body" title="{{line.PlaceOfService.Name}}">{{line.PlaceOfService.Code}}</div>
+                    </div>
+                    <div class="info-block block-width-120 left-divider">
+                        <div class="info-block-label">HCPCS:</div>
+                        <div class="info-block-body">{{line.HcpcsCode.Name}}</div>
+                    </div>
+                    <div class="info-block block-width-250 left-divider">
+                        <div class="info-block-label">Modifiers:</div>
+                        <div class="info-block-body">
+                            <div class="code-with-slash"
+                                 ng-repeat="modifier in line.Modifiers"
+                                 title="{{modifier.Description}}">
+                                {{modifier.Name || '-'}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-block grow-1 left-divider">
+                        <div class="info-block-label">Diagnosis:</div>
+                        <div class="info-block-body">
+                            <div class="code-with-slash"
+                                 ng-repeat="diagnose in line.Diagnosis"
+                                 title="{{diagnose.Description}}">
+                                {{diagnose.Name || '-'}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-block block-width-100 left-divider">
+                        <div class="info-block-label">Qty:</div>
+                        <div class="info-block-body">{{line.Quantity}}</div>
+                    </div>
+                    <div class="info-block block-width-180">
+                        <md-button class="md-raised small-btn eye-details-btn"
+                                   ng-if="line.PriceOptionId"
+                                   ng-click="$ctrl.showPricingDetails($event, line)">
+                            <md-icon md-svg-src="assets/images/default/eye.svg"></md-icon>
+                            <span>Pricing Details</span>
+                        </md-button>
+                    </div>
+                </div>
+                <div class="flex-row">
+                    <div class="info-block block-width-270" ng-if="line.BillTo">
+                        <div class="info-block-label">Bill to:</div>
+                        <div class="info-block-body">{{line.BillTo}}</div>
+                    </div>
+                    <div class="info-block block-width-480"
+                         ng-class="{ 'left-divider' : line.BillTo }"
+                         ng-if="line.Name">
+                        <div class="info-block-label">Service:</div>
+                        <div class="info-block-body">{{line.Name}}</div>
+                    </div>
+                    <div class="info-block grow-1 left-divider"
+                         ng-if="line.ServiceProduct || line.ProductName">
+                        <div class="info-block-label">Item:</div>
+                        <div class="info-block-body">{{line.ServiceProduct.Name || line.ProductName}}</div>
+                    </div>
+                    <div class="info-block block-width-480 left-divider"
+                         ng-if="line.PriorAuthNumber">
+                        <div class="info-block-label">Prior Authorization Number:</div>
+                        <div class="info-block-body">{{ line.PriorAuthNumber }}</div>
+                    </div>
+                </div>
+
+                <div ng-if="$ctrl.paymentId"
+                     class="marg-v-15 pad-15 grey-bordered-block payment-details-panel">
+
+                    <div class="flex-row">
+                        <div class="charge-block">
+                            <span class="block-label">Charge:</span>
+                            <div class="price-number">
+                                <div ng-if="!line.ChargeAmount">-</div>
+                                <div ng-if="line.ChargeAmount">
+                                    {{line.ChargeAmount.Currency}}&nbsp;{{line.ChargeAmount.Amount | absNumber:2}}
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="line.BalanceAmount"
+                             class="balance-block left-divider">
+                            <span class="block-label">Balance:</span>
+                            <div class="price-number">
+                                <div ng-if="!line.BalanceAmount">-</div>
+                                <div ng-if="line.BalanceAmount">
+                                    {{line.BalanceAmount.Currency}}&nbsp;{{line.BalanceAmount.Amount | absNumber:2}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="payment-block left-divider">
+                            <span class="block-label">Payment Amount:</span>
+                            <div class="price-number active-text">
+                                <div ng-if="!line.TransactionAmount">-</div>
+                                <div ng-if="line.TransactionAmount">
+                                    {{line.TransactionAmount.Currency}}&nbsp;{{line.TransactionAmount.Amount | absNumber:2}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <md-button class="green-btn middle-btn connect-btn"
+                               ng-class="{ 'visible' : line.Status.Name === 'Failed' }"
+                               ng-click="$ctrl.searchServiceLine(line.HcpcsCode.Id, line.ServiceLineId)"
+                               aria-label="...">
+                        Connect
+                    </md-button>
+                </div>
+
+                <v-accordion ng-if="!$ctrl.paymentId"
+                             class="invoice-accordion"
+                             control="$ctrl.accordionControl"
+                             onexpand="$ctrl.getTransactionList(line.ServiceLineId)"
+                             bs-loading-overlay
+                             bs-loading-overlay-reference-id="transactions-{{line.ServiceLineId}}"
+                             multiple>
+                    <v-pane ng-disabled="!line.ServiceLineId"
+                            id="{{line.ServiceLineId}}">
+                        <v-pane-header>
+                            <div class="invoice-accordion-header">
+                                <md-icon md-svg-src="assets/images/default/chevron-circle.svg"
+                                         class="invoice-accordion-icon"></md-icon>
+                                <div class="price-container first-container">
+                                    <div class="top-price-block">
+                                        <div class="price-text">Charge:</div>
+                                        <div class="price-number">
+                                            <div ng-if="!line.TotalAmounts.Charged">-</div>
+                                            {{line.TotalAmounts.Charged.Currency}}&nbsp;{{line.TotalAmounts.Charged.Amount | absNumber:2}}
+                                        </div>
+                                    </div>
+                                    <div class="bottom-price-block">
+                                        Deductible:
+                                        <div class="bottom-price-number">
+                                            <div ng-if="!line.TotalAmounts.Deductible">-</div>
+                                            {{line.TotalAmounts.Deductible.Currency}}&nbsp;{{line.TotalAmounts.Deductible.Amount | absNumber:2}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="price-container">
+                                    <div class="top-price-block with-divider">
+                                        <div class="price-text">Sales Tax:</div>
+                                        <div class="price-number">
+                                            <span ng-if="!line.TotalAmounts.Tax">-</span>
+                                            {{line.TotalAmounts.Tax.Currency}}&nbsp;{{line.TotalAmounts.Tax.Amount | absNumber:2}}
+                                        </div>
+                                    </div>
+                                    <div class="bottom-price-block with-divider">
+                                        Coinsurance:
+                                        <div class="bottom-price-number">
+                                            <div ng-if="!line.TotalAmounts.Coinsurance">-</div>
+                                            {{line.TotalAmounts.Coinsurance.Currency}}&nbsp;{{line.TotalAmounts.Coinsurance.Amount | absNumber:2}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="price-container">
+                                    <div class="top-price-block with-divider">
+                                        <div class="price-text">Allowed:</div>
+                                        <div class="price-number">
+                                            <span ng-if="!line.TotalAmounts.Allowance">-</span>
+                                            {{line.TotalAmounts.Allowance.Currency}}&nbsp;{{line.TotalAmounts.Allowance.Amount | absNumber:2}}
+                                        </div>
+                                    </div>
+                                    <div class="bottom-price-block with-divider">
+                                        Copay:
+                                        <div class="bottom-price-number">
+                                            <div ng-if="!line.TotalAmounts.Copay">-</div>
+                                            {{line.TotalAmounts.Copay.Currency}}&nbsp;{{line.TotalAmounts.Copay.Amount | absNumber:2}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="price-container">
+                                    <div class="top-price-block with-divider">
+                                        <div class="price-text">Payments:</div>
+                                        <div class="price-number">
+                                            <div ng-if="!line.TotalAmounts.Payments">-</div>
+                                            {{line.TotalAmounts.Payments.Currency}}&nbsp;{{line.TotalAmounts.Payments.Amount | absNumber:2}}
+                                        </div>
+                                    </div>
+                                    <div class="bottom-price-block"></div>
+                                </div>
+                                <div class="price-container last-container">
+                                    <div class="top-price-container">
+                                        <div class="top-price-block with-divider">
+                                            <div class="price-text">Adjustments:</div>
+                                            <div class="price-number">
+                                                <div ng-if="!line.TotalAmounts.Adjustments">-</div>
+                                                {{line.TotalAmounts.Adjustments.Currency}}&nbsp;{{line.TotalAmounts.Adjustments.Amount | absNumber:2}}
+                                            </div>
+                                        </div>
+                                        <div class="top-price-block with-divider">
+                                            <div class="price-text">Balance:</div>
+                                            <div class="price-number">
+                                                <div ng-if="!line.TotalAmounts.Balance">-</div>
+                                                {{line.TotalAmounts.Balance.Currency}}&nbsp;{{line.TotalAmounts.Balance.Amount | absNumber:2}}
+                                            </div>
+                                        </div>
+                                        <md-button class="md-raised md-primary middle-btn add-transaction-btn"
+                                                   ng-if="line.ServiceLineId &&
+                                                    !$ctrl.isVoidInvoice &&
+                                                     $ctrl.userPermissions.isAllow($ctrl.permissionsCategoriesConstants.BILLING, $ctrl.billingPermissionsConstants.INVOICE_MODIFY)"
+                                                   ng-click="$ctrl.showTransactionModal($event, line)"
+                                                   aria-label="..."
+                                        >
+                                            Adjust
+                                        </md-button>
+                                    </div>
+                                    <div class="bottom-price-block"></div>
+                                </div>
+                            </div>
+                        </v-pane-header>
+                        <v-pane-content>
+
+                            <transactions-list
+                                ng-show="line.transactions.length"
+                                invoice-id="$ctrl.invoiceId"
+                                is-void-invoice="$ctrl.isVoidInvoice"
+                                service-line-id="line.ServiceLineId"
+                                transactions="line.transactions">
+                            </transactions-list>
+
+                            <no-records text="Transactions"
+                                        ng-show="!line.transactions.length"></no-records>
+
+                        </v-pane-content>
+                    </v-pane>
+                </v-accordion>
+            </div>
+        </v-pane-content>
+    </v-pane>
+</v-accordion>

@@ -1,0 +1,178 @@
+<div ng-form="pick.inventoryPickForm" class="inventory-pick-view">
+    <div class="drowz-wizard-body">
+
+        <div class="drowz-wizard-block no-float shipment-subwizard-block">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Add From Inventory:</div>
+            </div>
+            <div class="drowz-wizard-block-body flex-row"
+                 bs-loading-overlay
+                 bs-loading-overlay-reference-id="inventory-pick">
+
+                <div class="col-w-50 subwizard-container-block with-blue-border"
+                     ng-if="pick.isLimitReached()">
+                    <div class="flex-row grow-1 limit-message">
+                        <md-icon md-svg-src="assets/images/default/alert.svg"
+                                 class="alert-icon"></md-icon>
+                        <span>After this order, you are now out of stock of this item!</span>
+                    </div>
+                </div>
+
+                <!--lookupProperty === 'location'-->
+                <div class="col-w-50 subwizard-container-block with-additional-text"
+                     ng-if="!pick.isLimitReached() &&
+                           (pick.currentProduct.lookupProperty === pick.lookupProperties.LOCATION.id)">
+                    <md-icon md-svg-src="assets/images/default/location.svg"
+                             class="subwizard-container-icon location-icon"></md-icon>
+                    <md-input-container class="subwizard-container">
+                        <label>{{pick.lookupProperties.LOCATION.label}}:</label>
+                        <input type="text"
+                               auto-focus
+                               ng-model="pick.currentProduct.locationFrom.uniqueId"
+                               on-press-enter="pick.onLocationEnter()"/>
+                    </md-input-container>
+
+                    <div class="subwizard-container-btns">
+                        <md-button class="md-raised small-btn"
+                                   ng-click="pick.openSearchLocationModal($event)">
+                            Search
+                        </md-button>
+                        <md-button class="md-primary md-raised small-btn enter-barcode-btn"
+                                   ng-click="pick.onLocationEnter()">
+                            Enter
+                        </md-button>
+                    </div>
+
+                </div>
+
+                <!--lookupProperty === 'ProductId' || 'SerialNumber' || 'LotNumber'-->
+                <div ng-if="!pick.isLimitReached() &&
+                            (pick.currentProduct.lookupProperty !== pick.lookupProperties.LOCATION.id)"
+                     class="col-xs-6 subwizard-container-block">
+                    <md-icon md-svg-src="assets/images/default/inventory.svg"
+                             class="subwizard-container-icon inventory-icon"></md-icon>
+                    <md-input-container class="subwizard-container">
+                        <label>{{pick.lookupProperties[pick.currentProduct.lookupProperty].label}}:</label>
+                        <input type="text"
+                               auto-focus
+                               ng-model="pick.currentProduct.barcode"
+                               ng-disabled="pick.currentProduct.lookupProperty === pick.lookupProperties.PRODUCT_ID.id"
+                               on-press-enter="pick.searchProductByProductId()"/>
+                    </md-input-container>
+                    <div class="subwizard-container-btns">
+                        <md-button class="md-raised small-btn"
+                                   ng-disabled="pick.currentProduct.barcode ||
+                                   (pick.currentProduct.status === pick.searchEquipmentStatusConstants.NOT_DETERMINED_ID)"
+                                   ng-click="pick.openSelectProductModal()">
+                            Search
+                        </md-button>
+                        <md-button class="md-primary md-raised small-btn enter-barcode-btn"
+                                   ng-click="pick.searchProductByProductId()"
+                                   ng-disabled="!pick.currentProduct.barcode">
+                            Enter
+                        </md-button>
+                    </div>
+                </div>
+
+                <!--Block with locations-->
+                <div class="col-w-50 subwizard-container-block with-blue-border"
+                     ng-if="!pick.isLimitReached()">
+                    <md-icon md-svg-src="assets/images/default/location.svg"
+                             class="subwizard-container-icon location-icon"></md-icon>
+                    <div class="flex-row grow-1">
+                        <div class="col-xs-6 flex-cont">
+                            <div class="info-block grow-1">
+                                <div class="info-block-label">From:</div>
+                                <div class="info-block-body">
+                                    <div ng-if="pick.currentProduct.isAnyLocationFrom">
+                                        Multiple Locations
+                                    </div>
+                                    <div ng-if="pick.currentProduct.locationFrom.id">
+                                        {{pick.currentProduct.locationFrom.displayName}}
+                                    </div>
+                                    <div ng-if="!pick.currentProduct.isAnyLocationFrom &&
+                                                !pick.currentProduct.locationFrom.id">
+                                        -
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="subwizard-container-btns">
+                                <md-button class="md-raised small-btn"
+                                           ng-disabled="!pick.currentProduct.isAnyLocationFrom &&
+                                                        !pick.currentProduct.locationFrom.id"
+                                           ng-click="pick.openSearchLocationModal($event)">
+                                    Change
+                                </md-button>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 info-block">
+                            <div class="info-block-label">To:</div>
+                            <div class="info-block-body">
+                                {{pick.currentProduct.locationTo.displayName}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="drowz-wizard-block-body processing-product"
+                 ng-show="pick.currentProduct.status &&
+                          (pick.currentProduct.status !== pick.searchEquipmentStatusConstants.FOUND_ID)">
+
+                <hr class="drowz-line">
+
+                <!-- product not determined-->
+                <div class="scanned-item-block"
+                     ng-if="pick.currentProduct.status === pick.searchEquipmentStatusConstants.NOT_DETERMINED_ID">
+                    <current-item
+                        item="pick.currentProduct.product"
+                        components="pick.currentProduct.components"
+                        lookup-property="pick.currentProduct.lookupProperty"
+                        picked-items="pick.pickedItems"
+                    ></current-item>
+                </div>
+
+                <!-- product not found -->
+                <div class="scanned-item-block not-found"
+                     ng-if="pick.currentProduct.status === pick.searchEquipmentStatusConstants.NOT_FOUND_ID">
+                    <md-icon md-svg-src="assets/images/default/alert.svg"
+                             class="not-found-icon"></md-icon>
+                    <div>Product was not found.</div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="drowz-wizard-block no-float picked-items-container"
+             ng-if="pick.pickedItems.items.allIds.length > 0">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Selected Items:</div>
+            </div>
+            <div class="drowz-wizard-block-body">
+                <picked-items
+                    picked-items="pick.pickedItems"
+                ></picked-items>
+            </div>
+        </div>
+    </div>
+
+    <div class="drowz-wizard-footer">
+        <md-button class="md-raised main-button drowz-wizard-footer-btn"
+                   ng-click="pick.cancel()">
+            Cancel
+        </md-button>
+
+        <!--<md-button class="md-raised main-button drowz-wizard-footer-btn"-->
+                   <!--ng-click="pick.undo()"-->
+                   <!--ng-disabled="false">-->
+            <!--Undo-->
+        <!--</md-button>-->
+
+        <md-button class="md-raised md-primary main-button drowz-wizard-footer-btn"
+                   scroll-to
+                   ng-click="pick.finish()"
+                   ng-disabled="false">
+            Finish
+        </md-button>
+    </div>
+</div>

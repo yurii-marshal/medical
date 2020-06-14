@@ -1,0 +1,47 @@
+<div class="modal-window patient-orders-complete">
+
+    <a href="javascript:void(0);" ng-click="$ctrl.cancel()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/documents.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Select Order to Complete:</h2>
+        </div>
+
+        <div class="appointment-order-details" ng-repeat="order in $ctrl.event.orders">
+            <div class="status-label inactive">
+                Not completed
+            </div>
+            <div class="flex-row row space-between align-top">
+                <div class="info-block grow-1 order-info-block">
+                    <div class="info-block-label">Order:</div>
+                    <div class="info-block-body">
+                        Order:
+                        <a href="javascript:void(0);" class="active-text font-semibold"
+                           ui-sref="root.orders.order.details({ orderId: order.OrderId })">
+                            {{order.DisplayId}}
+                        </a>
+                        <span class="vertical-divider">|</span>
+                        Date: <span class="active-text font-semibold">{{order.CreatedDate | amUtc | amDateFormat: 'MM/DD/YYYY'}}</span>
+                        <br>
+                        Ref. Provider: <span class="active-text font-semibold">{{order | referralDisplayName}}</span>
+                    </div>
+                </div>
+                <div class="info-block block-width-310 left-divider">
+                    <div class="flex-cont space-between">
+                        <div class="info-block">
+                            <div class="info-block-label">Appointment Type:</div>
+                            <div class="info-block-body">{{order.AppointmentType.Text}}</div>
+                        </div>
+                        <md-button class="md-raised small-btn eye-details-btn" ng-click="$ctrl.complete(order)">
+                            Complete
+                        </md-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </md-dialog-content>
+</div>

@@ -1,0 +1,114 @@
+<div class="patient-contacts contacts-flex-wrap"
+     [formGroup]="contactsFormGroup"
+>
+    <div formArrayName="contacts"
+         appContactsUniqValidator
+         [sourceContacts]="sourceContacts"
+         class="flex-row w50percent contact-item"
+         *ngFor="let formControl of contactsForm.controls; let i = index"
+    >
+        <div [formGroupName]="i"
+             class="flex-row w100percent"
+        >
+            <div class="pad-left-5">
+                <mat-form-field class="w100px">
+                    <mat-select formControlName="type"
+                                [ngModel]="formControl.value.type"
+                                (change)="onChangeType(formControl)"
+                    >
+                        <mat-option *ngFor="let contactType of getContactsTypes(formControl.value.type)"
+                                    [value]="contactType.id"
+                        >
+                            {{ contactType.text }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="grow-1 pad-left-10"
+                 *ngIf="isPhoneNumberType(formControl.value.type)"
+            >
+                <app-phone-input formControlName="phone">
+                    <mat-error *ngIf="formControl.controls.phone.hasError('phoneNumber')">
+                        <b>Phone</b> number is not valid
+                    </mat-error>
+                    <mat-error *ngIf="formControl.controls.phone.hasError('notUniqValue')">
+                        <b>Phone</b> must be unique
+                    </mat-error>
+                    <mat-error *ngIf="formControl.controls.phone.hasError('required') && formControl.controls.phone.touched">
+                        This field is required
+                    </mat-error>
+                </app-phone-input>
+            </div>
+
+            <div class="pad-left-10"
+                 *ngIf="isPhoneNumberWithExtType(formControl.value.type)"
+            >
+                <mat-form-field class="w70px"
+                >
+                    <input matInput
+                           placeholder="Ext.:"
+                           formControlName="phoneExtension"
+                           type="number"
+                    >
+                </mat-form-field>
+            </div>
+
+            <div class="grow-1 pad-left-10"
+                 *ngIf="isEmailType(formControl.value.type)"
+            >
+                <mat-form-field class="w100percent">
+                    <input matInput
+                           placeholder="Email"
+                           formControlName="email"
+                    >
+                    <mat-error *ngIf="formControl.controls.email.hasError('email')">
+                        <b>Email</b> is not valid
+                    </mat-error>
+                    <mat-error *ngIf="formControl.controls.email.hasError('notUniqValue')">
+                        <b>Email</b> must be unique
+                    </mat-error>
+                    <mat-error *ngIf="!formControl.controls.email.hasError('email') && formControl.controls.email.hasError('required') && formControl.controls.email.touched">
+                        This field is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="grow-1 pad-left-10"
+                 *ngIf="isWebsiteType(formControl.value.type)"
+            >
+                <mat-form-field class="w100percent">
+                    <input matInput
+                           placeholder="Website"
+                           formControlName="website"
+                    >
+                    <mat-error *ngIf="formControl.controls.website.hasError('pattern')">
+                        <b>Website</b> is not valid
+                    </mat-error>
+                    <mat-error *ngIf="formControl.controls.website.hasError('notUniqValue')">
+                        <b>Website</b> must be unique
+                    </mat-error>
+                    <mat-error *ngIf="!formControl.controls.website.hasError('pattern') && formControl.controls.website.hasError('required') && formControl.controls.website.touched">
+                        This field is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="pad-left-5">
+                <mat-icon svgIcon="trash"
+                          class="delete-icon-btn"
+                          (click)="onDeleteContacts(i)"
+                ></mat-icon>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button (click)="onAddContact()"
+        mat-raised-button
+        color="primary"
+        *ngIf="getContactsTypes().length && !hideAddBtn"
+        [disabled]="contactsFormGroup.invalid"
+>
+    Add New Contact
+</button>

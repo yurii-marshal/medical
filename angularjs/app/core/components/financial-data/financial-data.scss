@@ -1,0 +1,144 @@
+.financial-data {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-grow: 1;
+    width: 100%;
+}
+
+.financial-block {
+    $charge-block-width: 240px;
+
+    display: flex;
+    flex-direction: column;
+    height: 127px;
+    border-radius: 1px;
+    box-shadow: $box-shadow;
+    background-color: $light-gray-color;
+
+    &.charge-block {
+        width: $charge-block-width;
+        min-width: $charge-block-width;
+
+        .financial-sum {
+            padding-right: 0;
+        }
+    }
+
+    &.payments-block, &.balance-block {
+        width: calc((100% - #{$charge-block-width}) / 2 - 12px);
+        min-width: calc((100% - #{$charge-block-width}) / 2 - 12px);
+        margin-left: 12px;
+    }
+
+    &.payments-block {
+        .financial-sum {
+            min-width: 190px;
+        }
+    }
+
+    &.balance-block {
+        .financial-sum .sum-number,
+        .financial-detail .financial-detail-number {
+            color: $main-active-color;
+        }
+    }
+
+    .financial-block-header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        height: 30px;
+        padding-left: 20px;
+        background-color: rgba($dark-blue-color, 0.1);
+        color: $dark-blue-color;
+        font-weight: $font-weight-semibold;
+    }
+
+    .financial-block-body {
+        display: flex;
+        align-items: stretch;
+        justify-content: flex-start;
+        flex-grow: 1;
+        padding: 15px 15px 18px 30px;
+    }
+
+    .financial-sum {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-grow: 1;
+        padding-right: 20px;
+
+        .sum-icon {
+            width: 30px;
+            min-width: 30px;
+            height: 30px;
+            margin: 0 15px 0 0;
+            color: rgba($dark-blue-color, 0.7);
+        }
+
+        .sum-number {
+            position: relative;
+            flex-grow: 1;
+            font-size: 28px;
+            line-height: 28px;
+            color: $dark-blue-color;
+            font-weight: $font-weight-semibold;
+            white-space: nowrap;
+        }
+
+        .unapplied-payments {
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            font-size: $font-size-sm;
+            font-weight: 400;
+            line-height: 14px;
+            white-space: nowrap;
+
+            .unapplied-payments-number {
+                color: $red-color;
+                font-weight: $font-weight-bold;
+            }
+        }
+    }
+
+    .financial-detail {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 0 17px;
+        border-left: 2px solid #eee;
+
+        .financial-detail-title {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 7px;
+            color: $font-color;
+
+            > md-icon {
+                height: 16px;
+                margin: 0 10px 0 0;
+                color: rgba($font-color, 0.8);
+
+                &.insurance-icon {
+                    width: 12px;
+                }
+
+                &.patient-icon {
+                    width: 15px;
+                }
+            }
+        }
+
+        .financial-detail-number {
+            padding-left: 22px;
+            font-weight: $font-weight-semibold;
+            white-space: nowrap;
+            color: $dark-blue-color;
+        }
+    }
+}

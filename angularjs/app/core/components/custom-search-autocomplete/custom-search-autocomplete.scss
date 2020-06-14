@@ -1,0 +1,51 @@
+.custom-searchbar {
+    > md-input-container {
+
+        @media all and (-ms-high-contrast: none),
+            (-ms-high-contrast: active) { // fix for IE 10+
+            overflow-x: hidden;
+            height: 100%;
+        }
+
+        @supports (-ms-ime-align:auto)
+            and (-webkit-text-stroke:initial) { // fix for Edge 15+
+            overflow-x: hidden;
+            height: 100%;
+        }
+    }
+
+    .custom-search-autocomplete-container {
+        position: absolute;
+        top: 55px;
+        left: 20px;
+        width: 60%;
+        max-height: 250px;
+        padding: 5px 0;
+        overflow-y: auto;
+        background-color: #ffffff;
+        z-index: 111111111111;
+        border: 1px solid $light-gray-color;
+        border-radius: 5px;
+        box-shadow: $box-shadow;
+        transition: all 0.2s ease-in-out;
+
+        .item {
+            padding: 7px 15px;
+
+            &:hover {
+                background-color: $main-active-color;
+                color: #ffffff;
+                cursor: pointer;
+            }
+        }
+    }
+
+    &.top-position {
+        .custom-search-autocomplete-container {
+            bottom: 55px;
+            top: auto;
+        }
+    }
+}
+
+

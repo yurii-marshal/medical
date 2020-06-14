@@ -1,0 +1,57 @@
+<style>
+    .fc-toolbar {
+        display: none;
+    }
+</style>
+
+<div class="drwz_calendar_header">
+    <div ng-transclude="left"></div>
+
+    <div ng-if="calendar.showTitle" class="calendar_title">{{title}}</div>
+
+    <div class="calendar_setup pull-right">
+        <div ng-transclude="right"></div>
+
+        <md-input-container ng-if="calendar.btns['jumpTo']" class="calendar_icon">
+            <label>Jump to:</label>
+            <input datetimepicker
+                   ng-model-options="{debounce: 0}"
+                   format="MM/DD/YYYY"
+                   aria-label="appoitmentDate"
+                   ng-model="calendar.dateNow">
+        </md-input-container>
+
+        <md-button ng-if="calendar.btns['today']" class="setup_header_btn" ng-click="calendar.goToNow()"><span>Today</span></md-button>
+
+        <md-button ng-if="calendar.btns['agendaDay']"
+                   class="setup_header_icon_btn"
+                   ng-click="calendar.changeView('agendaDay')">
+            <md-icon md-svg-src="assets/images/default/calendar-day.svg"></md-icon>
+            <span class="visible-from-1400">Day</span>
+            <md-tooltip class="hidden-from-1400">Day view</md-tooltip>
+        </md-button>
+
+        <md-button ng-if="calendar.btns['agendaWeek']"
+                   class="setup_header_icon_btn"
+                   ng-click="calendar.changeView('agendaWeek')">
+            <md-icon md-svg-src="assets/images/default/calendar-week.svg"></md-icon>
+            <span class="visible-from-1400">Week</span>
+            <md-tooltip class="hidden-from-1400">Week view</md-tooltip>
+        </md-button>
+
+        <md-button ng-if="calendar.btns['month']"
+                   class="setup_header_icon_btn"
+                   ng-click="calendar.changeView('month')"
+                   tooltip-text="Month">
+            <md-icon md-svg-src="assets/images/default/calendar-month.svg"></md-icon>
+            <span class="visible-from-1400">Month</span>
+            <md-tooltip class="hidden-from-1400">Month view</md-tooltip>
+        </md-button>
+    </div>
+</div>
+
+<div class="calendar_btn_overlay">
+    <a href="javascript:void(0);" class="calendar_prv_btn" ng-click="calendar.goPrv()"></a>
+    <a href="javascript:void(0);" class="calendar_next_btn" ng-click="calendar.goNext()"></a>
+</div>
+<div ng-model="drwzNgModel" ui-calendar="drwzUiCalendar" calendar="{{drwzCalendarId}}" eventSourcesWatcher=""></div>

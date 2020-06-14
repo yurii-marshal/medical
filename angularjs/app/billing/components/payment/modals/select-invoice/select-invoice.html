@@ -1,0 +1,178 @@
+<div class="modal-window select-item-with-wizard-block-modal select-invoice-modal">
+
+    <md-dialog-content class="md-dialog-content select-invoice-modal-content">
+
+        <div class="drowz-wizard-block no-float">
+            <div class="drowz-wizard-block-title">
+                <div class="wizard-title-text">Select Invoice:</div>
+            </div>
+            <div class="drowz-wizard-block-body">
+
+                <div class="flex-row align-start search-filters">
+                    <div class="info-block w60px clear-filters-btn">
+                        <md-button class="clear-filters"
+                                   aria-label="..."
+                                   ng-click="$ctrl.clearFilters()"
+                                   simple-tooltip="Clear Filters">
+                            <md-icon md-svg-src="assets/images/default/clear-filters.svg"></md-icon>
+                        </md-button>
+                    </div>
+                    <div class="info-block w250px">
+                        <md-autocomplete class="drowz-infinite-autocomplete"
+                                         md-no-cache="true"
+                                         md-selected-item="$ctrl.filtersObj.Patient"
+                                         md-search-text="searchPatient"
+                                         md-items="item in $ctrl.getPatients(searchPatient)"
+                                         md-item-text="item.Name | fullname"
+                                         md-min-length="0"
+                                         md-floating-label="Patient:"
+                                         ng-model-options="{debounce: 450}"
+                                         clear-on-click
+                                         drowz-clear-value
+                                         ng-disabled="$ctrl.currentSourceType.Id === $ctrl.paymentTypeConstants.PATIENT_TYPE_ID"
+                        >
+                            <md-item-template>
+                                <span md-highlight-text="searchPatient"
+                                      md-highlight-flags="^i"
+                                >
+                                    {{ item.Name | fullname }}
+                                </span>
+                            </md-item-template>
+                            <md-not-found>
+                                No patient was found
+                            </md-not-found>
+                        </md-autocomplete>
+                    </div>
+                    <div class="info-block w250px">
+                        <md-autocomplete-with-infinite-scroll
+                                md-no-cache="true"
+                                md-selected-item="$ctrl.filtersObj.Payer"
+                                md-search-text="$ctrl.selectedPayer"
+                                md-items="item in $ctrl.getPayers($ctrl.selectedPayer, pageIndex)"
+                                md-item-text="item.Name"
+                                md-min-length="0"
+                                md-floating-label="Payer:"
+                                ng-model-options="{debounce: 450}"
+                                clear-on-click
+                        >
+                                <md-item-template>
+                                    <div md-highlight-flags="^i" title="{{item.Name}}">
+                                        {{item.Name}}
+                                    </div>
+                                </md-item-template>
+                                <md-not-found>
+                                    No payers were found
+                                </md-not-found>
+                        </md-autocomplete-with-infinite-scroll>
+                    </div>
+                    <div class="info-block w160px calendar_icon icon-right">
+                        <md-input-container>
+                            <label>From:</label>
+                            <input datetimepicker
+                                   format="MM/DD/YYYY"
+                                   ng-model="$ctrl.filtersObj['From']">
+                        </md-input-container>
+                    </div>
+                    <div class="info-block w160px calendar_icon icon-right">
+                        <md-input-container>
+                            <label>To:</label>
+                            <input datetimepicker
+                                   format="MM/DD/YYYY"
+                                   ng-model="$ctrl.filtersObj['To']">
+                        </md-input-container>
+                    </div>
+                    <div class="info-block w170px hcpcs-autocomplete">
+                        <md-autocomplete-with-infinite-scroll
+                                md-no-cache="true"
+                                md-selected-item="$ctrl.filtersObj.Hcpcs"
+                                md-search-text="$ctrl.searchHcpcsCode"
+                                md-items="item in $ctrl.getHcpcsCodes($ctrl.searchHcpcsCode, pageIndex)"
+                                md-item-text="item.Text"
+                                md-min-length="2"
+                                md-floating-label="Search HCPCS:"
+                                ng-model-options="{debounce: 450}">
+                                <md-item-template>
+                                    <span md-highlight-flags="^i"
+                                          title="{{item.Description}}">
+                                        {{item.Text + ' ' + item.Description}}
+                                    </span>
+                                </md-item-template>
+                                <md-not-found>
+                                    No hcpcs codes were found
+                                </md-not-found>
+                        </md-autocomplete-with-infinite-scroll>
+                    </div>
+
+                    <div class="info-block grow-1 search-btn-container">
+                        <md-button class="md-raised md-primary middle-btn"
+                                   ng-click="$ctrl.search()">Search</md-button>
+                    </div>
+                </div>
+
+                <hr class="drowz-line">
+
+                <div bs-loading-overlay
+                     bs-loading-overlay-reference-id="invoicesList"
+                >
+
+                    <div class="invoices-list"
+                         ng-if="$ctrl.invoicesListParams.items.length"
+                         scroll-bar
+                         scroll-bar-above-element="true">
+
+                        <!--Control type CHECKBOX-->
+                        <md-checkbox class="md-primary invoices-list-item"
+                                     ng-model="invoice.isChecked"
+                                     ng-if="$ctrl.controlType === $ctrl.selectInvoiceModalType.CHECKBOX"
+                                     ng-click="$ctrl.toggleItem(invoice)"
+                                     ng-repeat="invoice in $ctrl.invoicesListParams.items track by $index"
+                        >
+                            <select-invoice-item
+                                invoice="invoice"
+                            >
+                            </select-invoice-item>
+                        </md-checkbox>
+
+                        <!--Control type RADIO BUTTON-->
+                        <md-radio-group ng-model="$ctrl.selectedItems[0]"
+                                        ng-if="$ctrl.controlType === $ctrl.selectInvoiceModalType.RADIO">
+                            <md-radio-button class="md-primary invoices-list-item"
+                                             ng-value="invoice"
+                                             ng-repeat="invoice in $ctrl.invoicesListParams.items track by $index">
+                                <select-invoice-item
+                                    invoice="invoice"
+                                >
+                                </select-invoice-item>
+                            </md-radio-button>
+                        </md-radio-group>
+                    </div>
+
+                    <div class="flex-cont center"
+                         ng-show="$ctrl.invoicesListParams.showMoreButton">
+                        <div ng-click="$ctrl.showMore()"
+                             class="show-more-btn">show more</div>
+                    </div>
+                </div>
+
+                <no-records text="Service Lines"
+                            is-fullpage="true"
+                            ng-if="!$ctrl.invoicesListParams.items.length">
+                </no-records>
+
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter">
+        <md-button class="md-raised main-button"
+                   ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-raised md-primary main-button"
+                   ng-click="$ctrl.select()"
+                   ng-disabled="!$ctrl.selectedItems.length">
+            Save
+        </md-button>
+    </md-dialog-actions>
+
+</div>
+

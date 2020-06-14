@@ -1,0 +1,127 @@
+.purchase-order-page {
+
+    .sidebar-content {
+        .sidebar-padding-block {
+            .sidebar-block-title {
+                color: $main-active-color;
+                margin-bottom: 15px;
+            }
+        }
+    }
+
+    .main-content {
+        & > drowz-tabs {
+            left: 340px;
+        }
+
+        .breadcrumbs {
+            width: 100%;
+        }
+    }
+
+    .purchase-order-details {
+        $contacts-block-width: 40%;
+        padding: 25px 20px 25px 30px;
+
+        .vendor-info-block {
+            width: calc(100% - #{$contacts-block-width});
+            transition: .2s;
+            transform: translateZ(0);
+        }
+
+        .contacts-block {
+            width: $contacts-block-width;
+            min-width: $contacts-block-width;
+            transition: .2s;
+            transform: translateZ(0);
+        }
+
+        v-pane-header {
+            .vendor-info-block {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                padding-right: 20px;
+            }
+
+            .contacts-block {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                padding-left: 30px;
+            }
+        }
+
+        v-pane-content {
+            .vendor-info-block {
+                padding: 0 20px 10px 0;
+            }
+
+            .contacts-block {
+                position: relative;
+                padding: 0 20px 10px 30px;
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: -10px;
+                    bottom: 0;
+                    left: 0;
+                    width: 1px;
+                    background-color: $lighter-gray-color;
+                }
+
+                .info-block-body {
+                    a {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+
+        v-pane {
+            &:not(.is-expanded) {
+                v-pane-header {
+                    .vendor-info-block {
+                        width: 100%;
+                        padding-right: 0;
+                    }
+
+                    .contacts-block {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+
+    .audit-details {
+        .item-components {
+            padding-left: 95px;
+
+            v-accordion {
+                margin-top: 0;
+            }
+        }
+    }
+}
+
+.purchase-orders-manage {
+    .drowz-wizard-block {
+        .drowz-wizard-block-body {
+            > no-records {
+                .no-records {
+                    margin: 0 auto;
+                }
+            }
+
+            .purchase-order-item {
+                &:not(:last-child) {
+                    border-bottom: 1px solid #f0f3f7;
+                    margin-bottom: 15px;
+                }
+            }
+        }
+    }
+}
+

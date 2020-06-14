@@ -1,0 +1,110 @@
+<div ng-if="payerRules.showRuleView">
+    <div class="flex-row space-between payer-rules-row">
+        <div class="payer-rules-search">
+            <md-input-container class="search-field">
+                <label>Search HCPCS:</label>
+                <input type="text"
+                       ng-change="payerRules.searchChanged()"
+                       ng-model="payerRules.searchRulesHcpcs.HcpcsCodes"
+                       clear-on-click>
+                <md-icon class="search-icon" md-svg-src="assets/images/default/search.svg"></md-icon>
+            </md-input-container>
+        </div>
+        <md-button class="md-raised add-new-contact middle-btn"
+                   ng-click="payerRules.addAuthorizationRule()"
+        >
+            <md-icon md-svg-src="assets/images/default/plus.svg"></md-icon>
+            <span>Add Rule</span>
+        </md-button>
+    </div>
+
+    <div class="payer-rules-flex-row"
+         ng-repeat="rule in payerRules.model.Restrictions.AuthorizationRules | filter: payerRules.searchRulesHcpcs:strict track by $index"
+    >
+        <div class="w600px">
+            <div class="hint-for-hcpcs">
+                Please select HCPCS which require prior authorization:
+            </div>
+            <div class="flex-row">
+                <div class="info-block add-autocomplete block-width-155">
+                    <md-autocomplete
+                        class="autocomplete-with-addBtn"
+                        md-no-cache="true"
+                        md-selected-item="rule.selectedCode"
+                        md-search-text="rule.searchHcpcs"
+                        md-items="item in payerRules.getHcpcsCodes(rule.searchHcpcs)"
+                        md-item-text="item.Text"
+                        md-min-length="0"
+                        md-floating-label="HCPCS:"
+                        ng-required="!rule.HcpcsCodes.length"
+                        md-menu-container-class="hcpcs-decorator"
+                    >
+                        <md-item-template>
+                            <span md-highlight-flags="^i" title="{{item.Description}}">{{item.Text + ' ' + item.Description}}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            No hcpcs codes were found.
+                        </md-not-found>
+                        <md-icon md-svg-src="assets/images/default/plus-square.svg"
+                                 ng-class="{'disabled': !rule.selectedCode }"
+                                 ng-click="payerRules.addHcpcsCode(rule)"
+                                 class="add-item-btn">
+                        </md-icon>
+                    </md-autocomplete>
+                </div>
+                <div class="info-block selected-hcpcs-codes">
+                    <div class="round-chip-block"
+                         ng-repeat="item in rule.HcpcsCodes track by $index">
+                        <span ng-bind="item"></span>
+                        <div class="delete-chip" ng-click="payerRules.removeCode(rule.HcpcsCodes, item)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grow-1 left-divider">
+            <div class="flex-row">
+                <div class="info-block grow-1">
+                    <md-input-container class="fix-label-for-chips">
+                        <md-chips  class="customize-chips-style autocomplete-chips-filter"
+                                   ng-model="rule.Plans"
+                                   placeholder="Select Plan"
+                                   md-require-match="true"
+                        >
+                            <md-autocomplete
+                                class="w300px"
+                                md-no-cache="true"
+                                md-items="item in payerRules.getPlans(searchText, rule.Plans)"
+                                md-search-text="searchText"
+                                md-selected-item="item.Name"
+                                md-item-text="item.Name"
+                                md-selected-item="item.Name"
+                                md-min-length="0"
+                                placeholder="{{ payerRules.getPlaceholderForPlanChips(rule.Plans) }}"
+                            >
+                                <md-item-template>
+                                   <span title="{{ item.Name }}">{{ item.Name }}</span>
+                                </md-item-template>
+                                <md-not-found>Not found</md-not-found>
+                            </md-autocomplete>
+
+                            <md-chip-template>
+                                <span title="{{ $chip.Name }}">
+                                    {{ $chip.Name }}
+                                </span>
+                            </md-chip-template>
+                        </md-chips>
+                    </md-input-container>
+                </div>
+                <div class="info-block block-width-20">
+                    <a href="javascript:void(0);"
+                       class="delete-icon-btn"
+                       ng-click="payerRules.removeRule('AuthorizationRules', $index)"
+                    >
+                        <md-icon md-svg-src="assets/images/default/trash.svg"></md-icon>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

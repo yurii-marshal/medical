@@ -1,0 +1,183 @@
+.collect-payment-page {
+    &.drowz-wizard {
+        padding-top: 40px;
+
+        @include respond-to(appMinWidth) {
+            padding-top: 0;
+        }
+
+        .breadcrumbs {
+            position: fixed;
+            top: $main-menu-height;
+            left: 20px;
+            margin-bottom: 0;
+            max-width: 310px;
+            overflow: hidden;
+            white-space: nowrap;
+
+            @include respond-to(appMinWidth) {
+                position: static;
+            }
+        }
+    }
+}
+
+.collect-payment-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-left: calc(#{$sidebar-big-regular-width} + 15px);
+
+    @include respond-to(appMinWidth) {
+        padding-left: 0;
+    }
+
+    .sidebar {
+        height: calc(100vh - #{$breadscrumbs-height} - #{$main-menu-height} - #{$breadscrumbs-height});
+        top: calc(#{$breadscrumbs-height} + #{$main-menu-height});
+        left: 20px;
+        box-shadow: $box-shadow;
+
+        @include respond-to(appMinWidth) {
+            position: static;
+            height: calc(100vh - #{$breadscrumbs-height} - #{$main-menu-height} - 120px);
+            min-height: 410px;
+        }
+
+        .sidebar-content {
+            height: 100%;
+        }
+
+        .sidebar-padding-block {
+            padding-left: 15px;
+        }
+    }
+}
+
+.collect-payment-content {
+    .drowz-wizard-block-row {
+        &:last-of-type {
+            > .info-block, > md-input-container {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+.collect-payment-balance {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 44px;
+    color: $main-active-color;
+    font-weight: $font-weight-semibold;
+
+    > md-icon {
+        width: 52px;
+        height: 52px;
+        margin: 0 28px 0 0;
+        color: $gray-color;
+    }
+}
+
+.collect-payment-method {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    > md-radio-button {
+        margin: 0 100px 10px 0;
+        min-width: 125px;
+    }
+}
+
+.collect-payment-title {
+    display: inline-block;
+    padding: 0 20px;
+    text-transform: uppercase;
+    color: $main-active-color;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    white-space: nowrap;
+}
+
+.collect-payment-table {
+    width: 100%;
+
+    tr {
+        > td {
+            padding: 10px 7px;
+
+            &:first-of-type {
+                text-align: right;
+                text-transform: uppercase;
+                color: $main-active-color;
+                font-size: $font-size-sm;
+                font-weight: $font-weight-semibold;
+                white-space: nowrap;
+            }
+
+            &:last-of-type {
+                width: 90%;
+            }
+        }
+    }
+}
+
+.collect-payment-receipt-footer {
+    .md-button {
+        &:first-of-type {
+            margin-left: 0;
+        }
+
+        &:last-of-type {
+            margin-right: 0;
+        }
+
+        &.ok-btn {
+            min-width: 105px;
+        }
+    }
+}
+
+.my-stripe-input {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 30px;
+    margin-bottom: 15px;
+    padding: 2px 2px 1px 0;
+    line-height: 28px;
+    font-size: $font-size-md;
+    color: $font-color;
+    border-bottom: 1px solid $gray-color-main;
+    background: none;
+    transition: border .2s;
+
+    > * {
+        flex-grow: 1;
+    }
+
+    &.StripeElement--focus {
+        border-color: $main-active-color;
+    }
+
+    &.StripeElement--invalid {
+        margin-bottom: 2px;
+        border-color: $red-error-color;
+
+        + .stripe-element-error {
+            opacity: 1;
+            min-height: 10px;
+            padding-bottom: 3px;
+        }
+    }
+}
+
+.stripe-element-error {
+    line-height: 10px;
+    font-size: 12px;
+    color: $red-error-color;
+    transition: .2s;
+    opacity: 0;
+}

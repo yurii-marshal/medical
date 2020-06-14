@@ -1,0 +1,45 @@
+<div class="main-links">
+    <a href="javascript:void(0)"
+       ui-sref="root.dashboard"
+       class="main-menu-logo"
+    >
+        <md-icon class="main-menu-logo-icon" md-svg-src="assets/images/logo-nh.svg"></md-icon>
+    </a>
+    <a href="javascript:void(0);"
+       class="main-link"
+       ng-repeat="item in $ctrl.items track by item.state"
+       ui-sref="{{item.state}}"
+       ng-class="{'active': item.active}"
+       ng-if="!item.isHide"
+    >
+        <md-icon class="main-link-icon" md-svg-src="{{item.imageUrl}}"></md-icon>
+        <span class="main-link-text">{{item.name}}</span>
+    </a>
+</div>
+
+<div class="main-menu-info" ng-cloak>
+
+    <helpdesc-widget></helpdesc-widget>
+
+    <chat-helper></chat-helper>
+
+    <notifications ng-if="!$ctrl.firstInit" class="notifications"></notifications>
+    <div class="main-menu-avatar"
+         ng-style="{
+            'background-image': $ctrl.currentUser.profile.PictureUrl ?
+                                'url(' + $ctrl.currentUser.profile.PictureUrl + ')' :
+                                'url(' + $ctrl.userAvatarPlaceholder + ')'
+         }">
+    </div>
+    <div class="main-menu-greeting">
+        <b class="user-name">{{$ctrl.currentUser.profile.Name.FullName}}</b>
+        <a class="main-menu-go-profile"
+           ng-click="$ctrl.goToEditProfileV2()"
+        >Edit profile</a>
+    </div>
+    <a href="javascript:void(0);" class="logout-link" ng-click="$ctrl.logout()">
+        <md-icon class="logout-link-img" md-svg-src="assets/images/main-menu/logout.svg"></md-icon>
+    </a>
+</div>
+
+

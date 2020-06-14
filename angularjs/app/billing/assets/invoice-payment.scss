@@ -1,0 +1,224 @@
+.invoice-modify-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    min-height: calc(100vh - #{$main-menu-height} - #{$drowz-tabs-height});
+
+    > * {
+        width: 100%;
+    }
+}
+
+.invoice-payment-tab {
+    .info-block.step-1-responsive-col {
+        width: calc((100% - 800px) / 2);
+    }
+
+    .drowz-wizard-block .drowz-wizard-block-row + .drowz-wizard-block-row {
+        padding-top: 0;
+    }
+
+    .apply-payment {
+        .service-line-accordeon {
+            .service-line-amount {
+                .invoice-balance-container {
+                    overflow: visible;
+                }
+
+                .md-input-messages-nice {
+                    position: absolute;
+                    top: 33px;
+                    left: 0;
+                    width: 220px;
+                    white-space: normal;
+
+                    .md-input-message-animation {
+                        padding-right: 0;
+                        line-height: 11px;
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+.payment-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0 20px;
+    margin: 0 15px 30px 15px;
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: $box-shadow;
+
+    .previous-payment-block {
+        width: 100%;
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 10px 0 10px 0;
+
+        > md-autocomplete {
+            flex-grow: 1;
+            margin-top: 12px;
+
+            .md-input {
+                font-size: 14px;
+            }
+        }
+    }
+
+    hr.drowz-line {
+        width: 100%;
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+
+    .payment-info {
+        width: 100%;
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 15px 0 10px 0;
+
+        .info-block {
+            .info-block-body {
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+.payment-header-btns {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 15px;
+    padding-bottom: 47px;
+
+    > .md-button {
+        min-width: 105px;
+        margin: 0 0 0 20px;
+    }
+}
+
+.adjustments-block {
+    .adjustments-table {
+        border: 1px solid #eee;
+        margin-bottom: 10px;
+    }
+
+    .active-title.flow-body-active-title {
+        font-weight: $font-weight-bold;
+    }
+}
+
+.service-line-accordeon {
+    v-pane {
+        v-pane-header.service-line-title {
+            position: relative;
+
+            .service-line-accordeon-icon {
+                display: block;
+                margin: 0;
+                position: absolute;
+                left: 20px;
+                top: 50%;
+                width: 8px;
+                height: 14px;
+                color: $dark-blue-color;
+                transform: translate3D(0, -50%, 0) rotate(90deg);
+                transition: transform .2s;
+            }
+
+            .drowz-wizard-block-title {
+                justify-content: space-between;
+                padding-left: 50px;
+            }
+
+            .service-line-options {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                padding-right: 10px;
+
+                .status-label + .delete-icon-btn {
+                    margin-left: 20px;
+                }
+            }
+        }
+
+        &.is-expanded {
+            v-pane-header.service-line-title {
+                .service-line-accordeon-icon {
+                    transform: translate3D(0, -50%, 0) rotate(-90deg);
+                }
+            }
+        }
+    }
+}
+
+.invoice-payment-content, .invoice-modify-content {
+    > .flex-row {
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+
+    .invoice-balance-block {
+        margin: 20px 0 20px;
+    }
+}
+
+.invoice-modify-content {
+    padding: 30px 25px 1px 30px;
+}
+
+.invoice-payment-bts {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-bottom: 30px;
+
+    .md-button {
+        margin: 0;
+
+        + .md-button {
+            margin-left: 10px;
+        }
+    }
+}
+
+.invoice-payment-content {
+    .invoice-balance-block {
+        .invoice-balance-price {
+            min-width: 240px;
+            max-width: 25%;
+        }
+    }
+}
+
+.adjustments-table.drowz-table {
+    table-layout: fixed;
+
+    tr {
+        &.drowz-table-header {
+            background-color: darken($light-gray-color, 0.7);
+
+            &>th {
+                &.amount-cell {
+                    width: 130px;
+                }
+
+                &.group-cell {
+                    width: 300px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,18 @@
+﻿<div ng-form="selectListForm">
+    <md-select ng-model="value"
+                    name="selectField"
+                    aria-label="empty label"
+                    style="width: 200px; margin-top: 0px;"
+                    ng-required="isRequired">
+        <md-option ng-repeat="item in list" value="{{item.Id}}" aria-label="empty label">
+            {{item.Text}}
+        </md-option>
+    </md-select>
+    <ng-messages style="margin-top: -25px; min-height: 20px !important;" for="selectListForm.selectField.$error">
+        <div ng-message="required" 
+             style="padding-top: 2px !important;" 
+             class="outer-validation-message">
+            <b>Option</b> must be selected.
+        </div>
+    </ng-messages>
+</div>

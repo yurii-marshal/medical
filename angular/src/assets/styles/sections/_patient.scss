@@ -1,0 +1,146 @@
+.patient-documents-row {
+  border-bottom: 1px solid $lighter-gray-color;
+
+  .main-document {
+    padding-top: 15px;
+    padding-bottom: 15px;
+
+    > mat-checkbox {
+      display: block;
+
+      .mat-checkbox-label {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        min-height: 50px;
+        margin-left: 40px;
+        flex-grow: 1;
+      }
+
+      .mat-checkbox-layout {
+        display: flex;
+      }
+    }
+
+    .patient-documents-buttons {
+      width: 240px;
+      min-width: 240px;
+      padding-top: 15px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+
+      .toggle-doc-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+        margin: 0 0 0 13px;
+        padding: 0;
+
+        mat-icon {
+          display: block;
+          width: 16px;
+          height: 15px;
+          color: $dark-blue-color;
+          transition: .2s;
+        }
+      }
+
+      .eye-details-btn {
+        margin: 0 5px 0 0;
+      }
+
+      .edit-doc {
+        margin: 0;
+
+        mat-icon {
+          margin-right: 10px;
+          width: 16px;
+          height: 15px;
+          color: $gray-color;
+        }
+      }
+    }
+  }
+}
+
+.delivery-statuses {
+  border-top: 1px solid $lighter-gray-color;
+  padding: 24px 0 15px;
+
+  .delivery-status-stage {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: #c2c2c2;
+
+    &:not(:first-of-type) {
+      padding-top: 30px;
+
+      .delivery-status-icon {
+        &::after {
+          content: "";
+          position: absolute;
+          top: -30px;
+          left: 50%;
+          width: 1px;
+          height: 30px;
+          background-color: currentColor;
+        }
+      }
+    }
+
+    .delivery-status-icon {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 21px;
+      min-width: 21px;
+      height: 21px;
+      margin-right: 10px;
+      background-color: currentColor;
+      border-radius: 50%;
+
+      > mat-icon {
+        display: block;
+        margin: 0;
+        color: #fff;
+
+        &.clock-icon {
+          width: 11px;
+          height: 17px;
+        }
+
+        &.track-icon {
+          width: 13px;
+          height: 16px;
+        }
+
+        &.check-icon {
+          width: 14px;
+          height: 16px;
+          font-size: 16px;
+        }
+      }
+    }
+
+    .delivery-status-text {
+      color: currentColor;
+      font-size: $font-size-xs;
+      line-height: $font-size-xs;
+      white-space: nowrap;
+    }
+
+    &.active {
+      color: $deeper-blue-color;
+
+      .delivery-status-text {
+        color: $font-color;
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+<div class="modal-window schedules-modal">
+    <md-toolbar class="modal-title">
+        <div class="md-toolbar-tools">
+            <h2>Personnel Schedule - {{schedule.date}}</h2>
+            <a href="javascript:void(0);" ng-click="schedule.close()" class="close-modal"></a>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="schedule-modal-table" ng-hide="schedule.schedules.length === 0">
+            <div class="schedule-modal-row clearfix" ng-repeat="item in schedule.schedules">
+                <div class="schedule-modal-name-cell">
+                    <div class="calendar-personnel-name">{{item.fullName}}</div>
+                </div>
+                <div class="schedule-modal-hours-cell">
+                    <div class="schedule-hours" ng-repeat="workingHour in item.workingHours">{{workingHour.from }} - {{workingHour.to}}</div>
+                    <div class="schedule-extra-hours" ng-repeat="extraTime in item.extraTimes">{{extraTime.from}} - {{extraTime.to}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-padding">
+            <div class="modal-no-info" ng-show="schedule.schedules.length === 0">
+                No schedules
+            </div>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions class="modalFooter" layout="row" layout-align="end center">
+        <md-button class="md-raised md-primary" ng-click="schedule.close()">Close</md-button>
+    </md-dialog-actions>
+</div>

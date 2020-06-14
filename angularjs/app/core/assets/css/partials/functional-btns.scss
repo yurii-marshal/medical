@@ -1,0 +1,241 @@
+.delete-icon-btn, .edit-info-icon,
+.view-info-icon, .user-info-icon,
+.dropdown-dotted-btn,
+.action-feature-icon, .action-feature-icon.md-button, .action-feature-icon.md-button:not([disabled]),
+.connect-icon-btn, .connect-icon-btn.md-button, .connect-icon-btn.md-button:not([disabled]),
+.delete-icon-btn.md-button, .edit-info-icon.md-button,
+.view-info-icon.md-button, .user-info-icon.md-button,
+.dropdown-dotted-btn.md-button,
+.delete-icon-btn.md-button:not([disabled]), .edit-info-icon.md-button:not([disabled]),
+.view-info-icon.md-button:not([disabled]), .user-info-icon.md-button:not([disabled]),
+.dropdown-dotted-btn.md-button:not([disabled]) {
+    display: inline-block;
+    outline: none;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    line-height: normal;
+    transition: .2s;
+
+    &:focus {
+        outline: none;
+    }
+
+    &:hover, &:focus {
+        background: none;
+    }
+
+    md-icon {
+        display: block;
+        width: 18px;
+        height: 17px;
+        color: currentColor;
+        transition: 0s;
+    }
+
+    &.hidden-btn {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+.edit-info-icon, .edit-info-icon.md-button, .edit-info-icon.md-button:not([disabled]) {
+    color: $gray-color;
+    width: 18px;
+    min-width: 18px;
+    height: 17px;
+    line-height: 17px;
+
+    &:hover, &:focus {
+        color: $main-active-color;
+    }
+
+    md-icon {
+        width: 18px;
+        height: 17px;
+    }
+
+    + .delete-icon-btn {
+        margin-left: 10px;
+    }
+}
+
+.delete-icon-btn, .delete-icon-btn.md-button, .delete-icon-btn.md-button:not([disabled]) {
+    color: $red-color;
+    width: 14px;
+    min-width: 14px;
+    height: 18px;
+    line-height: 18px;
+
+    &:hover, &:focus {
+        color: $red-color;
+    }
+
+    md-icon {
+        width: 14px;
+        height: 18px;
+    }
+
+    &[disabled] {
+        color: rgba(0,0,0,0.38);
+    }
+}
+
+.view-info-icon, .view-info-icon.md-button, .view-info-icon.md-button:not([disabled]) {
+    color: $gray-color;
+    width: 22px;
+    min-width: 22px;
+    height: 15px;
+    line-height: 15px;
+
+    &:hover, &:focus, &.active {
+        color: $main-active-color;
+    }
+
+    md-icon {
+        width: 22px;
+        height: 15px;
+    }
+
+    + .delete-icon-btn, + .edit-info-icon {
+        margin-left: 10px;
+    }
+}
+
+.user-info-icon, .user-info-icon.md-button, .user-info-icon.md-button:not([disabled]) {
+    color: $gray-color;
+    width: 20px;
+    min-width: 20px;
+    height: 20px;
+    line-height: 20px;
+
+    &:hover, &:focus {
+        color: $main-active-color;
+    }
+
+    md-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    + .delete-icon-btn, + .edit-info-icon, + .view-info-icon {
+        margin-left: 10px;
+    }
+}
+
+.action-feature-icon,
+.action-feature-icon.md-button,
+.action-feature-icon.md-button:not([disabled]){
+    color: $gray-color;
+    @include size(20px, 20px);
+    min-width: 20px;
+    line-height: 20px;
+
+    &:hover, &:focus {
+        color: $main-active-color;
+    }
+
+    md-icon {
+        @include size(20px, 20px);
+    }
+}
+
+.connect-icon-btn,
+.connect-icon-btn.md-button,
+.connect-icon-btn.md-button:not([disabled]) {
+    color: #ffffff;
+    @include size(30px, 30px);
+    min-width: 30px;
+    line-height: 30px;
+    border-radius: 50%;
+    background-color: $main-active-color;
+
+    &:hover, &:focus {
+        color: #ffffff;
+        background-color: $main-active-color;
+    }
+
+    md-icon {
+        @include size(20px, 20px);
+        transform: rotate(100deg);
+    }
+}
+
+.dropdown-dotted-btn {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: $gray-color;
+
+    md-icon {
+        width: 4px;
+        height: 16px;
+    }
+
+    &:hover {
+        background: none;
+        color: $main-active-hover-color;
+    }
+}
+
+.register-device-icon,
+.register-device-icon.md-button,
+.register-device-icon.md-button:not([disabled]) {
+    color: $main-active-color;
+    @include size(25px, 25px);
+    min-width: 25px;
+    line-height: 25px;
+
+    &:hover, &:focus {
+        color: $main-active-color;
+    }
+
+    md-icon {
+        @include size(25px, 25px);
+    }
+}
+
+.close-btn {
+    position: relative;
+    display: block;
+    width: 14px;
+    height: 14px;
+
+    &::after, &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        background-color: #d6d6d6;
+        transform: rotate(45deg);
+        transition: .2s;
+    }
+
+    &::after {
+        height: 2px;
+        width: 18px;
+        margin-top: -1px;
+        margin-left: -9px;
+    }
+
+    &::before {
+        width: 2px;
+        height: 18px;
+        margin-top: -9px;
+        margin-left: -1px;
+    }
+
+    &:hover {
+        &::after, &::before {
+            background-color: $gray-color;
+        }
+    }
+}
+
+.alert-icon-blue {
+    display: inline-block;
+    @include size(23px, 23px);
+    color: $main-active-color;
+}

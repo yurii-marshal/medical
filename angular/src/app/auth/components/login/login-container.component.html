@@ -1,0 +1,10 @@
+<div class="login">
+    <app-login *ngIf="showLogin"
+               (changeToEnterCode)="showEnterCodeForm($event);"
+    ></app-login>
+
+    <app-two-factor-auth *ngIf="!showLogin"
+                         [data]="loginData"
+                         (changeToLogin)="showLoginForm();"
+    ></app-two-factor-auth>
+</div>

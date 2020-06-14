@@ -1,0 +1,15 @@
+<div class="infinite-scroll-bg reports-table-view"
+     bs-loading-overlay
+     bs-loading-overlay-reference-id="reportsLoading">
+
+    <div class="breadcrumbs">
+        <a href="javascript:void(0)" ui-sref="root.dashboard">Home</a>
+        <a href="javascript:void(0)" ui-sref="root.reports-dashboard">Reports</a>
+        <a href="javascript:void(0)" class="active">{{ reportsContainer.title }}</a>
+
+        <drowz-tabs items="reportsContainer.tabs"></drowz-tabs>
+    </div>
+
+    <div ui-view></div>
+
+</div>

@@ -1,0 +1,16 @@
+<perfect-scrollbar class="blue-scroll-theme" [ngClass]="{ 'hidden' : isHidden }">
+
+    <div class="sidebar" [ngClass]="{ 'closed-sidebar' : sidebarClosed }">
+
+        <!-- transclusion of the content -->
+        <ng-content></ng-content>
+
+        <button class="toggle-menu-slide" (click)="sidebarClosed=!sidebarClosed">
+
+            <mat-icon svgIcon="chevron" class="turn-chevron"></mat-icon>
+
+        </button>
+
+    </div>
+
+</perfect-scrollbar>

@@ -1,0 +1,145 @@
+.calendar-events-container {
+    position: relative;
+
+    .breadcrumbs {
+        position: relative;
+        z-index: 1;
+    }
+
+    .calendar-events-header {
+        position: relative;
+        z-index: 2;
+        display: flex;
+
+        advanced-filters {
+            position: relative;
+            margin: 0;
+            padding: 0 20px 0 16px;
+            background-color: $lighter-gray-color;
+
+            .advanced-filters-container {
+                position: relative;
+
+                .open-filters-modal {
+                    position: absolute;
+                    top: -19px;
+                    right: 0;
+                }
+
+                .selected-filters {
+                    padding-right: 370px;
+
+                    &.has-items {
+                        padding-bottom: 10px;
+                    }
+                }
+            }
+        }
+
+        .calendar-events-buttons {
+            position: absolute;
+            top: -19px;
+            right: 22px;
+            padding-right: 43px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-grow: 1;
+        }
+
+        .saved-filters-btn {
+            .drowz-dropdown-block {
+                left: auto;
+                right: 0;
+                min-width: 200px;
+                padding-left: 0;
+                padding-right: 0;
+                text-align: left;
+
+                md-autocomplete-with-infinite-scroll {
+                    margin-left: 10px;
+                    margin-right: 10px;
+                }
+
+                .save-filters-list {
+                    margin-top: 10px;
+                    max-height: 270px;
+                    overflow-y: auto;
+                }
+
+                .saved-filter-item {
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    padding: 10px 15px;
+                    transition: .2s;
+
+                    .filter-selected-icon {
+                        width: 14px;
+                        min-width: 14px;
+                        height: 8px;
+                        margin: 0 10px 0 0;
+                        color: $main-active-color;
+                    }
+
+                    .saved-filter-item-text {
+                        display: block;
+                        flex-grow: 1;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        font-size: 16px;
+                    }
+
+                    .delete-filter {
+                        margin-left: 10px;
+                        opacity: 0;
+                        color: $red-color;
+                        transition: .2s;
+
+                        md-icon {
+                            width: 13px;
+                            min-width: 13px;
+                            height: 18px;
+                            margin: 0;
+                            color: currentColor;
+                        }
+                    }
+
+                    &:hover {
+                        background-color: $light-gray-color;
+
+                        .delete-filter {
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .drwz_calendar_header {
+        position: relative;
+        height: 60px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+
+        .calendar_title {
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: $main-active-color;
+            font-size: 22px;
+        }
+    }
+
+    drwz-calendar-simple {
+        background-color: #fff;
+    }
+}
+
+.calendar-saved-filters {
+
+}

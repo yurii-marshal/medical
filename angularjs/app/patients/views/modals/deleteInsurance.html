@@ -1,0 +1,25 @@
+﻿<div class="modal-window delete-insurance-modal">
+
+    <a href="javascript:void(0);" ng-click="delIns.close()" class="close-modal"></a>
+
+    <md-dialog-content class="md-dialog-content">
+
+        <md-icon class="modal-icon" md-svg-src="assets/images/default/trash.svg"></md-icon>
+
+        <div class="modal-title">
+            <h2>Confirm Delete ?</h2>
+        </div>
+
+        <div class="modal-padding center-text">
+            Are you sure you want to remove this insurance? <br>
+            Once removed you can view it under the <span class="active-text">History</span> section.
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions class="modalFooter" layout="row" layout-align="end center">
+        <md-button class="md-raised main-button" ng-click="delIns.close()">Cancel</md-button>
+        <md-button class="md-raised main-button delete-btn" ng-click="delIns.delete()">Delete</md-button>
+    </md-dialog-actions>
+
+</div>

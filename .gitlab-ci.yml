@@ -1,0 +1,45 @@
+stages:
+  - publish
+  - deploy
+
+variables:
+  CAKE_SETTINGS_SKIPVERIFICATION: "true"
+  BUILD_CONFIGURATION: Release
+  BUILD_GIT_USER: drowz
+  BUILD_OCTOPUS_URL: "https://octopus.nikohealth.com"
+
+publish packages:
+  stage: publish
+  script:
+    - dotnet cake build.cake --Target=Publish
+  tags:
+    - vm-master
+  artifacts:
+    paths:
+      - artifacts/
+    expire_in: 48 hour
+
+deploy to ci:
+  stage: deploy
+  script:
+    - dotnet cake build.cake --Target=Deploy
+  only:
+    - develop
+  variables:
+    BUILD_DEPLOY_ENV: Development
+  environment:
+    name: Development
+    url: https://dev-ci.nikohealth.com
+  tags:
+    - build
+
+deploy to qa:
+  stage: deploy
+  script:
+    - dotnet cake build.cake --Target=Deploy
+  only:
+    - /^release\/.*$/
+  variables:
+    BUILD_DEPLOY_ENV: Development
+  tags:
+    - build
